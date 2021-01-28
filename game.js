@@ -212,6 +212,7 @@ function updatePrestige() {
 
 function updateBuildings() {
     document.getElementById('brickDisplay').innerHTML = formatWhole(player.bricks);
+    document.getElementById('brickGainDisplay').innerHTML = ` ${(astralFlag ? format(getBricksPerSecond()) : format(0))} `;
 }
 
 function allDisplay() {
