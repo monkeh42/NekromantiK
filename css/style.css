@@ -14,6 +14,12 @@ body {
     margin: auto;
 }
 
+#helpDiv {
+    text-align: center;
+    border: 1px solid white;
+    padding: 10px;
+}
+
 h1 {
     font-family: 'Cinzel', serif;
     font-weight: 800;
@@ -63,6 +69,21 @@ button:focus {
 .unitBut:hover, .unitMax:hover {
     background-color: #460573;
 } 
+
+.helpBut {
+    color: white;
+    background-color: #1f1f1f;
+    font-style: bold;
+    width: 75px;
+    height: 25px;
+    border: 1px solid #525252;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-weight: 500;
+    font-size: 10pt;
+    margin: 10px;
+}
 
 .tabBut {
     color: white;

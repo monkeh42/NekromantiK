@@ -157,6 +157,7 @@ function canSpacePrestige() {
 
 function spacePrestige() {
     if (canSpacePrestige()) {
+        if (player.totalSpaceResets.eq(0)) { UNLOCKS['buildingsTab']['mainTab'] = true; }
         clearInterval(mainLoop);
         player.spaceResets = player.spaceResets.plus(1);
         player.worlds = player.worlds.plus(1);
@@ -186,7 +187,10 @@ function canAfford(tier) {
 
 function buySingleUnit(tier) {
     if (canAfford(tier)) {
-        if (units[tier].bought.eq(0)) { units[tier].unlocked = true }
+        if (units[tier].bought.eq(0)) { 
+            units[tier].unlocked = true;
+            if (tier == 5) { UNLOCKS['unitsTab']['spacePrestige'] = true; }
+        }
         player.corpses = player.corpses.minus(units[tier].cost);
         units[tier].amount = units[tier].amount.plus(1);
         units[tier].bought = units[tier].bought.plus(1);
@@ -200,7 +204,10 @@ function buySingleUnit(tier) {
 
 function buyMaxUnits(tier) {
     if (canAfford(tier)) {
-        if (units[tier].bought.eq(0)) { units[tier].unlocked = true }
+        if (units[tier].bought.eq(0)) { 
+            units[tier].unlocked = true;
+            if (tier == 5) { UNLOCKS['unitsTab']['spacePrestige'] = true; }
+        }
         var totalBought = calculateMaxUnits(tier);
         player.corpses = player.corpses.minus(calculateMaxUnitsCost(tier));
         units[tier].cost = units[tier].cost.times(units[tier].costMult.pow(totalBought));

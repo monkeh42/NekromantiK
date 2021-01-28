@@ -8,6 +8,7 @@
     <script type="text/javascript" src="game.js"></script>
     <script type="text/javascript" src="units.js"></script>
     <script type="text/javascript" src="buildings.js"></script>
+    <script type="text/javascript" src="helptexts.js"></script>
     <script type="text/javascript" src="technical/utils.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -16,7 +17,13 @@
 
 <body onload="init()">
     <div id="game">
-        <div><button id="hardReset" class="tabBut" onclick="hardReset()">HARD RESET</button><button id="manSave" class="tabBut" onclick="save()">MANUAL SAVE</button><button id="manLoad" class="tabBut" onclick="loadGame()">MANUAL LOAD</button></div>
+        <div><button id="hardReset" class="tabBut" onclick="hardReset()">HARD RESET</button><button id="manSave" class="tabBut" onclick="save()">MANUAL SAVE</button><button id="manLoad" class="tabBut" onclick="loadGame()">MANUAL LOAD</button><button id="helpBut" class="tabBut" onclick="showHelp()">HELP (this tab)</button></div>
+        <div id="helpDiv" style="display: none;">
+            <span id="helpSpan">
+            </span>
+            <br>
+            <button id="helpClose" class="helpBut" onclick="closeHelp()">close</button>
+        </div>
         <div id="resourceDisplay" style="width: auto; margin: 15px auto 25px; display: block; text-align: center;">
             <h2>You have <span id="corpseAmount" style="font-size: 20pt; white-space: pre;"> 10 </span> <span id='pluralCorpse'>corpses</span>.</h2>
             You are harvesting <span id="corpseGain" style="font-size: 17pt; white-space: pre;"> 0 </span> <span id='pluralCorpseG'>corpses</span>/sec.<br>

@@ -40,6 +40,16 @@ function init() {
     startInterval();
 }
 
+function showHelp() {
+    var active = getActiveTab();
+    document.getElementById('helpSpan').innerHTML = generateHelpText(active);
+    document.getElementById('helpDiv').style.display = 'block';
+}
+
+function closeHelp() {
+    document.getElementById('helpDiv').style.display = 'none';
+}
+
 /*document.getElementById('factoryBuild').onclick = function () {
     document.getElementById('factoryBuildRow').style.display = 'none';
     document.getElementById('factoryUpgradesRow').style.display = 'table-row';
@@ -89,6 +99,18 @@ function showTab(tabName) {
             tab.style.display = 'none';
         }
     }
+}
+
+function getActiveTab() {
+    var allTabs = document.getElementsByClassName('pageTab');
+    var tab;
+    for (var i=0; i<allTabs.length; i++) {
+        tab = allTabs.item(i);
+        if (tab.style.display === 'block') {
+            return tab.id;
+        }
+    }
+    return null;
 }
 
 /*function customStringify() {
