@@ -281,7 +281,7 @@ function startInterval() {
         if (astralFlag) { diff = diff/10; }
         diff = diff*10;
         if (astralFlag) {
-            player.bricks = player.bricks.plus(getBricksPerSecond.times(diff/1000));
+            player.bricks = player.bricks.plus(getBricksPerSecond().times(diff/1000));
         } else {
             player.corpses = player.corpses.plus(getCorpsesPerSecond().times(diff/1000));
         }
