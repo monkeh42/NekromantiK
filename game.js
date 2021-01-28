@@ -172,15 +172,15 @@ function updateCorpseDisplay() {
     document.getElementById('corpseAmount').innerHTML = ` ${formatWhole(player.corpses)} `;
     document.getElementById('pluralCorpse').innerHTML = corpseSingulizer(false);
     document.getElementById('pluralCorpseG').innerHTML = corpseSingulizer(true);
-    document.getElementById('corpseGain').innerHTML = ` ${formatWhole(getCorpsesPerSecond())} `;
-    document.getElementById('totalMult').innerHTML = `${format(getCorpseMultFromUnits())}x`;
-    document.getElementById('worldsMult').innerHTML = `${format(getWorldsBonus())}x`;
-    document.getElementById('worldsNum').innerHTML = `${format(player.worlds)}`;
+    document.getElementById('corpseGain').innerHTML = ` ${format(getCorpsesPerSecond())} `;
+    document.getElementById('totalMult').innerHTML = `${format(getCorpseMultFromUnits(), 2)}x`;
+    document.getElementById('worldsMult').innerHTML = `${format(getWorldsBonus(), 2)}x`;
+    document.getElementById('worldsNum').innerHTML = `${formatWhole(player.worlds)}`;
 }
 
 function updateUnitDisplay(tier) {
-    document.getElementById(units[tier].amountID).innerHTML = "<div style=\"min-width: 30%; float: left;\">" + formatWhole(units[tier].amount) + "</div><div style=\"min-width: 30%; float: left;\">(" + formatWhole(units[tier].bought) + ")</div><div style=\"min-width: 35%; float: right;\">" + (getUnitProdPerSecond(tier).gt(0) ? "(+" + formatWhole(new Decimal(getUnitProdPerSecond(tier).div(units[tier].amount.max(1))).m, 2) + "%/s)</div>" : "");
-    document.getElementById(units[tier].multID).innerHTML = "<div style=\"min-width: 45%; float: left;\">" + formatWhole(units[tier].corpseMult) + "x</div><div style=\"min-width: 45%; float: left;\">(" + ((tier > 1) ? formatWhole(units[tier].prodMult) : "~") + "x)</div>";
+    document.getElementById(units[tier].amountID).innerHTML = "<div style=\"min-width: 30%; float: left;\">" + format(units[tier].amount) + "</div><div style=\"min-width: 30%; float: left;\">(" + formatWhole(units[tier].bought) + ")</div><div style=\"min-width: 35%; float: right;\">" + (getUnitProdPerSecond(tier).gt(0) ? "(+" + formatWhole(new Decimal(getUnitProdPerSecond(tier).div(units[tier].amount.max(1))).m, 2) + "%/s)</div>" : "");
+    document.getElementById(units[tier].multID).innerHTML = "<div style=\"min-width: 45%; float: left;\">" + format(units[tier].corpseMult, 2) + "x</div><div style=\"min-width: 45%; float: left;\">(" + ((tier > 1) ? format(units[tier].prodMult, 2) : "~") + "x)</div>";
     document.getElementById(units[tier].buttonID).innerHTML = "Cost: " + formatWhole(units[tier].cost) + " corpses";
     document.getElementById(units[tier].maxID).innerHTML = canAfford(tier) ? `Max: ${calculateMaxUnits(tier)} for &#162;${formatWhole(calculateMaxUnitsCost(tier))}` : "Max: 0";
     if (document.getElementById(units[tier].rowID).style.display !== 'none') {

@@ -26,7 +26,7 @@ function regularFormat(num, precision) {
 	return num.toFixed(precision)
 }
 
-function format(decimal, points=2) {
+function format(decimal, points=1) {
 	decimal = new Decimal(decimal)
 	if (decimal.gte("1e1000")) return exponentialFormat(decimal, 0, false)
 	else if (decimal.gte(1e10)) return exponentialFormat(decimal, 0)
