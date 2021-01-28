@@ -19,6 +19,7 @@ const START_PLAYER = {
     worlds: new Decimal(0),
 
     bricks: new Decimal(0),
+    brickGainExp: 0.2,
     
     totalCorpses: new Decimal(0),
     totalWorlds: new Decimal(0),
@@ -275,7 +276,7 @@ function startInterval() {
         var diff = currentUpdate - player.lastUpdate;
         diff = diff*10;
         if (astralFlag) {
-            player.bricks = player.bricks.plus(getCorpsesPerSecond().pow(0.25).times(diff/1000));
+            player.bricks = player.bricks.plus(getCorpsesPerSecond().pow(player.brickGainExp).times(diff/100));
         } else {
             player.corpses = player.corpses.plus(getCorpsesPerSecond().times(diff/1000));
         }
