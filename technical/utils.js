@@ -31,7 +31,7 @@ function format(decimal, points=2) {
 	if (decimal.gte("1e1000")) return exponentialFormat(decimal, 0, false)
 	else if (decimal.gte(1e10)) return exponentialFormat(decimal, 0)
 	else if (decimal.gte(1e4)) return exponentialFormat(decimal, 1)
-	else return commaFormat(decimal, 1)
+	else return commaFormat(decimal, points)
 }
 
 function formatWhole(decimal) {
