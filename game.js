@@ -143,6 +143,10 @@ function getCorpsesPerSecond() {
     return units[1].amount.gt(0) ? units[1].amount.times(getTotalCorpseMult()) : new Decimal(0);
 }
 
+function getBricksPerSecond() {
+    return getCorpsesPerSecond().pow(player.brickGainExp);
+}
+
 function getCorpseMultFromUnits() {
     var mult = new Decimal(0);
     for (var i=1; i<=NUM_UNITS; i++) {
@@ -173,7 +177,7 @@ function updateCorpseDisplay() {
     document.getElementById('corpseAmount').innerHTML = ` ${formatWhole(player.corpses)} `;
     document.getElementById('pluralCorpse').innerHTML = corpseSingulizer(false);
     document.getElementById('pluralCorpseG').innerHTML = corpseSingulizer(true);
-    document.getElementById('corpseGain').innerHTML = ` ${format(getCorpsesPerSecond())} `;
+    document.getElementById('corpseGain').innerHTML = ` ${(astralFlag ? format(0) : format(getCorpsesPerSecond()))} `;
     document.getElementById('totalMult').innerHTML = `${format(getCorpseMultFromUnits(), 2)}x`;
     document.getElementById('worldsMult').innerHTML = `${format(getWorldsBonus(), 2)}x`;
     document.getElementById('worldsNum').innerHTML = `${formatWhole(player.worlds)}`;
@@ -274,9 +278,10 @@ function startInterval() {
     mainLoop = setInterval(function () {
         var currentUpdate = new Date().getTime();
         var diff = currentUpdate - player.lastUpdate;
+        if (astralFlag) { diff = diff/10; }
         diff = diff*10;
         if (astralFlag) {
-            player.bricks = player.bricks.plus(getCorpsesPerSecond().pow(player.brickGainExp).times(diff/100));
+            player.bricks = player.bricks.plus(getBricksPerSecond.times(diff/1000));
         } else {
             player.corpses = player.corpses.plus(getCorpsesPerSecond().times(diff/1000));
         }
