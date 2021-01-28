@@ -192,6 +192,13 @@ function updateUnitDisplay(tier) {
     }
 }
 
+function updateHTML() {
+    if (player.totalWorlds.gt(0)) { 
+        document.getElementById('worldsBonusDisplay').style.display = 'block';
+        document.getElementById('buildingsTabBut').style.display = 'block';
+    }
+}
+
 function updatePrestige() {
     document.getElementById('spacePresContainer').style.display = (units[player.nextSpaceReset[1]-1].bought.gt(0) ? 'block' : 'none');
     document.getElementById('spacePrestige').className =  (units[player.nextSpaceReset[1]].bought.gte(player.nextSpaceReset[0]) ? 'prestigeBut' : 'unclickablePrestige');
@@ -209,8 +216,7 @@ function allDisplay() {
     updateCorpseDisplay();
     updatePrestige();
     updateBuildings();
-
-    if (player.totalWorlds.gt(0) && document.getElementById('worldsBonusDisplay').style.display === 'none') { document.getElementById('worldsBonusDisplay').style.display = 'block' }
+    updateHTML()
 
     //if ((new Date().getTime()-player.lastAutoSave)>15000) {
     //    save();

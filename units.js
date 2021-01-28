@@ -158,10 +158,6 @@ function canSpacePrestige() {
 function spacePrestige() {
     if (canSpacePrestige()) {
         clearInterval(mainLoop);
-        if (player.totalWorlds.eq(0)) { 
-            document.getElementById('worldsBonusDisplay').style.display = 'block';
-            document.getElementById('buildingsTabBut').style.display = 'block';
-        }
         player.spaceResets = player.spaceResets.plus(1);
         player.worlds = player.worlds.plus(1);
         player.totalSpaceResets = player.totalSpaceResets.plus(1);
