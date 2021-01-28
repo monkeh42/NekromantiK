@@ -274,6 +274,14 @@ function loadGame() {
     allDisplay();
 }
 
+function checkForMissing() {
+    for (var k in START_PLAYER) {
+        if (player[k] === undefined) {
+            player[k] = START_PLAYER[k];
+        }
+    }
+}
+
 function startInterval() {
     mainLoop = setInterval(function () {
         var currentUpdate = new Date().getTime();
