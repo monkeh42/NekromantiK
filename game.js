@@ -271,6 +271,7 @@ function loadGame() {
     }
     player.lastUpdate = new Date().getTime();
     player.lastAutoSave = new Date().getTime();
+    checkForMissing();
     allDisplay();
 }
 
