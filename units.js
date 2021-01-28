@@ -180,6 +180,10 @@ function spacePrestige() {
     }
 }
 
+function canUnlock(tier) {
+    return player.spaceResets.plus(5).gte(tier);
+}
+
 function canAfford(tier) {
     return player.corpses.gte(units[tier].cost);
 }

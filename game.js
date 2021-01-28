@@ -142,12 +142,17 @@ function getCorpsesPerSecond() {
     return units[1].amount.gt(0) ? units[1].amount.times(getTotalCorpseMult()) : new Decimal(0);
 }
 
-function getTotalCorpseMult() {
+function getCorpseMultFromUnits() {
     var mult = new Decimal(0);
     for (var i=1; i<=NUM_UNITS; i++) {
         mult = mult.plus(units[i].corpseMult);
     }
-    if (player.worlds.gt(0)) { mult = mult.times(getWorldsBonus()) }
+    return Decimal.max(mult, 1);
+}
+
+function getTotalCorpseMult() {
+    var mult = getCorpseMultFromUnits();
+    mult = mult.times(getWorldsBonus());
     return Decimal.max(mult, 1);
 }
 
@@ -168,7 +173,7 @@ function updateCorpseDisplay() {
     document.getElementById('pluralCorpse').innerHTML = corpseSingulizer(false);
     document.getElementById('pluralCorpseG').innerHTML = corpseSingulizer(true);
     document.getElementById('corpseGain').innerHTML = ` ${formatWhole(getCorpsesPerSecond())} `;
-    document.getElementById('totalMult').innerHTML = `${format(getTotalCorpseMult())}x`;
+    document.getElementById('totalMult').innerHTML = `${format(getCorpseMultFromUnits())}x`;
     document.getElementById('worldsMult').innerHTML = `${format(getWorldsBonus())}x`;
     document.getElementById('worldsNum').innerHTML = `${format(player.worlds)}`;
 }
@@ -182,7 +187,7 @@ function updateUnitDisplay(tier) {
         document.getElementById(units[tier].buttonID).className = canAfford(tier) ? "unitBut" : "unclickableUnit";
         document.getElementById(units[tier].maxID).className = canAfford(tier) ? "unitMax" : "unclickableMax";
     }
-    if (tier<NUM_UNITS && units[tier].bought.gt(0)) {
+    if (tier<NUM_UNITS && units[tier].bought.gt(0) && canUnlock(tier+1)) {
         document.getElementById(units[tier+1].rowID).style.display = 'table-row';
     }
 }
@@ -215,7 +220,7 @@ function allDisplay() {
 }
 
 function getWorldsBonus() {
-    return player.worlds.div(2).pow(1.5).plus(1);
+    return Decimal.max(player.worlds.div(2).pow(1.5).plus(1), 1);
 }
 
 function save() {
