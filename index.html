@@ -1,0 +1,253 @@
+<!doctype html>
+
+<html>
+
+<head>
+    <title>NekromantiK</title>
+    <script type="text/javascript" src="technical/break_infinity.js"></script>
+    <script type="text/javascript" src="game.js"></script>
+    <script type="text/javascript" src="units.js"></script>
+    <script type="text/javascript" src="buildings.js"></script>
+    <script type="text/javascript" src="technical/utils.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;800&display=swap" rel="stylesheet">
+</head>
+
+<body onload="init()">
+    <div id="game">
+        <div><button id="hardReset" class="tabBut" onclick="hardReset()">HARD RESET</button><button id="manSave" class="tabBut" onclick="save()">MANUAL SAVE</button><button id="manLoad" class="tabBut" onclick="loadGame()">MANUAL LOAD</button></div>
+        <div id="resourceDisplay" style="width: auto; margin: 15px auto 25px; display: block; text-align: center;">
+            <h2>You have <span id="corpseAmount" style="font-size: 20pt; white-space: pre;"> 10 </span> <span id='pluralCorpse'>corpses</span>.</h2>
+            You are harvesting <span id="corpseGain" style="font-size: 17pt; white-space: pre;"> 0 </span> <span id='pluralCorpseG'>corpses</span>/sec.<br>
+            <span style="font-size: 10pt; white-space: pre;">Total corpse gain multiplier from units (additive):  </span><span id="totalMult" style="font-size: 12pt">0.0x</span>
+            <span id="worldsBonusDisplay" style="display: none;"><span style="font-size: 10pt; white-space: pre;">You have conquered <span id="worldsNum" style="font-size: 12pt"> 1 </span> world, giving a <span id="worldsMult" style="font-size: 12pt"> 0.0x </span> bonus to corpse gain.</span></span>
+        </div>
+        <div id="tabButtons" style="width: 100%; margin: 15px auto 25px; display: block;">
+            <table style="width: auto; margin: auto;">
+                <tr>
+                    <td>
+                        <button id="unitsTabBut" class="tabBut" onclick="showTab('unitsTab')">UNITS</button>
+                    </td>
+                    <td>
+                        <button id="buildingsTabBut" class="tabBut" onclick="showTab('buildingsTab')" style="display: none;">BUILDINGS</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="unitsTab" class="pageTab">
+            <table style="width: 100%; margin: auto;">
+                <tr>
+                    <td width="20%">
+                        <h1>Unit type</h1>
+                    </td>
+                    <td width="15%">
+                        <h1>Corpse mult<br>(Unit mult)</h1>
+                    </td>
+                    <td width="20%">
+                        <h1>Owned<br>(Bought)</h1>
+                    </td>
+                    <td width="15%">
+                        
+                    </td>
+                    <td width="10%">
+                        
+                    </td>
+                </tr>
+                <tr height="10px"></tr>
+                <tr id="zombieRow" style="display: table-row;">
+                    <td>
+                        Zombies
+                    </td>
+                    <td>
+                        <div id="zombieMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                    </td>
+                    <td>
+                        <div id="zombieAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="zombieBut" class="unitBut" onclick="buySingleUnit(1)">Cost: 10 corpses</button>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="zombieMax" class="unitMax" onclick="buyMaxUnits(1)">Max: 1 for &#162;10</button>
+                    </td>
+                </tr>
+                <tr id="abomRow" style="display: none;">
+                    <td>
+                        Abominations
+                    </td>
+                    <td>
+                        <div id="abomMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                    </td>
+                    <td>
+                        <div id="abomAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="abomBut" class="unitBut" onclick="buySingleUnit(2)">Cost: 100 corpses</button>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="abomMax" class="unitMax" onclick="buyMaxUnits(1)">Max: 0</button>
+                    </td>
+                </tr>
+                <tr id="mageRow" style="display: none;">
+                    <td>
+                        Skeleton Mages
+                    </td>
+                    <td>
+                        <div id="mageMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                    </td>
+                    <td>
+                        <div id="mageAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="mageBut" class="unitBut" onclick="buySingleUnit(3)">Cost: 10000 corpses</button>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="mageMax" class="unitMax" onclick="buyMaxUnits(1)">Max: 0</button>
+                    </td>
+                </tr>
+                <tr id="bansheeRow" style="display: none;">
+                    <td>
+                        Banshees
+                    </td>
+                    <td>
+                        <div id="bansheeMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                    </td>
+                    <td>
+                        <div id="bansheeAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="bansheeBut" class="unitBut" onclick="buySingleUnit(4)">Cost: 1000000 corpses</button>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="bansheeMax" class="unitMax" onclick="buyMaxUnits(1)">Max: 0</button>
+                    </td>
+                </tr>
+                <tr id="lichRow" style="display: none;">
+                    <td>
+                        Liches
+                    </td>
+                    <td>
+                        <div id="lichMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                    </td>
+                    <td>
+                        <div id="lichAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="lichBut" class="unitBut" onclick="buySingleUnit(5)">Cost: 1000000 corpses</button>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="lichMax" class="unitMax" onclick="buyMaxUnits(1)">Max: 0</button>
+                    </td>
+                </tr>
+                <tr id="beheRow" style="display: none;">
+                    <td>
+                        Behemoths
+                    </td>
+                    <td>
+                        <div id="beheMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                    </td>
+                    <td>
+                        <div id="beheAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="beheBut" class="unitBut" onclick="buySingleUnit(5)">Cost: 1000000 corpses</button>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="beheMax" class="unitMax" onclick="buyMaxUnits(1)">Max: 0</button>
+                    </td>
+                </tr>
+                <tr id="oneRow" style="display: none;">
+                    <td>
+                        Ancient Ones
+                    </td>
+                    <td>
+                        <div id="oneMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                    </td>
+                    <td>
+                        <div id="oneAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="oneBut" class="unitBut" onclick="buySingleUnit(5)">Cost: 1000000 corpses</button>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="oneMax" class="unitMax" onclick="buyMaxUnits(1)">Max: 0</button>
+                    </td>
+                </tr>
+                <tr id="sunRow" style="display: none;">
+                    <td>
+                        Sun Eaters
+                    </td>
+                    <td>
+                        <div id="sunMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                    </td>
+                    <td>
+                        <div id="sunAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="sunBut" class="unitBut" onclick="buySingleUnit(5)">Cost: 1000000 corpses</button>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="sunMax" class="unitMax" onclick="buyMaxUnits(1)">Max: 0</button>
+                    </td>
+                </tr>
+            </table>
+            <div id="spacePresContainer" style="text-align: center; margin: 50px; display: none;">
+                <button id="spacePrestige" class="prestigeBut" onclick="spacePrestige()">
+                    <span style="font-size: 15pt;">This world is dead and empty...</span><br>
+                    Give up all your progress to conquer a new world.<br>
+                    You get a bonus to corpse gain based on conquered worlds, and you unlock Buildings.<br>
+                    <span id="prestigeReq" style="font-size: 13pt;">Requires <span style="font-size: 17pt; white-space: pre;"> 1 </span> Liches</span>
+                </button>
+            </div>
+        </div>
+        <div id="buildingsTab" class="pageTab">
+            <table style="width: auto; margin: auto; text-align: center;">
+                <tr rowspan="3">
+                    <td colspan="3">
+                        <button id="astralToggle" class="astralBut" style="margin: 15px;" onclick="toggleAstral()"><span id="astralText">enable</span><h2>ASTRAL ENSLAVEMENT</h2></button>
+                        <div style="font-size: 18pt; white-space: pre;">Your unholy hordes have forged <span id="brickDisplay" style="font-size: 21pt; font-weight: 800; color: #0b4014;"> 0 </span> astral bricks.</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span style="font-size: 11pt">You can now force the dead you harvest to work for your rapidly growing empire. While Astral Enslavement is active, you won't gain any corpses;
+                        instead, those tortured, miasmic souls will suffer tirelessly making bricks for your most unholy of foundations.</span>
+                    </td>
+                </tr>
+                <tr id="factoryBuildRow">
+                    <td colspan="3">
+                        <button id="factoryBuild" class="buildBut">Build the<h2 style="font-size: 18pt;">Death Factory.</h2>Cost: 1000 astral bricks</button>
+                    </td>
+                </tr>
+                <tr id="factoryUpgradesRow" style="display: none;">
+                    <td>
+                        <button id="factoryUpg1" class="buildingUpg"><strong>Upgrade 1</strong><br>description of upgrade</button>
+                    </td>
+                    <td>
+                        <button id="factoryUpg2" class="buildingUpg"><strong>Upgrade 2</strong><br>description of upgrade</button>
+                    </td>
+                    <td>
+                        <button id="factoryUpg3" class="buildingUpg"><strong>Upgrade 3</strong><br>description of upgrade</button>
+                    </td>
+                </tr>
+                <tr id="necropolisBuildRow">
+                    <td colspan="3">
+                        <button id="necropolisBuild" class="buildBut">Build the<h2 style="font-size: 18pt;">Necropolis.</h2>Cost: 10000 astral bricks</button>
+                    </td>
+                </tr>
+                <tr id="necropolisUpgradesRow" style="display: none;">
+                    <td>
+                        <button id="necropolisUpg1" class="buildingUpg"><strong>Upgrade 1</strong><br>description of upgrade</button>
+                    </td>
+                    <td>
+                        <button id="necropolisUpg2" class="buildingUpg"><strong>Upgrade 2</strong><br>description of upgrade</button>
+                    </td>
+                    <td>
+                        <button id="necropolisUpg3" class="buildingUpg"><strong>Upgrade 3</strong><br>description of upgrade</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>

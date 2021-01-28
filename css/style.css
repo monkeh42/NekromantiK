@@ -1,0 +1,198 @@
+
+
+body {
+    color: white;
+    background-color: black;
+    font-family: 'Cinzel', serif;
+    font-weight: 500;
+    font-size: 13pt;
+    background-blend-mode: color-burn;
+}
+
+#game {
+    width: 1024px;
+    margin: auto;
+}
+
+h1 {
+    font-family: 'Cinzel', serif;
+    font-weight: 800;
+    font-size: 13pt;
+}
+
+h2 {
+    font-family: 'Cinzel', serif;
+    font-weight: 800;
+    font-size: 16pt;
+    margin-top: 0.4em;
+    margin-bottom: 0.4em;
+}
+
+h3 {
+    font-family: 'Cinzel', serif;
+    font-weight: 800;
+    font-size: 18pt;
+}
+
+button:focus {
+    outline: none;
+}
+
+.unitBut {
+    color: white;
+    background-color: #170424;
+    font-style: bold;
+    width: 200px;
+    height: 35px;
+    border: 1px solid #460573;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.unitMax {
+    color: white;
+    background-color: #170424;
+    font-style: bold;
+    width: 130px;
+    height: 35px;
+    border: 1px solid #460573;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.unitBut:hover, .unitMax:hover {
+    background-color: #460573;
+} 
+
+.tabBut {
+    color: white;
+    background-color: #1f1f1f;
+    font-style: bold;
+    width: 150px;
+    height: 35px;
+    border: 1px solid #525252;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-weight: 500;
+    font-size: 13pt;
+}
+
+.tabBut:hover {
+    background-color: #525252;
+}
+
+.buildBut {
+    color: white;
+    background-color: #042e0b;
+    font-style: bold;
+    width: 350px;
+    height: 100px;
+    border: 1px solid #085e16;
+    margin: 10px;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    font-weight: 500;
+    font-size: 13pt;
+    border-radius: 4px;
+}
+
+.buildBut:hover {
+    background-color: #085e16;
+} 
+
+.astralBut {
+    color: white;
+    background-color: #0b4014;
+    width: 200px;
+    height: 200px;
+    border: 1px solid #015985;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-weight: 500;
+}
+
+.astralOn {
+    color: white;
+    background-color: #015985;
+    width: 200px;
+    height: 200px;
+    border: 1px solid #0b4014;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-weight: 500;
+}
+
+.astralBut:hover, .astralOn:hover {
+    background-color: black;
+    border-color: black;
+}
+
+.buildingUpg {
+    color: white;
+    background-color: #042e0b;
+    width: 150px;
+    height: 50px;
+    border: 1px solid #085e16;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.buildingUpg:hover {
+    background-color: #085e16;
+} 
+
+.buttonTD {
+    text-align: right;
+}
+
+.unclickableUnit {
+    color: white;
+    background-color: #4b4b4b;
+    font-style: bold;
+    width: 200px;
+    height: 35px;
+    border: 1px solid #4b4b4b;
+    border-radius: 4px;
+}
+
+.unclickableMax {
+    color: white;
+    background-color: #4b4b4b;
+    font-style: bold;
+    width: 130px;
+    height: 35px;
+    border: 1px solid #4b4b4b;
+    border-radius: 4px;
+}
+
+.prestigeBut {
+    color: white;
+    background-color: #07347a;
+    width: 450px;
+    height: 150px;
+    border: 1px solid #185ec9;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-weight: 500;
+}
+
+.prestigeBut:hover {
+    background-color: #185ec9;
+}
+
+.unclickablePrestige {
+    color: white;
+    background-color: #4b4b4b;
+    width: 450px;
+    height: 150px;
+    border: 1px solid #4b4b4b;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-weight: 500;
+}
+
