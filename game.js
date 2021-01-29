@@ -228,7 +228,7 @@ function updatePrestige() {
     document.getElementById('spacePrestige').className =  (canSpacePrestige() ? 'prestigeBut' : 'unclickablePrestige');
     if (player.spaceResets.lt(3)) {
         if (player.spaceResets.gt(1)) {
-            document.getElementById('spacePresUnlock').innerHTML = 'Time Warp';
+            document.getElementById('spacePresUnlock').innerHTML = 'Time Warp (coming soon)';
         } else if (player.spaceResets.gt(0)) {
             document.getElementById('spacePresUnlock').innerHTML = 'Construction Upgrades';
         } else {

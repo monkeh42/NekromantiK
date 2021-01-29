@@ -5,7 +5,7 @@ const HELP_TEXTS = {
                     Each zombie produces one corpse per second directly, while all other units produce the unit one tier below them.<br>\
                     Each unit also has a corpse multiplier that multiplies your total corpse gain (corpse multipliers are additive), and a unit multiplier, which multiplies the unit production of that tier. \
                     Every time you purchase one of a unit after the first, its cost and corpse multiplier are multiplied by constants. The unit multiplier is always equal to the square root of the corpse multiplier.<br>\
-                    Cost multipliers by unit tier (first tier = zombies): 1e3, 1e4, 1e4, 1e6, 1e10, 1e11, 1e12, 1e15.<br>\
+                    Cost multipliers by unit tier (first tier = zombies): 100, 1e4, 1e4, 1e6, 1e10, 1e11, 1e12, 1e15.<br>\
                     Multiplier multipliers by unit tier: 1.75, 2, 2, 2, 2.2, 2.2, 2.5, 2.5.',
         'spacePrestige': '<h2>NEW WORLDS</h2>\
                         Eventually, this world will run out of souls to torture and corpses to harvest. When this happens, you must \'space prestige\' to move on to a new world.<br>\
