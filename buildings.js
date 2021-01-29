@@ -304,21 +304,21 @@ var astralFlag = false;
 function buyBuilding(b) {
     if (canAffordBuilding(b)) {
         buildings[b].built = true;
-        player.bricks.minus(buildings[b].cost);
+        player.bricks = player.bricks.minus(buildings[b].cost);
     }
 }
 
 function buyBUpg(b, u) {
     if (canAffordBUpg(b, u) && !hasUpgrade(b, u)) {
         buildings[b].upgrades[u].bought = true;
-        player.bricks.minus(getUpgCost(b, u));
+        buildings[b].amount = buildings[b].amount.minus(getUpgCost(b, u));
     }
 }
 
 function buyCUpg(c) {
     if (canAffordCUpg(c)) {
         construction[c].bought = true;
-        player.bricks.minus(getCUpgCost(c));
+        player.bricks = player.bricks.minus(getCUpgCost(c));
         construction[c].level += 1;
         construction[c].cost = construction[c].cost.times(construction[c].costMult);
         if (construction[c].onBuy !== undefined) { construction[c].onBuy() }
