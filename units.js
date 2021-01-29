@@ -212,8 +212,11 @@ const START_UNITS = {
 
 function resetUnits() {
     for (var z=NUM_UNITS; z>0; z--) {
-        units[z] = Object.assign({}, START_UNITS[z]);
+        units[z].amount = new Decimal(0);
+        units[z].bought = new Decimal(0);
     }
+    units = Object.assign({}, START_UNITS);
+    fixData(units, START_UNITS);
 }
 
 function canSpacePrestige() {
@@ -235,11 +238,9 @@ function spacePrestige() {
         //unitSetup(START_PLAYER);
         player.corpses = new Decimal(START_PLAYER.corpses);
         allDisplay();
-        for (var z=1; z<=NUM_UNITS; z++) {
-            if (z!=1) {
-                document.getElementById(units[z].rowID).style.display = 'none';
-                units[z].unlocked = false;
-            }
+        for (var z=2; z<=NUM_UNITS; z++) {
+            document.getElementById(units[z].rowID).style.display = 'none';
+            units[z].unlocked = false;
         }
         save();
         startInterval();
