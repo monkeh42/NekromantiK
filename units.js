@@ -6,7 +6,7 @@ const START_UNITS = {
         bought: new Decimal(0),
         amount: new Decimal(0),
         multPer: new Decimal(1.75),
-        costMult: new Decimal(1000),
+        costMult: new Decimal(100),
         corpseMult: new Decimal(0),
         prodMult: new Decimal(0),
         cost: new Decimal(10),
