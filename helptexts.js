@@ -17,7 +17,7 @@ const HELP_TEXTS = {
         'mainTab': '<h2>BUILDINGS</h2>\
                     Here you will forge Astral Bricks and use them to construct monstrous buildings of death and war. Each building generates its own resource, and has its own set of upgrades \
                     focused on one aspect of the game.<br>\
-                    Enabling Astral Enslavement disables all unit production (corpses and units) and slows down time by 10x. During this time, you gain Astral Bricks based on your \
+                    Enabling Astral Enslavement disables corpse production and slows down time by 10x. During this time, you gain Astral Bricks based on your \
                     corpse gain (base formula is corpse gain^0.2).',
         'factory': '<h2>FACTORY</h2>\
                     Here you will produce armaments for your savage hordes. The production rate is based on the number of zombies you have (base formula is log10(zombies+1)^0.5) - someone needs to work the factory, after all.<br>\

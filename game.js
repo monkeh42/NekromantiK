@@ -155,6 +155,7 @@ function updateCorpseDisplay() {
     document.getElementById('pluralCorpse').innerHTML = corpseSingulizer(false);
     document.getElementById('pluralCorpseG').innerHTML = corpseSingulizer(true);
     document.getElementById('corpseGain').innerHTML = ` ${(astralFlag ? formatWhole(0) : formatDefault(getCorpsesPerSecond()))} `;
+    document.getElementById('astralNotice').style.display = 'block';
     document.getElementById('totalMult').innerHTML = `${format(getCorpseMultFromUnits(), 2)}x`;
     document.getElementById('worldsMult').innerHTML = `${format(getWorldsBonus(), 2)}x`;
     document.getElementById('worldsNum').innerHTML = `${formatWhole(player.worlds)}`;
@@ -355,10 +356,8 @@ function startInterval() {
             player.corpses = player.corpses.plus(getCorpsesPerSecond().times(diff/1000));
         }
         player.totalCorpses = player.totalCorpses.plus(getCorpsesPerSecond().times(diff/1000));
-        if (!astralFlag) {
-            for (var i=1; i<NUM_UNITS; i++) {
-                units[i].amount = units[i].amount.plus(getUnitProdPerSecond(i).times(diff/1000));
-            }
+        for (var i=1; i<NUM_UNITS; i++) {
+            units[i].amount = units[i].amount.plus(getUnitProdPerSecond(i).times(diff/1000));
         }
         for (var b in buildings) {
             if (isBuilt(b)) {
