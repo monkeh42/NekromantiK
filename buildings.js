@@ -339,10 +339,12 @@ function toggleAstral() {
         document.getElementById('brickGainDiv').style.display = 'block';
         document.getElementById('astralToggle').className = 'astralOn';
         document.getElementById('astralText').innerHTML = 'disable';
+        document.getElementById('astralNotice').style.display = 'block';
     } else {
         astralFlag = false;
         document.getElementById('brickGainDiv').style.display = 'none';
         document.getElementById('astralToggle').className = 'astralBut';
         document.getElementById('astralText').innerHTML = 'enable';
+        document.getElementById('astralNotice').style.display = 'none';
     }
 }

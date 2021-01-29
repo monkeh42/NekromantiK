@@ -155,7 +155,6 @@ function updateCorpseDisplay() {
     document.getElementById('pluralCorpse').innerHTML = corpseSingulizer(false);
     document.getElementById('pluralCorpseG').innerHTML = corpseSingulizer(true);
     document.getElementById('corpseGain').innerHTML = ` ${(astralFlag ? formatWhole(0) : formatDefault(getCorpsesPerSecond()))} `;
-    document.getElementById('astralNotice').style.display = 'block';
     document.getElementById('totalMult').innerHTML = `${format(getCorpseMultFromUnits(), 2)}x`;
     document.getElementById('worldsMult').innerHTML = `${format(getWorldsBonus(), 2)}x`;
     document.getElementById('worldsNum').innerHTML = `${formatWhole(player.worlds)}`;
