@@ -1,0 +1,49 @@
+<!doctype html>
+
+<html>
+
+<head>
+    <title>NekromantiK Help</title>
+    <script type="text/javascript" src="technical/break_infinity.js"></script>
+    <script type="text/javascript" src="game.js"></script>
+    <script type="text/javascript" src="units.js"></script>
+    <script type="text/javascript" src="buildings.js"></script>
+    <script type="text/javascript" src="helptexts.js"></script>
+    <script type="text/javascript" src="technical/utils.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+
+<body id="help">
+    <div style="width: 100%; margin-top: 20px; display: block;">
+        <h3>How To Play Nekromantik</h3>
+        <table style="width: auto; margin: 50px auto 0;">
+            <tr>
+                <td>
+                    <button id="unitsHelpBut" class="helpPageBut" onclick="generateHelpForFullPage('unitsHelp', 'unitsHelpBut', 'unitsTab')">Units</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="unitsHelp" class="helpPageDiv" style="display: none;"></div>
+                </td>
+            </tr>
+        </table>
+        <table style="width: auto; margin: 50px auto 0;">
+            <tr>
+                <td>
+                    <button id="buildingsHelpBut" class="helpPageBut" onclick="generateHelpForFullPage('buildingsHelp', 'buildingsHelpBut', 'buildingsTab')">Buildings</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="buildingsHelp" class="helpPageDiv" style="display: none;"></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

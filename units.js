@@ -222,6 +222,7 @@ function canSpacePrestige() {
 
 function spacePrestige() {
     if (canSpacePrestige()) {
+        astralFlag = false;
         clearInterval(mainLoop);
         player.spaceResets = player.spaceResets.plus(1);
         player.worlds = player.worlds.plus(1);
@@ -259,7 +260,7 @@ function buySingleUnit(tier) {
         units[tier].amount = units[tier].amount.plus(1);
         units[tier].bought = units[tier].bought.plus(1);
         units[tier].corpseMult = units[tier].corpseMult.times(units[tier].multPer);
-        if (units[tier].bought.gte(1) && units[tier].corpseMult.eq(0)) { units[tier].corpseMult = new Decimal(1) }
+        if (units[tier].bought.eq(1) && units[tier].corpseMult.eq(0)) { units[tier].corpseMult = new Decimal(1) }
         units[tier].prodMult = units[tier].corpseMult.sqrt();
         units[tier].cost = units[tier].cost.times(units[tier].costMult);
         allDisplay();

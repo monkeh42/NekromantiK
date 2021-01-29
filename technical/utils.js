@@ -26,12 +26,23 @@ function regularFormat(num, precision) {
 	return num.toFixed(precision)
 }
 
-function format(decimal, points=1) {
+function formatDefault(decimal) {
 	decimal = new Decimal(decimal)
-	if (decimal.gte("1e1000")) return exponentialFormat(decimal, 0, false)
-	else if (decimal.gte(1e10)) return exponentialFormat(decimal, 0)
-	else if (decimal.gte(1e4)) return exponentialFormat(decimal, 1)
-	else return commaFormat(decimal, points)
+	if (decimal.gte("1e100000")) return exponentialFormat(decimal, 0, false)
+	else if (decimal.gte("1e1000")) return exponentialFormat(decimal, 0)
+	else if (decimal.gte(1e9)) return exponentialFormat(decimal, 2)
+	else if (decimal.gte(1e3)) return commaFormat(decimal, 0)
+	else if (decimal.gt(0)) return commaFormat(decimal, 1)
+	else return formatWhole(decimal)
+}
+
+function format(decimal, precision=2) {
+	decimal = new Decimal(decimal)
+	if (decimal.gte("1e100000")) return exponentialFormat(decimal, 0, false)
+	else if (decimal.gte("1e1000")) return exponentialFormat(decimal, 0)
+	else if (decimal.gte(1e9)) return exponentialFormat(decimal, precision)
+	else if (decimal.gte(1e3)) return commaFormat(decimal, 0)
+	else return commaFormat(decimal, precision)
 }
 
 function formatWhole(decimal) {
