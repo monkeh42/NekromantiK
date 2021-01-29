@@ -2,7 +2,7 @@ const START_UNITS = {
     1: {
         single: "zombie",
         plural: "zombies",
-        unlocked: false,
+        unlocked: true,
         bought: new Decimal(0),
         amount: new Decimal(0),
         multPer: new Decimal(1.75),
@@ -10,6 +10,15 @@ const START_UNITS = {
         corpseMult: new Decimal(0),
         prodMult: new Decimal(0),
         cost: new Decimal(10),
+        corpseBoost: function() {
+            var cb = new Decimal(1);
+            if (hasUpgrade(1, 11)) { cb = cb.times(getUpgEffect(1, 11)); }
+            return cb;
+        },
+        prodBoost: function() {
+            var pb = new Decimal(1);
+            return pb;
+        },
         tier: 1,
         buttonID: "zombieBut",
         maxID: "zombieMax",
@@ -28,6 +37,14 @@ const START_UNITS = {
         corpseMult: new Decimal(0),
         prodMult: new Decimal(0),
         cost: new Decimal(100),
+        corpseBoost: function() {
+            var cb = new Decimal(1);
+            return cb;
+        },
+        prodBoost: function() {
+            var pb = new Decimal(1);
+            return pb;
+        },
         tier: 2,
         buttonID: "abomBut",
         maxID: "abomMax",
@@ -46,6 +63,14 @@ const START_UNITS = {
         corpseMult: new Decimal(0),
         prodMult: new Decimal(0),
         cost: new Decimal(10000),
+        corpseBoost: function() {
+            var cb = new Decimal(1);
+            return cb;
+        },
+        prodBoost: function() {
+            var pb = new Decimal(1);
+            return pb;
+        },
         tier: 3,
         buttonID: "mageBut",
         maxID: "mageMax",
@@ -64,6 +89,14 @@ const START_UNITS = {
         corpseMult: new Decimal(0),
         prodMult: new Decimal(0),
         cost: new Decimal(1000000),
+        corpseBoost: function() {
+            var cb = new Decimal(1);
+            return cb;
+        },
+        prodBoost: function() {
+            var pb = new Decimal(1);
+            return pb;
+        },
         tier: 4,
         buttonID: "bansheeBut",
         maxID: "bansheeMax",
@@ -82,6 +115,14 @@ const START_UNITS = {
         corpseMult: new Decimal(0),
         prodMult: new Decimal(0),
         cost: new Decimal(1e9),
+        corpseBoost: function() {
+            var cb = new Decimal(1);
+            return cb;
+        },
+        prodBoost: function() {
+            var pb = new Decimal(1);
+            return pb;
+        },
         tier: 5,
         buttonID: "lichBut",
         maxID: "lichMax",
@@ -100,6 +141,14 @@ const START_UNITS = {
         corpseMult: new Decimal(0),
         prodMult: new Decimal(0),
         cost: new Decimal(1e13),
+        corpseBoost: function() {
+            var cb = new Decimal(1);
+            return cb;
+        },
+        prodBoost: function() {
+            var pb = new Decimal(1);
+            return pb;
+        },
         tier: 6,
         buttonID: "beheBut",
         maxID: "beheMax",
@@ -118,6 +167,14 @@ const START_UNITS = {
         corpseMult: new Decimal(0),
         prodMult: new Decimal(0),
         cost: new Decimal(1e19),
+        corpseBoost: function() {
+            var cb = new Decimal(1);
+            return cb;
+        },
+        prodBoost: function() {
+            var pb = new Decimal(1);
+            return pb;
+        },
         tier: 7,
         buttonID: "oneBut",
         maxID: "oneMax",
@@ -136,6 +193,14 @@ const START_UNITS = {
         corpseMult: new Decimal(0),
         prodMult: new Decimal(0),
         cost: new Decimal(1e25),
+        corpseBoost: function() {
+            var cb = new Decimal(1);
+            return cb;
+        },
+        prodBoost: function() {
+            var pb = new Decimal(1);
+            return pb;
+        },
         tier: 8,
         buttonID: "sunBut",
         maxID: "sunMax",
@@ -157,20 +222,23 @@ function canSpacePrestige() {
 
 function spacePrestige() {
     if (canSpacePrestige()) {
-        if (player.totalSpaceResets.eq(0)) { UNLOCKS['buildingsTab']['mainTab'] = true; }
         clearInterval(mainLoop);
         player.spaceResets = player.spaceResets.plus(1);
         player.worlds = player.worlds.plus(1);
         player.totalSpaceResets = player.totalSpaceResets.plus(1);
         player.totalWorlds = player.totalWorlds.plus(1);
         if (player.nextSpaceReset[1] < NUM_UNITS) { player.nextSpaceReset[1] += 1; }
+        else { player.nextSpaceReset[0] += 2; }
         resetUnits();
+        resetBuildingResources();
         //unitSetup(START_PLAYER);
         player.corpses = new Decimal(START_PLAYER.corpses);
         allDisplay();
         for (var z=1; z<=NUM_UNITS; z++) {
-            if (z!=1) { document.getElementById(units[z].rowID).style.display = 'none'; }
-            units[z].unlocked = false;
+            if (z!=1) {
+                document.getElementById(units[z].rowID).style.display = 'none';
+                units[z].unlocked = false;
+            }
         }
         save();
         startInterval();
@@ -187,10 +255,6 @@ function canAfford(tier) {
 
 function buySingleUnit(tier) {
     if (canAfford(tier)) {
-        if (units[tier].bought.eq(0)) { 
-            units[tier].unlocked = true;
-            if (tier == 5) { UNLOCKS['unitsTab']['spacePrestige'] = true; }
-        }
         player.corpses = player.corpses.minus(units[tier].cost);
         units[tier].amount = units[tier].amount.plus(1);
         units[tier].bought = units[tier].bought.plus(1);
@@ -204,10 +268,6 @@ function buySingleUnit(tier) {
 
 function buyMaxUnits(tier) {
     if (canAfford(tier)) {
-        if (units[tier].bought.eq(0)) { 
-            units[tier].unlocked = true;
-            if (tier == 5) { UNLOCKS['unitsTab']['spacePrestige'] = true; }
-        }
         var totalBought = calculateMaxUnits(tier);
         player.corpses = player.corpses.minus(calculateMaxUnitsCost(tier));
         units[tier].cost = units[tier].cost.times(units[tier].costMult.pow(totalBought));
@@ -257,7 +317,7 @@ function getTotalProdMult(tier) {
     mult = new Decimal(1);
     if (tier <= NUM_UNITS) {
         for (var i = tier; i<=NUM_UNITS; i++) {
-            mult = mult.plus(units[i].prodMult);
+            mult = mult.plus(units[i].prodMult.times(units[i].prodBoost()));
         }
     }
     return mult;

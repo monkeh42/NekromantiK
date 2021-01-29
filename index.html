@@ -19,14 +19,14 @@
     <div id="game">
         <div><button id="hardReset" class="tabBut" onclick="hardReset()">HARD RESET</button><button id="manSave" class="tabBut" onclick="save()">MANUAL SAVE</button><button id="manLoad" class="tabBut" onclick="loadGame()">MANUAL LOAD</button><button id="helpBut" class="tabBut" onclick="showHelp()">HELP (this tab)</button></div>
         <div id="helpDiv" style="display: none;">
+            <button id="helpClose" class="helpBut" onclick="closeHelp()">close</button>
             <span id="helpSpan">
             </span>
             <br>
-            <button id="helpClose" class="helpBut" onclick="closeHelp()">close</button>
         </div>
         <div id="resourceDisplay" style="width: auto; margin: 15px auto 25px; display: block; text-align: center;">
             <h2>You have <span id="corpseAmount" style="font-size: 20pt; white-space: pre;"> 10 </span> <span id='pluralCorpse'>corpses</span>.</h2>
-            You are harvesting <span id="corpseGain" style="font-size: 17pt; white-space: pre;"> 0 </span> <span id='pluralCorpseG'>corpses</span>/sec.<br>
+            You are harvesting <span id="corpseGain" style="font-size: 17pt; white-space: pre;"> 0 </span> <span id='pluralCorpseG'>corpses</span>/sec. (@ 3x time speed)<br>
             <span style="font-size: 10pt; white-space: pre;">Total corpse gain multiplier from units (additive):  </span><span id="totalMult" style="font-size: 12pt">0.0x</span>
             <span id="worldsBonusDisplay" style="display: none;"><span style="font-size: 10pt; white-space: pre;">You have conquered <span id="worldsNum" style="font-size: 12pt"> 1 </span> world, giving a <span id="worldsMult" style="font-size: 12pt"> 0.0x </span> bonus to corpse gain.</span></span>
         </div>
@@ -209,7 +209,7 @@
             </div>
         </div>
         <div id="buildingsTab" class="pageTab">
-            <table style="width: auto; margin: auto; text-align: center;">
+            <table style="width: 75%; margin: auto; text-align: center; border-collapse: collapse;">
                 <tr rowspan="3">
                     <td colspan="3">
                         <button id="astralToggle" class="astralBut" style="margin: 15px;" onclick="toggleAstral()"><span id="astralText">enable</span><h2>ASTRAL ENSLAVEMENT</h2></button>
@@ -218,41 +218,60 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td colspan="3">
                         <span style="font-size: 11pt">You can now force the dead you harvest to work for your rapidly growing empire. While Astral Enslavement is active, time goes 10x slower,
-                        and you won't gain any corpses; instead, those tortured, miasmic souls will suffer tirelessly making bricks for your most unholy of foundations.</span>
+                        and you won't gain any corpses; instead, those tortured, miasmic souls will suffer tirelessly making bricks for your most unholy of foundations.<br></span>
+                        <span style="font-size: 12pt">Space Prestige resets your Astral Bricks and building resources, but not built buildings or purchased upgrades.</span>
                     </td>
+                </tr>
+                <tr style="height: 25px;">
+                    <div style="height: 100%;"></div>
                 </tr>
                 <tr id="factoryBuildRow">
                     <td colspan="3">
-                        <button id="factoryBuild" class="buildBut">Build the<h2 style="font-size: 18pt;">Death Factory.</h2>Cost: 1000 astral bricks</button>
+                        <button id="factoryBuild" class="buildBut" onclick="buyBuilding(1)">Build the<h2 style="font-size: 18pt;">Death Factory.</h2>Cost: 1000 astral bricks</button>
+                    </td>
+                </tr>
+                <tr id="factoryHeaderRow" style="display: none;">
+                    <td colspan="3">
+                        <h2 style="font-size: 18pt;">DEATH FACTORY</h2>
+                        you have <span id="factoryAmt" style="font-size: 17pt; white-space: pre;"> 0 </span> armaments.
+                        you are producing <span id="factoryProd" style="font-size: 17pt; white-space: pre;"> 0 </span> armaments/sec, based on your zombies.
                     </td>
                 </tr>
                 <tr id="factoryUpgradesRow" style="display: none;">
                     <td>
-                        <button id="factoryUpg1" class="buildingUpg"><strong>Upgrade 1</strong><br>description of upgrade</button>
+                        <button id="factoryUpg11" class="factoryUpg" onclick="buyBUpg(1, 11)"></button>
                     </td>
                     <td>
-                        <button id="factoryUpg2" class="buildingUpg"><strong>Upgrade 2</strong><br>description of upgrade</button>
+                        <button id="factoryUpg12" class="factoryUpg" onclick="buyBUpg(1, 12)"></button>
                     </td>
                     <td>
-                        <button id="factoryUpg3" class="buildingUpg"><strong>Upgrade 3</strong><br>description of upgrade</button>
+                        <button id="factoryUpg13" class="factoryUpg" onclick="buyBUpg(1, 13)"></button>
                     </td>
+                </tr>
+                <tr style="height: 25px;">
+                    <div style="height: 100%;"></div>
                 </tr>
                 <tr id="necropolisBuildRow">
                     <td colspan="3">
-                        <button id="necropolisBuild" class="buildBut">Build the<h2 style="font-size: 18pt;">Necropolis.</h2>Cost: 10000 astral bricks</button>
+                        <button id="necropolisBuild" class="buildBut">Build the<h2 style="font-size: 18pt;">Necropolis.</h2>perma-locked</button>
+                    </td>
+                </tr>
+                <tr id="necropolisHeaderRow" style="display: none;">
+                    <td colspan="3">
+                        <h2 style="font-size: 18pt;">NECROPOLIS</h2>
                     </td>
                 </tr>
                 <tr id="necropolisUpgradesRow" style="display: none;">
                     <td>
-                        <button id="necropolisUpg1" class="buildingUpg"><strong>Upgrade 1</strong><br>description of upgrade</button>
+                        <button id="necropolisUpg1" class="necropolisUpg"><strong>Upgrade 1</strong><br>description of upgrade</button>
                     </td>
                     <td>
-                        <button id="necropolisUpg2" class="buildingUpg"><strong>Upgrade 2</strong><br>description of upgrade</button>
+                        <button id="necropolisUpg2" class="necropolisUpg"><strong>Upgrade 2</strong><br>description of upgrade</button>
                     </td>
                     <td>
-                        <button id="necropolisUpg3" class="buildingUpg"><strong>Upgrade 3</strong><br>description of upgrade</button>
+                        <button id="necropolisUpg3" class="necropolisUpg"><strong>Upgrade 3</strong><br>description of upgrade</button>
                     </td>
                 </tr>
             </table>

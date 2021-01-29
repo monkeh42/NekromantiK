@@ -19,7 +19,8 @@ const START_PLAYER = {
     worlds: new Decimal(0),
 
     bricks: new Decimal(0),
-    brickGainExp: 0.2,
+    brickGainExp: 0.3,
+
     
     totalCorpses: new Decimal(0),
     totalWorlds: new Decimal(0),
@@ -31,6 +32,8 @@ const START_PLAYER = {
 
 var player = {};
 var units = {};
+var unlocks = {};
+var buildings = {};
 
 function init() {
     loadGame();
@@ -50,43 +53,10 @@ function closeHelp() {
     document.getElementById('helpDiv').style.display = 'none';
 }
 
-/*document.getElementById('factoryBuild').onclick = function () {
-    document.getElementById('factoryBuildRow').style.display = 'none';
-    document.getElementById('factoryUpgradesRow').style.display = 'table-row';
-};
-document.getElementById('necropolisBuild').onclick = function () {
-    document.getElementById('necropolisBuildRow').style.display = 'none';
-    document.getElementById('necropolisUpgradesRow').style.display = 'table-row';
-};*/
-
 function isNumber(str) {
-    //var reg = new RegExp('/^\d+$/');
-    return /^(\d+\.?\d*)e?(\d+\.?\d*)?$/.test(str);
+    //var reg = new RegExp('/^(\d+\.?\d*)e?\\+?(\d+\.?\d*)?$/');
+    return /^(\d+\.?\d*)e?\+?(\d+\.?\d*)?$/.test(str);
 }
-
-/*function load() {
-    //if (tstt === null || typeof tstt === undefined) {
-    player = Object.assign({}, START_PLAYER);
-        for (var q=1; q<=NUM_UNITS; q++) {
-            units[q] = Object.assign({}, START_UNITS[q]);
-        }
-    
-}*/
-
-/*function fixSave() {
-    player.corpses = new Decimal(player.corpses);
-    player.spaceResets = new Decimal(player.spaceResets);
-    player.worlds = new Decimal(player.worlds);
-    for (var j=1; j<=NUM_UNITS; j++) {
-        units[j].bought = new Decimal(units[j].bought);
-        units[j].amount = new Decimal(units[j].amount);
-        units[j].multPer = new Decimal(units[j].multPer);
-        units[j].costMult = new Decimal(units[j].costMult);
-        units[j].corpseMult = new Decimal(units[j].corpseMult);
-        units[j].prodMult = new Decimal(units[j].prodMult);
-        units[j].cost = new Decimal(units[j].cost);
-    }
-}*/
 
 function showTab(tabName) {
     var allTabs = document.getElementsByClassName('pageTab');
@@ -113,53 +83,15 @@ function getActiveTab() {
     return null;
 }
 
-/*function customStringify() {
-    localStorage.setItem("nekplay", player);
-    for (var v=1; v<=NUM_UNITS; v++) {
-        localStorage.setItem(units[v].single, units[v]);
-    }
-}
-
-function customParse(NAME) {
-    var tmpPlayer = localStorage.getItem(NAME);
-    for (var nm in tmpPlayer) {
-        if (isNumber(tmpPlayer[nm])) { tmpPlayer[nm] = new Decimal(tmpPlayer[nm]) }
-    }
-    player = Object.assign({}, tmpPlayer);
-
-    var tmpUnits = {};
-    for (var u=1; u<=NUM_UNITS; u++) {
-        tmpUnits[u] = localStorage.getItem("nekro_unitu");
-        for (var mn in tmpUnits[u]) {
-            if (isNumber(tmpUnits[u][mn])) { tmpUnits[u][mn] = new Decimal(tmpUnits[u][mn]) }
-        }
-        units[u] = Object.assign({}, tmpUnits[u]);
-    }
-}*/
-
 function hardReset() {
+    if (!confirm("Are you sure? This will reset ALL of your progress.")) return
     player = null;
-    for (var i=1; i<=NUM_UNITS; i++) {
-        units[i] = null;
-    }
+    units = null;
+    unlocks = null;
+    buildings = null;
     save();
     window.location.reload(true);
 }
-
-/*function playerSetup(start) {
-    player = Object.assign({}, START_PLAYER);
-    player.spaceResets = new Decimal(start.spaceResets);
-    player.corpses = new Decimal(start.corpses);
-    unitSetup(start);
-
-    return player;
-}*/
-
-/*function unitSetup(start) {
-    for (var i=0; i<NUM_UNITS; i++) {
-        units[i] = Object.assign({}, start.units[i]);
-    }
-}*/
 
 function getCorpsesPerSecond() {
     return units[1].amount.gt(0) ? units[1].amount.times(getTotalCorpseMult()) : new Decimal(0);
@@ -172,7 +104,7 @@ function getBricksPerSecond() {
 function getCorpseMultFromUnits() {
     var mult = new Decimal(0);
     for (var i=1; i<=NUM_UNITS; i++) {
-        mult = mult.plus(units[i].corpseMult);
+        mult = mult.plus(units[i].corpseMult.times(units[i].corpseBoost()));
     }
     return Decimal.max(mult, 1);
 }
@@ -206,28 +138,63 @@ function updateCorpseDisplay() {
 }
 
 function updateUnitDisplay(tier) {
-    document.getElementById(units[tier].amountID).innerHTML = "<div style=\"min-width: 30%; float: left;\">" + format(units[tier].amount) + "</div><div style=\"min-width: 30%; float: left;\">(" + formatWhole(units[tier].bought) + ")</div><div style=\"min-width: 35%; float: right;\">" + (getUnitProdPerSecond(tier).gt(0) ? "(+" + formatWhole(new Decimal(getUnitProdPerSecond(tier).div(units[tier].amount.max(1))).m, 2) + "%/s)</div>" : "");
-    document.getElementById(units[tier].multID).innerHTML = "<div style=\"min-width: 45%; float: left;\">" + format(units[tier].corpseMult, 2) + "x</div><div style=\"min-width: 45%; float: left;\">(" + ((tier > 1) ? format(units[tier].prodMult, 2) : "~") + "x)</div>";
+    document.getElementById(units[tier].amountID).innerHTML = "<div style=\"min-width: 30%; float: left;\">" + format(units[tier].amount) + "</div><div style=\"min-width: 30%; float: left;\">(" + formatWhole(units[tier].bought) + ")</div><div style=\"min-width: 35%; float: right;\">" + ((getUnitProdPerSecond(tier).gt(0) && !astralFlag) ? "(+" + formatWhole(new Decimal(getUnitProdPerSecond(tier).div(units[tier].amount.max(1))).m, 2) + "%/s)</div>" : "");
+    document.getElementById(units[tier].multID).innerHTML = "<div style=\"min-width: 45%; float: left;\">" + format(units[tier].corpseMult.times(units[tier].corpseBoost()), 2) + "x</div><div style=\"min-width: 45%; float: left;\">(" + ((tier > 1) ? format(units[tier].prodMult.times(units[tier].prodBoost()), 2) : "~") + "x)</div>";
     document.getElementById(units[tier].buttonID).innerHTML = "Cost: " + formatWhole(units[tier].cost) + " corpses";
     document.getElementById(units[tier].maxID).innerHTML = canAfford(tier) ? `Max: ${calculateMaxUnits(tier)} for &#162;${formatWhole(calculateMaxUnitsCost(tier))}` : "Max: 0";
-    if (document.getElementById(units[tier].rowID).style.display !== 'none') {
-        document.getElementById(units[tier].buttonID).className = canAfford(tier) ? "unitBut" : "unclickableUnit";
-        document.getElementById(units[tier].maxID).className = canAfford(tier) ? "unitMax" : "unclickableMax";
+}
+
+function updateUnlocks() {
+    for (var tab in unlocks) {
+        for (var key in unlocks[tab]) {
+            if (!unlocks[tab][key].unlocked && unlocks[tab][key].condition()) { unlocks[tab][key].unlocked = true; }
+            else if (!unlocks[tab][key].unlocked && key == 'mainTab') { break; }
+        }
     }
-    if (tier<NUM_UNITS && units[tier].bought.gt(0) && canUnlock(tier+1)) {
-        document.getElementById(units[tier+1].rowID).style.display = 'table-row';
+    for (var i=1; i<NUM_UNITS; i++) {
+        if (units[i].bought.gte(1) && canUnlock(i+1)) {
+            units[i+1].unlocked = true;
+        } 
     }
 }
 
 function updateHTML() {
-    if (player.totalWorlds.gt(0)) { 
-        document.getElementById('worldsBonusDisplay').style.display = 'block';
-        document.getElementById('buildingsTabBut').style.display = 'block';
+    var element;
+    var bUpgs;
+    for (var tab in unlocks) {
+        for (var key in unlocks[tab]) {
+            if (unlocks[tab][key].unlocked) {
+                for (var id in unlocks[tab][key].idsToShow) {
+                    element = document.getElementById(unlocks[tab][key].idsToShow[id]);
+                    if (element.tagName == 'TR') { element.style.display = 'table-row'; } 
+                    else { element.style.display = 'block'; }
+                }
+                for (var j=0; j<unlocks[tab][key].idsToHide.length; j++) {
+                    document.getElementById(unlocks[tab][key].idsToHide[j]).style.display = 'none';
+                }
+            }
+        }
+    }
+    for (var i=1; i<=NUM_UNITS; i++) {
+        if (units[i].unlocked) {
+            document.getElementById(units[i].rowID).style.display = 'table-row';
+            document.getElementById(units[i].buttonID).className = canAfford(i) ? 'unitBut' : 'unclickableUnit';
+            document.getElementById(units[i].maxID).className = canAfford(i) ? "unitMax" : 'unclickableMax';
+        }
+    }
+    for (var b in buildings) {
+        if (isBuilt(b)) {
+            for (var u in buildings[b].upgrades) {
+                if (hasUpgrade(b, u)) { document.getElementById(buildings[b].upgrades[u].buttonID).className = buildings[b].upgradeBtnBought }
+                else if (canAffordBUpg(b, u)) { document.getElementById(buildings[b].upgrades[u].buttonID).className = buildings[b].upgradeBtnClass }
+                else { document.getElementById(buildings[b].upgrades[u].buttonID).className = buildings[b].upgradeBtnUnclick }
+                document.getElementById(buildings[b].upgrades[u].buttonID).innerHTML = "<strong>" + getUpgName(b, u) + "</strong><br>" + getUpgDesc(b, u) + "<br>Cost: " + getUpgCost(b, u) + " armaments";
+            }
+        }
     }
 }
 
 function updatePrestige() {
-    document.getElementById('spacePresContainer').style.display = (units[player.nextSpaceReset[1]-1].bought.gt(0) ? 'block' : 'none');
     document.getElementById('spacePrestige').className =  (units[player.nextSpaceReset[1]].bought.gte(player.nextSpaceReset[0]) ? 'prestigeBut' : 'unclickablePrestige');
     document.getElementById('prestigeReq').innerHTML = "Requires <span style=\"font-size: 17pt; white-space: pre;\"> " + player.nextSpaceReset[0] + " </span> " + singulizer(player.nextSpaceReset[1], player.nextSpaceReset[0]);
 }
@@ -235,9 +202,12 @@ function updatePrestige() {
 function updateBuildings() {
     document.getElementById('brickDisplay').innerHTML = formatWhole(player.bricks);
     document.getElementById('brickGainDisplay').innerHTML = ` ${(astralFlag ? format(getBricksPerSecond()) : format(0))} `;
+    document.getElementById('factoryProd').innerHTML = format(getBuilingProdPerSec(1));
+    document.getElementById('factoryAmt').innerHTML = format(buildings[1].amount);
 }
 
 function allDisplay() {
+    updateUnlocks();
     for (var i=1; i<=(NUM_UNITS); i++) {
         updateUnitDisplay(i);
     }
@@ -245,12 +215,6 @@ function allDisplay() {
     updatePrestige();
     updateBuildings();
     updateHTML()
-
-    //if ((new Date().getTime()-player.lastAutoSave)>15000) {
-    //    save();
-    //    player.lastAutoSave = new Date().getTime();
-    //}
-    
 }
 
 function getWorldsBonus() {
@@ -259,49 +223,75 @@ function getWorldsBonus() {
 
 function save() {
     localStorage.setItem('nekrosave', JSON.stringify(player));
-    for (var v=1; v<=NUM_UNITS; v++) {
-        localStorage.setItem(TIERS[v], JSON.stringify(units[v]));
-    }
+    localStorage.setItem('unlocks', JSON.stringify(unlocks));
+    localStorage.setItem('units', JSON.stringify(units));
+    localStorage.setItem('buildings', JSON.stringify(buildings));
 }
 
 function loadGame() {
     player = {};
     units = {};
     var savePlayer = JSON.parse(localStorage.getItem('nekrosave'));
-    var saveUnits = {};
-    for (var v=1; v<=NUM_UNITS; v++) {
-        saveUnits[v] = JSON.parse(localStorage.getItem(TIERS[v]));
-    }
+    var saveUnlocks = JSON.parse(localStorage.getItem('unlocks'));
+    var saveUnits = JSON.parse(localStorage.getItem('units'));
+    var saveBuildings = JSON.parse(localStorage.getItem('buildings'));
     if (savePlayer === null || savePlayer === undefined) {
         player = Object.assign({}, START_PLAYER);
     } else {
         player = Object.assign({}, savePlayer);
-        for (var key in player) {
-            if (isNumber(player[key]) && key != 'lastAutoSave' && key != 'lastUpdate') player[key] = new Decimal(player[key]);
-        }
-        //player = Object.assign({}, savePlayer);
+        fixData(player, START_PLAYER);
     }
-    for (var v=1; v<=NUM_UNITS; v++) {
-        if (saveUnits[v] === null || saveUnits[v] === undefined) {
-            units[v] = Object.assign({}, START_UNITS[v]);
-        } else {
-            units[v] = Object.assign({}, saveUnits[v]);
-            for (var key in units[v]) {
-                if (isNumber(units[v][key]) && key != 'tier') units[v][key] = new Decimal(units[v][key]);
-            }
-            //units[v] = Object.assign({}, saveUnits[v]);
-        }
+    if (saveUnlocks === null || saveUnlocks === undefined) {
+        unlocks = Object.assign({}, START_UNLOCKS);
+    } else {
+        unlocks = Object.assign({}, saveUnlocks);
+        fixData(unlocks, START_UNLOCKS);
+    }
+    if (saveUnits === null || saveUnits === undefined) {
+        units = Object.assign({}, START_UNITS);
+    } else {
+        units = Object.assign({}, saveUnits);
+        fixData(units, START_UNITS);
+    }
+    if (saveBuildings === null || saveBuildings === undefined) {
+        buildings = Object.assign({}, START_BUILDS);
+    } else {
+        buildings = Object.assign({}, saveBuildings);
+        fixData(buildings, START_BUILDS);
     }
     player.lastUpdate = new Date().getTime();
     player.lastAutoSave = new Date().getTime();
-    checkForMissing();
     allDisplay();
 }
 
-function checkForMissing() {
-    for (var k in START_PLAYER) {
-        if (player[k] === undefined) {
-            player[k] = START_PLAYER[k];
+function fixData(data, start) {
+    for (item in start) {
+        if (start[item] == null) {
+            if (data[item] === undefined) {
+                data[item] = null;
+            }
+        } else if (Array.isArray(start[item])) {
+            if (data[item] === undefined) {
+                data[item] = start[item];
+            } else {
+                fixData(data[item], start[item]);
+            }
+        } else if (start[item] instanceof Decimal) {
+            if (data[item] === undefined) {
+                data[item] = start[item];
+            } else {
+                data[item] = new Decimal(data[item]);
+            }
+        } else if ((!!start[item]) && (typeof start[item] === "object")) {
+            if (data[item] === undefined) {
+                data[item] = start[item];
+            } else {
+                fixData(data[item], start[item]);
+            }
+        } else {
+            if (data[item] === undefined) {
+                data[item] = start[item];
+            }
         }
     }
 }
@@ -311,15 +301,22 @@ function startInterval() {
         var currentUpdate = new Date().getTime();
         var diff = currentUpdate - player.lastUpdate;
         if (astralFlag) { diff = diff/10; }
-        diff = diff*10;
+        diff = diff*3;
         if (astralFlag) {
             player.bricks = player.bricks.plus(getBricksPerSecond().times(diff/1000));
         } else {
             player.corpses = player.corpses.plus(getCorpsesPerSecond().times(diff/1000));
         }
         player.totalCorpses = player.totalCorpses.plus(getCorpsesPerSecond().times(diff/1000));
-        for (var i=1; i<NUM_UNITS; i++) {
-            units[i].amount = units[i].amount.plus(getUnitProdPerSecond(i).times(diff/1000));
+        if (!astralFlag) {
+            for (var i=1; i<NUM_UNITS; i++) {
+                units[i].amount = units[i].amount.plus(getUnitProdPerSecond(i).times(diff/1000));
+            }
+        }
+        for (var b in buildings) {
+            if (isBuilt(b)) {
+                buildings[b].amount = buildings[b].amount.plus(getBuilingProdPerSec(b).times(diff/1000));
+            }
         }
         allDisplay();
         if ((currentUpdate-player.lastAutoSave)>15000) { 

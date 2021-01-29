@@ -17,6 +17,8 @@ body {
 #helpDiv {
     text-align: center;
     border: 1px solid white;
+    max-height: 400px;;
+    overflow-y: auto;
     padding: 10px;
 }
 
@@ -151,17 +153,38 @@ button:focus {
     border-color: black;
 }
 
-.buildingUpg {
+.buildingUpg, .factoryUpg, .necropolisUpg {
     color: white;
     background-color: #042e0b;
-    width: 150px;
-    height: 50px;
+    width: 200px;
+    height: 100px;
     border: 1px solid #085e16;
     cursor: pointer;
     border-radius: 4px;
+    margin: 10px;
 }
 
-.buildingUpg:hover {
+.unclickableBuildingUpg, .unclickFactoryUpg, .unclickNecropolisUpg {
+    color: white;
+    background-color: #4b4b4b;
+    width: 200px;
+    height: 100px;
+    border: 1px solid #4b4b4b;
+    border-radius: 4px;
+    margin: 10px;
+}
+
+.boughtBuildingUpg, .boughtFactoryUpg, .boughtNecropolisUpg {
+    color: white;
+    background-color:black;
+    width: 200px;
+    height: 100px;
+    border: 1px solid #042e0b;
+    border-radius: 4px;
+    margin: 10px;
+}
+
+.buildingUpg:hover, .factoryUpg:hover, .necropolisUpg:hover {
     background-color: #085e16;
 } 
 
@@ -217,3 +240,14 @@ button:focus {
     font-weight: 500;
 }
 
+#factoryHeaderRow {
+    border-left: 1px solid #085e16;
+    border-top: 1px solid #085e16;
+    border-right: 1px solid #085e16;
+}
+
+#factoryUpgradesRow {
+    border-left: 1px solid #085e16;
+    border-bottom: 1px solid #085e16;
+    border-right: 1px solid #085e16;
+}
