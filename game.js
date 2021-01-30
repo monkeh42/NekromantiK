@@ -1,5 +1,5 @@
 const GAME_DATA = {
-    version: 'v0.1.0',
+    version: 'v0.1.1',
 }
 
 const NUM_UNITS = 8;
@@ -13,6 +13,8 @@ const TIERS = {
     7: 'ancient one',
     8: 'sun eater',
 }
+
+const DEV_SPEED = 10;
 
 const START_PLAYER = {
     corpses: new Decimal(10),
@@ -76,6 +78,7 @@ const START_PLAYER = {
         },
         2: {
             built: false,
+            amount: new Decimal(0),
             upgrades: {
                 1: false,
                 2: false,
@@ -84,6 +87,7 @@ const START_PLAYER = {
         },
         3: {
             built: false,
+            amount: new Decimal(0),
             upgrades: {
                 1: false,
                 2: false,
@@ -139,6 +143,8 @@ function showHelp() {
     if (document.getElementById('helpDiv').style.display == 'block') { document.getElementById('helpDiv').style.display = 'none'; }
     else {
         var active = getActiveTab();
+        
+    if (HELP_TEXTS[active] === undefined) {return;}
         document.getElementById('helpText').innerHTML = generateHelpText(active);
         document.getElementById('helpDiv').style.display = 'block';
     }
@@ -203,7 +209,9 @@ function getCorpsesPerSecond() {
 }
 
 function getBricksPerSecond() {
-    return getCorpsesPerSecond().pow(player.brickGainExp);
+    var b = getCorpsesPerSecond().pow(player.brickGainExp);
+    if (isBuilt(2)) { b = b.times(getResourceEff(2)) }
+    return b;
 }
 
 function getCorpseMultFromUnits() {
@@ -246,6 +254,9 @@ function updateCorpseDisplay() {
     document.getElementById('worldsMult').innerHTML = `${formatDefault2(getWorldsBonus())}x`;
     document.getElementById('worldsNum').innerHTML = `${formatWhole(player.worlds)}`;
     document.getElementById('pluralWorld').innerHTML = worldSingulizer();
+    document.getElementById('devSpeedDisplay').innerHTML = formatWhole(DEV_SPEED);
+    if (DEV_SPEED!=1) { document.getElementById('devSpeedContainer').style.display = 'block'}
+    else { document.getElementById('devSpeedContainer').style.display = 'none'}
 }
 
 function updateUnitDisplay(tier) {
@@ -295,12 +306,14 @@ function updateHTML() {
         }
     }
     for (var b in BUILDS_DATA) {
+        if (canAffordBuilding(b)) { document.getElementById(BUILDS_DATA[b].buildingButtonID).className = BUILDS_DATA[b].buildingButtonClass; }
+        else { document.getElementById(BUILDS_DATA[b].buildingButtonID).className = BUILDS_DATA[b].buildingButtonUnclick; }
         if (isBuilt(b)) {
             for (var u in BUILDS_DATA[b].upgrades) {
                 if (hasUpgrade(b, u)) { document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).className = BUILDS_DATA[b].upgradeBtnBought }
                 else if (canAffordBUpg(b, u)) { document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).className = BUILDS_DATA[b].upgradeBtnClass }
                 else { document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).className = BUILDS_DATA[b].upgradeBtnUnclick }
-                document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).innerHTML = "<span style=\"font-weight: 900;\">" + getUpgName(b, u) + "</span><br>" + getUpgDesc(b, u) + "<br>Cost: " + getUpgCost(b, u) + " " + BUILDS_DATA[b].resource + (isDisplayEffect(b, u) ? ("<br>Currently: " + formatDefault2(getUpgEffect(b, u)) + "x") : "");
+                document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).innerHTML = "<span style=\"font-weight: 900;\">" + getUpgName(b, u) + "</span><br>" + getUpgDesc(b, u) + "<br>Cost: " + formatDefault(getUpgCost(b, u)) + " " + BUILDS_DATA[b].resource + (isDisplayEffect(b, u) ? ("<br>Currently: " + formatDefault2(getUpgEffect(b, u)) + "x") : "");
             }
         }
     }
@@ -330,6 +343,9 @@ function updateBuildings() {
     document.getElementById('brickGainDisplay').innerHTML = ` ${(astralFlag ? formatDefault(getBricksPerSecond()) : formatWhole(0))} `;
     document.getElementById('factoryProd').innerHTML = formatDefault(getBuildingProdPerSec(1));
     document.getElementById('factoryAmt').innerHTML = formatDefault(player.buildings[1].amount);
+    document.getElementById('necropolisProd').innerHTML = formatDefault(getBuildingProdPerSec(2));
+    document.getElementById('necropolisAmt').innerHTML = formatDefault(player.buildings[2].amount);
+    document.getElementById('acolyteEff').innerHTML = formatDefault2(BUILDS_DATA[2].resourceEff());
 }
 
 function allDisplay() {
@@ -438,7 +454,7 @@ function startInterval() {
         var currentUpdate = new Date().getTime();
         var diff = currentUpdate - player.lastUpdate;
         if (astralFlag) { diff = diff/10; }
-        diff = diff*3;
+        if (DEV_SPEED>0) { diff = diff*DEV_SPEED; }
         if (astralFlag) {
             player.bricks = player.bricks.plus(getBricksPerSecond().times(diff/1000));
         } else {

@@ -67,7 +67,7 @@ const UNLOCKS_DATA = {
         },
         'necropolis': {
             unlocked: false,
-            idsToShow: ['necropolisUpgradesRow'],
+            idsToShow: ['necropolisUpgradesRow', 'necropolisHeaderRow'],
             idsToHide: ['necropolisBuildRow'],
             condition: function() {
                 return isBuilt(2);

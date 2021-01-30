@@ -16,6 +16,13 @@ const BUILDS_DATA = {
             var p = Decimal.pow(this.pBase(), this.pExp());
             return p;
         },
+        resourceEff: function() {
+            var r = new Decimal(1);
+            return r;
+        },
+        buildingButtonID: 'factoryBuild',
+        buildingButtonClass: 'buildBut',
+        buildingButtonUnclick: 'unclickableBuildBut',
         buildingRowID: 'factoryBuildRow',
         upgradesRowID: 'factoryUpgradesRow',
         upgradeBtnClass: 'factoryUpg',
@@ -35,19 +42,20 @@ const BUILDS_DATA = {
                 }
             },
             12: {
-                title: 'TBD',
-                desc: 'perma-locked',
-                cost: new Decimal(1e1000),
+                title: 'Militarize',
+                desc: 'The square root of Industrialize\'s boost applies to the unit multiplier of unit tiers 2 through 7.',
+                cost: new Decimal(10000),
                 buttonID: 'factoryUpg12',
-                displayEffect: false,
+                displayEffect: true,
                 effect: function() {
-                    return new Decimal(1);
+                    var e = getUpgEffect(1, 11).sqrt();
+                    return Decimal.max(e, 1);
                 }
             },
             13: {
-                title: 'TBD',
-                desc: 'perma-locked',
-                cost: new Decimal(1e1000),
+                title: 'Digitize',
+                desc: 'Increase the base corpse multiplier of unit tiers 2 through 7 by 25%.',
+                cost: new Decimal(1e6),
                 buttonID: 'factoryUpg13',
                 displayEffect: false,
                 effect: function() {
@@ -60,19 +68,27 @@ const BUILDS_DATA = {
         id: 'necropolis',
         tier: 2,
         resource: 'acolytes',
-        cost: new Decimal(1e1000),
+        cost: new Decimal(1e6),
         pBase: function()  {
-            var b = player.units[1].amount.plus(1).log10();
+            var b = player.units[8].amount;
             return b;
         },
         pExp: function() {
-            var e = 0.5;
+            var e = 0.2;
             return e;
         },
         prod: function() {
             var p = Decimal.pow(this.pBase(), this.pExp());
             return p;
         },
+        resourceEff: function() {
+            var r = new Decimal(1);
+            if (player.buildings[2].amount.gt(0)) { r = r.plus(player.buildings[2].amount.log10()); }
+            return r;
+        },
+        buildingButtonID: 'necropolisBuild',
+        buildingButtonClass: 'buildBut',
+        buildingButtonUnclick: 'unclickableBuildBut',
         buildingRowID: 'necropolisBuildRow',
         upgradesRowID: 'necropolisUpgradesRow',
         upgradeBtnClass: 'necropolisUpg',
@@ -128,6 +144,13 @@ const BUILDS_DATA = {
             var p = Decimal.pow(this.pBase(), this.pExp());
             return p;
         },
+        resourceEff: function() {
+            var r = new Decimal(1);
+            return r;
+        },
+        buildingButtonID: 'sunBuild',
+        buildingButtonClass: 'buildBut',
+        buildingButtonUnclick: 'unclickableBuildBut',
         buildingRowID: 'sunBuildRow',
         upgradesRowID: 'sunUpgradesRow',
         upgradeBtnClass: 'sunUpg',
@@ -171,7 +194,7 @@ const BUILDS_DATA = {
 const CONSTR_DATA = {
     1: {
         title: 'Stronger Forges',
-        desc: 'Increases per-zombie multiplier multiplier by 5% per level.',
+        desc: 'Increases the base corpse multiplier of zombies by 5% per level.',
         tier: 1,
         baseCost: new Decimal(100),
         cost: function() {
@@ -233,6 +256,10 @@ const CONSTR_DATA = {
             return new Decimal(1);
         }
     },
+}
+
+function getResourceEff(b) {
+    return BUILDS_DATA[b].resourceEff();
 }
 
 function isDisplayEffect(b, u) {

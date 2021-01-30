@@ -45,11 +45,13 @@ const UNITS_DATA = {
         corpseMult: function() {
             var m = this.baseMultPer;
             if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
+            if (hasUpgrade(1, 13)) { m = m.times(1.25); }
             m = m.pow(player.units[this.tier].bought-1);
             return m;
         },
         prodMult: function() {
             var m = this.corpseMult().sqrt();
+            if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
             return m;
         },
         tier: 2,
@@ -108,6 +110,7 @@ const UNITS_DATA = {
         },
         prodMult: function() {
             var m = this.corpseMult().sqrt();
+            if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
             return m;
         },
         tier: 4,
@@ -137,6 +140,7 @@ const UNITS_DATA = {
         },
         prodMult: function() {
             var m = this.corpseMult().sqrt();
+            if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
             return m;
         },
         tier: 5,
@@ -166,6 +170,7 @@ const UNITS_DATA = {
         },
         prodMult: function() {
             var m = this.corpseMult().sqrt();
+            if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
             return m;
         },
         tier: 6,
@@ -195,6 +200,7 @@ const UNITS_DATA = {
         },
         prodMult: function() {
             var m = this.corpseMult().sqrt();
+            if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
             return m;
         },
         tier: 7,
@@ -224,6 +230,7 @@ const UNITS_DATA = {
         },
         prodMult: function() {
             var m = this.corpseMult().sqrt();
+            if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
             return m;
         },
         tier: 8,
@@ -250,7 +257,7 @@ function canSpacePrestige() {
 
 function spacePrestige() {
     if (canSpacePrestige()) {
-        astralFlag = false;
+        if (astralFlag) { toggleAstral(); }
         clearInterval(mainLoop);
         player.spaceResets = player.spaceResets.plus(1);
         player.worlds = player.worlds.plus(1);
@@ -321,6 +328,12 @@ function calculateMaxUnitsCost(tier) {
         }
     }
     return total;
+}
+
+function buyMaxAll() {
+    for (var i=NUM_UNITS; i>0; i--) {
+        buyMaxUnits(i);
+    }
 }
 
 function getUnitProdPerSecond(tier) {

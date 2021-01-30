@@ -86,7 +86,7 @@ button:focus {
     color: white;
     background-color: #170424;
     font-style: bold;
-    width: 130px;
+    width: 140px;
     height: 35px;
     border: 1px solid #460573;
     cursor: pointer;
@@ -219,6 +219,20 @@ button:focus {
     background-color: #085e16;
 } 
 
+.unclickableBuildBut {
+    color: white;
+    background-color: #4b4b4b;
+    font-style: bold;
+    width: 350px;
+    height: 100px;
+    border: 1px solid #4b4b4b;
+    margin: 10px;
+    font-family: 'Cinzel', serif;
+    font-weight: 500;
+    font-size: 13pt;
+    border-radius: 4px;
+}
+
 .astralBut {
     color: white;
     background-color: #0b4014;
@@ -301,7 +315,7 @@ button:focus {
     color: white;
     background-color: #4b4b4b;
     font-style: bold;
-    width: 130px;
+    width: 140px;
     height: 35px;
     border: 1px solid #4b4b4b;
     border-radius: 4px;
@@ -360,13 +374,13 @@ button:focus {
     background-color: #db9448;
 } 
 
-#factoryHeaderRow {
+#factoryHeaderRow, #necropolisHeaderRow, #sunHeaderRow {
     border-left: 1px solid #085e16;
     border-top: 1px solid #085e16;
     border-right: 1px solid #085e16;
 }
 
-#factoryUpgradesRow {
+#factoryUpgradesRow, #necropolisUpgradesRow, #sunUpgradesRow {
     border-left: 1px solid #085e16;
     border-bottom: 1px solid #085e16;
     border-right: 1px solid #085e16;
