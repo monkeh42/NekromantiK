@@ -9,7 +9,8 @@ const BUILDS_DATA = {
             return b;
         },
         pExp: function() {
-            var e = 0.5;
+            var e = new Decimal(0.5);
+            e = e.plus(getCUpgEffect(2));
             return e;
         },
         prod: function() {
@@ -43,23 +44,24 @@ const BUILDS_DATA = {
             },
             12: {
                 title: 'Militarize',
-                desc: 'The square root of Industrialize\'s boost applies to the unit multiplier of unit tiers 2 through 7.',
+                desc: 'Increase the base corpse multiplier of unit tiers 2 through 8 by 25%.',
                 cost: new Decimal(5000),
                 buttonID: 'factoryUpg12',
-                displayEffect: true,
+                displayEffect: false,
                 effect: function() {
-                    var e = getUpgEffect(1, 11).sqrt();
-                    return Decimal.max(e, 1);
+                    var e = new Decimal(1.25);
+                    return e;
                 }
             },
             13: {
                 title: 'Digitize',
-                desc: 'Increase the base corpse multiplier of unit tiers 2 through 7 by 25%.',
+                desc: 'Raise the Sun Eater corpse multiplier to the 1.5 power.',
                 cost: new Decimal(1e6),
                 buttonID: 'factoryUpg13',
                 displayEffect: false,
                 effect: function() {
-                    return new Decimal(1);
+                    var e = new Decimal(1.5);
+                    return e;
                 }
             }
         }
@@ -68,7 +70,7 @@ const BUILDS_DATA = {
         id: 'necropolis',
         tier: 2,
         resource: 'acolytes',
-        cost: new Decimal(1e6),
+        cost: new Decimal(1e5),
         pBase: function()  {
             var b = player.units[8].amount;
             return b;
@@ -209,10 +211,10 @@ const CONSTR_DATA = {
         }
     },
     2: {
-        title: 'TBD',
-        desc: 'perma-locked',
+        title: 'Factory Expansion',
+        desc: 'Add .02 to the armament gain exponent per level.',
         tier: 2,
-        baseCost: new Decimal(1e1000),
+        baseCost: new Decimal(500),
         cost: function() {
             var c = this.baseCost;
             return c.times(Decimal.pow(this.costMult, player.construction[this.tier]));
@@ -221,7 +223,7 @@ const CONSTR_DATA = {
         buttonID: 'constrUpg2',
         displayEffect: true,
         effect: function() {
-            return new Decimal(1);
+            return .02*player.construction[this.tier];
         }
     },
     3: {
@@ -260,6 +262,10 @@ const CONSTR_DATA = {
 
 function getResourceEff(b) {
     return BUILDS_DATA[b].resourceEff();
+}
+
+function getDisplaySymbol(b, u) {
+    return BUILDS_DATA[b].upgrades[u].displayEffect[1];
 }
 
 function isDisplayEffect(b, u) {

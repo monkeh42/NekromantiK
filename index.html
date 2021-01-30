@@ -41,7 +41,7 @@
                         <button id="buildingsTabBut" class="tabBut" onclick="showTab('buildingsTab')">BUILDINGS</button>
                     </td>
                     <td id="timeTabCell" style="display: none;">
-                        <button id="timeTabBut" class="tabBut" onclick="showTab('timeTab')">TIME WARP<br>(COMING SOON)</button>
+                        <button id="timeTabBut" class="tabBut" onclick="showTab('timeTab')">TIME WARP</button>
                     </td>
                 <!--<td id="fourthTabCell" style="display: none;">
                         <button id="fourthTabBut" class="tabBut" onclick="showTab('fourthTab')">FOURTH LAYER?</button>
@@ -58,14 +58,17 @@
         <div id="unitsTab" class="pageTab">
             <table style="width: 100%; margin: auto;">
                 <tr>
-                    <td width="20%">
+                    <td width="5%">
+                        <h1>Tier</h1>
+                    </td>
+                    <td width="15%">
                         <h1>Unit type</h1>
                     </td>
                     <td width="20%">
                         <div style="min-width: 45%; float: left;"><h1>Corpse<br>mult</h1></div><div style="min-width: 45%; float: left;"><h1>(Unit<br>mult)</h1></div>
                     </td>
                     <td width="30%">
-                        <div style="min-width: 35%; float: left;"><h1>Owned</h1></div><div style="width: 35%; float: left;"><h1>(Bought)</h1></div><div style="min-width: 30%; float: left;"><h1>Gain</h1></div>
+                        <div style="min-width: 33%; float: left;"><h1>Owned</h1></div><div style="width: 27%; float: left;"><h1>(Bought)</h1></div><div style="min-width: 35%; float: right; text-align: center;"><h1>Gain</h1></div>
                     </td>
                     <td colspan="2" width="30%">
                         <div style="width: 100%; text-align: center;">
@@ -75,6 +78,9 @@
                 </tr>
                 <tr height="10px"></tr>
                 <tr id="zombieRow" style="display: table-row;">
+                    <td>
+                        1
+                    </td>
                     <td>
                         Zombies
                     </td>
@@ -93,6 +99,9 @@
                 </tr>
                 <tr id="abomRow" style="display: none;">
                     <td>
+                        2
+                    </td>
+                    <td>
                         Abominations
                     </td>
                     <td>
@@ -109,6 +118,9 @@
                     </td>
                 </tr>
                 <tr id="mageRow" style="display: none;">
+                    <td>
+                        3
+                    </td>
                     <td>
                         Skeleton Mages
                     </td>
@@ -127,6 +139,9 @@
                 </tr>
                 <tr id="bansheeRow" style="display: none;">
                     <td>
+                        4
+                    </td>
+                    <td>
                         Banshees
                     </td>
                     <td>
@@ -143,6 +158,9 @@
                     </td>
                 </tr>
                 <tr id="lichRow" style="display: none;">
+                    <td>
+                        5
+                    </td>
                     <td>
                         Liches
                     </td>
@@ -161,6 +179,9 @@
                 </tr>
                 <tr id="beheRow" style="display: none;">
                     <td>
+                        6
+                    </td>
+                    <td>
                         Behemoths
                     </td>
                     <td>
@@ -178,6 +199,9 @@
                 </tr>
                 <tr id="oneRow" style="display: none;">
                     <td>
+                        7
+                    </td>
+                    <td>
                         Ancient Ones
                     </td>
                     <td>
@@ -194,6 +218,9 @@
                     </td>
                 </tr>
                 <tr id="sunRow" style="display: none;">
+                    <td>
+                        8
+                    </td>
                     <td>
                         Sun Eaters
                     </td>
@@ -221,7 +248,7 @@
             </div>
         </div>
         <div id="buildingsTab" class="pageTab">
-            <table style="width: 80%; margin: auto; text-align: center;">
+            <table style="width: 75%; margin: auto; text-align: center;">
                 <tr rowspan="3">
                     <td colspan="3">
                         <button id="astralToggle" class="astralBut" style="margin: 15px;" onclick="toggleAstral()"><span id="astralText">enable</span><h2>ASTRAL ENSLAVEMENT</h2></button>
@@ -254,7 +281,7 @@
                 </table>
             </div>
             <div id="buildingsSubTab" class="subTab">
-                <table style="width: 80%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse;">
+                <table style="width: 75%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse;">
                     <tr id="factoryBuildRow">
                         <td colspan="3">
                             <button id="factoryBuild" class="buildBut" onclick="buyBuilding(1)">Build the<h2><span id="factoryBuildLabel" style="font-size: 18pt;">Death Factory.</span></h2>Cost: <span id="factoryCostLabel">1,000</span> astral bricks</button>
@@ -332,7 +359,7 @@
                 </table>
             </div>
             <div id="constructionSubTab" class="subTab" style="display: none;">
-                <table style="width: 80%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse;">
+                <table style="width: 75%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse;">
                     <tr id="cUpgHeaderRow">
                         <td colspan="4">
                             <h2 style="font-size: 18pt;">CONSTRUCTION UPGRADES</h2>
@@ -355,8 +382,131 @@
                 </table>
             </div>
         </div>
+        <div id="timeTab" class="pageTab">
+            <table style="width: 75%; margin: auto; text-align: center;">
+                <tr>
+                    <td width="100px;">
+                        <div class="timeLabelLeft">TRUE<br>TIME</div>
+                    </td>
+                    <td>
+                        <h3>FUNCTIONALITY COMING SOON!</h3>
+                    </td>
+                    <td width="100px;">
+                        <div class="timeLabelRight">ANTI<br>TIME</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span id="sliderValueLeft" style="font-size: 16pt;">50</span>%</td>
+                    <td></td>
+                    <td><span id="sliderValueRight" style="font-size: 16pt;">50</span>%</td>
+                </tr>
+                <tr style="height: 25px;">
+                    <div style="height: 100%;"></div>
+                </tr>
+                <tr style="height: 25px;">
+                    <div style="height: 100%;"></div>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div class="slidecontainer" style="text-align: center;">
+                            <input type="range" min="1" max="100" value="50" class="slider" id="timeSlider" oninput="updateSliderDisplay()">
+                        </div>
+                    </td>
+                </tr>
+                <tr style="height: 25px;">
+                    <div style="height: 100%;"></div>
+                </tr>
+            </table>
+            <table style="width: 100%; margin: auto;">
+                <tr>
+                    <td width="20%">
+                        <h1>Dimension</h1>
+                    </td>
+                    <td width="15%">
+                        <div><h1>Multiplier</h1></div>
+                    </td>
+                    <td width="35%">
+                        <div style="min-width: 30%; float: left;"><h1>Owned</h1></div><div style="width: 30%; float: left;"><h1>(Bought)</h1></div><div style="min-width: 40%; float: right; text-align: center;"><h1>Gain</h1></div>
+                    </td>
+                    <td colspan="2" width="30%">
+                        <div style="width: 100%; text-align: center;">
+                            <button id="maxAllButT" class="unitMaxT" onclick="buyMaxAll()" style="margin: auto;">Max all</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr height="10px"></tr>
+                <tr id="timeRow1" style="display: table-row;">
+                    <td>
+                        Time Dimension 1
+                    </td>
+                    <td>
+                        <div id="timeMult1">x1</div>
+                    </td>
+                    <td>
+                        <div id="timeAmount1"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: left;"></div></div>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="timeBut1" class="unitButT">Cost: 10 crystals</button>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="timeMax1" class="unitMaxT">Max: 1 for &#162;10</button>
+                    </td>
+                </tr>
+                <tr id="timeRow2" style="display: table-row;">
+                    <td>
+                        Time Dimension 2
+                    </td>
+                    <td>
+                        <div id="timeMult2">x1</div>
+                    </td>
+                    <td>
+                        <div id="timeAmount2"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: left;"></div></div>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="timeBut2" class="unitButT">Cost: 100 crystals</button>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="timeMax2" class="unitMaxT">Max: 1 for &#162;10</button>
+                    </td>
+                </tr>
+                <tr id="timeRow3" style="display: table-row;">
+                    <td>
+                        Time Dimension 3
+                    </td>
+                    <td>
+                        <div id="timeMult3">x1</div>
+                    </td>
+                    <td>
+                        <div id="timeAmount3"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: left;"></div></div>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="timeBut3" class="unitButT">Cost: 1e6 crystals</button>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="timeMax3" class="unitMaxT">Max: 1 for &#162;10</button>
+                    </td>
+                </tr>
+                <tr id="timeRow4" style="display: table-row;">
+                    <td>
+                        Time Dimension 4
+                    </td>
+                    <td>
+                        <div id="timeMult4">x1</div>
+                    </td>
+                    <td>
+                        <div id="timeAmount4"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: left;"></div></div>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="timeBut4" class="unitButT">Cost: 1e9 crystals</button>
+                    </td>
+                    <td class="buttonTD">
+                        <button id="timeMax4" class="unitMaxT">Max: 1 for &#162;10</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
         <div id="optionsTab" class="pageTab">
-            <table id="optionsTable" style="width: 80%; margin: auto; text-align: center;">
+            <table id="optionsTable" style="width: 75%; margin: auto; text-align: center;">
                 <tr>
                     <td>
                         <button id="hardReset" class="optBut" onclick="hardReset()">HARD RESET</button>
@@ -386,7 +536,7 @@
                 </tr>
             </table>
             <textarea id="exportText" style="display: none;"></textarea>
-            <table style="width: 80%; margin: auto; text-align: center;">
+            <table style="width: 75%; margin: auto; text-align: center;">
                 <tr>
                     <td id="importConfirm" style="display: none;">
                         <button class="optBut" onclick="importSave()">IMPORT</button>

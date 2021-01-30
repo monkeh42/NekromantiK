@@ -142,6 +142,11 @@ function init() {
     startInterval();
 }
 
+function updateSliderDisplay() {
+    document.getElementById('sliderValueRight').innerHTML = document.getElementById('timeSlider').value;
+    document.getElementById('sliderValueLeft').innerHTML = 100 - document.getElementById('timeSlider').value;
+}
+
 function showHelp() {
     if (document.getElementById('helpDiv').style.display == 'block') { document.getElementById('helpDiv').style.display = 'none'; }
     else {

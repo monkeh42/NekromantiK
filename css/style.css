@@ -96,6 +96,32 @@ button:focus {
     background-color: #460573;
 } 
 
+.unitButT {
+    color: white;
+    background-color: #006ba0;
+    font-style: bold;
+    width: 180px;
+    height: 35px;
+    border: 1px solid white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.unitMaxT {
+    color: white;
+    background-color: #006ba0;
+    font-style: bold;
+    width: 120px;
+    height: 35px;
+    border: 1px solid white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.unitButT:hover, .unitMaxT:hover {
+    background-color: white;
+} 
+
 .helpBut {
     color: white;
     background-color: #1f1f1f;
@@ -320,6 +346,26 @@ button:focus {
     border-radius: 4px;
 }
 
+.unclickableUnitT {
+    color: white;
+    background-color: #4b4b4b;
+    font-style: bold;
+    width: 180px;
+    height: 35px;
+    border: 1px solid #4b4b4b;
+    border-radius: 4px;
+}
+
+.unclickableMaxT {
+    color: white;
+    background-color: #4b4b4b;
+    font-style: bold;
+    width: 120px;
+    height: 35px;
+    border: 1px solid #4b4b4b;
+    border-radius: 4px;
+}
+
 .prestigeBut {
     color: white;
     background-color: #07347a;
@@ -410,4 +456,66 @@ button:focus {
     background-color: #525252;
     overflow: auto;
     display: none;
+}
+
+.timeLabelLeft {
+    width: 100px;
+    height: 100px;
+    line-height: 50px;
+    border: 1px solid #006ba0;
+    color: #006ba0;
+    font-size: 22pt;
+    font-weight: 800;
+    text-align: center;
+    float: left;
+}
+
+.timeLabelRight {
+    width: 100px;
+    height: 100px;
+    line-height: 50px;
+    border: 1px solid #006ba0;
+    color: #006ba0;
+    font-size: 22pt;
+    font-weight: 800;
+    text-align: center;
+    float: right;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 25px;
+    background: #525252;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    border: 1px solid white;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #006ba0;
+    cursor: pointer;
+    border: 1px solid white;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #006ba0;
+    cursor: pointer;
+    border: 1px solid white;
+}
+
+.slideContainer {
+    width: 70%;
 }
