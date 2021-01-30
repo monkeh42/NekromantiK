@@ -3,7 +3,7 @@ const HELP_TEXTS = {
         'mainTab': '<h2>UNITS</h2>\
                     Here you buy undead creatures with corpses.<br>\
                     Each zombie produces one corpse per second directly, while all other units produce the unit one tier below them at a rate of 1/tier per unit per second.<br>\
-                    Each unit also has a corpse multiplier that multiplies your total corpse gain (corpse multipliers are additive), and a unit multiplier, which multiplies the unit production of that tier. \
+                    Each unit also has a corpse multiplier that multiplies your total corpse gain (additively), and a unit multiplier, which multiplies the unit production of that tier and all lower tiers (additively). \
                     Every time you purchase one of a unit after the first, its cost and corpse multiplier are multiplied by constants. The unit multiplier is always equal to the square root of the corpse multiplier.<br>\
                     Cost multipliers by unit tier (first tier = zombies): 100, 1e4, 1e4, 1e6, 1e10, 1e11, 1e12, 1e15.<br>\
                     Multiplier multipliers by unit tier: 1.75, 2, 2, 2, 2.2, 2.2, 2.5, 2.5.',
@@ -21,8 +21,11 @@ const HELP_TEXTS = {
                     corpse gain (base formula is corpse gain^0.2).',
         'factory': '<h2>FACTORY</h2>\
                     Here you will produce armaments for your savage hordes. The production rate is based on the number of zombies you have (base formula is log10(zombies+1)^0.5) - someone needs to work the factory, after all.<br>\
-                    The Death Factory upgrades will improve the effects of your units.',
-        'necropolis': '<h2>NECROPOLIS</h2>',
+                    Death Factory upgrades are purchased with armaments and will improve the effects of your units.',
+        'necropolis': '<h2>NECROPOLIS</h2>\
+                    Your Necropolis trains acolytes to assist in channelling the astral void. The energies required to imbue mere mortals with this power is staggering, so you can only gain acolytes \
+                    while you control the most powerful of undead beasts - the Sun Eaters (base formula is sun eaters^2).<br>\
+                    Necropolis upgrades are purchased with astral bricks, and increase their effectiveness.',
         'construction': '<h2>CONSTRUCTION</h2>\
                     Here you can use Astral Bricks to improve the infrastructure of your hellish empire machine. These upgrades can be bought repeatedly and indefinitely, although the cost \
                     increases exponentially at very high levels.',

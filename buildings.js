@@ -44,7 +44,7 @@ const BUILDS_DATA = {
             12: {
                 title: 'Militarize',
                 desc: 'The square root of Industrialize\'s boost applies to the unit multiplier of unit tiers 2 through 7.',
-                cost: new Decimal(10000),
+                cost: new Decimal(5000),
                 buttonID: 'factoryUpg12',
                 displayEffect: true,
                 effect: function() {

@@ -338,14 +338,14 @@ function buyMaxAll() {
 
 function getUnitProdPerSecond(tier) {
     if (tier == NUM_UNITS) { return new Decimal(0); }
-    return player.units[tier+1].amount.times(UNITS_DATA[tier+1].prodMult()).div(tier+1);
+    return player.units[tier+1].amount.div(tier+1).times(getTotalProdMult(tier));
 }
 
 function getTotalProdMult(tier) {
-    mult = new Decimal(1);
-    if (tier <= NUM_UNITS) {
-        for (var i = tier; i<=NUM_UNITS; i++) {
-            mult = mult.plus(UNITS_DATA[i].prodMult());
+    mult = new Decimal(0);
+    if (tier < NUM_UNITS) {
+        for (var i = tier+1; i<=NUM_UNITS; i++) {
+            if (i <= NUM_UNITS) {mult = mult.plus(UNITS_DATA[i].prodMult());}
         }
     }
     return mult;

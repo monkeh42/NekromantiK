@@ -1,5 +1,5 @@
 const GAME_DATA = {
-    version: 'v0.1.1',
+    version: 'v0.1.2',
 }
 
 const NUM_UNITS = 8;
@@ -263,7 +263,7 @@ function updateCorpseDisplay() {
 }
 
 function updateUnitDisplay(tier) {
-    document.getElementById(UNITS_DATA[tier].amountID).innerHTML = "<div style=\"min-width: 35%; float: left;\">" + formatUnitRow(player.units[tier].amount) + "</div><div style=\"min-width: 35%; float: left;\">(" + formatWholeUnitRow(player.units[tier].bought) + ")</div><div style=\"min-width: 30%; float: left;\">" + ((getUnitProdPerSecond(tier).gt(0) && !astralFlag) ? "(+" + formatDefault(Decimal.times((getUnitProdPerSecond(tier).div(player.units[tier].amount.max(1))), 100), 2) + "%/s)</div>" : "");
+    document.getElementById(UNITS_DATA[tier].amountID).innerHTML = "<div style=\"min-width: 35%; float: left;\">" + formatUnitRow(player.units[tier].amount) + "</div><div style=\"min-width: 35%; float: left;\">(" + formatWholeUnitRow(player.units[tier].bought) + ")</div><div style=\"min-width: 30%; float: left;\">" + (getUnitProdPerSecond(tier).gt(0) ? "(+" + formatDefault(Decimal.times((getUnitProdPerSecond(tier).div(player.units[tier].amount.max(1))), 100), 2) + "%/s)</div>" : "");
     document.getElementById(UNITS_DATA[tier].multID).innerHTML = "<div style=\"min-width: 45%; float: left;\">" + formatUnitRow2(UNITS_DATA[tier].corpseMult()) + "x</div><div style=\"min-width: 45%; float: left;\">(" + ((tier > 1) ? formatUnitRow2(UNITS_DATA[tier].prodMult()) : "~") + "x)</div>";
     document.getElementById(UNITS_DATA[tier].buttonID).innerHTML = "Cost: " + formatWhole(UNITS_DATA[tier].cost()) + " corpses";
     document.getElementById(UNITS_DATA[tier].maxID).innerHTML = canAffordUnit(tier) ? `Max: ${calculateMaxUnits(tier)} for &#162;${formatWhole(calculateMaxUnitsCost(tier))}` : "Max: 0";
