@@ -65,7 +65,7 @@
                         <div style="min-width: 45%; float: left;"><h1>Corpse<br>mult</h1></div><div style="min-width: 45%; float: left;"><h1>(Unit<br>mult)</h1></div>
                     </td>
                     <td width="30%">
-                        <div style="min-width: 40%; float: left;"><h1>Owned</h1></div><div style="width: 40%; float: left;"><h1>(Bought)</h1></div>
+                        <div style="min-width: 30%; float: left;"><h1>Owned</h1></div><div style="width: 30%; float: left;"><h1>(Bought)</h1></div>
                     </td>
                     <td colspan="2" width="30%">
                         <div style="width: 100%; text-align: center;">
@@ -82,7 +82,7 @@
                         <div id="zombieMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
                     </td>
                     <td>
-                        <div id="zombieAmount"><div style="min-width: 40%; float: left;">0</div><div style="width: 35%; float: left;">(0)</div><div style="width: 25%; float: left;"></div></div>
+                        <div id="zombieAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: left;"></div></div>
                     </td>
                     <td class="buttonTD">
                         <button id="zombieBut" class="unitBut" onclick="buySingleUnit(1)">Cost: 10 corpses</button>
@@ -257,7 +257,7 @@
                 <table style="width: 80%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse;">
                     <tr id="factoryBuildRow">
                         <td colspan="3">
-                            <button id="factoryBuild" class="buildBut" onclick="buyBuilding(1)">Build the<h2 style="font-size: 18pt;">Death Factory.</h2>Cost: 1000 astral bricks</button>
+                            <button id="factoryBuild" class="buildBut" onclick="buyBuilding(1)">Build the<h2><span id="factoryBuildLabel" style="font-size: 18pt;">Death Factory.</span></h2>Cost: <span id="factoryCostLabel">1,000</span> astral bricks</button>
                         </td>
                     </tr>
                     <tr id="factoryHeaderRow" style="display: none;">
@@ -283,7 +283,7 @@
                     </tr>
                     <tr id="necropolisBuildRow">
                         <td colspan="3">
-                            <button id="necropolisBuild" class="buildBut" onclick="buyBuilding(2)">Build the<h2 style="font-size: 18pt;">Necropolis.</h2>Cost: 1e6 astral bricks</button>
+                            <button id="necropolisBuild" class="buildBut" onclick="buyBuilding(2)">Build the<h2><span id="necropolisBuildLabel" style="font-size: 18pt;">Necropolis.</span></h2>Cost: <span id="necropolisCostLabel">1,000,000</span> astral bricks</button>
                         </td>
                     </tr>
                     <tr id="necropolisHeaderRow" style="display: none;">
@@ -310,7 +310,7 @@
                     </tr>
                     <tr id="sunBuildRow">
                         <td colspan="3">
-                            <button id="sunBuild" class="buildBut" onclick="buyBuilding(3)">Build the<h2 style="font-size: 18pt;">Dead Sun.</h2>perma-locked</button>
+                            <button id="sunBuild" class="buildBut" onclick="buyBuilding(3)">Build the<h2><span id="sunBuildLabel" style="font-size: 18pt;">Dead Sun.</span></h2>Cost: <span id="sunCostLabel" style="display: none;">1000</span>PERMA-LOCKED</button>
                         </td>
                     </tr>
                     <tr id="sunHeaderRow" style="display: none;">

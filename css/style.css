@@ -86,7 +86,7 @@ button:focus {
     color: white;
     background-color: #170424;
     font-style: bold;
-    width: 140px;
+    width: 120px;
     height: 35px;
     border: 1px solid #460573;
     cursor: pointer;
@@ -315,7 +315,7 @@ button:focus {
     color: white;
     background-color: #4b4b4b;
     font-style: bold;
-    width: 140px;
+    width: 120px;
     height: 35px;
     border: 1px solid #4b4b4b;
     border-radius: 4px;

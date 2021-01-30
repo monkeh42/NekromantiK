@@ -260,7 +260,7 @@ function updateCorpseDisplay() {
 }
 
 function updateUnitDisplay(tier) {
-    document.getElementById(UNITS_DATA[tier].amountID).innerHTML = "<div style=\"min-width: 40%; float: left;\">" + formatDefault(player.units[tier].amount) + "</div><div style=\"min-width: 35%; float: left;\">(" + formatWhole(player.units[tier].bought) + ")</div><div style=\"min-width: 25%; float: left;\">" + ((getUnitProdPerSecond(tier).gt(0) && !astralFlag) ? "(+" + formatDefault(Decimal.times((getUnitProdPerSecond(tier).div(player.units[tier].amount.max(1))), 100), 2) + "%/s)</div>" : "");
+    document.getElementById(UNITS_DATA[tier].amountID).innerHTML = "<div style=\"min-width: 30%; float: left;\">" + formatDefault(player.units[tier].amount) + "</div><div style=\"min-width: 30%; float: left;\">(" + formatWhole(player.units[tier].bought) + ")</div><div style=\"min-width: 40%; float: left;\">" + ((getUnitProdPerSecond(tier).gt(0) && !astralFlag) ? "(+" + formatDefault(Decimal.times((getUnitProdPerSecond(tier).div(player.units[tier].amount.max(1))), 100), 2) + "%/s)</div>" : "");
     document.getElementById(UNITS_DATA[tier].multID).innerHTML = "<div style=\"min-width: 45%; float: left;\">" + formatDefault2(UNITS_DATA[tier].corpseMult()) + "x</div><div style=\"min-width: 45%; float: left;\">(" + ((tier > 1) ? formatDefault2(UNITS_DATA[tier].prodMult()) : "~") + "x)</div>";
     document.getElementById(UNITS_DATA[tier].buttonID).innerHTML = "Cost: " + formatWhole(UNITS_DATA[tier].cost()) + " corpses";
     document.getElementById(UNITS_DATA[tier].maxID).innerHTML = canAffordUnit(tier) ? `Max: ${calculateMaxUnits(tier)} for &#162;${formatWhole(calculateMaxUnitsCost(tier))}` : "Max: 0";
@@ -343,8 +343,14 @@ function updateBuildings() {
     document.getElementById('brickGainDisplay').innerHTML = ` ${(astralFlag ? formatDefault(getBricksPerSecond()) : formatWhole(0))} `;
     document.getElementById('factoryProd').innerHTML = formatDefault(getBuildingProdPerSec(1));
     document.getElementById('factoryAmt').innerHTML = formatDefault(player.buildings[1].amount);
+    document.getElementById('factoryBuildLabel').innerHTML = BUILDS_DATA[1].id;
+    document.getElementById('factoryCostLabel').innerHTML = formatWhole(BUILDS_DATA[1].cost);
     document.getElementById('necropolisProd').innerHTML = formatDefault(getBuildingProdPerSec(2));
     document.getElementById('necropolisAmt').innerHTML = formatDefault(player.buildings[2].amount);
+    document.getElementById('necropolisBuildLabel').innerHTML = BUILDS_DATA[2].id;
+    document.getElementById('necropolisCostLabel').innerHTML = formatWhole(BUILDS_DATA[2].cost);
+    document.getElementById('sunBuildLabel').innerHTML = BUILDS_DATA[3].id;
+    document.getElementById('sunCostLabel').innerHTML = formatWhole(BUILDS_DATA[3].cost);
     document.getElementById('acolyteEff').innerHTML = formatDefault2(BUILDS_DATA[2].resourceEff());
 }
 
