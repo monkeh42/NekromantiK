@@ -14,7 +14,7 @@ const TIERS = {
     8: 'sun eater',
 }
 
-const DEV_SPEED = 10;
+const DEV_SPEED = 1;
 
 const START_PLAYER = {
     corpses: new Decimal(10),
