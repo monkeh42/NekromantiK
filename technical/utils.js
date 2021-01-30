@@ -9,7 +9,7 @@ function exponentialFormat(num, precision, mantissa = true) {
 	}
 	e = (e.gte(10000) ? commaFormat(e, 0) : regularFormat(e, 0));
 	if (mantissa)
-		return Math.round(m)+"e"+e
+		return commaFormat(m, 2)+"e"+e
 		else return "e"+e
 	}
 
@@ -33,6 +33,17 @@ function formatDefault(decimal) {
 	else if (decimal.gte(1e9)) return exponentialFormat(decimal, 2)
 	else if (decimal.gte(1e3)) return commaFormat(decimal, 0)
 	else if (decimal.gt(0)) return commaFormat(decimal, 1)
+	else return formatWhole(decimal)
+}
+
+function formatDefault2(decimal) {
+	decimal = new Decimal(decimal)
+	if (decimal.gte("1e100000")) return exponentialFormat(decimal, 0, false)
+	else if (decimal.gte("1e1000")) return exponentialFormat(decimal, 0)
+	else if (decimal.gte(1e9)) return exponentialFormat(decimal, 2)
+	else if (decimal.gte(1e3)) return commaFormat(decimal, 0)
+	else if (decimal.gt(100)) return commaFormat(decimal, 1)
+	else if (decimal.gt(0)) return commaFormat(decimal, 2)
 	else return formatWhole(decimal)
 }
 

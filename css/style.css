@@ -389,3 +389,12 @@ button:focus {
     color: #42d35a;
     text-align: center;
 }
+
+#exportText {
+    width: 75%;
+    height: 300px;
+    margin: 100px auto 0;
+    background-color: #525252;
+    overflow: auto;
+    display: none;
+}

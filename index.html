@@ -23,7 +23,7 @@
             </div>
             <br>
         </div>
-        <div width="100%"><div style="float: right;">v0.0.4</div></div>
+        <div width="100%"><div style="float: right;">v0.1.0</div></div>
         <div id="resourceDisplay" style="width: auto; margin: 15px auto 25px; display: block; text-align: center;">
             <h2>You have <span id="corpseAmount" style="font-size: 20pt; white-space: pre;"> 10 </span> <span id='pluralCorpse'>corpses</span>.</h2>
             You are harvesting <span id="corpseGain" style="font-size: 17pt; white-space: pre;"> 0 </span> <span id='pluralCorpseG'>corpses</span>/sec. (@ 3x time speed)<br>
@@ -367,6 +367,27 @@
                     </td>
                     <td>
                         <a href="nekro_help.html" target="_blank"><button id="helpBut" class="optBut">HELP (full text)</button></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button id="importToggle" class="optBut" onclick="importToggle()">IMPORT SAVE</button>
+                    </td>
+                    <td>
+                        <button id="exportSave" class="optBut" onclick="exportSave()">EXPORT SAVE</button>
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+            <textarea id="exportText" style="display: none;"></textarea>
+            <table style="width: 75%; margin: auto; text-align: center;">
+                <tr>
+                    <td id="importConfirm" style="display: none;">
+                        <button class="optBut" onclick="importSave()">IMPORT</button>
+                    </td>
+                    <td id="closeText" style="display: none;">
+                        <button class="optBut" onclick="closeText()">CLOSE</button>
                     </td>
                 </tr>
             </table>

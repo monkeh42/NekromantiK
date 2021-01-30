@@ -2,7 +2,7 @@ const HELP_TEXTS = {
     'unitsTab': {
         'mainTab': '<h2>UNITS</h2>\
                     Here you buy undead creatures with corpses.<br>\
-                    Each zombie produces one corpse per second directly, while all other units produce the unit one tier below them.<br>\
+                    Each zombie produces one corpse per second directly, while all other units produce the unit one tier below them at a rate of 1/tier per unit per second.<br>\
                     Each unit also has a corpse multiplier that multiplies your total corpse gain (corpse multipliers are additive), and a unit multiplier, which multiplies the unit production of that tier. \
                     Every time you purchase one of a unit after the first, its cost and corpse multiplier are multiplied by constants. The unit multiplier is always equal to the square root of the corpse multiplier.<br>\
                     Cost multipliers by unit tier (first tier = zombies): 100, 1e4, 1e4, 1e6, 1e10, 1e11, 1e12, 1e15.<br>\
@@ -29,7 +29,7 @@ const HELP_TEXTS = {
     },
 }
 
-const START_UNLOCKS = {
+const UNLOCKS_DATA = {
     'unitsTab': {
         'mainTab': {
             unlocked: true,
@@ -44,7 +44,7 @@ const START_UNLOCKS = {
             idsToShow: ['spacePresContainer'],
             idsToHide: [],
             condition: function() {
-                return units[4].bought.gte(1);
+                return player.units[4].bought.gte(1);
             }
         },  
     },
@@ -93,7 +93,7 @@ const START_UNLOCKS = {
 }
 
 function checkUnlocked(tab, unlock) {
-    return unlocks[tab][unlock].unlocked;
+    return player.unlocks[tab][unlock];
 }
 
 function generateHelpText(tab) {

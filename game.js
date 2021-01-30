@@ -1,10 +1,14 @@
+const GAME_DATA = {
+    version: 'v0.1.0',
+}
+
 const NUM_UNITS = 8;
 const TIERS = {
     1: 'zombie',
     2: 'abomination',
     3: 'skeletons mage',
     4: 'banshee',
-    5: 'liche',
+    5: 'lich',
     6: 'behemoth',
     7: 'ancient one',
     8: 'sun eater',
@@ -12,15 +16,91 @@ const TIERS = {
 
 const START_PLAYER = {
     corpses: new Decimal(10),
-
+    units: {
+        1: {
+            unlocked: true,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        2: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        3: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        4: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        5: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        6: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        7: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        8: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+    },
+    
     // this is [number of units, tier]
     nextSpaceReset: [1, 5],
     spaceResets: new Decimal(0),
     worlds: new Decimal(0),
 
+    buildings: {
+        1: {
+            built: false,
+            amount: new Decimal(0),
+            upgrades: {
+                1: false,
+                2: false,
+                3: false,
+            }
+        },
+        2: {
+            built: false,
+            upgrades: {
+                1: false,
+                2: false,
+                3: false,
+            }
+        },
+        3: {
+            built: false,
+            upgrades: {
+                1: false,
+                2: false,
+                3: false,
+            }
+        },
+    },
+
+    construction: {
+        1: new Decimal(0),
+        2: new Decimal(0),
+        3: new Decimal(0),
+        4: new Decimal(0),
+    },
+
     bricks: new Decimal(0),
     brickGainExp: 0.2,
-
     
     totalCorpses: new Decimal(0),
     totalWorlds: new Decimal(0),
@@ -28,13 +108,23 @@ const START_PLAYER = {
     
     lastUpdate: new Date(),
     lastAutoSave: new Date(),
+
+    unlocks: {
+        'unitsTab': {
+            'mainTab': true, 
+            'spacePrestige': false,  
+        },
+        'buildingsTab': {
+            'mainTab': false,
+            'factory': false,
+            'necropolis': false,
+            'sun': false,
+            'construction': false,
+        },
+    }
 };
 
 var player = {};
-var units = {};
-var unlocks = {};
-var buildings = {};
-var construction = {};
 
 function init() {
     loadGame();
@@ -104,15 +194,12 @@ function getActiveTab() {
 function hardReset() {
     if (!confirm("Are you sure? This will reset ALL of your progress.")) return
     player = null;
-    units = null;
-    unlocks = null;
-    buildings = null;
     save();
     window.location.reload(true);
 }
 
 function getCorpsesPerSecond() {
-    return units[1].amount.gt(0) ? units[1].amount.times(getTotalCorpseMult()) : new Decimal(0);
+    return player.units[1].amount.gt(0) ? player.units[1].amount.times(getTotalCorpseMult()) : new Decimal(0);
 }
 
 function getBricksPerSecond() {
@@ -122,7 +209,7 @@ function getBricksPerSecond() {
 function getCorpseMultFromUnits() {
     var mult = new Decimal(0);
     for (var i=1; i<=NUM_UNITS; i++) {
-        mult = mult.plus(units[i].corpseMult.times(units[i].corpseBoost()));
+        mult = mult.plus(UNITS_DATA[i].corpseMult());
     }
     return Decimal.max(mult, 1);
 }
@@ -155,29 +242,29 @@ function updateCorpseDisplay() {
     document.getElementById('pluralCorpse').innerHTML = corpseSingulizer(false);
     document.getElementById('pluralCorpseG').innerHTML = corpseSingulizer(true);
     document.getElementById('corpseGain').innerHTML = ` ${(astralFlag ? formatWhole(0) : formatDefault(getCorpsesPerSecond()))} `;
-    document.getElementById('totalMult').innerHTML = `${format(getCorpseMultFromUnits(), 2)}x`;
-    document.getElementById('worldsMult').innerHTML = `${format(getWorldsBonus(), 2)}x`;
+    document.getElementById('totalMult').innerHTML = `${formatDefault2(getCorpseMultFromUnits())}x`;
+    document.getElementById('worldsMult').innerHTML = `${formatDefault2(getWorldsBonus())}x`;
     document.getElementById('worldsNum').innerHTML = `${formatWhole(player.worlds)}`;
     document.getElementById('pluralWorld').innerHTML = worldSingulizer();
 }
 
 function updateUnitDisplay(tier) {
-    document.getElementById(units[tier].amountID).innerHTML = "<div style=\"min-width: 40%; float: left;\">" + formatDefault(units[tier].amount) + "</div><div style=\"min-width: 35%; float: left;\">(" + formatWhole(units[tier].bought) + ")</div><div style=\"min-width: 25%; float: left;\">" + ((getUnitProdPerSecond(tier).gt(0) && !astralFlag) ? "(+" + formatWhole(new Decimal(getUnitProdPerSecond(tier).div(units[tier].amount.max(1))).m, 2) + "%/s)</div>" : "");
-    document.getElementById(units[tier].multID).innerHTML = "<div style=\"min-width: 45%; float: left;\">" + format(units[tier].corpseMult.times(units[tier].corpseBoost()), 2) + "x</div><div style=\"min-width: 45%; float: left;\">(" + ((tier > 1) ? format(units[tier].prodMult.times(units[tier].prodBoost()), 2) : "~") + "x)</div>";
-    document.getElementById(units[tier].buttonID).innerHTML = "Cost: " + formatWhole(units[tier].cost) + " corpses";
-    document.getElementById(units[tier].maxID).innerHTML = canAfford(tier) ? `Max: ${calculateMaxUnits(tier)} for &#162;${formatWhole(calculateMaxUnitsCost(tier))}` : "Max: 0";
+    document.getElementById(UNITS_DATA[tier].amountID).innerHTML = "<div style=\"min-width: 40%; float: left;\">" + formatDefault(player.units[tier].amount) + "</div><div style=\"min-width: 35%; float: left;\">(" + formatWhole(player.units[tier].bought) + ")</div><div style=\"min-width: 25%; float: left;\">" + ((getUnitProdPerSecond(tier).gt(0) && !astralFlag) ? "(+" + formatWhole(new Decimal(getUnitProdPerSecond(tier).div(player.units[tier].amount.max(1))).m, 2) + "%/s)</div>" : "");
+    document.getElementById(UNITS_DATA[tier].multID).innerHTML = "<div style=\"min-width: 45%; float: left;\">" + formatDefault2(UNITS_DATA[tier].corpseMult()) + "x</div><div style=\"min-width: 45%; float: left;\">(" + ((tier > 1) ? formatDefault2(UNITS_DATA[tier].prodMult()) : "~") + "x)</div>";
+    document.getElementById(UNITS_DATA[tier].buttonID).innerHTML = "Cost: " + formatWhole(UNITS_DATA[tier].cost()) + " corpses";
+    document.getElementById(UNITS_DATA[tier].maxID).innerHTML = canAffordUnit(tier) ? `Max: ${calculateMaxUnits(tier)} for &#162;${formatWhole(calculateMaxUnitsCost(tier))}` : "Max: 0";
 }
 
 function updateUnlocks() {
-    for (var tab in unlocks) {
-        for (var key in unlocks[tab]) {
-            if (!unlocks[tab][key].unlocked && unlocks[tab][key].condition()) { unlocks[tab][key].unlocked = true; }
-            else if (!unlocks[tab][key].unlocked && key == 'mainTab') { break; }
+    for (var tab in UNLOCKS_DATA) {
+        for (var key in UNLOCKS_DATA[tab]) {
+            if (!player.unlocks[tab][key] && UNLOCKS_DATA[tab][key].condition()) { player.unlocks[tab][key] = true; }
+            else if (!player.unlocks[tab][key] && key == 'mainTab') { break; }
         }
     }
     for (var i=1; i<NUM_UNITS; i++) {
-        if (units[i].bought.gte(1) && canUnlock(i+1)) {
-            units[i+1].unlocked = true;
+        if (player.units[i].bought.gte(1) && canUnlock(i+1)) {
+            player.units[i+1].unlocked = true;
         } 
     }
 }
@@ -185,42 +272,42 @@ function updateUnlocks() {
 function updateHTML() {
     var element;
     var bUpgs;
-    for (var tab in unlocks) {
-        for (var key in unlocks[tab]) {
-            if (unlocks[tab][key].unlocked) {
-                for (var id in unlocks[tab][key].idsToShow) {
-                    element = document.getElementById(unlocks[tab][key].idsToShow[id]);
+    for (var tab in UNLOCKS_DATA) {
+        for (var key in UNLOCKS_DATA[tab]) {
+            if (player.unlocks[tab][key]) {
+                for (var id in UNLOCKS_DATA[tab][key].idsToShow) {
+                    element = document.getElementById(UNLOCKS_DATA[tab][key].idsToShow[id]);
                     if (element.tagName == 'TR') { element.style.display = 'table-row'; } 
                     else if (element.tagName == 'TD') { element.style.display = 'table-cell'; }
                     else { element.style.display = 'block'; }
                 }
-                for (var j=0; j<unlocks[tab][key].idsToHide.length; j++) {
-                    document.getElementById(unlocks[tab][key].idsToHide[j]).style.display = 'none';
+                for (var idd in UNLOCKS_DATA[tab][key].idsToHide) {
+                    document.getElementById(UNLOCKS_DATA[tab][key].idsToHide[idd]).style.display = 'none';
                 }
             }
         }
     }
     for (var i=1; i<=NUM_UNITS; i++) {
-        if (units[i].unlocked) {
-            document.getElementById(units[i].rowID).style.display = 'table-row';
-            document.getElementById(units[i].buttonID).className = canAfford(i) ? 'unitBut' : 'unclickableUnit';
-            document.getElementById(units[i].maxID).className = canAfford(i) ? "unitMax" : 'unclickableMax';
+        if (player.units[i].unlocked) {
+            document.getElementById(UNITS_DATA[i].rowID).style.display = 'table-row';
+            document.getElementById(UNITS_DATA[i].buttonID).className = canAffordUnit(i) ? 'unitBut' : 'unclickableUnit';
+            document.getElementById(UNITS_DATA[i].maxID).className = canAffordUnit(i) ? "unitMax" : 'unclickableMax';
         }
     }
-    for (var b in buildings) {
+    for (var b in BUILDS_DATA) {
         if (isBuilt(b)) {
-            for (var u in buildings[b].upgrades) {
-                if (hasUpgrade(b, u)) { document.getElementById(buildings[b].upgrades[u].buttonID).className = buildings[b].upgradeBtnBought }
-                else if (canAffordBUpg(b, u)) { document.getElementById(buildings[b].upgrades[u].buttonID).className = buildings[b].upgradeBtnClass }
-                else { document.getElementById(buildings[b].upgrades[u].buttonID).className = buildings[b].upgradeBtnUnclick }
-                document.getElementById(buildings[b].upgrades[u].buttonID).innerHTML = "<span style=\"font-weight: 900;\">" + getUpgName(b, u) + "</span><br>" + getUpgDesc(b, u) + "<br>Cost: " + getUpgCost(b, u) + " " + buildings[b].resource + (isDisplayEffect(b, u) ? ("<br>Currently: " + format(getUpgEffect(b, u), 2) + "x") : "");
+            for (var u in BUILDS_DATA[b].upgrades) {
+                if (hasUpgrade(b, u)) { document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).className = BUILDS_DATA[b].upgradeBtnBought }
+                else if (canAffordBUpg(b, u)) { document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).className = BUILDS_DATA[b].upgradeBtnClass }
+                else { document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).className = BUILDS_DATA[b].upgradeBtnUnclick }
+                document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).innerHTML = "<span style=\"font-weight: 900;\">" + getUpgName(b, u) + "</span><br>" + getUpgDesc(b, u) + "<br>Cost: " + getUpgCost(b, u) + " " + BUILDS_DATA[b].resource + (isDisplayEffect(b, u) ? ("<br>Currently: " + formatDefault2(getUpgEffect(b, u)) + "x") : "");
             }
         }
     }
-    for (var c in construction) {
-        if (canAffordCUpg(c)) { document.getElementById(construction[c].buttonID).className = 'constrUpg' }
-        else { document.getElementById(construction[c].buttonID).className = 'unclickableConstrUpg' }
-        document.getElementById(construction[c].buttonID).innerHTML = "<span style=\"font-weight: 900;\">" + getCUpgName(c) + "</span><br>" + getCUpgDesc(c) + "<br>Cost: " + getCUpgCost(c) + " astral bricks" + "<br>Current level: " + formatWhole(construction[c].level) + (isDisplayEffectC(c) ? ("<br>Currently: " + format(getCUpgEffect(c), 2) + "x") : "");
+    for (var c in CONSTR_DATA) {
+        if (canAffordCUpg(c)) { document.getElementById(CONSTR_DATA[c].buttonID).className = 'constrUpg' }
+        else { document.getElementById(CONSTR_DATA[c].buttonID).className = 'unclickableConstrUpg' }
+        document.getElementById(CONSTR_DATA[c].buttonID).innerHTML = "<span style=\"font-weight: 900;\">" + getCUpgName(c) + "</span><br>" + getCUpgDesc(c) + "<br>Cost: " + getCUpgCost(c) + " astral bricks" + "<br>Current level: " + formatWhole(player.construction[c]) + (isDisplayEffectC(c) ? ("<br>Currently: " + formatDefault2(getCUpgEffect(c)) + "x") : "");
     }
 }
 
@@ -242,7 +329,7 @@ function updateBuildings() {
     document.getElementById('brickDisplay').innerHTML = formatDefault(player.bricks);
     document.getElementById('brickGainDisplay').innerHTML = ` ${(astralFlag ? formatDefault(getBricksPerSecond()) : formatWhole(0))} `;
     document.getElementById('factoryProd').innerHTML = formatDefault(getBuildingProdPerSec(1));
-    document.getElementById('factoryAmt').innerHTML = formatDefault(buildings[1].amount);
+    document.getElementById('factoryAmt').innerHTML = formatDefault(player.buildings[1].amount);
 }
 
 function allDisplay() {
@@ -260,51 +347,54 @@ function getWorldsBonus() {
     return Decimal.max(player.worlds.div(2).pow(1.5).plus(1), 1);
 }
 
+function importToggle() {
+    document.getElementById('exportText').innerHTML = 'Paste your save here...';
+    document.getElementById('exportText').style.display = 'block';
+    document.getElementById('importConfirm').style.display = 'block';
+    document.getElementById('closeText').style.display = 'block';
+}
+
+function exportSave() {
+    var str = window.btoa(JSON.stringify(player));
+
+    document.getElementById('exportText').value = str;
+    document.getElementById('exportText').style.display = 'block';
+    document.getElementById('importConfirm').style.display = 'none';
+    document.getElementById('closeText').style.display = 'block';
+}
+
+function importSave() {
+    var imported = document.getElementById('exportText').value;
+    if (imported !== undefined) {
+        try {
+            player = Object.assign({}, JSON.parse(window.atob(imported)));
+            fixData(player, START_PLAYER);
+            save();
+            window.location.reload();
+        } catch(e) {
+            return;
+        }
+    }
+}
+
+function closeText() {
+    document.getElementById('exportText').style.display = 'none';
+    document.getElementById('importConfirm').style.display = 'none';
+    document.getElementById('closeText').style.display = 'none';
+}
+
 function save() {
-    localStorage.setItem('nekrosave', JSON.stringify(player));
-    localStorage.setItem('unlocks', JSON.stringify(unlocks));
-    localStorage.setItem('units', JSON.stringify(units));
-    localStorage.setItem('buildings', JSON.stringify(buildings));
-    localStorage.setItem('construction', JSON.stringify(construction));
+    localStorage.setItem('nekrosave', window.btoa(JSON.stringify(player)));
 }
 
 function loadGame() {
     player = {};
-    units = {};
-    var savePlayer = JSON.parse(localStorage.getItem('nekrosave'));
-    var saveUnlocks = JSON.parse(localStorage.getItem('unlocks'));
-    var saveUnits = JSON.parse(localStorage.getItem('units'));
-    var saveBuildings = JSON.parse(localStorage.getItem('buildings'));
-    var saveConst = JSON.parse(localStorage.getItem('construction'));
+    var savePlayer = localStorage.getItem('nekrosave');
     if (savePlayer === null || savePlayer === undefined) {
         player = Object.assign({}, START_PLAYER);
     } else {
-        player = Object.assign({}, savePlayer);
+        player = Object.assign({}, JSON.parse(window.atob(savePlayer)));
         fixData(player, START_PLAYER);
-    }
-    if (saveUnlocks === null || saveUnlocks === undefined) {
-        unlocks = Object.assign({}, START_UNLOCKS);
-    } else {
-        unlocks = Object.assign({}, saveUnlocks);
-        fixData(unlocks, START_UNLOCKS);
-    }
-    if (saveUnits === null || saveUnits === undefined) {
-        units = Object.assign({}, START_UNITS);
-    } else {
-        units = Object.assign({}, saveUnits);
-        fixData(units, START_UNITS);
-    }
-    if (saveBuildings === null || saveBuildings === undefined) {
-        buildings = Object.assign({}, START_BUILDS);
-    } else {
-        buildings = Object.assign({}, saveBuildings);
-        fixData(buildings, START_BUILDS);
-    }
-    if (saveConst === null || saveConst === undefined) {
-        construction = Object.assign({}, START_CONST);
-    } else {
-        construction = Object.assign({}, saveConst);
-        fixData(construction, START_CONST);
     }
     player.lastUpdate = new Date().getTime();
     player.lastAutoSave = new Date().getTime();
@@ -356,15 +446,15 @@ function startInterval() {
         }
         player.totalCorpses = player.totalCorpses.plus(getCorpsesPerSecond().times(diff/1000));
         for (var i=1; i<NUM_UNITS; i++) {
-            units[i].amount = units[i].amount.plus(getUnitProdPerSecond(i).times(diff/1000));
+            player.units[i].amount = player.units[i].amount.plus(getUnitProdPerSecond(i).times(diff/1000));
         }
-        for (var b in buildings) {
+        for (var b in BUILDS_DATA) {
             if (isBuilt(b)) {
-                buildings[b].amount = buildings[b].amount.plus(getBuildingProdPerSec(b).times(diff/1000));
+                player.buildings[b].amount = player.buildings[b].amount.plus(getBuildingProdPerSec(b).times(diff/1000));
             }
         }
         allDisplay();
-        if ((currentUpdate-player.lastAutoSave)>15000) { 
+        if ((currentUpdate-player.lastAutoSave)>5000) { 
             player.lastAutoSave = currentUpdate;
             save();
         }

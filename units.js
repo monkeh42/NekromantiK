@@ -1,23 +1,27 @@
-const START_UNITS = {
+const UNITS_DATA = {
     1: {
         single: "zombie",
         plural: "zombies",
-        unlocked: true,
-        bought: new Decimal(0),
-        amount: new Decimal(0),
-        multPer: new Decimal(1.75),
-        costMult: new Decimal(100),
-        corpseMult: new Decimal(0),
-        prodMult: new Decimal(0),
-        cost: new Decimal(10),
-        corpseBoost: function() {
-            var cb = new Decimal(1);
-            if (hasUpgrade(1, 11)) { cb = cb.times(getUpgEffect(1, 11)); }
-            return cb;
+        baseCost: new Decimal(10),
+        baseMultPer: new Decimal(1.75),
+        baseCostMult: new Decimal(100),
+        baseCorpseMult: new Decimal(0),
+        cost: function() {
+            var c = this.baseCost;
+            c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
+            return c;
         },
-        prodBoost: function() {
-            var pb = new Decimal(1);
-            return pb;
+        corpseMult: function() {
+            var m = this.baseMultPer;
+            if (getCLevel(1).gt(0)) { m = m.times(getCUpgEffect(1)) }
+            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
+            m = m.pow(player.units[this.tier].bought-1);
+            if (hasUpgrade(1, 11)) { m = m.times(getUpgEffect(1, 11)) }
+            return m;
+        },
+        prodMult: function() {
+            var m = this.corpseMult().sqrt();
+            return m;
         },
         tier: 1,
         buttonID: "zombieBut",
@@ -29,21 +33,24 @@ const START_UNITS = {
     2: {
         single: "abomination",
         plural: "abominations",
-        unlocked: false,
-        bought: new Decimal(0),
-        amount: new Decimal(0),
-        multPer: new Decimal(2),
-        costMult: new Decimal(10000),
-        corpseMult: new Decimal(0),
-        prodMult: new Decimal(0),
-        cost: new Decimal(100),
-        corpseBoost: function() {
-            var cb = new Decimal(1);
-            return cb;
+        baseCost: new Decimal(100),
+        baseMultPer: new Decimal(2),
+        baseCostMult: new Decimal(10000),
+        baseCorpseMult: new Decimal(0),
+        cost: function() {
+            var c = this.baseCost;
+            c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
+            return c;
         },
-        prodBoost: function() {
-            var pb = new Decimal(1);
-            return pb;
+        corpseMult: function() {
+            var m = this.baseMultPer;
+            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
+            m = m.pow(player.units[this.tier].bought-1);
+            return m;
+        },
+        prodMult: function() {
+            var m = this.corpseMult().sqrt();
+            return m;
         },
         tier: 2,
         buttonID: "abomBut",
@@ -55,21 +62,24 @@ const START_UNITS = {
     3: {
         single: "skeleton mage",
         plural: "skeleton mages",
-        unlocked: false,
-        bought: new Decimal(0),
-        amount: new Decimal(0),
-        multPer: new Decimal(2),
-        costMult: new Decimal(10000),
-        corpseMult: new Decimal(0),
-        prodMult: new Decimal(0),
-        cost: new Decimal(10000),
-        corpseBoost: function() {
-            var cb = new Decimal(1);
-            return cb;
+        baseCost: new Decimal(10000),
+        baseMultPer: new Decimal(2),
+        baseCostMult: new Decimal(10000),
+        baseCorpseMult: new Decimal(0),
+        cost: function() {
+            var c = this.baseCost;
+            c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
+            return c;
         },
-        prodBoost: function() {
-            var pb = new Decimal(1);
-            return pb;
+        corpseMult: function() {
+            var m = this.baseMultPer;
+            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
+            m = m.pow(player.units[this.tier].bought-1);
+            return m;
+        },
+        prodMult: function() {
+            var m = this.corpseMult().sqrt();
+            return m;
         },
         tier: 3,
         buttonID: "mageBut",
@@ -81,21 +91,24 @@ const START_UNITS = {
     4: {
         single: "banshee",
         plural: "banshees",
-        unlocked: false,
-        bought: new Decimal(0),
-        amount: new Decimal(0),
-        multPer: new Decimal(2),
-        costMult: new Decimal(1000000),
-        corpseMult: new Decimal(0),
-        prodMult: new Decimal(0),
-        cost: new Decimal(1000000),
-        corpseBoost: function() {
-            var cb = new Decimal(1);
-            return cb;
+        baseCost: new Decimal(1000000),
+        baseMultPer: new Decimal(2),
+        baseCostMult: new Decimal(1000000),
+        baseCorpseMult: new Decimal(0),
+        cost: function() {
+            var c = this.baseCost;
+            c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
+            return c;
         },
-        prodBoost: function() {
-            var pb = new Decimal(1);
-            return pb;
+        corpseMult: function() {
+            var m = this.baseMultPer;
+            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
+            m = m.pow(player.units[this.tier].bought-1);
+            return m;
+        },
+        prodMult: function() {
+            var m = this.corpseMult().sqrt();
+            return m;
         },
         tier: 4,
         buttonID: "bansheeBut",
@@ -107,21 +120,24 @@ const START_UNITS = {
     5: {
         single: "lich",
         plural: "liches",
-        unlocked: false,
-        bought: new Decimal(0),
-        amount: new Decimal(0),
-        multPer: new Decimal(2.2),
-        costMult: new Decimal(1e10),
-        corpseMult: new Decimal(0),
-        prodMult: new Decimal(0),
-        cost: new Decimal(1e9),
-        corpseBoost: function() {
-            var cb = new Decimal(1);
-            return cb;
+        baseCost: new Decimal(1e9),
+        baseMultPer: new Decimal(2.2),
+        baseCostMult: new Decimal(1e10),
+        baseCorpseMult: new Decimal(0),
+        cost: function() {
+            var c = this.baseCost;
+            c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
+            return c;
         },
-        prodBoost: function() {
-            var pb = new Decimal(1);
-            return pb;
+        corpseMult: function() {
+            var m = this.baseMultPer;
+            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
+            m = m.pow(player.units[this.tier].bought-1);
+            return m;
+        },
+        prodMult: function() {
+            var m = this.corpseMult().sqrt();
+            return m;
         },
         tier: 5,
         buttonID: "lichBut",
@@ -133,21 +149,24 @@ const START_UNITS = {
     6: {
         single: "behemoth",
         plural: "behemoths",
-        unlocked: false,
-        bought: new Decimal(0),
-        amount: new Decimal(0),
-        multPer: new Decimal(2.2),
-        costMult: new Decimal(1e11),
-        corpseMult: new Decimal(0),
-        prodMult: new Decimal(0),
-        cost: new Decimal(1e13),
-        corpseBoost: function() {
-            var cb = new Decimal(1);
-            return cb;
+        baseCost: new Decimal(1e13),
+        baseMultPer: new Decimal(2.2),
+        baseCostMult: new Decimal(1e11),
+        baseCorpseMult: new Decimal(0),
+        cost: function() {
+            var c = this.baseCost;
+            c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
+            return c;
         },
-        prodBoost: function() {
-            var pb = new Decimal(1);
-            return pb;
+        corpseMult: function() {
+            var m = this.baseMultPer;
+            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
+            m = m.pow(player.units[this.tier].bought-1);
+            return m;
+        },
+        prodMult: function() {
+            var m = this.corpseMult().sqrt();
+            return m;
         },
         tier: 6,
         buttonID: "beheBut",
@@ -159,21 +178,24 @@ const START_UNITS = {
     7: {
         single: "ancient one",
         plural: "ancient ones",
-        unlocked: false,
-        bought: new Decimal(0),
-        amount: new Decimal(0),
-        multPer: new Decimal(2.5),
-        costMult: new Decimal(1e12),
-        corpseMult: new Decimal(0),
-        prodMult: new Decimal(0),
-        cost: new Decimal(1e19),
-        corpseBoost: function() {
-            var cb = new Decimal(1);
-            return cb;
+        baseCost: new Decimal(1e19),
+        baseMultPer: new Decimal(2.5),
+        baseCostMult: new Decimal(1e12),
+        baseCorpseMult: new Decimal(0),
+        cost: function() {
+            var c = this.baseCost;
+            c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
+            return c;
         },
-        prodBoost: function() {
-            var pb = new Decimal(1);
-            return pb;
+        corpseMult: function() {
+            var m = this.baseMultPer;
+            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
+            m = m.pow(player.units[this.tier].bought-1);
+            return m;
+        },
+        prodMult: function() {
+            var m = this.corpseMult().sqrt();
+            return m;
         },
         tier: 7,
         buttonID: "oneBut",
@@ -185,21 +207,24 @@ const START_UNITS = {
     8: {
         single: "sun eater",
         plural: "sun eaters",
-        unlocked: false,
-        bought: new Decimal(0),
-        amount: new Decimal(0),
-        multPer: new Decimal(2.5),
-        costMult: new Decimal(1e15),
-        corpseMult: new Decimal(0),
-        prodMult: new Decimal(0),
-        cost: new Decimal(1e25),
-        corpseBoost: function() {
-            var cb = new Decimal(1);
-            return cb;
+        baseCost: new Decimal(1e25),
+        baseMultPer: new Decimal(2.5),
+        baseCostMult: new Decimal(1e15),
+        baseCorpseMult: new Decimal(0),
+        cost: function() {
+            var c = this.baseCost;
+            c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
+            return c;
         },
-        prodBoost: function() {
-            var pb = new Decimal(1);
-            return pb;
+        corpseMult: function() {
+            var m = this.baseMultPer;
+            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
+            m = m.pow(player.units[this.tier].bought-1);
+            return m;
+        },
+        prodMult: function() {
+            var m = this.corpseMult().sqrt();
+            return m;
         },
         tier: 8,
         buttonID: "sunBut",
@@ -212,15 +237,15 @@ const START_UNITS = {
 
 function resetUnits() {
     for (var z=NUM_UNITS; z>0; z--) {
-        units[z].amount = new Decimal(0);
-        units[z].bought = new Decimal(0);
+        player.units[z].amount = new Decimal(0);
+        player.units[z].bought = new Decimal(0);
     }
-    units = Object.assign({}, START_UNITS);
-    fixData(units, START_UNITS);
+    player.units = Object.assign({}, START_PLAYER.units);
+    fixData(player.units, START_PLAYER.units);
 }
 
 function canSpacePrestige() {
-    return units[player.nextSpaceReset[1]].bought.gte(player.nextSpaceReset[0]);
+    return player.units[player.nextSpaceReset[1]].bought.gte(player.nextSpaceReset[0]);
 }
 
 function spacePrestige() {
@@ -239,8 +264,7 @@ function spacePrestige() {
         player.corpses = new Decimal(START_PLAYER.corpses);
         allDisplay();
         for (var z=2; z<=NUM_UNITS; z++) {
-            document.getElementById(units[z].rowID).style.display = 'none';
-            units[z].unlocked = false;
+            document.getElementById(UNITS_DATA[z].rowID).style.display = 'none';
         }
         save();
         startInterval();
@@ -251,48 +275,37 @@ function canUnlock(tier) {
     return player.spaceResets.plus(5).gte(tier);
 }
 
-function canAfford(tier) {
-    return player.corpses.gte(units[tier].cost);
+function canAffordUnit(tier) {
+    return player.corpses.gte(UNITS_DATA[tier].cost());
 }
 
 function buySingleUnit(tier) {
-    if (canAfford(tier)) {
-        player.corpses = player.corpses.minus(units[tier].cost);
-        units[tier].amount = units[tier].amount.plus(1);
-        units[tier].bought = units[tier].bought.plus(1);
-        units[tier].corpseMult = units[tier].corpseMult.times(units[tier].multPer);
-        if (units[tier].bought.eq(1) && units[tier].corpseMult.eq(0)) { units[tier].corpseMult = new Decimal(1) }
-        units[tier].prodMult = units[tier].corpseMult.sqrt();
-        units[tier].cost = units[tier].cost.times(units[tier].costMult);
+    if (canAffordUnit(tier)) {
+        player.corpses = player.corpses.minus(UNITS_DATA[tier].cost());
+        player.units[tier].amount = player.units[tier].amount.plus(1);
+        player.units[tier].bought = player.units[tier].bought.plus(1);
         allDisplay();
     }
 }
 
 function buyMaxUnits(tier) {
-    if (canAfford(tier)) {
+    if (canAffordUnit(tier)) {
         var totalBought = calculateMaxUnits(tier);
         player.corpses = player.corpses.minus(calculateMaxUnitsCost(tier));
-        units[tier].cost = units[tier].cost.times(units[tier].costMult.pow(totalBought));
-        units[tier].amount = units[tier].amount.plus(totalBought);
-        units[tier].bought = units[tier].bought.plus(totalBought);
-        if (units[tier].bought.gte(1) && units[tier].corpseMult.eq(0)) { 
-            units[tier].corpseMult = new Decimal(1);
-            totalBought = totalBought.minus(1);
-        }
-        units[tier].corpseMult = units[tier].corpseMult.times(units[tier].multPer.pow(calculateMaxUnits(tier)));
-        units[tier].prodMult = units[tier].corpseMult.sqrt();
+        player.units[tier].amount = player.units[tier].amount.plus(totalBought);
+        player.units[tier].bought = player.units[tier].bought.plus(totalBought);
         allDisplay();
     }
 }
 
 function calculateMaxUnits(tier) {
     var count = 0;
-    if (canAfford(tier)) {    
+    if (canAffordUnit(tier)) {    
         var leftoverCorpses = player.corpses;
-        var newCost = units[tier].cost;
+        var newCost = UNITS_DATA[tier].cost();
         while (leftoverCorpses.gte(newCost)) {
             leftoverCorpses = leftoverCorpses.minus(newCost);
-            newCost = newCost.times(units[tier].costMult);
+            newCost = newCost.times(UNITS_DATA[tier].baseCostMult);
             count++;
         }
     }
@@ -304,7 +317,7 @@ function calculateMaxUnitsCost(tier) {
     var total = new Decimal(0);
     if (count > 0) {
         for (var i=0; i<count; i++) {
-            total = total.plus(units[tier].cost.times(units[tier].costMult.pow(i)));
+            total = total.plus(UNITS_DATA[tier].cost().times(UNITS_DATA[tier].baseCostMult.pow(i)));
         }
     }
     return total;
@@ -312,14 +325,14 @@ function calculateMaxUnitsCost(tier) {
 
 function getUnitProdPerSecond(tier) {
     if (tier == NUM_UNITS) { return new Decimal(0); }
-    return units[tier+1].amount.times(units[tier+1].prodMult).div(Decimal.pow(tier+1, 1.5));
+    return player.units[tier+1].amount.times(UNITS_DATA[tier+1].prodMult()).div(tier+1);
 }
 
 function getTotalProdMult(tier) {
     mult = new Decimal(1);
     if (tier <= NUM_UNITS) {
         for (var i = tier; i<=NUM_UNITS; i++) {
-            mult = mult.plus(units[i].prodMult.times(units[i].prodBoost()));
+            mult = mult.plus(UNITS_DATA[i].prodMult());
         }
     }
     return mult;
@@ -327,10 +340,10 @@ function getTotalProdMult(tier) {
 
 function singulizer(tier, number) {
     if (typeof number === 'Decimal') {
-        if (number.eq(1)) { return units[tier].single }
-        else { return units[tier].plural }
+        if (number.eq(1)) { return UNITS_DATA[tier].single }
+        else { return UNITS_DATA[tier].plural }
     } else {
-        if (number == 1) { return units[tier].single }
-        else { return units[tier].plural }
+        if (number == 1) { return UNITS_DATA[tier].single }
+        else { return UNITS_DATA[tier].plural }
     }
 }
