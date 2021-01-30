@@ -32,13 +32,12 @@ body {
     padding: 10px;
 }
 
-#helpPageDiv {
+.helpPageDiv {
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
     font-size: 14pt;
     line-height: 120%;
     text-align: center;
-    border: 1px solid white;
 }
 
 h1 {

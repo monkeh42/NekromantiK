@@ -47,6 +47,43 @@ function formatDefault2(decimal) {
 	else return formatWhole(decimal)
 }
 
+function formatUnitRow(decimal) {
+	decimal = new Decimal(decimal)
+	if (decimal.gte("1e100000")) return exponentialFormat(decimal, 0, false)
+	else if (decimal.gte("1e1000")) return exponentialFormat(decimal, 0)
+	else if (decimal.gte(1e6)) return exponentialFormat(decimal, 2)
+	else if (decimal.gte(1e3)) return commaFormat(decimal, 0)
+	else if (decimal.gt(0)) return commaFormat(decimal, 1)
+	else return formatWhole(decimal)
+}
+
+function formatUnitRow2(decimal) {
+	decimal = new Decimal(decimal)
+	if (decimal.gte("1e100000")) return exponentialFormat(decimal, 0, false)
+	else if (decimal.gte("1e1000")) return exponentialFormat(decimal, 0)
+	else if (decimal.gte(1e6)) return exponentialFormat(decimal, 2)
+	else if (decimal.gte(1e3)) return commaFormat(decimal, 0)
+	else if (decimal.gt(100)) return commaFormat(decimal, 1)
+	else if (decimal.gt(0)) return commaFormat(decimal, 2)
+	else return formatWhole(decimal)
+}
+
+function formatWholeUnitRow(decimal) {
+	decimal = new Decimal(decimal)
+	//if (decimal.gte(1e9)) return format(decimal, 2)
+	if (decimal.lte(0.98) && !decimal.eq(0)) return format(decimal, 2)
+	return formatUR(decimal, 0)
+}
+
+function formatUR(decimal, precision=2) {
+	decimal = new Decimal(decimal)
+	if (decimal.gte("1e100000")) return exponentialFormat(decimal, 0, false)
+	else if (decimal.gte("1e1000")) return exponentialFormat(decimal, 0)
+	else if (decimal.gte(1e6)) return exponentialFormat(decimal, precision)
+	else if (decimal.gte(1e3)) return commaFormat(decimal, 0)
+	else return commaFormat(decimal, precision)
+}
+
 function format(decimal, precision=2) {
 	decimal = new Decimal(decimal)
 	if (decimal.gte("1e100000")) return exponentialFormat(decimal, 0, false)

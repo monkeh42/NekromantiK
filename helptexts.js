@@ -27,6 +27,9 @@ const HELP_TEXTS = {
                     Here you can use Astral Bricks to improve the infrastructure of your hellish empire machine. These upgrades can be bought repeatedly and indefinitely, although the cost \
                     increases exponentially at very high levels.',
     },
+    'timeTab': {
+        'mainTab': '<h2>TIME WARP</h2>'
+    },
 }
 
 const UNLOCKS_DATA = {
@@ -90,6 +93,16 @@ const UNLOCKS_DATA = {
             }
         } ,
     },
+    'timeTab': {
+        'mainTab': {
+            unlocked: false,
+            idsToShow: ['timeTabCell'],
+            idsToHide: [],
+            condition: function() {
+                return player.spaceResets.gte(3);
+            }
+        },
+    }
 }
 
 function checkUnlocked(tab, unlock) {
