@@ -23,6 +23,7 @@ const HELP_TEXTS = {
         'factory': '<h2>FACTORY</h2>\
                     Here you will produce armaments for your savage hordes. The production rate is based on the number of zombies you have (base formula is log10(zombies+1)^0.5) - someone needs to work the factory, after all.<br>\
                     Death Factory upgrades are purchased with armaments and will improve the effects of your units.',
+        'sun': '<h2>DEAD SUN</h2>',
         'necropolis': '<h2>NECROPOLIS</h2>\
                     Your Necropolis trains acolytes to assist in channelling the astral void. The energies required to imbue mere mortals with this power is staggering, so you can only gain acolytes \
                     while you control the most powerful of undead beasts - the Sun Eaters (base formula is sun eaters^2).<br>\
