@@ -1,5 +1,5 @@
 const GAME_DATA = {
-    author: 'eggbraham',
+    author: 'monkeh42',
     version: 'v0.2.0',
 }
 
