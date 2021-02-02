@@ -243,6 +243,9 @@ function resetUnits() {
     }
     player.units = Object.assign({}, START_PLAYER.units);
     fixData(player.units, START_PLAYER.units);
+    for (var z=2; z<=NUM_UNITS; z++) {
+        document.getElementById(UNITS_DATA[z].rowID).style.display = 'none';
+    }
 }
 
 function canSpacePrestige() {
@@ -251,7 +254,8 @@ function canSpacePrestige() {
 
 function spacePrestige() {
     if (canSpacePrestige()) {
-        if (astralFlag) { toggleAstral(); }
+        if (!confirm("Are you sure? This will reset ALL of your corpses, units, and astral bricks.")) return
+        if (player.astralFlag) { toggleAstral(); }
         clearInterval(mainLoop);
         player.spaceResets = player.spaceResets.plus(1);
         player.worlds = player.worlds.plus(1);
@@ -264,9 +268,7 @@ function spacePrestige() {
         //unitSetup(START_PLAYER);
         player.corpses = new Decimal(START_PLAYER.corpses);
         allDisplay();
-        for (var z=2; z<=NUM_UNITS; z++) {
-            document.getElementById(UNITS_DATA[z].rowID).style.display = 'none';
-        }
+        
         save();
         startInterval();
     }

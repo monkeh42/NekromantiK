@@ -4,6 +4,7 @@ const BUILDS_DATA = {
         tier: 1,
         resource: 'armaments',
         cost: new Decimal(1000),
+        upgResource: 'armaments',
         pBase: function()  {
             var b = player.units[1].amount.plus(1).log10();
             return b;
@@ -20,6 +21,9 @@ const BUILDS_DATA = {
         resourceEff: function() {
             var r = new Decimal(1);
             return r;
+        },
+        canAffordUpg: function(upg) {
+            return player.buildings[this.tier].amount.gte(this.upgrades[upg].cost);
         },
         buildingButtonID: 'factoryBuild',
         buildingButtonClass: 'buildBut',
@@ -71,6 +75,7 @@ const BUILDS_DATA = {
         tier: 2,
         resource: 'acolytes',
         cost: new Decimal(1e5),
+        upgResource: 'astral bricks',
         pBase: function()  {
             var b = player.units[8].amount;
             return b;
@@ -88,6 +93,9 @@ const BUILDS_DATA = {
             if (player.buildings[2].amount.gt(0)) { r = r.plus(player.buildings[2].amount.log10()); }
             return r;
         },
+        canAffordUpg: function(upg) {
+            return player.bricks.gte(this.upgrades[upg].cost);
+        },
         buildingButtonID: 'necropolisBuild',
         buildingButtonClass: 'buildBut',
         buildingButtonUnclick: 'unclickableBuildBut',
@@ -98,13 +106,14 @@ const BUILDS_DATA = {
         upgradeBtnBought: 'boughtNecropolisUpg',
         upgrades: {
             11: {
-                title: 'TBD',
-                desc: 'perma-locked',
-                cost: new Decimal(1e1000),
+                title: 'Astral Kilns',
+                desc: 'Gain 25% more astral bricks for each OoM (order of magnitude) of astral bricks owned.',
+                cost: new Decimal(100000),
                 buttonID: 'necropolisUpg11',
                 displayEffect: true,
                 effect: function() {
-                    return new Decimal(1);
+                    var e = Decimal.floor(player.bricks.e);
+                    return Decimal.pow(1.25, e);
                 }
             },
             12: {
@@ -132,8 +141,9 @@ const BUILDS_DATA = {
     3: {
         id: 'dead sun',
         tier: 3,
-        resource: 'necro-photons',
+        resource: '',
         cost: new Decimal(1e1000),
+        upgResource: 'necro-photons',
         pBase: function()  {
             var b = player.units[1].amount.plus(1).log10();
             return b;
@@ -149,6 +159,9 @@ const BUILDS_DATA = {
         resourceEff: function() {
             var r = new Decimal(1);
             return r;
+        },
+        canAffordUpg: function(upg) {
+            return player.buildings[this.tier].amount.gte(this.upgrades[upg].cost);
         },
         buildingButtonID: 'sunBuild',
         buildingButtonClass: 'buildBut',
@@ -199,6 +212,7 @@ const CONSTR_DATA = {
         desc: 'Increases the base corpse multiplier of zombies by 5% per level.',
         tier: 1,
         baseCost: new Decimal(100),
+        isTimes: true,
         cost: function() {
             var c = this.baseCost;
             return c.times(Decimal.pow(this.costMult, player.construction[this.tier]));
@@ -214,12 +228,13 @@ const CONSTR_DATA = {
         title: 'Factory Expansion',
         desc: 'Add .02 to the armament gain exponent per level.',
         tier: 2,
-        baseCost: new Decimal(500),
+        baseCost: new Decimal(250),
+        isTimes: false,
         cost: function() {
             var c = this.baseCost;
             return c.times(Decimal.pow(this.costMult, player.construction[this.tier]));
         },
-        costMult: 10,
+        costMult: 5,
         buttonID: 'constrUpg2',
         displayEffect: true,
         effect: function() {
@@ -231,6 +246,7 @@ const CONSTR_DATA = {
         desc: 'perma-locked',
         tier: 3,
         baseCost: new Decimal(1e1000),
+        isTimes: true,
         cost: function() {
             var c = this.baseCost;
             return c.times(Decimal.pow(this.costMult, player.construction[this.tier]));
@@ -247,6 +263,7 @@ const CONSTR_DATA = {
         desc: 'perma-locked',
         tier: 4,
         baseCost: new Decimal(1e1000),
+        isTimes: true,
         cost: function() {
             var c = this.baseCost;
             return c.times(Decimal.pow(this.costMult, player.construction[this.tier]));
@@ -325,7 +342,7 @@ function getUpgEffect(b, u) {
 }
 
 function canAffordBUpg(b, u) {
-    return player.buildings[b].amount.gte(getUpgCost(b, u));
+    return BUILDS_DATA[b].canAffordUpg(u);
 }
 
 function canAffordBuilding(b) {
@@ -335,8 +352,6 @@ function canAffordBuilding(b) {
 function getBuildingProdPerSec(b) {
     return BUILDS_DATA[b].prod();
 }
-
-var astralFlag = false;
 
 function buyBuilding(b) {
     if (canAffordBuilding(b)) {
@@ -361,22 +376,34 @@ function buyCUpg(c) {
 }
 
 function resetBuildingResources() {
-    if (astralFlag) { toggleAstral(); }
-    player.bricks = new Decimal(0);
+    if (player.astralFlag) { toggleAstral(); }
+    player.bricks = new Decimal(START_PLAYER.bricks);
     for (var b in BUILDS_DATA) {
-        player.buildings[b].amount = new Decimal(0);
+        player.buildings[b].amount = new Decimal(START_PLAYER.buildings[b].amount);
+    }
+}
+
+function resetBuildings() {
+    if (player.astralFlag) { toggleAstral(); }
+    player.buildings = Object.assign({}, START_PLAYER.buildings);
+    fixData(player.buildings, START_PLAYER.buildings);
+    player.construction = Object.assign({}, START_PLAYER.construction);
+    fixData(player.construction, START_PLAYER.construction);
+    for (var b in BUILDS_DATA) {
+        document.getElementById(BUILDS_DATA[b].buildingRowID).style.display = 'table-row';
+        document.getElementById(BUILDS_DATA[b].upgradesRowID).style.display = 'none';
     }
 }
 
 function toggleAstral() {
-    if (!astralFlag) {
-        astralFlag = true;
+    if (!player.astralFlag) {
+        player.astralFlag = true;
         document.getElementById('brickGainDiv').style.display = 'block';
         document.getElementById('astralToggle').className = 'astralOn';
         document.getElementById('astralText').innerHTML = 'disable';
         document.getElementById('astralNotice').style.display = 'block';
     } else {
-        astralFlag = false;
+        player.astralFlag = false;
         document.getElementById('brickGainDiv').style.display = 'none';
         document.getElementById('astralToggle').className = 'astralBut';
         document.getElementById('astralText').innerHTML = 'enable';

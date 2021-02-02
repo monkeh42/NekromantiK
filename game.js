@@ -1,5 +1,6 @@
 const GAME_DATA = {
-    version: 'v0.1.2',
+    author: 'eggbraham',
+    version: 'v0.2.0',
 }
 
 const NUM_UNITS = 8;
@@ -103,8 +104,42 @@ const START_PLAYER = {
         4: new Decimal(0),
     },
 
+    timeDims: {
+        1: {
+            unlocked: true,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        2: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        3: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        4: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+    },
+
     bricks: new Decimal(0),
     brickGainExp: 0.2,
+    astralFlag: false,
+
+    crystals: new Decimal(0),
+    trueEssence: new Decimal(0),
+    truePercent: 50,
+    antiPercent: 50,
+    antiEssence: new Decimal(0),
+    timeResets: new Decimal(0),
+    totalTimeResets: new Decimal(0),
+    totalCrystals: new Decimal(0),
+    timeLocked: false,
     
     totalCorpses: new Decimal(0),
     totalWorlds: new Decimal(0),
@@ -143,6 +178,8 @@ function init() {
 }
 
 function updateSliderDisplay() {
+    player.truePercent = 100 - document.getElementById('timeSlider').value;
+    player.antiPercent = document.getElementById('timeSlider').value;
     document.getElementById('sliderValueRight').innerHTML = document.getElementById('timeSlider').value;
     document.getElementById('sliderValueLeft').innerHTML = 100 - document.getElementById('timeSlider').value;
 }
@@ -219,6 +256,7 @@ function getCorpsesPerSecond() {
 function getBricksPerSecond() {
     var b = getCorpsesPerSecond().pow(player.brickGainExp);
     if (isBuilt(2)) { b = b.times(getResourceEff(2)) }
+    if (hasUpgrade(2, 11)) { b = b.times(getUpgEffect(2, 11)); }
     return b;
 }
 
@@ -257,7 +295,7 @@ function updateCorpseDisplay() {
     document.getElementById('corpseAmount').innerHTML = ` ${formatDefault(player.corpses)} `;
     document.getElementById('pluralCorpse').innerHTML = corpseSingulizer(false);
     document.getElementById('pluralCorpseG').innerHTML = corpseSingulizer(true);
-    document.getElementById('corpseGain').innerHTML = ` ${(astralFlag ? formatWhole(0) : formatDefault(getCorpsesPerSecond()))} `;
+    document.getElementById('corpseGain').innerHTML = ` ${(player.astralFlag ? formatWhole(0) : formatDefault(getCorpsesPerSecond()))} `;
     document.getElementById('totalMult').innerHTML = `${formatDefault2(getCorpseMultFromUnits())}x`;
     document.getElementById('worldsMult').innerHTML = `${formatDefault2(getWorldsBonus())}x`;
     document.getElementById('worldsNum').innerHTML = `${formatWhole(player.worlds)}`;
@@ -274,6 +312,24 @@ function updateUnitDisplay(tier) {
     document.getElementById(UNITS_DATA[tier].maxID).innerHTML = canAffordUnit(tier) ? `Max: ${calculateMaxUnits(tier)} for &#162;${formatWhole(calculateMaxUnitsCost(tier))}` : "Max: 0";
 }
 
+function updateTimeDimDisplay(tier) {
+    document.getElementById(TIME_DATA[tier].amountID).innerHTML = "<div style=\"min-width: 30%; float: left;\">" + formatUnitRow(player.timeDims[tier].amount) + "</div><div style=\"min-width: 30%; float: left;\">(" + formatWholeUnitRow(player.timeDims[tier].bought) + ")</div><div style=\"min-width: 40%; float: left;\">" + (getTimeDimProdPerSecond(tier+1).gt(0) ? "(+" + formatDefault(Decimal.times((getTimeDimProdPerSecond(tier+1).div(player.timeDims[tier].amount.max(1))), 100), 2) + "%/s)</div>" : "");
+    document.getElementById(TIME_DATA[tier].multID).innerHTML = "<div>" + formatUnitRow2(TIME_DATA[tier].mult()) + "x</div>";
+    document.getElementById(TIME_DATA[tier].buttonID).innerHTML = "Cost: " + formatWhole(TIME_DATA[tier].cost()) + " crystals";
+    document.getElementById(TIME_DATA[tier].maxID).innerHTML = canAffordTime(tier) ? `Max: ${calculateMaxTime(tier)} for &#162;${formatWhole(calculateMaxTimeCost(tier))}` : "Max: 0";
+}
+
+function updateTimeDisplay() {
+    document.getElementById('trueTimeAmt').innerHTML = formatDefault(player.trueEssence);
+    document.getElementById('antiTimeAmt').innerHTML = formatDefault(player.antiEssence);
+    document.getElementById('trueTimeGain').innerHTML = formatDefault(getTimeDimProdPerSecond(1).times((100-document.getElementById('timeSlider').value)/100));
+    document.getElementById('antiTimeGain').innerHTML = formatDefault(getTimeDimProdPerSecond(1).times(document.getElementById('timeSlider').value/100));
+    document.getElementById('trueTimeBuff').innerHTML = formatDefault2(getTrueTimeBuff());
+    document.getElementById('antiTimeBuff').innerHTML = formatDefault2(getAntiTimeBuff());
+    document.getElementById('trueTimeNerf').innerHTML = formatDefault2(getTrueTimeNerf());
+    document.getElementById('antiTimeNerf').innerHTML = formatDefault2(getAntiTimeNerf());
+}
+
 function updateUnlocks() {
     for (var tab in UNLOCKS_DATA) {
         for (var key in UNLOCKS_DATA[tab]) {
@@ -286,11 +342,17 @@ function updateUnlocks() {
             player.units[i+1].unlocked = true;
         } 
     }
+    for (var i=1; i<NUM_TIMEDIMS; i++) {
+        if (player.timeDims[i].bought.gte(1)) {
+            player.timeDims[i+1].unlocked = true;
+        } 
+    }
 }
 
 function updateHTML() {
     var element;
     var bUpgs;
+    document.getElementById('versionNumber').innerHTML = GAME_DATA.version;
     for (var tab in UNLOCKS_DATA) {
         for (var key in UNLOCKS_DATA[tab]) {
             if (player.unlocks[tab][key]) {
@@ -303,6 +365,16 @@ function updateHTML() {
                 for (var idd in UNLOCKS_DATA[tab][key].idsToHide) {
                     document.getElementById(UNLOCKS_DATA[tab][key].idsToHide[idd]).style.display = 'none';
                 }
+            } else {
+                for (var id in UNLOCKS_DATA[tab][key].idsToShow) {
+                    document.getElementById(UNLOCKS_DATA[tab][key].idsToShow[id]).style.display = 'none';
+                }
+                for (var idd in UNLOCKS_DATA[tab][key].idsToHide) {
+                    element = document.getElementById(UNLOCKS_DATA[tab][key].idsToHide[idd]);
+                    if (element.tagName == 'TR') { element.style.display = 'table-row'; } 
+                    else if (element.tagName == 'TD') { element.style.display = 'table-cell'; }
+                    else { element.style.display = 'block'; }
+                }
             }
         }
     }
@@ -313,6 +385,13 @@ function updateHTML() {
             document.getElementById(UNITS_DATA[i].maxID).className = canAffordUnit(i) ? "unitMax" : 'unclickableMax';
         }
     }
+    for (var i=1; i<=NUM_TIMEDIMS; i++) {
+        if (player.timeDims[i].unlocked) {
+            document.getElementById(TIME_DATA[i].rowID).style.display = 'table-row';
+            document.getElementById(TIME_DATA[i].buttonID).className = canAffordTime(i) ? 'unitButT' : 'unclickableUnit';
+            document.getElementById(TIME_DATA[i].maxID).className = canAffordTime(i) ? "unitMaxT" : 'unclickableMax';
+        }
+    }
     for (var b in BUILDS_DATA) {
         if (canAffordBuilding(b)) { document.getElementById(BUILDS_DATA[b].buildingButtonID).className = BUILDS_DATA[b].buildingButtonClass; }
         else { document.getElementById(BUILDS_DATA[b].buildingButtonID).className = BUILDS_DATA[b].buildingButtonUnclick; }
@@ -321,34 +400,57 @@ function updateHTML() {
                 if (hasUpgrade(b, u)) { document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).className = BUILDS_DATA[b].upgradeBtnBought }
                 else if (canAffordBUpg(b, u)) { document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).className = BUILDS_DATA[b].upgradeBtnClass }
                 else { document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).className = BUILDS_DATA[b].upgradeBtnUnclick }
-                document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).innerHTML = "<span style=\"font-weight: 900;\">" + getUpgName(b, u) + "</span><br>" + getUpgDesc(b, u) + "<br>Cost: " + formatDefault(getUpgCost(b, u)) + " " + BUILDS_DATA[b].resource + (isDisplayEffect(b, u) ? ("<br>Currently: " + formatDefault2(getUpgEffect(b, u)) + "x") : "");
+                document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).innerHTML = "<span style=\"font-weight: 900;\">" + getUpgName(b, u) + "</span><br>" + getUpgDesc(b, u) + "<br>Cost: " + formatDefault(getUpgCost(b, u)) + " " + BUILDS_DATA[b].upgResource + (isDisplayEffect(b, u) ? ("<br>Currently: " + formatDefault2(getUpgEffect(b, u)) + "x") : "");
             }
         }
     }
     for (var c in CONSTR_DATA) {
         if (canAffordCUpg(c)) { document.getElementById(CONSTR_DATA[c].buttonID).className = 'constrUpg' }
         else { document.getElementById(CONSTR_DATA[c].buttonID).className = 'unclickableConstrUpg' }
-        document.getElementById(CONSTR_DATA[c].buttonID).innerHTML = "<span style=\"font-weight: 900;\">" + getCUpgName(c) + "</span><br>" + getCUpgDesc(c) + "<br>Cost: " + getCUpgCost(c) + " astral bricks" + "<br>Current level: " + formatWhole(player.construction[c]) + (isDisplayEffectC(c) ? ("<br>Currently: " + formatDefault2(getCUpgEffect(c)) + "x") : "");
+        if (CONSTR_DATA[c].isTimes) { document.getElementById(CONSTR_DATA[c].buttonID).innerHTML = "<span style=\"font-weight: 900;\">" + getCUpgName(c) + "</span><br>" + getCUpgDesc(c) + "<br>Cost: " + getCUpgCost(c) + " astral bricks" + "<br>Current level: " + formatWhole(player.construction[c]) + (isDisplayEffectC(c) ? ("<br>Currently: " + formatDefault2(getCUpgEffect(c)) + "x") : ""); }
+        else { document.getElementById(CONSTR_DATA[c].buttonID).innerHTML = "<span style=\"font-weight: 900;\">" + getCUpgName(c) + "</span><br>" + getCUpgDesc(c) + "<br>Cost: " + getCUpgCost(c) + " astral bricks" + "<br>Current level: " + formatWhole(player.construction[c]) + (isDisplayEffectC(c) ? ("<br>Currently: +" + formatDefault2(getCUpgEffect(c))) : ""); }
+    }
+    if (player.timeLocked) {
+        document.getElementById('lockInTimeBut').className = 'unclickSliderBut';
+        document.getElementById('respecTimeBut').className = 'timeSliderBut';
+        document.getElementById('timeSlider').className = 'sliderLocked';
+        document.getElementById('timeSlider').setAttribute('disabled', true);
+
+    } else {
+        document.getElementById('lockInTimeBut').className = 'timeSliderBut';
+        document.getElementById('respecTimeBut').className = 'unclickSliderBut';
+        document.getElementById('timeSlider').className = 'slider';
+        document.getElementById('timeSlider').setAttribute('disabled', false);
     }
 }
 
 function updatePrestige() {
     document.getElementById('spacePrestige').className =  (canSpacePrestige() ? 'prestigeBut' : 'unclickablePrestige');
     if (player.spaceResets.lt(3)) {
+        document.getElementById('spacePresDesc').style.display = 'block';
         if (player.spaceResets.gt(1)) {
-            document.getElementById('spacePresUnlock').innerHTML = 'Time Warp (coming soon)';
+            document.getElementById('spacePresUnlock').innerHTML = 'Time Warp';
         } else if (player.spaceResets.gt(0)) {
             document.getElementById('spacePresUnlock').innerHTML = 'Construction Upgrades';
         } else {
             document.getElementById('spacePresUnlock').innerHTML = 'Buildings';
         }
-    } else { document.getElementById('spacePresDesc').innerHTML = "<br><br><br>"; }
+    } else { document.getElementById('spacePresDesc').style.display = 'none'; }
     document.getElementById('prestigeReq').innerHTML = "Requires <span style=\"font-size: 17pt; white-space: pre;\"> " + formatWhole(player.nextSpaceReset[0]) + " </span> " + singulizer(player.nextSpaceReset[1], player.nextSpaceReset[0]);
+    document.getElementById('timePrestige').className =  (canTimePrestige() ? 'timePrestigeBut' : 'unclickablePrestige');
+    if (canTimePrestige()) {
+        document.getElementById('timePrestigeReq').style.display = 'none';
+        document.getElementById('timePrestigeGainDesc').style.display = 'block';
+    } else {
+        document.getElementById('timePrestigeReq').style.display = 'block';
+        document.getElementById('timePrestigeGainDesc').style.display = 'none';
+    }
+    document.getElementById('timePrestigeGain').innerHTML = formatWhole(calculateCrystalGain());
 }
 
 function updateBuildings() {
     document.getElementById('brickDisplay').innerHTML = formatDefault(player.bricks);
-    document.getElementById('brickGainDisplay').innerHTML = ` ${(astralFlag ? formatDefault(getBricksPerSecond()) : formatWhole(0))} `;
+    document.getElementById('brickGainDisplay').innerHTML = ` ${(player.astralFlag ? formatDefault(getBricksPerSecond()) : formatWhole(0))} `;
     document.getElementById('factoryProd').innerHTML = formatDefault(getBuildingProdPerSec(1));
     document.getElementById('factoryAmt').innerHTML = formatDefault(player.buildings[1].amount);
     document.getElementById('factoryBuildLabel').innerHTML = BUILDS_DATA[1].id;
@@ -367,10 +469,17 @@ function allDisplay() {
     for (var i=1; i<=(NUM_UNITS); i++) {
         updateUnitDisplay(i);
     }
+    for (var i=1; i<=(NUM_TIMEDIMS); i++) {
+        updateTimeDimDisplay(i);
+    }
     updateCorpseDisplay();
+    updateTimeDisplay();
     updatePrestige();
     updateBuildings();
-    updateHTML()
+    updateHTML();
+    document.getElementById('sliderValueRight').innerHTML = player.antiPercent;
+    document.getElementById('sliderValueLeft').innerHTML = player.truePercent;
+    document.getElementById('timeSlider').value = player.antiPercent;
 }
 
 function getWorldsBonus() {
@@ -467,9 +576,11 @@ function startInterval() {
     mainLoop = setInterval(function () {
         var currentUpdate = new Date().getTime();
         var diff = currentUpdate - player.lastUpdate;
-        if (astralFlag) { diff = diff/10; }
-        if (DEV_SPEED>0) { diff = diff*DEV_SPEED; }
-        if (astralFlag) {
+        var timeBuff = player.astralFlag ? getAntiTimeBuff().div(10) : getTrueTimeBuff();
+        diff = timeBuff.times(diff);
+        var realDiff = diff.div(timeBuff);
+        if (DEV_SPEED>0) { diff = diff.times(DEV_SPEED); }
+        if (player.astralFlag) {
             player.bricks = player.bricks.plus(getBricksPerSecond().times(diff/1000));
         } else {
             player.corpses = player.corpses.plus(getCorpsesPerSecond().times(diff/1000));
@@ -477,6 +588,15 @@ function startInterval() {
         player.totalCorpses = player.totalCorpses.plus(getCorpsesPerSecond().times(diff/1000));
         for (var i=1; i<NUM_UNITS; i++) {
             player.units[i].amount = player.units[i].amount.plus(getUnitProdPerSecond(i).times(diff/1000));
+        }
+        if (player.timeLocked) {
+            for (var i=1; i<NUM_TIMEDIMS; i++) {
+                if (i==1) {
+                    player.trueEssence = player.trueEssence.plus(getTimeDimProdPerSecond(i).times(realDiff/1000).times(player.truePercent/100));
+                    player.antiEssence = player.antiEssence.plus(getTimeDimProdPerSecond(i).times(realDiff/1000).times(player.antiPercent/100));
+                }
+                else { player.units[i-1].amount = player.units[i-1].amount.plus(getTimeDimProdPerSecond(i).times(realDiff/1000)); }
+            }
         }
         for (var b in BUILDS_DATA) {
             if (isBuilt(b)) {

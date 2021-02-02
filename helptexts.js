@@ -4,7 +4,7 @@ const HELP_TEXTS = {
                     Here you buy undead creatures with corpses.<br>\
                     Each zombie produces one corpse per second directly, while all other units produce the unit one tier below them at a rate of 1/tier per unit per second.<br>\
                     Each unit also has a corpse multiplier that multiplies your total corpse gain (additively), and a unit multiplier, which multiplies the unit production of that tier and the tier below it. (additively). \
-                    Every time you purchase one of a unit after the first, its cost and corpse multiplier are multiplied by constants. The unit multiplier is always equal to the square root of the corpse multiplier.<br>\
+                    Every time you purchase one of a unit after the first, its cost and corpse multiplier are multiplied by constants. The base unit multiplier is always equal to the square root of the corpse multiplier.<br>\
                     Cost multipliers by unit tier (first tier = zombies): 100, 1e4, 1e4, 1e6, 1e10, 1e11, 1e12, 1e15.<br>\
                     Multiplier multipliers by unit tier: 1.75, 2, 2, 2, 2.2, 2.2, 2.5, 2.5.',
         'spacePrestige': '<h2>NEW WORLDS</h2>\
@@ -31,7 +31,17 @@ const HELP_TEXTS = {
                     increases exponentially at very high levels.',
     },
     'timeTab': {
-        'mainTab': '<h2>TIME WARP</h2>'
+        'mainTab': '<h2>TIME WARP</h2>\
+                    THIS LAYER IS PROBABLY VERY UNBALANCED, STILL TESTING.<br>\
+                    Here you will use Time Crystals to purchase Time Dimensions, which produce Time Essence in two varieties - True Time and Anti Time.<br>\
+                    To gain Time Crystals, you need to Sacrifice. You need at least 1e20 corpses to sacrifice, and it will reset ALL of your progress up to unlocking Time Warp (your corpses, units, conquered worlds, \
+                    astral bricks, buildings, building upgrades, and construction upgrades). You will gain time crystals based on the amount of corpses you have when you sacrifice. (base formula is floor(10^(corpses mod(1e20) - 0.5)))<br>\
+                    Time Dimensions work similarly to units. Each 1st dimension produces 1 time essence per second times the 1st dimension multiplier, which doubles with each 1st dimension purchased. Each higher tier dimension produces 1 per second of the tier below it, \
+                    multiplied by that tier\'s multiplier. Unlike units, each dimension\'s multiplier increases at the same rate (x2 with each purchase) and the full multiplier is applied to production; however, the higher tier multipliers don\'t apply directly to essence production.<br>\
+                    You can set the percentage of production from Time Dimensions put towards True/Anti Time Essence however you\'d like, but you can\'t change this setting without doing a sacrifice reset. You won\'t start Time Essence production until you click "lock in", which will disable the slider.<br>\
+                    True Time Essence increases the multiplier to normal time speed, while Anti Time Essence increases the multiplier to time speed during Astral Enslavement. The Anti Time Essence boost is twice as powerful as the True Time Essence boost. \
+                    True Time Essence also divides the Anti Time Essence effect, and vice versa, so you receive the strongest boost for either by setting the slider all the way to one side, but then you won\'t receive any boost at all for the Essence that isn\'t producing.<br>\
+                    Final note: the Time Essence effects don\'t apply at all to time dimensions or essence production, and neither does the time speed nerf from Astral Enslavement.'
     },
 }
 
