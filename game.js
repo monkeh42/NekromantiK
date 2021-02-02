@@ -328,6 +328,7 @@ function updateTimeDisplay() {
     document.getElementById('antiTimeBuff').innerHTML = formatDefault2(getAntiTimeBuff());
     document.getElementById('trueTimeNerf').innerHTML = formatDefault2(getTrueTimeNerf());
     document.getElementById('antiTimeNerf').innerHTML = formatDefault2(getAntiTimeNerf());
+    document.getElementById('crystalAmt').innerHTML = formatWhole(player.crystals);
 }
 
 function updateUnlocks() {
@@ -445,7 +446,7 @@ function updatePrestige() {
         document.getElementById('timePrestigeReq').style.display = 'block';
         document.getElementById('timePrestigeGainDesc').style.display = 'none';
     }
-    document.getElementById('timePrestigeGain').innerHTML = formatWhole(calculateCrystalGain());
+    document.getElementById('timePrestigeGain').innerHTML = ' ' + formatWhole(calculateCrystalGain()) + ' ';
 }
 
 function updateBuildings() {
