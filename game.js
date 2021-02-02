@@ -328,7 +328,7 @@ function updateTimeDisplay() {
     document.getElementById('antiTimeBuff').innerHTML = formatDefault2(getAntiTimeBuff());
     document.getElementById('trueTimeNerf').innerHTML = formatDefault2(getTrueTimeNerf());
     document.getElementById('antiTimeNerf').innerHTML = formatDefault2(getAntiTimeNerf());
-    document.getElementById('crystalAmt').innerHTML = formatWhole(player.crystals);
+    document.getElementById('crystalAmt').innerHTML = ' ' + formatWhole(player.crystals) + ' ';
 }
 
 function updateUnlocks() {
