@@ -190,7 +190,7 @@ function getAntiTimeNerf() {
 }
 
 function canTimePrestige() {
-    return player.corpses.gte(new Decimal(1e25));
+    return player.corpses.gte(new Decimal(1e20));
 }
 
 function respecTime() {

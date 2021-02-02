@@ -406,7 +406,6 @@ button:focus {
     width: 500px;
     height: 175px;
     border: 1px solid #4b4b4b;
-    cursor: pointer;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
     font-weight: 500;
