@@ -1,4 +1,4 @@
-//i stole this whole thing from the modding tree
+//i stole this mostly from the modding tree and made some edits
 
 function exponentialFormat(num, precision, mantissa = true) {
 	let e = new Decimal(num.log10()).floor()
@@ -100,5 +100,5 @@ function formatWhole(decimal) {
 	return format(decimal, 0)
 }
 
-//end stolen from jacorb
+//end stolen
 
