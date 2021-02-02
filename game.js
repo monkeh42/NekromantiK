@@ -420,7 +420,7 @@ function updateHTML() {
         document.getElementById('lockInTimeBut').className = 'timeSliderBut';
         document.getElementById('respecTimeBut').className = 'unclickSliderBut';
         document.getElementById('timeSlider').className = 'slider';
-        document.getElementById('timeSlider').setAttribute('disabled', false);
+        document.getElementById('timePrestige').removeAttribute('disabled');
     }
 }
 

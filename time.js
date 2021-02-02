@@ -219,6 +219,7 @@ function timePrestigeReset() {
     player.unlocks['buildingsTab'] = Object.assign({}, START_PLAYER.unlocks['buildingsTab']);
     fixData(player.unlocks['unitsTab'], START_PLAYER.unlocks['unitsTab']);
     fixData(player.unlocks['buildingsTab'], START_PLAYER.unlocks['buildingsTab']);
+    document.getElementById('timePrestige').removeAttribute('disabled');
     allDisplay();
     save();
     startInterval();
