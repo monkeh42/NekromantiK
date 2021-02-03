@@ -268,8 +268,8 @@ const BUILDS_DATA = {
                 }
             },
             13: {
-                title: 'NEW STUUUUUFF',
-                desc: 'Unlock the next layer.<br>PERMA-LOCKED',
+                title: 'Nekro-Time',
+                desc: 'Unlock Time Upgrades.<br>PERMA-LOCKED',
                 cost: new Decimal("Infinity"),
                 buttonID: 'sunUpg13',
                 displayEffect: false,
