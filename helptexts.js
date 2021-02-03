@@ -36,7 +36,7 @@ const HELP_TEXTS = {
     },
     'timeTab': {
         'mainTab': '<h2>TIME WARP</h2>\
-                    BEWARE, THIS LAYER IS ONLY BALANCED UP TO 2 FIRST TIME DIMENSIONS.<br>\
+                    BEWARE, THIS LAYER IS ONLY TESTED/BALANCED UP TO 2 FIRST TIME DIMENSIONS.<br>\
                     Here you will use Time Crystals to purchase Time Dimensions, which produce Time Essence in two varieties - True Time and Anti Time.<br>\
                     To gain Time Crystals, you need to Sacrifice. You need at least 1e20 corpses to sacrifice, and it will reset ALL of your progress up to unlocking Time Warp (your corpses, units, conquered worlds, \
                     astral bricks, buildings, building upgrades, and construction upgrades) plus any time essence you\'ve produced. You will gain time crystals based on the amount of corpses you have when you sacrifice. (base formula is floor(10^(corpses_exponent/20 - 0.45)))<br>\
