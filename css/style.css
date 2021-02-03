@@ -481,6 +481,7 @@ button:focus {
     height: 100px;
     line-height: 50px;
     border: 1px solid #006ba0;
+    margin-bottom: 5px;
     color: #006ba0;
     font-size: 22pt;
     font-weight: 800;
@@ -493,6 +494,7 @@ button:focus {
     height: 100px;
     line-height: 50px;
     border: 1px solid #006ba0;
+    margin-bottom: 5px;
     color: #006ba0;
     font-size: 22pt;
     font-weight: 800;

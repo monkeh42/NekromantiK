@@ -335,10 +335,10 @@ function updateTimeDimDisplay(tier) {
 }
 
 function updateTimeDisplay() {
-    document.getElementById('trueTimeAmt').innerHTML = formatDefault(player.trueEssence);
-    document.getElementById('antiTimeAmt').innerHTML = formatDefault(player.antiEssence);
-    document.getElementById('trueTimeGain').innerHTML = formatDefault(getTimeDimProdPerSecond(1).times((100-document.getElementById('timeSlider').value)/100));
-    document.getElementById('antiTimeGain').innerHTML = formatDefault(getTimeDimProdPerSecond(1).times(document.getElementById('timeSlider').value/100));
+    document.getElementById('trueTimeAmt').innerHTML = formatUnitRow(player.trueEssence);
+    document.getElementById('antiTimeAmt').innerHTML = formatUnitRow(player.antiEssence);
+    document.getElementById('trueTimeGain').innerHTML = formatUnitRow(getTimeDimProdPerSecond(1).times((100-document.getElementById('timeSlider').value)/100));
+    document.getElementById('antiTimeGain').innerHTML = formatUnitRow(getTimeDimProdPerSecond(1).times(document.getElementById('timeSlider').value/100));
     document.getElementById('trueTimeBuff').innerHTML = formatDefault2(getTrueTimeBuff());
     document.getElementById('antiTimeBuff').innerHTML = formatDefault2(getAntiTimeBuff());
     document.getElementById('trueTimeNerf').innerHTML = formatDefault2(getTrueTimeNerf());

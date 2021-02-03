@@ -427,27 +427,39 @@
                 <tr>
                     <td width="100px;">
                         <div class="timeLabelLeft">TRUE<br>TIME</div>
+                        <div><span id="trueTimeAmt" style="color: #006ba0; font-weight: 800;">0</span><br>essence</span><br>+<span id="trueTimeGain" style="color: #006ba0; font-weight: 800;">0</span><br>per sec</div>
                     </td>
-                    <td><div style="width: 100%;">You have <span id="crystalAmt" style="font-size: 17pt; white-space: pre; color: #006ba0;"> 0 </span> <span id="crystalsTextAmt" class="timeResourceTexts">time crystals</span></div>
+                    <td><div style="width: 100%;">You have <span id="crystalAmt" style="font-size: 17pt; white-space: pre; color: #006ba0; font-weight: 800;"> 0 </span> <span id="crystalsTextAmt" class="timeResourceTexts">time crystals</span></div>
                         <div style="min-width: 100%; min-height: 30px;"></div>
                         <div style="width: 50%; float: left;">Your True Time Essence speeds up normal time by<br><span id="trueTimeBuff" style="font-size: 16pt;">1</span>x<br> but it divides the Anti Time Essence effect by<br><span id="trueTimeNerf" style="font-size: 16pt;">1</span></div>
                         <div style="width: 50%; float: left;">Your Anti Time Essence speeds up astral time by<br><span id="antiTimeBuff" style="font-size: 16pt;">1</span>x<br> but it divides the True Time Essence effect by<br><span id="antiTimeNerf" style="font-size: 16pt;">1</span></div>
                     </td>
                     <td width="100px;">
                         <div class="timeLabelRight">ANTI<br>TIME</div>
+                        <div><span id="antiTimeAmt" style="color: #006ba0; font-weight: 800;">0</span><br>essence</span><br>+<span id="antiTimeGain" style="color: #006ba0; font-weight: 800;">0</span><br>per sec</div>
                     </td>
                 </tr>
                 <tr>
-                    <td><span id="trueTimeAmt" style="color: #006ba0">0</span><br>essence</span><br>+<span id="trueTimeGain" style="color: #006ba0">0</span><br>per sec</td>
+                    <td></td>
                     <td>Time Dimensions are not affected by the astral enslavement time nerf or either Time Essence boost.
-                    <td><span id="antiTimeAmt" style="color: #006ba0">0</span><br>essence</span><br>+<span id="antiTimeGain" style="color: #006ba0">0</span><br>per sec</td>
+                    <td></td>
+                </tr>
+            </table>
+            <table style="width: 75%; margin: auto; margin-top: 20px; text-align: center;">
+                <tr>
+                    <td width="10%">
+                        <div style="float: left;"><span id="sliderValueLeft" style="font-size: 16pt;">50</span>%</div>
+                    </td>
+                    <td width="80%">
+                        <div><button id="lockInTimeBut" class="timeSliderBut" onclick="lockInTime()">Lock in and begin time production</button></div>
+                    </td>
+                    <td width="10%">
+                        <div style="float: right;"><span id="sliderValueRight" style="font-size: 16pt;">50</span>%</div>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="3">
-                        <div><button id="lockInTimeBut" class="timeSliderBut" onclick="lockInTime()">Lock in and begin time production</button></div>
                         <div class="slidecontainer" style="text-align: center;">
-                            <div style="float: left;"><span id="sliderValueLeft" style="font-size: 16pt;">50</span>%</div>
-                            <div style="float: right;"><span id="sliderValueRight" style="font-size: 16pt;">50</span>%</div>
                             <input type="range" min="0" max="100" value="50" class="slider" id="timeSlider" oninput="updateSliderDisplay()">
                         </div>
                         <div><button id="respecTimeBut" class="timeSliderBut" onclick="respecTime()">Respec slider - forces sacrifice</button></div>
