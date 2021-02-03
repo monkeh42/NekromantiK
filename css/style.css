@@ -469,7 +469,8 @@ button:focus {
 
 .noticeText {
     font-size: 15pt;
-    color: #42d35a;
+    font-weight: 800;
+    color: #085e16;
     text-align: center;
 }
 
