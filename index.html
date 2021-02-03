@@ -31,6 +31,8 @@
             <span id="astralNotice" style="color:  #42d35a; display: none;"><h2>Corpse production disabled due to Astral Enslavement.</h2></span>
             <span style="font-size: 10pt; white-space: pre;">Total corpse gain multiplier from units (additive):  </span><span id="totalMult" style="font-size: 12pt">0.0x</span>
             <span id="worldsBonusDisplay" style="display: none;"><span style="font-size: 10pt; white-space: pre;">You have conquered <span id="worldsNum" style="font-size: 12pt"> 1 </span> <span id="pluralWorld">world</span>, giving a <span id="worldsMult" style="font-size: 12pt"> 0.0x </span> bonus to corpse gain.</span></span>
+            <span id="totalBonusDisplay" style="font-size: 10pt; white-space: pre; display: none;">Total corpse gain multiplier from all sources:  <span id="totalMultAll" style="font-size: 12pt">0.0x</span></span>
+            <span id="timeBoostDisplay" style="font-size: 10pt; white-space: pre; display: none;">Your <span id="normalAstral" style="font-size: 12pt; color: white;"> NORMAL </span> time is going <span id="timeMult" style="font-size: 12pt"> 1.0x </span> as fast.</span>
         </div>
         <div id="tabButtons" style="width: 100%; margin: 15px auto 25px; display: block;">
             <table style="width: auto; margin: auto;">
@@ -243,7 +245,7 @@
                 <button id="spacePrestige" class="prestigeBut" onclick="spacePrestige()">
                     <span style="font-size: 15pt;">This world is dead and empty...</span><br>
                     <span id="spacePresDesc">Give up all your units and corpses to conquer a new world. You gain a boost to corpse gain based on total conquered worlds.<br>
-                    This Space Prestige will unlock <span id="spacePresUnlock">Buildings</span> and a new unit tier.</span><br>
+                    This World Prestige will unlock <span id="spacePresUnlock">Buildings</span> and a new unit tier.</span><br>
                     <span id="prestigeReq" style="font-size: 13pt;">Requires <span style="font-size: 17pt; white-space: pre;"> 1 </span> Liches</span>
                 </button>
             </div>
@@ -265,7 +267,7 @@
                 </tr>
                 <tr>
                     <td colspan="3">
-                        <div class="noticeText">Space Prestige resets your Astral Bricks and building resources, but not built buildings or purchased upgrades.</div>
+                        <div class="noticeText">World Prestige resets your Astral Bricks and building resources, but not built buildings or purchased upgrades.</div>
                     </td>
                 </tr>
             </table>
@@ -311,7 +313,7 @@
                     </tr>
                     <tr id="necropolisBuildRow">
                         <td colspan="3">
-                            <button id="necropolisBuild" class="buildBut" onclick="buyBuilding(2)">Build the<h2><span id="necropolisBuildLabel" style="font-size: 18pt;">Necropolis.</span></h2>Cost: <span id="necropolisCostLabel">1,000,000</span> astral bricks</button>
+                            <button id="necropolisBuild" class="buildBut" onclick="buyBuilding(2)">Build the<h2><span id="necropolisBuildLabel" style="font-size: 18pt;">Necropolis.</span></h2>Cost: <span id="necropolisCostLabel">100,000</span> astral bricks</button>
                         </td>
                     </tr>
                     <tr id="necropolisHeaderRow" style="display: none;">
@@ -338,23 +340,26 @@
                     </tr>
                     <tr id="sunBuildRow">
                         <td colspan="3">
-                            <button id="sunBuild" class="buildBut" onclick="buyBuilding(3)">Build the<h2><span id="sunBuildLabel" style="font-size: 18pt;">Dead Sun.</span></h2>Cost: <span id="sunCostLabel" style="display: none;">1000</span>PERMA-LOCKED</button>
+                            <button id="sunBuild" class="buildBut" onclick="buyBuilding(3)">Build the<h2><span id="sunBuildLabel" style="font-size: 18pt;">Dead Sun.</span></h2>Cost: <span id="sunCostLabel">100,000,000</span> astral bricks</button>
                         </td>
                     </tr>
                     <tr id="sunHeaderRow" style="display: none;">
                         <td colspan="3">
                             <h2 style="font-size: 18pt;">DEAD SUN</h2>
+                            you have <span id="sunAmt" style="font-size: 17pt; white-space: pre;"> 0 </span> nekro-photons.<br>
+                            <span id="sunGainSpan">you are producing <span id="sunProd" style="font-size: 17pt; white-space: pre;"> 5 </span> nekro-photons/sec, but only during astral enslavement.</span><br>
+                            <span id="sunGainNotice">Nekro-photon production is disabled outside of astral enslavement.</span>
                         </td>
                     </tr>
                     <tr id="sunUpgradesRow" style="display: none;">
                         <td>
-                            <button id="sunUpg1" class="sunUpg" onclick="buyBUpg(3, 11)"><strong>Upgrade 1</strong><br>description of upgrade</button>
+                            <button id="sunUpg11" class="sunUpg" onclick="buyBUpg(3, 11)"><strong>Upgrade 1</strong><br>description of upgrade</button>
                         </td>
                         <td>
-                            <button id="sunUpg2" class="sunUpg" onclick="buyBUpg(3, 12)"><strong>Upgrade 2</strong><br>description of upgrade</button>
+                            <button id="sunUpg12" class="sunUpg" onclick="buyBUpg(3, 12)"><strong>Upgrade 2</strong><br>description of upgrade</button>
                         </td>
                         <td>
-                            <button id="sunUpg3" class="sunUpg" onclick="buyBUpg(3, 13)"><strong>Upgrade 3</strong><br>description of upgrade</button>
+                            <button id="sunUpg13" class="sunUpg" onclick="buyBUpg(3, 13)"><strong>Upgrade 3</strong><br>description of upgrade</button>
                         </td>
                     </tr>
                 </table>

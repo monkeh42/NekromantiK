@@ -53,7 +53,7 @@ const TIME_DATA = {
         single: "first time dimension",
         plural: "first time dimensions",
         baseCost: new Decimal(1000),
-        baseCostMult: new Decimal(1000),
+        baseCostMult: new Decimal(100),
         baseMult: new Decimal(0),
         cost: function() {
             var c = this.baseCost;
@@ -77,7 +77,7 @@ const TIME_DATA = {
         single: "first time dimension",
         plural: "first time dimensions",
         baseCost: new Decimal(10000),
-        baseCostMult: new Decimal(10000),
+        baseCostMult: new Decimal(1000),
         baseMult: new Decimal(0),
         cost: function() {
             var c = this.baseCost;
@@ -195,7 +195,7 @@ function canTimePrestige() {
 
 function respecTime() {
     if (player.timeLocked) {
-        if (!confirm("Are you sure? This will reset ALL of your progress before unlocking Time Warp.")) return
+        if (!confirm("Are you sure? This will reset ALL of your progress before unlocking Time Warp, and all of your time essense.")) return
         timePrestigeReset();
     }
 }
@@ -234,7 +234,7 @@ function resetSpaceCounts() {
 
 function timePrestige() {
     if (canTimePrestige()) {
-        if (!confirm("Are you sure? This will reset ALL of your progress before unlocking Time Warp.")) return
+        if (!confirm("Are you sure? This will reset ALL of your progress before unlocking Time Warp, and all of your time essense.")) return
         player.crystals = player.crystals.plus(calculateCrystalGain());
         player.totalCrystals = player.totalCrystals.plus(calculateCrystalGain());
         player.timeResets = player.timeResets.plus(1);
@@ -246,7 +246,7 @@ function timePrestige() {
 function calculateCrystalGain() {
     if (canTimePrestige()) {
         var div = 20;
-        var ret = Decimal.pow(10, (player.corpses.e/div) - 0.5);
+        var ret = Decimal.pow(10, (player.corpses.e/div) - 0.45);
         return Decimal.floor(ret);
     } else {
         return new Decimal(0);

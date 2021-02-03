@@ -9,10 +9,10 @@ const HELP_TEXTS = {
                     Multiplier multipliers by unit tier: 1.75, 2, 2, 2, 2.2, 2.2, 2.5, 2.5.<br>\
                     (more sections will appear here as you progress)',
         'spacePrestige': '<h2>NEW WORLDS</h2>\
-                        Eventually, this world will run out of souls to torture and corpses to harvest. When this happens, you must \'space prestige\' to move on to a new world.<br>\
-                        When you space prestige, you lose all of your corpses and units, and you gain one Conquered World. Your conquered worlds provide a new multiplier to total corpse gain. Your first three space prestiges \
+                        Eventually, this world will run out of souls to torture and corpses to harvest. When this happens, you must \'world prestige\' to move on to a new world.<br>\
+                        When you world prestige, you lose all of your corpses and units, and you gain one Conquered World. Your conquered worlds provide a new multiplier to total corpse gain. Your first three world prestiges \
                         each also unlock a new feature and a new unit tier.<br>\
-                        The first four space prestiges require at least one of your highest unlocked unit tier. After that, the requirement in 8th tier units increases by 2 with every prestige.',
+                        The first four world prestiges require at least one of your highest unlocked unit tier. After that, the requirement in 8th tier units increases by 2 with every prestige.',
     },
     'buildingsTab': {
         'mainTab': '<h2>BUILDINGS</h2>\
@@ -27,23 +27,26 @@ const HELP_TEXTS = {
                     Your Necropolis trains acolytes to assist in channelling the astral void. The energies required to imbue mere mortals with this power is staggering, so you can only gain acolytes \
                     while you control the most powerful of undead beasts - the Sun Eaters (base formula is sun eaters^2).<br>\
                     Necropolis upgrades are purchased with astral bricks, and increase their effectiveness.',
-        'sun': '<h2>DEAD SUN</h2>',
+        'sun': '<h2>DEAD SUN</h2>\
+                    Here you will produce nekro-photons. They are produced at a constant rate, but only during astral enslavement (and yes, they are affected by the astral time speed nerf, but also by anti time essence).<br>\
+                    Dead Sun upgrades are purchased with nekro-photons and unlock new upgrades and features.',
         'construction': '<h2>CONSTRUCTION</h2>\
                     Here you can use Astral Bricks to improve the infrastructure of your hellish empire machine. These upgrades can be bought repeatedly and indefinitely, although the cost \
                     increases exponentially at very high levels.',
     },
     'timeTab': {
         'mainTab': '<h2>TIME WARP</h2>\
-                    THIS LAYER IS PROBABLY VERY UNBALANCED, STILL TESTING.<br>\
+                    BEWARE, THIS LAYER IS ONLY BALANCED UP TO 2 FIRST TIME DIMENSIONS.<br>\
                     Here you will use Time Crystals to purchase Time Dimensions, which produce Time Essence in two varieties - True Time and Anti Time.<br>\
                     To gain Time Crystals, you need to Sacrifice. You need at least 1e20 corpses to sacrifice, and it will reset ALL of your progress up to unlocking Time Warp (your corpses, units, conquered worlds, \
-                    astral bricks, buildings, building upgrades, and construction upgrades). You will gain time crystals based on the amount of corpses you have when you sacrifice. (base formula is floor(10^(corpses mod(1e20) - 0.5)))<br>\
-                    Time Dimensions work similarly to units. Each 1st dimension produces 1 time essence per second times the 1st dimension multiplier, which doubles with each 1st dimension purchased. Each higher tier dimension produces 1 per second of the tier below it, \
+                    astral bricks, buildings, building upgrades, and construction upgrades) plus any time essence you\'ve produced. You will gain time crystals based on the amount of corpses you have when you sacrifice. (base formula is floor(10^(corpses_exponent/20 - 0.45)))<br>\
+                    Time Dimensions work similarly to units, except there are only 4 tiers. Each 1st dimension produces 1 time essence per second times the 1st dimension multiplier, which doubles with each 1st dimension purchased. Each higher tier dimension produces 1 per second of the tier below it, \
                     multiplied by that tier\'s multiplier. Unlike units, each dimension\'s multiplier increases at the same rate (x2 with each purchase) and the full multiplier is applied to production; however, the higher tier multipliers don\'t apply directly to essence production.<br>\
                     You can set the percentage of production from Time Dimensions put towards True/Anti Time Essence however you\'d like, but you can\'t change this setting without doing a sacrifice reset. You won\'t start Time Essence production until you click "lock in", which will disable the slider.<br>\
                     True Time Essence increases the multiplier to normal time speed, while Anti Time Essence increases the multiplier to time speed during Astral Enslavement. The Anti Time Essence boost is twice as powerful as the True Time Essence boost. \
                     True Time Essence also divides the Anti Time Essence effect, and vice versa, so you receive the strongest boost for either by setting the slider all the way to one side, but then you won\'t receive any boost at all for the Essence that isn\'t producing.<br>\
-                    Final note: the Time Essence effects don\'t apply at all to time dimensions or essence production, and neither does the time speed nerf from Astral Enslavement.'
+                    Final note: the Time Essence effects don\'t apply at all to time dimensions or essence production, and neither does the time speed nerf from Astral Enslavement.<br>\
+                    Cost multipliers by dimension tier: 10, 100, 100, 1000.'
     },
 }
 
@@ -69,7 +72,7 @@ const UNLOCKS_DATA = {
     'buildingsTab': {
         'mainTab': {
             unlocked: false,
-            idsToShow: ['buildingsTabCell', 'worldsBonusDisplay'],
+            idsToShow: ['buildingsTabCell', 'worldsBonusDisplay', 'totalBonusDisplay'],
             idsToHide: [],
             condition: function() {
                 return player.spaceResets.gte(1);
@@ -93,7 +96,7 @@ const UNLOCKS_DATA = {
         } ,
         'sun': {
             unlocked: false,
-            idsToShow: ['sunUpgradesRow'],
+            idsToShow: ['sunUpgradesRow', 'sunHeaderRow'],
             idsToHide: ['sunBuildRow'],
             condition: function() {
                 return isBuilt(3);
@@ -111,7 +114,7 @@ const UNLOCKS_DATA = {
     'timeTab': {
         'mainTab': {
             unlocked: false,
-            idsToShow: ['timeTabCell'],
+            idsToShow: ['timeTabCell', 'timeBoostDisplay'],
             idsToHide: [],
             condition: function() {
                 return player.spaceResets.gte(3);

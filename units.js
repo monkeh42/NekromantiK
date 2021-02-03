@@ -20,7 +20,9 @@ const UNITS_DATA = {
             return m;
         },
         prodMult: function() {
-            return this.corpseMult().sqrt().plus(UNITS_DATA[this.tier+1].prodMult());
+            var m = this.corpseMult();
+            hasUpgrade(1, 13) ? (m = m.pow(0.9)) : (m = m.sqrt())
+            return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 1,
         buttonID: "zombieBut",
@@ -49,7 +51,10 @@ const UNITS_DATA = {
             return m;
         },
         prodMult: function() {
-            return this.corpseMult().sqrt().plus(UNITS_DATA[this.tier+1].prodMult());
+            var m = this.corpseMult();
+            hasUpgrade(1, 13) ? (m = m.pow(0.9)) : (m = m.sqrt())
+            m = m.times(getCUpgEffect(3));
+            return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 2,
         buttonID: "abomBut",
@@ -78,7 +83,9 @@ const UNITS_DATA = {
             return m;
         },
         prodMult: function() {
-            return this.corpseMult().sqrt().plus(UNITS_DATA[this.tier+1].prodMult());
+            var m = this.corpseMult();
+            hasUpgrade(1, 13) ? (m = m.pow(0.9)) : (m = m.sqrt())
+            return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 3,
         buttonID: "mageBut",
@@ -107,7 +114,9 @@ const UNITS_DATA = {
             return m;
         },
         prodMult: function() {
-            return this.corpseMult().sqrt().plus(UNITS_DATA[this.tier+1].prodMult());
+            var m = this.corpseMult();
+            hasUpgrade(1, 13) ? (m = m.pow(0.9)) : (m = m.sqrt())
+            return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 4,
         buttonID: "bansheeBut",
@@ -126,7 +135,6 @@ const UNITS_DATA = {
         cost: function() {
             var c = this.baseCost;
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
-            if (hasUpgrade(1, 13)) { m = m.times(1.25); }
             return c;
         },
         corpseMult: function() {
@@ -137,7 +145,9 @@ const UNITS_DATA = {
             return m;
         },
         prodMult: function() {
-            return this.corpseMult().sqrt().plus(UNITS_DATA[this.tier+1].prodMult());
+            var m = this.corpseMult();
+            hasUpgrade(1, 13) ? (m = m.pow(0.9)) : (m = m.sqrt())
+            return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 5,
         buttonID: "lichBut",
@@ -166,7 +176,9 @@ const UNITS_DATA = {
             return m;
         },
         prodMult: function() {
-            return this.corpseMult().sqrt().plus(UNITS_DATA[this.tier+1].prodMult());
+            var m = this.corpseMult();
+            hasUpgrade(1, 13) ? (m = m.pow(0.9)) : (m = m.sqrt())
+            return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 6,
         buttonID: "beheBut",
@@ -195,7 +207,9 @@ const UNITS_DATA = {
             return m;
         },
         prodMult: function() {
-            return this.corpseMult().sqrt().plus(UNITS_DATA[this.tier+1].prodMult());
+            var m = this.corpseMult();
+            hasUpgrade(1, 13) ? (m = m.pow(0.9)) : (m = m.sqrt())
+            return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 7,
         buttonID: "oneBut",
@@ -221,11 +235,12 @@ const UNITS_DATA = {
             if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
             m = m.pow(player.units[this.tier].bought-1);
-            if (hasUpgrade(1, 13)) { m = m.pow(getUpgEffect(1, 13)); }
             return m;
         },
         prodMult: function() {
-            return this.corpseMult().sqrt();
+            var m = this.corpseMult();
+            hasUpgrade(1, 13) ? (m = m.pow(0.9)) : (m = m.sqrt())
+            return m;
         },
         tier: 8,
         buttonID: "sunBut",

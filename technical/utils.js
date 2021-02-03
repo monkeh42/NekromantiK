@@ -9,7 +9,7 @@ function exponentialFormat(num, precision, mantissa = true) {
 	}
 	e = (e.gte(10000) ? commaFormat(e, 0) : regularFormat(e, 0));
 	if (mantissa)
-		return commaFormat(m, 2)+"e"+e
+		return commaFormat(m, precision)+"e"+e
 		else return "e"+e
 	}
 

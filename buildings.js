@@ -16,6 +16,7 @@ const BUILDS_DATA = {
         },
         prod: function() {
             var p = Decimal.pow(this.pBase(), this.pExp());
+            if (hasUpgrade(2, 12)) { p = p.times(getUpgEffect(2, 12)); }
             return p;
         },
         resourceEff: function() {
@@ -43,7 +44,7 @@ const BUILDS_DATA = {
                 effect: function() {
                     var b = Decimal.max(player.buildings[1].amount, 1).log10();
                     var e = new Decimal(0.5);
-                    return Decimal.max(Decimal.pow(b, e), 1);
+                    return Decimal.pow(b, e).times(2).plus(1);
                 }
             },
             12: {
@@ -59,13 +60,12 @@ const BUILDS_DATA = {
             },
             13: {
                 title: 'Digitize',
-                desc: 'Raise the Sun Eater corpse multiplier to the 1.5 power.',
-                cost: new Decimal(1e6),
+                desc: 'Improve the unit multiplier formula<br>(corpse mult ^0.5 -> ^0.9)',
+                cost: new Decimal(100000),
                 buttonID: 'factoryUpg13',
                 displayEffect: false,
                 effect: function() {
-                    var e = new Decimal(1.5);
-                    return e;
+                    return new Decimal(1);
                 }
             }
         }
@@ -90,7 +90,7 @@ const BUILDS_DATA = {
         },
         resourceEff: function() {
             var r = new Decimal(1);
-            if (player.buildings[2].amount.gt(0)) { r = r.plus(player.buildings[2].amount.log10()); }
+            if (player.buildings[2].amount.gte(1)) { r = r.plus(player.buildings[2].amount.log10()); }
             return r;
         },
         canAffordUpg: function(upg) {
@@ -117,23 +117,25 @@ const BUILDS_DATA = {
                 }
             },
             12: {
-                title: 'TBD',
-                desc: 'perma-locked',
-                cost: new Decimal(1e1000),
+                title: 'Astral Forges',
+                desc: 'Astral bricks boost armament production.',
+                cost: new Decimal(500000),
                 buttonID: 'necropolisUpg12',
-                displayEffect: false,
+                displayEffect: true,
                 effect: function() {
-                    return new Decimal(1);
+                    var e = Decimal.sqrt(Decimal.max(player.bricks, 1).log10()).plus(1);
+                    return e;
                 }
             },
             13: {
-                title: 'TBD',
-                desc: 'perma-locked',
-                cost: new Decimal(1e1000),
+                title: 'Astral Siege Engines',
+                desc: 'Astral bricks boost corpse production.',
+                cost: new Decimal(1000000),
                 buttonID: 'necropolisUpg13',
-                displayEffect: false,
+                displayEffect: true,
                 effect: function() {
-                    return new Decimal(1);
+                    var e = Decimal.sqrt(Decimal.max(player.bricks, 1).log10()).plus(1);
+                    return e;
                 }
             }
         }
@@ -141,27 +143,28 @@ const BUILDS_DATA = {
     3: {
         id: 'dead sun',
         tier: 3,
-        resource: '',
-        cost: new Decimal(1e1000),
-        upgResource: 'necro-photons',
+        resource: 'nekro-photons',
+        cost: new Decimal(1e8),
+        upgResource: 'nekro-photons',
         pBase: function()  {
-            var b = player.units[1].amount.plus(1).log10();
+            var b = new Decimal(1);
             return b;
         },
         pExp: function() {
-            var e = 0.5;
+            var e = 1;
             return e;
         },
         prod: function() {
             var p = Decimal.pow(this.pBase(), this.pExp());
-            return p;
+            if (player.astralFlag) { return p; }
+            else { return new Decimal(0); }
         },
         resourceEff: function() {
             var r = new Decimal(1);
             return r;
         },
         canAffordUpg: function(upg) {
-            return player.buildings[this.tier].amount.gte(this.upgrades[upg].cost);
+            return false;
         },
         buildingButtonID: 'sunBuild',
         buildingButtonClass: 'buildBut',
@@ -173,19 +176,19 @@ const BUILDS_DATA = {
         upgradeBtnBought: 'boughtSunUpg',
         upgrades: {
             11: {
-                title: 'TBD',
-                desc: 'perma-locked',
-                cost: new Decimal(1e1000),
+                title: 'Death Factory Expansion',
+                desc: 'Unlock a new row of Death Factory upgrades.<br>PERMA-LOCKED',
+                cost: new Decimal(1000),
                 buttonID: 'sunUpg11',
-                displayEffect: true,
+                displayEffect: false,
                 effect: function() {
                     return new Decimal(1);
                 }
             },
             12: {
-                title: 'TBD',
-                desc: 'perma-locked',
-                cost: new Decimal(1e1000),
+                title: 'Necropolis Expansion',
+                desc: 'Unlock a new row of Necropolis upgrades.<br>PERMA-LOCKED',
+                cost: new Decimal(10000),
                 buttonID: 'sunUpg12',
                 displayEffect: false,
                 effect: function() {
@@ -193,9 +196,9 @@ const BUILDS_DATA = {
                 }
             },
             13: {
-                title: 'TBD',
-                desc: 'perma-locked',
-                cost: new Decimal(1e1000),
+                title: 'NEW STUUUUUFF',
+                desc: 'Unlock the next layer.<br>PERMA-LOCKED',
+                cost: new Decimal(1e9),
                 buttonID: 'sunUpg13',
                 displayEffect: false,
                 effect: function() {
@@ -226,7 +229,7 @@ const CONSTR_DATA = {
     },
     2: {
         title: 'Factory Expansion',
-        desc: 'Add .02 to the armament gain exponent per level.',
+        desc: 'Add .02 per level to the armament gain exponent.',
         tier: 2,
         baseCost: new Decimal(250),
         isTimes: false,
@@ -242,28 +245,28 @@ const CONSTR_DATA = {
         }
     },
     3: {
-        title: 'TBD',
-        desc: 'perma-locked',
+        title: 'Abomination Steroids',
+        desc: 'Boosts the abomination unit multiplier by 10% per level.',
         tier: 3,
-        baseCost: new Decimal(1e1000),
+        baseCost: new Decimal(500),
         isTimes: true,
         cost: function() {
             var c = this.baseCost;
             return c.times(Decimal.pow(this.costMult, player.construction[this.tier]));
         },
-        costMult: 10,
+        costMult: 5,
         buttonID: 'constrUpg3',
         displayEffect: true,
         effect: function() {
-            return new Decimal(1);
+            return Decimal.max(1+(0.1*player.construction[this.tier]), 1);
         }
     },
     4: {
-        title: 'TBD',
-        desc: 'perma-locked',
+        title: 'World Refiner',
+        desc: 'Add .02 per level to the exponent of the conquered worlds boost to corpse gain.',
         tier: 4,
-        baseCost: new Decimal(1e1000),
-        isTimes: true,
+        baseCost: new Decimal(1000),
+        isTimes: false,
         cost: function() {
             var c = this.baseCost;
             return c.times(Decimal.pow(this.costMult, player.construction[this.tier]));
@@ -272,7 +275,7 @@ const CONSTR_DATA = {
         buttonID: 'constrUpg4',
         displayEffect: true,
         effect: function() {
-            return new Decimal(1);
+            return .02*player.construction[this.tier];
         }
     },
 }
