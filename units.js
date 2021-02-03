@@ -352,7 +352,7 @@ function getUnitProdPerSecond(tier) {
     return player.units[tier+1].amount.div(tier+1).times(UNITS_DATA[tier+1].prodMult());
 }
 
-function singulizer(tier, number) {
+function unitSingulizer(tier, number) {
     if (typeof number === 'Decimal') {
         if (number.eq(1)) { return UNITS_DATA[tier].single }
         else { return UNITS_DATA[tier].plural }

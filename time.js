@@ -252,3 +252,18 @@ function calculateCrystalGain() {
         return new Decimal(0);
     }
 }
+
+function timeSingulizer(id) {
+    var firstFour = id.slice(0,4);
+    var gain = (id.slice(-1) == 'n');
+    switch (firstFour) {
+        case 'crys':
+            if (gain) {
+                if (calculateCrystalGain().eq(1)) { return "time crystal"; }
+                else { return "time crystals"; }
+            } else {
+                if (player.crystals.eq(1)) { return "time crystal"; }
+                else { return "time crystals"; }
+            }
+    }
+}

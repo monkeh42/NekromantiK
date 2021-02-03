@@ -293,10 +293,10 @@ function worldSingulizer() {
 }
 
 function updateCorpseDisplay() {
-    document.getElementById('corpseAmount').innerHTML = ` ${formatDefault(player.corpses)} `;
+    document.getElementById('corpseAmount').innerHTML = formatDefault(player.corpses);
     document.getElementById('pluralCorpse').innerHTML = corpseSingulizer(false);
     document.getElementById('pluralCorpseG').innerHTML = corpseSingulizer(true);
-    document.getElementById('corpseGain').innerHTML = ` ${(player.astralFlag ? formatWhole(0) : formatDefault(getCorpsesPerSecond()))} `;
+    document.getElementById('corpseGain').innerHTML = player.astralFlag ? formatWhole(0) : formatDefault(getCorpsesPerSecond())
     document.getElementById('totalMult').innerHTML = `${formatDefault2(getCorpseMultFromUnits())}x`;
     document.getElementById('worldsMult').innerHTML = `${formatDefault2(getWorldsBonus())}x`;
     document.getElementById('worldsNum').innerHTML = `${formatWhole(player.worlds)}`;
@@ -335,6 +335,7 @@ function updateTimeDisplay() {
     document.getElementById('trueTimeNerf').innerHTML = formatDefault2(getTrueTimeNerf());
     document.getElementById('antiTimeNerf').innerHTML = formatDefault2(getAntiTimeNerf());
     document.getElementById('crystalAmt').innerHTML = ' ' + formatWhole(player.crystals) + ' ';
+
 }
 
 function updateUnlocks() {
@@ -399,6 +400,10 @@ function updateHTML() {
             document.getElementById(TIME_DATA[i].maxID).className = canAffordTime(i) ? "unitMaxT" : 'unclickableMax';
         }
     }
+    var timeTextElements = document.getElementsByClassName('timeResourceTexts');
+    for (var el=0; el<timeTextElements.length; el++) {
+        timeTextElements[el].innerHTML = timeSingulizer(timeTextElements[el].id);
+    }
     for (var b in BUILDS_DATA) {
         if (canAffordBuilding(b)) { document.getElementById(BUILDS_DATA[b].buildingButtonID).className = BUILDS_DATA[b].buildingButtonClass; }
         else { document.getElementById(BUILDS_DATA[b].buildingButtonID).className = BUILDS_DATA[b].buildingButtonUnclick; }
@@ -409,6 +414,10 @@ function updateHTML() {
                 else { document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).className = BUILDS_DATA[b].upgradeBtnUnclick }
                 document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).innerHTML = "<span style=\"font-weight: 900;\">" + getUpgName(b, u) + "</span><br>" + getUpgDesc(b, u) + "<br>Cost: " + formatWhole(getUpgCost(b, u)) + " " + BUILDS_DATA[b].upgResource + (isDisplayEffect(b, u) ? ("<br>Currently: " + formatDefault2(getUpgEffect(b, u)) + "x") : "");
             }
+        }
+        var buildingTextElements = document.getElementsByClassName('buildingResourceTexts');
+        for (var el=0; el<buildingTextElements.length; el++) {
+            buildingTextElements[el].innerHTML = buildingSingulizer(buildingTextElements[el].id);
         }
     }
     for (var c in CONSTR_DATA) {
@@ -453,7 +462,7 @@ function updatePrestige() {
             document.getElementById('spacePresUnlock').innerHTML = 'Buildings';
         }
     } else { document.getElementById('spacePresDesc').style.display = 'none'; }
-    document.getElementById('prestigeReq').innerHTML = "Requires <span style=\"font-size: 17pt; white-space: pre;\"> " + formatWhole(player.nextSpaceReset[0]) + " </span> " + singulizer(player.nextSpaceReset[1], player.nextSpaceReset[0]);
+    document.getElementById('prestigeReq').innerHTML = "Requires <span style=\"font-size: 17pt; white-space: pre;\"> " + formatWhole(player.nextSpaceReset[0]) + " </span> " + unitSingulizer(player.nextSpaceReset[1], player.nextSpaceReset[0]);
     document.getElementById('timePrestige').className =  (canTimePrestige() ? 'timePrestigeBut' : 'unclickablePrestige');
     if (canTimePrestige()) {
         document.getElementById('timePrestigeReq').style.display = 'none';

@@ -413,3 +413,50 @@ function toggleAstral() {
         document.getElementById('astralNotice').style.display = 'none';
     }
 }
+
+function buildingSingulizer(id) {
+    var firstFour = id.slice(0,4);
+    var gain = (id.slice(-1) == 'n');
+    switch (firstFour) {
+        case 'astr':
+            if (gain) {
+                if (getBricksPerSecond().eq(1)) { return "astral brick"; }
+                else { return "astral bricks"; }
+            } else {
+                if (player.bricks.eq(1)) { return "astral brick"; }
+                else { return "astral bricks"; }
+            }
+        case 'arma':
+            if (gain) {
+                if (BUILDS_DATA[1].prod().eq(1)) { return "armament"; }
+                else { return "armaments"; }
+            } else {
+                if (player.buildings[1].amount.eq(1)) { return "armament"; }
+                else { return "armaments"; }
+            }
+        case 'acol':
+            if (gain) {
+                if (BUILDS_DATA[2].prod().eq(1)) { return "acolyte"; }
+                else { return "acolytes"; }
+            } else {
+                if (player.buildings[2].amount.eq(1)) { return "acolyte"; }
+                else { return "acolytes"; }
+            }
+        case 'nekr':
+            if (gain) {
+                if (BUILDS_DATA[3].prod().eq(1).eq(1)) { return "nekro-photon"; }
+                else { return "nekro-photons"; }
+            } else {
+                if (player.buildings[3].amount.eq(1)) { return "nekro-photon"; }
+                else { return "nekro-photons"; }
+            }      
+        case 'bric':
+            if (gain) {
+                if (getBricksPerSecond().eq(1)) { return "brick"; }
+                else { return "bricks"; }
+            } else {
+                if (player.bricks.eq(1)) { return "brick"; }
+                else { return "bricks"; }
+            }
+    }
+}

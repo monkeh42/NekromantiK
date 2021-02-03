@@ -226,6 +226,10 @@ button:focus {
     background-color: #e8000d;
 }
 
+.helpPageButSelected:hover {
+    background-color:black;
+}
+
 .buildBut {
     color: white;
     background-color: #042e0b;
@@ -264,7 +268,7 @@ button:focus {
     background-color: #0b4014;
     width: 200px;
     height: 200px;
-    border: 1px solid #015985;
+    border: 1px solid #085e16;
     cursor: pointer;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
@@ -273,7 +277,7 @@ button:focus {
 
 .astralOn {
     color: white;
-    background-color: #015985;
+    background-color: #085e16;
     width: 200px;
     height: 200px;
     border: 1px solid #0b4014;
@@ -283,9 +287,12 @@ button:focus {
     font-weight: 500;
 }
 
-.astralBut:hover, .astralOn:hover {
-    background-color: black;
-    border-color: black;
+.astralBut:hover {
+    background-color: #085e16;
+}
+
+.astralOn:hover {
+    background-color:  #0b4014;
 }
 
 .buildingUpg, .factoryUpg, .necropolisUpg, .sunUpg {

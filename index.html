@@ -24,15 +24,15 @@
             </div>
             <br>
         </div>
-        <div width="100%"><div id="versionNumber" style="float: right;">v0.1.2</div></div>
+        <div width="100%"><div id="versionNumber" style="text-align: right;">v0.1.2</div></div>
         <div id="resourceDisplay" style="width: auto; margin: 15px auto 25px; display: block; text-align: center;">
-            <h2>You have <span id="corpseAmount" style="font-size: 20pt; white-space: pre;"> 10 </span> <span id='pluralCorpse'>corpses</span>.</h2>
-            You are harvesting <span id="corpseGain" style="font-size: 17pt; white-space: pre;"> 0 </span> <span id='pluralCorpseG'>corpses</span>/sec.<span id="devSpeedContainer" style="white-space: pre; display: none;"> (@ <span id="devSpeedDisplay">3</span>x time speed)</span><br>
-            <span id="astralNotice" style="color:  #42d35a; display: none;"><h2>Corpse production disabled due to Astral Enslavement.</h2></span>
-            <span style="font-size: 10pt; white-space: pre;">Total corpse gain multiplier from units (additive):  </span><span id="totalMult" style="font-size: 12pt">0.0x</span>
-            <span id="worldsBonusDisplay" style="display: none;"><span style="font-size: 10pt; white-space: pre;">You have conquered <span id="worldsNum" style="font-size: 12pt"> 1 </span> <span id="pluralWorld">world</span>, giving a <span id="worldsMult" style="font-size: 12pt"> 0.0x </span> bonus to corpse gain.</span></span>
-            <span id="totalBonusDisplay" style="font-size: 10pt; white-space: pre; display: none;">Total corpse gain multiplier from all sources:  <span id="totalMultAll" style="font-size: 12pt">0.0x</span></span>
-            <span id="timeBoostDisplay" style="font-size: 10pt; white-space: pre; display: none;">Your <span id="normalAstral" style="font-size: 12pt; color: white;"> NORMAL </span> time is going <span id="timeMult" style="font-size: 12pt"> 1.0x </span> as fast.</span>
+            <div style="font-size: 16pt; font-weight: 800;">You have <span id="corpseAmount" style="font-size: 20pt; white-space: pre; color: #6c00b4;"> 10 </span> <span id='pluralCorpse'> corpses </span>.</div><br>
+            <div>You are harvesting <span id="corpseGain" style="font-size: 17pt; font-weight: 800; white-space: pre; color: #6c00b4;"> 0 </span> <span id='pluralCorpseG'> corpses </span>/sec.<span id="devSpeedContainer" style="white-space: pre; display: none;"> (@ <span id="devSpeedDisplay">3</span>x time speed)</span></div><br>
+            <div id="astralNotice" style="color:  #42d35a; display: none;"><h2>Corpse production disabled due to Astral Enslavement.</h2></div>
+            <div style="font-size: 10pt; white-space: pre;">Total corpse gain multiplier from units (additive):  <span id="totalMult" style="font-size: 12pt">0.0x</span></div>
+            <div id="worldsBonusDisplay" style="font-size: 10pt; white-space: pre; display: none;">You have conquered <span id="worldsNum" style="font-size: 12pt"> 1 </span> <span id="pluralWorld">world</span>, giving a <span id="worldsMult" style="font-size: 12pt"> 0.0x </span> bonus to corpse gain.</div>
+            <div id="totalBonusDisplay" style="font-size: 10pt; white-space: pre; display: none;">Total corpse gain multiplier from all sources:  <span id="totalMultAll" style="font-size: 12pt">0.0x</span></div>
+            <div id="timeBoostDisplay" style="font-size: 10pt; white-space: pre; display: none;">Your <span id="normalAstral" style="font-size: 12pt; color: white;"> NORMAL </span> time is going <span id="timeMult" style="font-size: 12pt"> 1.0x </span> as fast.</div>
         </div>
         <div id="tabButtons" style="width: 100%; margin: 15px auto 25px; display: block;">
             <table style="width: auto; margin: auto;">
@@ -259,8 +259,8 @@
                 </tr>
                 <tr>
                     <td colspan="3">
-                        <div style="font-size: 18pt; white-space: pre;">Your unholy hordes have forged <span id="brickDisplay" style="font-size: 21pt; font-weight: 800; color: #0b4014;"> 0 </span> astral bricks.</div>
-                        <div id="brickGainDiv" style="font-size: 15pt; white-space: pre; display: none;">You are gaining <span id="brickGainDisplay" style="font-size: 18pt; font-weight: 800; color: #0b4014;"> 0 </span> bricks/sec. (@ 10x slower time speed)</div>
+                        <div style="font-size: 18pt; white-space: pre;">Your unholy hordes have forged <span id="brickDisplay" style="font-size: 21pt; font-weight: 800; color: rgb(66, 211, 90);"> 0 </span> <span id="astralTextAmt" class="buildingResourceTexts">astral bricks</span>.</div>
+                        <div id="brickGainDiv" style="font-size: 15pt; white-space: pre; display: none;">You are gaining <span id="brickGainDisplay" style="font-size: 18pt; font-weight: 800; color: rgb(66, 211, 90);"> 0 </span> <span id="bricksTextGain" class="buildingResourceTexts">bricks</span>/sec. (@ 10x slower time speed)</div>
                         <span style="font-size: 11pt">You can now force the dead you harvest to work for your rapidly growing empire. While Astral Enslavement is active, time goes 10x slower,
                         and you won't gain any corpses; instead, those tortured, miasmic souls will suffer tirelessly making bricks for your most unholy of foundations.<br></span>
                     </td>
@@ -293,8 +293,8 @@
                     <tr id="factoryHeaderRow" style="display: none;">
                         <td colspan="3">
                             <h2 style="font-size: 18pt;">DEATH FACTORY</h2>
-                            you have <span id="factoryAmt" style="font-size: 17pt; white-space: pre;"> 0 </span> armaments.<br>
-                            you are producing <span id="factoryProd" style="font-size: 17pt; white-space: pre;"> 0 </span> armaments/sec, based on your zombies.
+                            you have <span id="factoryAmt" style="font-size: 17pt; white-space: pre;"> 0 </span> <span id="armamentsTextAmt" class="buildingResourceTexts">armaments</span>.<br>
+                            you are producing <span id="factoryProd" style="font-size: 17pt; white-space: pre;"> 0 </span> <span id="armamentsTextGain" class="buildingResourceTexts">armaments</span>/sec, based on your zombies.
                         </td>
                     </tr>
                     <tr id="factoryUpgradesRow" style="display: none;">
@@ -319,8 +319,8 @@
                     <tr id="necropolisHeaderRow" style="display: none;">
                         <td colspan="3">
                             <h2 style="font-size: 18pt;">NECROPOLIS</h2>
-                            you have <span id="necropolisAmt" style="font-size: 17pt; white-space: pre;"> 0 </span> acolytes.<br>
-                            you are producing <span id="necropolisProd" style="font-size: 17pt; white-space: pre;"> 0 </span> acolytes/sec, based on your bought sun eaters.<br>
+                            you have <span id="necropolisAmt" style="font-size: 17pt; white-space: pre;"> 0 </span> <span id="acolytesTextAmt" class="buildingResourceTexts">acolytes</span>.<br>
+                            you are producing <span id="necropolisProd" style="font-size: 17pt; white-space: pre;"> 0 </span> <span id="acolytesTextGain" class="buildingResourceTexts">acolytes</span>/sec, based on your bought sun eaters.<br>
                             your acolytes chant into the astral abyss, boosting your astral brick gain by <span id="acolyteEff" style="font-size: 17pt; white-space: pre;"> 0</span>x.
                         </td>
                     </tr>
@@ -346,8 +346,8 @@
                     <tr id="sunHeaderRow" style="display: none;">
                         <td colspan="3">
                             <h2 style="font-size: 18pt;">DEAD SUN</h2>
-                            you have <span id="sunAmt" style="font-size: 17pt; white-space: pre;"> 0 </span> nekro-photons.<br>
-                            <span id="sunGainSpan">you are producing <span id="sunProd" style="font-size: 17pt; white-space: pre;"> 5 </span> nekro-photons/sec, but only during astral enslavement.</span><br>
+                            you have <span id="sunAmt" style="font-size: 17pt; white-space: pre;"> 0 </span> <span id="photonsTextAmt" class="buildingResourceTexts">nekro-photons</span>.<br>
+                            <span id="sunGainSpan">you are producing <span id="sunProd" style="font-size: 17pt; white-space: pre;"> 5 </span> <span id="photonsTextGain" class="buildingResourceTexts">nekro-photons</span>/sec, but only during astral enslavement.</span><br>
                             <span id="sunGainNotice">Nekro-photon production is disabled outside of astral enslavement.</span>
                         </td>
                     </tr>
@@ -389,14 +389,14 @@
             </div>
         </div>
         <div id="timeTab" class="pageTab">
-            <table style="width: 75%; margin: auto; text-align: center;">
+            <table style="width: 75%; margin: auto auto ; text-align: center;">
                 <tr>
-                    <div id="timePresContainer" style="text-align: center; margin: 50px;">
+                    <div id="timePresContainer" style="text-align: center; margin: 25px;">
                         <button id="timePrestige" class="timePrestigeBut" onclick="timePrestige()">
                             <span style="font-size: 15pt;">sacrifice your empire</span><br>
                             <span id="timePresDesc">Perform a dark ritual to transmute all you have achieved into time crystals. This will reset all your corpses, units, worlds, bricks, buildings, upgrades, and time essence, but you will gain time crystals based on your corpses.<br>
-                            <span id="timePrestigeReq" style="font-size: 13pt;">Requires at least<span style="font-size: 17pt; white-space: pre;"> 1e20 </span> corpses</span>
-                            <span id="timePrestigeGainDesc" style="font-size: 13pt; display: none;">Gain <span id="timePrestigeGain" style="font-size: 17pt; white-space: pre;"> 1 </span> time crystals</span>
+                            <span id="timePrestigeReq" style="font-size: 13pt;">Requires at least <span style="font-size: 17pt; white-space: pre;"> 1e20 </span> corpses</span>
+                            <span id="timePrestigeGainDesc" style="font-size: 13pt; display: none;">Gain <span id="timePrestigeGain" style="font-size: 17pt; white-space: pre;"> 1 </span> <span id="crystalsTextGain" class="timeResourceTexts">time crystals</span></span>
                         </button>
                     </div>
                 </tr>
@@ -404,7 +404,8 @@
                     <td width="100px;">
                         <div class="timeLabelLeft">TRUE<br>TIME</div>
                     </td>
-                    <td>
+                    <td><div style="width: 100%;">You have <span id="crystalAmt" style="font-size: 17pt; white-space: pre; color: #006ba0;"> 0 </span> <span id="crystalsTextAmt" class="timeResourceTexts">time crystals</span></div>
+                        <div style="min-width: 100%; min-height: 30px;"></div>
                         <div style="width: 50%; float: left;">Your True Time Essence speeds up normal time by<br><span id="trueTimeBuff" style="font-size: 16pt;">1</span>x<br> but it divides the Anti Time Essence effect by<br><span id="trueTimeNerf" style="font-size: 16pt;">1</span></div>
                         <div style="width: 50%; float: left;">Your Anti Time Essence speeds up astral time by<br><span id="antiTimeBuff" style="font-size: 16pt;">1</span>x<br> but it divides the True Time Essence effect by<br><span id="antiTimeNerf" style="font-size: 16pt;">1</span></div>
                     </td>
@@ -414,11 +415,8 @@
                 </tr>
                 <tr>
                     <td><span id="trueTimeAmt" style="color: #006ba0">0</span><br>essence</span><br>+<span id="trueTimeGain" style="color: #006ba0">0</span><br>per sec</td>
-                    <td>You have <span id="crystalAmt" style="font-size: 17pt; white-space: pre; color: #006ba0;"> 0 </span> time crystals</td>
+                    <td>Time Dimensions are not affected by the astral enslavement time nerf or either Time Essence boost.
                     <td><span id="antiTimeAmt" style="color: #006ba0">0</span><br>essence</span><br>+<span id="antiTimeGain" style="color: #006ba0">0</span><br>per sec</td>
-                </tr>
-                <tr style="height: 25px;">
-                    <div style="height: 100%;"></div>
                 </tr>
                 <tr>
                     <td colspan="3">
