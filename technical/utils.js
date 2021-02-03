@@ -28,7 +28,8 @@ function regularFormat(num, precision) {
 
 function formatDefault(decimal) {
 	decimal = new Decimal(decimal)
-	if (decimal.gte("1e100000")) return exponentialFormat(decimal, 0, false)
+	if (decimal.gte("1e9000000000000000")) return 'infinity';
+	else if (decimal.gte("1e100000")) return exponentialFormat(decimal, 0, false)
 	else if (decimal.gte("1e1000")) return exponentialFormat(decimal, 0)
 	else if (decimal.gte(1e9)) return exponentialFormat(decimal, 2)
 	else if (decimal.gte(1e3)) return commaFormat(decimal, 0)
@@ -38,6 +39,7 @@ function formatDefault(decimal) {
 
 function formatDefault2(decimal) {
 	decimal = new Decimal(decimal)
+	if (decimal.gte("1e9000000000000000")) return 'infinity';
 	if (decimal.gte("1e100000")) return exponentialFormat(decimal, 0, false)
 	else if (decimal.gte("1e1000")) return exponentialFormat(decimal, 0)
 	else if (decimal.gte(1e9)) return exponentialFormat(decimal, 2)
@@ -49,6 +51,7 @@ function formatDefault2(decimal) {
 
 function formatUnitRow(decimal) {
 	decimal = new Decimal(decimal)
+	if (decimal.gte("1e9000000000000000")) return 'infinity';
 	if (decimal.gte("1e100000")) return exponentialFormat(decimal, 0, false)
 	else if (decimal.gte("1e1000")) return exponentialFormat(decimal, 0)
 	else if (decimal.gte(1e6)) return exponentialFormat(decimal, 2)
@@ -59,6 +62,7 @@ function formatUnitRow(decimal) {
 
 function formatUnitRow2(decimal) {
 	decimal = new Decimal(decimal)
+	if (decimal.gte("1e9000000000000000")) return 'infinity';
 	if (decimal.gte("1e100000")) return exponentialFormat(decimal, 0, false)
 	else if (decimal.gte("1e1000")) return exponentialFormat(decimal, 0)
 	else if (decimal.gte(1e6)) return exponentialFormat(decimal, 2)
@@ -70,6 +74,7 @@ function formatUnitRow2(decimal) {
 
 function formatWholeUnitRow(decimal) {
 	decimal = new Decimal(decimal)
+	if (decimal.gte("1e9000000000000000")) return 'infinity';
 	//if (decimal.gte(1e9)) return format(decimal, 2)
 	if (decimal.lte(0.98) && !decimal.eq(0)) return format(decimal, 2)
 	return formatUR(decimal, 0)
@@ -77,6 +82,7 @@ function formatWholeUnitRow(decimal) {
 
 function formatUR(decimal, precision=2) {
 	decimal = new Decimal(decimal)
+	if (decimal.gte("1e9000000000000000")) return 'infinity';
 	if (decimal.gte("1e100000")) return exponentialFormat(decimal, 0, false)
 	else if (decimal.gte("1e1000")) return exponentialFormat(decimal, 0)
 	else if (decimal.gte(1e6)) return exponentialFormat(decimal, precision)
@@ -86,6 +92,7 @@ function formatUR(decimal, precision=2) {
 
 function format(decimal, precision=2) {
 	decimal = new Decimal(decimal)
+	if (decimal.gte("1e9000000000000000")) return 'infinity';
 	if (decimal.gte("1e100000")) return exponentialFormat(decimal, 0, false)
 	else if (decimal.gte("1e1000")) return exponentialFormat(decimal, 0)
 	else if (decimal.gte(1e9)) return exponentialFormat(decimal, precision)
@@ -95,6 +102,7 @@ function format(decimal, precision=2) {
 
 function formatWhole(decimal) {
 	decimal = new Decimal(decimal)
+	if (decimal.gte("1e9000000000000000")) return 'infinity';
 	//if (decimal.gte(1e9)) return format(decimal, 2)
 	if (decimal.lte(0.98) && !decimal.eq(0)) return format(decimal, 2)
 	return format(decimal, 0)
@@ -102,3 +110,11 @@ function formatWhole(decimal) {
 
 //end stolen
 
+function addFactorial(num) {
+	var f = 0;
+	while (num > 0) {
+		f = f+num;
+		num--;
+	}
+	return f
+}

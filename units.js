@@ -5,7 +5,6 @@ const UNITS_DATA = {
         baseCost: new Decimal(10),
         baseMultPer: new Decimal(1.75),
         baseCostMult: new Decimal(100),
-        baseCorpseMult: new Decimal(0),
         cost: function() {
             var c = this.baseCost;
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
@@ -13,10 +12,9 @@ const UNITS_DATA = {
         },
         corpseMult: function() {
             var m = this.baseMultPer;
-            if (getCLevel(1).gt(0)) { m = m.times(getCUpgEffect(1)) }
+            if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
             if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             m = m.pow(player.units[this.tier].bought-1);
-            if (hasUpgrade(1, 11)) { m = m.times(getUpgEffect(1, 11)) }
             return m;
         },
         prodMult: function() {
@@ -37,7 +35,6 @@ const UNITS_DATA = {
         baseCost: new Decimal(100),
         baseMultPer: new Decimal(2),
         baseCostMult: new Decimal(10000),
-        baseCorpseMult: new Decimal(0),
         cost: function() {
             var c = this.baseCost;
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
@@ -45,8 +42,8 @@ const UNITS_DATA = {
         },
         corpseMult: function() {
             var m = this.baseMultPer;
-            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
+            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             m = m.pow(player.units[this.tier].bought-1);
             return m;
         },
@@ -69,7 +66,6 @@ const UNITS_DATA = {
         baseCost: new Decimal(10000),
         baseMultPer: new Decimal(2),
         baseCostMult: new Decimal(10000),
-        baseCorpseMult: new Decimal(0),
         cost: function() {
             var c = this.baseCost;
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
@@ -77,8 +73,8 @@ const UNITS_DATA = {
         },
         corpseMult: function() {
             var m = this.baseMultPer;
-            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
+            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             m = m.pow(player.units[this.tier].bought-1);
             return m;
         },
@@ -100,7 +96,6 @@ const UNITS_DATA = {
         baseCost: new Decimal(1000000),
         baseMultPer: new Decimal(2),
         baseCostMult: new Decimal(1000000),
-        baseCorpseMult: new Decimal(0),
         cost: function() {
             var c = this.baseCost;
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
@@ -108,8 +103,8 @@ const UNITS_DATA = {
         },
         corpseMult: function() {
             var m = this.baseMultPer;
-            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
+            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             m = m.pow(player.units[this.tier].bought-1);
             return m;
         },
@@ -131,7 +126,6 @@ const UNITS_DATA = {
         baseCost: new Decimal(1e9),
         baseMultPer: new Decimal(2.2),
         baseCostMult: new Decimal(1e10),
-        baseCorpseMult: new Decimal(0),
         cost: function() {
             var c = this.baseCost;
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
@@ -139,8 +133,8 @@ const UNITS_DATA = {
         },
         corpseMult: function() {
             var m = this.baseMultPer;
-            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
+            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             m = m.pow(player.units[this.tier].bought-1);
             return m;
         },
@@ -162,7 +156,6 @@ const UNITS_DATA = {
         baseCost: new Decimal(1e13),
         baseMultPer: new Decimal(2.2),
         baseCostMult: new Decimal(1e11),
-        baseCorpseMult: new Decimal(0),
         cost: function() {
             var c = this.baseCost;
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
@@ -170,8 +163,8 @@ const UNITS_DATA = {
         },
         corpseMult: function() {
             var m = this.baseMultPer;
-            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
+            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             m = m.pow(player.units[this.tier].bought-1);
             return m;
         },
@@ -193,7 +186,6 @@ const UNITS_DATA = {
         baseCost: new Decimal(1e19),
         baseMultPer: new Decimal(2.5),
         baseCostMult: new Decimal(1e12),
-        baseCorpseMult: new Decimal(0),
         cost: function() {
             var c = this.baseCost;
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
@@ -201,8 +193,8 @@ const UNITS_DATA = {
         },
         corpseMult: function() {
             var m = this.baseMultPer;
-            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
+            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             m = m.pow(player.units[this.tier].bought-1);
             return m;
         },
@@ -224,7 +216,6 @@ const UNITS_DATA = {
         baseCost: new Decimal(1e25),
         baseMultPer: new Decimal(2.5),
         baseCostMult: new Decimal(1e15),
-        baseCorpseMult: new Decimal(0),
         cost: function() {
             var c = this.baseCost;
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
@@ -232,8 +223,8 @@ const UNITS_DATA = {
         },
         corpseMult: function() {
             var m = this.baseMultPer;
-            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
+            if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             m = m.pow(player.units[this.tier].bought-1);
             return m;
         },

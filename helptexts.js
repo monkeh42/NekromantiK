@@ -23,20 +23,21 @@ const HELP_TEXTS = {
         'factory': '<h2>FACTORY</h2>\
                     Here you will produce armaments for your savage hordes. The production rate is based on the number of zombies you have (base formula is log10(zombies+1)^0.5) - someone needs to work the factory, after all.<br>\
                     Death Factory upgrades are purchased with armaments and will improve the effects of your units.',
+        'factoryRow2':  '',
         'necropolis': '<h2>NECROPOLIS</h2>\
                     Your Necropolis trains acolytes to assist in channelling the astral void. The energies required to imbue mere mortals with this power is staggering, so you can only gain acolytes \
                     while you control the most powerful of undead beasts - the Sun Eaters (base formula is sun eaters^2).<br>\
                     Necropolis upgrades are purchased with astral bricks, and increase their effectiveness.',
+        'necropolisRow2':  '',
         'sun': '<h2>DEAD SUN</h2>\
                     Here you will produce nekro-photons. They are produced at a constant rate, but only during astral enslavement (and yes, they are affected by the astral time speed nerf, but also by anti time essence).<br>\
                     Dead Sun upgrades are purchased with nekro-photons and unlock new upgrades and features.',
         'construction': '<h2>CONSTRUCTION</h2>\
                     Here you can use Astral Bricks to improve the infrastructure of your hellish empire machine. These upgrades can be bought repeatedly and indefinitely, although the cost \
-                    increases exponentially at very high levels.',
+                    increases exponentially at high levels (>25).',
     },
     'timeTab': {
         'mainTab': '<h2>TIME WARP</h2>\
-                    BEWARE, THIS LAYER IS ONLY TESTED/BALANCED UP TO 2 FIRST TIME DIMENSIONS.<br>\
                     Here you will use Time Crystals to purchase Time Dimensions, which produce Time Essence in two varieties - True Time and Anti Time.<br>\
                     To gain Time Crystals, you need to Sacrifice. You need at least 1e20 corpses to sacrifice, and it will reset ALL of your progress up to unlocking Time Warp (your corpses, units, conquered worlds, \
                     astral bricks, buildings, building upgrades, and construction upgrades) plus any time essence you\'ve produced. You will gain time crystals based on the amount of corpses you have when you sacrifice. (base formula is floor(10^(corpses_exponent/20 - 0.45)))<br>\
@@ -80,20 +81,36 @@ const UNLOCKS_DATA = {
         },
         'factory': {
             unlocked: false,
-            idsToShow: ['factoryUpgradesRow', 'factoryHeaderRow'],
+            idsToShow: ['factoryUpgradesRow1', 'factoryHeaderRow'],
             idsToHide: ['factoryBuildRow'],
             condition: function() {
                 return isBuilt(1);
             }
         },
+        'factoryRow2': {
+            unlocked: false,
+            idsToShow: ['factoryUpgradesRow2'],
+            idsToHide: [],
+            condition: function() {
+                return hasUpgrade(3, 11);
+            }
+        },
         'necropolis': {
             unlocked: false,
-            idsToShow: ['necropolisUpgradesRow', 'necropolisHeaderRow'],
+            idsToShow: ['necropolisUpgradesRow1', 'necropolisHeaderRow'],
             idsToHide: ['necropolisBuildRow'],
             condition: function() {
                 return isBuilt(2);
             }
-        } ,
+        },
+        'necropolisRow2': {
+            unlocked: false,
+            idsToShow: ['necropolisUpgradesRow2'],
+            idsToHide: [],
+            condition: function() {
+                return hasUpgrade(3, 12);
+            }
+        },
         'sun': {
             unlocked: false,
             idsToShow: ['sunUpgradesRow', 'sunHeaderRow'],
@@ -101,7 +118,7 @@ const UNLOCKS_DATA = {
             condition: function() {
                 return isBuilt(3);
             }
-        } ,
+        },
         'construction': {
             unlocked: false,
             idsToShow: ['buildingsSubMenu', 'constructionSubTabBut'],
@@ -109,7 +126,7 @@ const UNLOCKS_DATA = {
             condition: function() {
                 return player.spaceResets.gte(2);
             }
-        } ,
+        },
     },
     'timeTab': {
         'mainTab': {

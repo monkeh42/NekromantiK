@@ -154,8 +154,14 @@ function buyMaxAllTime() {
 }
 
 function getTimeDimProdPerSecond(tier) {
-    if (tier >= NUM_TIMEDIMS) { return new Decimal(0); }
-    var p = player.timeDims[tier].amount.times(TIME_DATA[tier].mult())
+    if (tier > NUM_TIMEDIMS) { return new Decimal(0); }
+    var p = player.timeDims[tier].amount.times(TIME_DATA[tier].mult());
+    return p;
+}
+
+function getEssenceProdPerSecond() {
+    var p = player.timeDims[1].amount.times(TIME_DATA[1].mult());
+    if (hasUpgrade(2, 22)) { p = p.times(getUpgEffect(2, 22)); }
     return p;
 }
 

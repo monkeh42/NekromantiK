@@ -1,6 +1,6 @@
 const GAME_DATA = {
     author: 'monkeh42',
-    version: 'v0.2.1',
+    version: 'v0.2.2',
 }
 
 const NUM_UNITS = 8;
@@ -72,27 +72,33 @@ const START_PLAYER = {
             built: false,
             amount: new Decimal(0),
             upgrades: {
-                1: false,
-                2: false,
-                3: false,
+                11: false,
+                12: false,
+                13: false,
+                21: false,
+                22: false,
+                23: false,
             }
         },
         2: {
             built: false,
             amount: new Decimal(0),
             upgrades: {
-                1: false,
-                2: false,
-                3: false,
+                11: false,
+                12: false,
+                13: false,
+                21: false,
+                22: false,
+                23: false,
             }
         },
         3: {
             built: false,
             amount: new Decimal(0),
             upgrades: {
-                1: false,
-                2: false,
-                3: false,
+                11: false,
+                12: false,
+                13: false,
             }
         },
     },
@@ -257,13 +263,15 @@ function getBricksPerSecond() {
     var b = getCorpsesPerSecond().pow(player.brickGainExp);
     if (isBuilt(2)) { b = b.times(getResourceEff(2)) }
     if (hasUpgrade(2, 11)) { b = b.times(getUpgEffect(2, 11)); }
+    if (hasUpgrade(2, 21)) { b = b.times(getUpgEffect(2, 21)); }
     return b;
 }
 
 function getCorpseMultFromUnits() {
     var mult = new Decimal(0);
     for (var i=1; i<=NUM_UNITS; i++) {
-        mult = mult.plus(UNITS_DATA[i].corpseMult());
+        if ((i==8) && hasUpgrade(1, 22) && getUpgEffect(1, 22)) { mult = mult.times(UNITS_DATA[i].corpseMult()); }
+        else { mult = mult.plus(UNITS_DATA[i].corpseMult()); }
     }
     return Decimal.max(mult, 1);
 }
@@ -272,6 +280,7 @@ function getTotalCorpseMult() {
     var mult = getCorpseMultFromUnits();
     mult = mult.times(getWorldsBonus());
     if (hasUpgrade(2, 13)) { mult = mult.times(getUpgEffect(2, 13)); }
+    if (hasUpgrade(1, 23)) { mult = mult.times(getUpgEffect(1, 23)); }
     return Decimal.max(mult, 1);
 }
 
@@ -365,10 +374,14 @@ function updateHTML() {
         for (var key in UNLOCKS_DATA[tab]) {
             if (player.unlocks[tab][key]) {
                 for (var id in UNLOCKS_DATA[tab][key].idsToShow) {
-                    element = document.getElementById(UNLOCKS_DATA[tab][key].idsToShow[id]);
+                    if (id !== undefined) {    
+                        element = document.getElementById(UNLOCKS_DATA[tab][key].idsToShow[id]);
+                        if (element.tagName == 'TR') { element.style.display = 'table-row'; } 
                     if (element.tagName == 'TR') { element.style.display = 'table-row'; } 
-                    else if (element.tagName == 'TD') { element.style.display = 'table-cell'; }
-                    else { element.style.display = 'block'; }
+                        if (element.tagName == 'TR') { element.style.display = 'table-row'; } 
+                        else if (element.tagName == 'TD') { element.style.display = 'table-cell'; }
+                        else { element.style.display = 'block'; }
+                    }
                 }
                 for (var idd in UNLOCKS_DATA[tab][key].idsToHide) {
                     document.getElementById(UNLOCKS_DATA[tab][key].idsToHide[idd]).style.display = 'none';
@@ -602,6 +615,13 @@ function fixData(data, start) {
             }
         }
     }
+    for (var b in player.buildings) {
+        if (player.buildings[b].upgrades[1] !== undefined) {
+            delete player.buildings[b].upgrades[1];
+            delete player.buildings[b].upgrades[2];
+            delete player.buildings[b].upgrades[3];
+        }
+    }
 }
 
 function startInterval() {
@@ -624,8 +644,8 @@ function startInterval() {
         if (player.timeLocked) {
             for (var i=1; i<NUM_TIMEDIMS; i++) {
                 if (i==1) {
-                    player.trueEssence = player.trueEssence.plus(getTimeDimProdPerSecond(i).times(realDiff.div(1000)).times(player.truePercent/100));
-                    player.antiEssence = player.antiEssence.plus(getTimeDimProdPerSecond(i).times(realDiff.div(1000)).times(player.antiPercent/100));
+                    player.trueEssence = player.trueEssence.plus(getEssenceProdPerSecond().times(realDiff.div(1000)).times(player.truePercent/100));
+                    player.antiEssence = player.antiEssence.plus(getEssenceProdPerSecond().times(realDiff.div(1000)).times(player.antiPercent/100));
                 }
                 else { player.timeDims[i-1].amount = player.timeDims[i-1].amount.plus(getTimeDimProdPerSecond(i).times(realDiff.div(1000))); }
             }

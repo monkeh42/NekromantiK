@@ -443,16 +443,9 @@ button:focus {
     background-color: #db9448;
 } 
 
-#factoryHeaderRow, #necropolisHeaderRow, #sunHeaderRow {
-    border-left: 1px solid #085e16;
-    border-top: 1px solid #085e16;
-    border-right: 1px solid #085e16;
-}
 
-#factoryUpgradesRow, #necropolisUpgradesRow, #sunUpgradesRow {
-    border-left: 1px solid #085e16;
-    border-bottom: 1px solid #085e16;
-    border-right: 1px solid #085e16;
+.buildingsTable {
+    border: 1px solid #085e16;
 }
 
 #cUpgHeaderRow {
