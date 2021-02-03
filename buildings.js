@@ -242,6 +242,7 @@ const BUILDS_DATA = {
         buildingButtonUnclick: 'unclickableBuildBut',
         buildingRowID: 'sunBuildRow',
         upgradesRow1ID: 'sunUpgradesRow',
+        upgradesRow2ID: 'sunUpgradesRow2',
         upgradeBtnClass: 'sunUpg',
         upgradeBtnUnclick: 'unclickSunUpg',
         upgradeBtnBought: 'boughtSunUpg',
@@ -477,9 +478,8 @@ function resetBuildings() {
     player.construction = Object.assign({}, START_PLAYER.construction);
     fixData(player.construction, START_PLAYER.construction);
     for (var b in BUILDS_DATA) {
-        document.getElementById(BUILDS_DATA[b].buildingRow1ID).style.display = 'table-row';
+        document.getElementById(BUILDS_DATA[b].buildingRowID).style.display = 'table-row';
         document.getElementById(BUILDS_DATA[b].upgradesRow1ID).style.display = 'none';
-        document.getElementById(BUILDS_DATA[b].buildingRow2ID).style.display = 'table-row';
         document.getElementById(BUILDS_DATA[b].upgradesRow2ID).style.display = 'none';
     }
 }

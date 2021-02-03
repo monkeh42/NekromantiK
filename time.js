@@ -217,6 +217,7 @@ function timePrestigeReset() {
     resetBuildingResources();
     resetBuildings();
     resetSpaceCounts();
+    for (var i=1; i<=NUM_TIMEDIMS; i++) { player.timeDims[i].amount = player.timeDims[i].bought; }
     player.trueEssence = new Decimal(START_PLAYER.trueEssence);
     player.antiEssence = new Decimal(START_PLAYER.antiEssence);
     player.corpses = new Decimal(START_PLAYER.corpses);
