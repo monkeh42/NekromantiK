@@ -200,9 +200,11 @@ function canTimePrestige() {
 }
 
 function respecTime() {
-    if (player.timeLocked) {
-        if (!confirm("Are you sure? This will reset ALL of your progress before unlocking Time Warp, and all of your time essense.")) return
-        timePrestigeReset();
+    if (player.timeResets.gte(1)) {
+        if (player.timeLocked) {
+            if (!confirm("Are you sure? This will reset ALL of your progress before unlocking Time Warp, and all of your time essense.")) return
+            timePrestigeReset();
+        }
     }
 }
 
