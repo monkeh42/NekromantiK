@@ -12,9 +12,9 @@ const UNITS_DATA = {
         },
         corpseMult: function() {
             var m = this.baseMultPer;
-            if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
             if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             m = m.pow(player.units[this.tier].bought-1);
+            if (hasUpgrade(1, 11)) m = m.times(getUpgEffect(1, 11));
             return m;
         },
         prodMult: function() {
