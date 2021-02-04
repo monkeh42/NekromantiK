@@ -269,7 +269,7 @@ const BUILDS_DATA = {
             },
             13: {
                 title: 'Nekro-Time',
-                desc: 'Unlock Time Upgrades.<br>COMING SOON',
+                desc: 'Unlock Time Upgrades (permanently).<br>COMING SOON',
                 cost: new Decimal("Infinity"),
                 buttonID: 'sunUpg13',
                 displayEffect: false,
