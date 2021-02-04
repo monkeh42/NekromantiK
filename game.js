@@ -644,7 +644,7 @@ function startInterval() {
             player.units[i].amount = player.units[i].amount.plus(getUnitProdPerSecond(i).times(diff.div(1000)));
         }
         if (player.timeLocked) {
-            for (var i=1; i<NUM_TIMEDIMS; i++) {
+            for (var i=1; i<=NUM_TIMEDIMS; i++) {
                 if (i==1) {
                     player.trueEssence = player.trueEssence.plus(getEssenceProdPerSecond().times(realDiff.div(1000)).times(player.truePercent/100));
                     player.antiEssence = player.antiEssence.plus(getEssenceProdPerSecond().times(realDiff.div(1000)).times(player.antiPercent/100));
