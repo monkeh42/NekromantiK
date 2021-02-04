@@ -245,13 +245,11 @@ const UNITS_DATA = {
 
 function resetUnits() {
     for (var z=NUM_UNITS; z>0; z--) {
-        player.units[z].amount = new Decimal(0);
-        player.units[z].bought = new Decimal(0);
+        player.units[z] = Object.assign({}, START_PLAYER.units[z]);
     }
-    player.units = Object.assign({}, START_PLAYER.units);
     fixData(player.units, START_PLAYER.units);
-    for (var z=2; z<=NUM_UNITS; z++) {
-        document.getElementById(UNITS_DATA[z].rowID).style.display = 'none';
+    for (var zz=2; zz<=NUM_UNITS; zz++) {
+        document.getElementById(UNITS_DATA[zz].rowID).style.display = 'none';
     }
 }
 
