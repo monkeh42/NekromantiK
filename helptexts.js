@@ -164,7 +164,7 @@ function generateHelpForFullPage(tabName, button, section) {
 
         var hText = '';
         for (k in HELP_TEXTS[section]) {
-            hText = hText + HELP_TEXTS[section][k] + '<br>'; 
+            if (HELP_TEXTS[section][k] != '') { hText = hText + HELP_TEXTS[section][k] + '<br>'; }
         }
         document.getElementById(tabName).innerHTML = hText;
 
