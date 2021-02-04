@@ -229,6 +229,7 @@ function timePrestigeReset() {
     document.getElementById('timeSlider').removeAttribute('disabled');
     allDisplay();
     save();
+    showSubTab('buildingsSubTab');
     startInterval();
 }
 

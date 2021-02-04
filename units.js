@@ -276,6 +276,8 @@ function spacePrestige() {
         allDisplay();
         
         save();
+        showTab('unitsTab');
+        showSubTab('buildingsSubTab');
         startInterval();
     }
 }
