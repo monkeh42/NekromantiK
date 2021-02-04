@@ -443,6 +443,21 @@ button:focus {
     background-color: #db9448;
 } 
 
+.constrMax {
+    color: white;
+    background-color: #7b3f00;
+    font-style: bold;
+    width: 120px;
+    height: 35px;
+    border: 1px solid #db9448;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 10px;
+}
+
+.constrMax:hover {
+    background-color: #db9448;
+} 
 
 .buildingsTable {
     border: 1px solid #085e16;

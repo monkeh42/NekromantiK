@@ -463,6 +463,19 @@ function buyCUpg(c) {
     }
 }
 
+function buyMaxConstr(upg) {
+    while (canAffordCUpg(upg)) {
+        buyCUpg(upg);
+    }
+    allDisplay();
+}
+
+function buyMaxAllConstr() {
+    for (var i=4; i>0; i--) {
+        buyMaxConstr(i);
+    }
+}
+
 function resetBuildingResources() {
     if (player.astralFlag) { toggleAstral(); }
     player.bricks = new Decimal(START_PLAYER.bricks);

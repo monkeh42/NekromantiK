@@ -344,6 +344,7 @@ function updateTimeDisplay() {
     document.getElementById('trueTimeNerf').innerHTML = formatDefault2(getTrueTimeNerf());
     document.getElementById('antiTimeNerf').innerHTML = formatDefault2(getAntiTimeNerf());
     document.getElementById('crystalAmt').innerHTML = ' ' + formatWhole(player.crystals) + ' ';
+    if (player.totalCrystals.gte(2000)) { document.getElementById('timePresDesc').style.display = 'none'; }
 
 }
 
@@ -488,8 +489,8 @@ function updatePrestige() {
 }
 
 function updateBuildings() {
-    document.getElementById('brickDisplay').innerHTML = formatDefault(player.bricks);
-    document.getElementById('brickGainDisplay').innerHTML = ` ${(player.astralFlag ? formatDefault(getBricksPerSecond()) : formatWhole(0))} `;
+    document.getElementById('brickDisplay').innerHTML = formatUnitRow(player.bricks);
+    document.getElementById('brickGainDisplay').innerHTML = ` ${(player.astralFlag ? formatUnitRow(getBricksPerSecond()) : formatWhole(0))} `;
     document.getElementById('factoryProd').innerHTML = formatDefault(getBuildingProdPerSec(1));
     document.getElementById('factoryAmt').innerHTML = formatDefault(player.buildings[1].amount);
     document.getElementById('factoryBuildLabel').innerHTML = BUILDS_DATA[1].id;
