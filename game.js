@@ -184,8 +184,8 @@ function init() {
 }
 
 function updateSliderDisplay() {
-    player.truePercent = 100 - document.getElementById('timeSlider').value;
-    player.antiPercent = document.getElementById('timeSlider').value;
+    player.truePercent = 100 - Number(document.getElementById('timeSlider').value);
+    player.antiPercent = Number(document.getElementById('timeSlider').value);
     document.getElementById('sliderValueRight').innerHTML = document.getElementById('timeSlider').value;
     document.getElementById('sliderValueLeft').innerHTML = 100 - document.getElementById('timeSlider').value;
 }
