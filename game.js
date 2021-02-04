@@ -553,13 +553,14 @@ function importSave() {
     if (imported !== undefined) {
         try {
             player = Object.assign({}, JSON.parse(window.atob(imported)));
-            fixData(player, START_PLAYER);
-            save();
-            window.location.reload();
         } catch(e) {
             return;
         }
     }
+    
+    fixData(player, START_PLAYER);
+    save();
+    window.location.reload();
 }
 
 function closeText() {
