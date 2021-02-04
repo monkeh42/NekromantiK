@@ -148,7 +148,7 @@ function generateHelpText(tab) {
     var hText = HELP_TEXTS[tab]['mainTab'];
 
     for (k in HELP_TEXTS[tab]) {
-        if (k != 'mainTab' && checkUnlocked(tab, k)) { hText = hText + HELP_TEXTS[tab][k] + '<br>'; }
+        if (k != 'mainTab' && HELP_TEXTS[tab][k] != '' && checkUnlocked(tab, k)) { hText = hText + HELP_TEXTS[tab][k] + '<br>'; }
     }
     return hText;
 }
