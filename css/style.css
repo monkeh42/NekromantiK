@@ -1,10 +1,19 @@
-
+@font-face {
+    font-family: 'Cinzel';
+    src: url(/fonts/Cinzel-Medium.otf);
+    font-variant-numeric: tabular-nums;
+}
+@font-face {
+    font-family: 'Cinzel';
+    src: url(/fonts/Cinzel-ExtraBold.otf);
+    font-variant-numeric: tabular-nums;
+    font-weight: bold;
+}
 
 body {
     color: white;
     background-color: black;
     font-family: 'Cinzel', serif;
-    font-weight: 500;
     font-size: 13pt;
     margin-bottom: 200px;
 }
@@ -42,13 +51,13 @@ body {
 
 h1 {
     font-family: 'Cinzel', serif;
-    font-weight: 800;
+    font-weight: bold;
     font-size: 13pt;
 }
 
 h2 {
     font-family: 'Cinzel', serif;
-    font-weight: 800;
+    font-weight: bold;
     font-size: 16pt;
     margin-top: 0.4em;
     margin-bottom: 0.4em;
@@ -56,7 +65,7 @@ h2 {
 
 h3 {
     font-family: 'Cinzel', serif;
-    font-weight: 800;
+    font-weight: bold;
     font-size: 18pt;
 }
 
@@ -133,7 +142,6 @@ button:focus {
     cursor: pointer;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
-    font-weight: 500;
     font-size: 10pt;
     margin: 10px;
 }
@@ -148,7 +156,7 @@ button:focus {
     cursor: pointer;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
-    font-weight: 500;
+    
     font-size: 15pt;
 }
 
@@ -166,7 +174,7 @@ button:focus {
     cursor: pointer;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
-    font-weight: 500;
+    
     font-size: 12pt;
 }
 
@@ -184,7 +192,7 @@ button:focus {
     cursor: pointer;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
-    font-weight: 500;
+    
     font-size: 13pt;
 }
 
@@ -202,7 +210,7 @@ button:focus {
     margin: 10px;
     cursor: pointer;
     font-family: 'Cinzel', serif;
-    font-weight: 500;
+    
     font-size: 24pt;
     border-radius: 4px;
 }
@@ -217,7 +225,7 @@ button:focus {
     margin: 10px;
     cursor: pointer;
     font-family: 'Cinzel', serif;
-    font-weight: 500;
+    
     font-size: 24pt;
     border-radius: 4px;
 }
@@ -240,7 +248,7 @@ button:focus {
     margin: 10px;
     cursor: pointer;
     font-family: 'Cinzel', serif;
-    font-weight: 500;
+    
     font-size: 13pt;
     border-radius: 4px;
 }
@@ -258,7 +266,7 @@ button:focus {
     border: 1px solid #4b4b4b;
     margin: 10px;
     font-family: 'Cinzel', serif;
-    font-weight: 500;
+    
     font-size: 13pt;
     border-radius: 4px;
 }
@@ -272,7 +280,7 @@ button:focus {
     cursor: pointer;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
-    font-weight: 500;
+    
 }
 
 .astralOn {
@@ -284,7 +292,7 @@ button:focus {
     cursor: pointer;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
-    font-weight: 500;
+    
 }
 
 .astralBut:hover {
@@ -383,7 +391,7 @@ button:focus {
     cursor: pointer;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
-    font-weight: 500;
+    
 }
 
 .prestigeBut:hover {
@@ -399,7 +407,7 @@ button:focus {
     cursor: pointer;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
-    font-weight: 500;
+    
 }
 
 .timePrestigeBut:hover {
@@ -415,7 +423,7 @@ button:focus {
     border: 1px solid #4b4b4b;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
-    font-weight: 500;
+    
 }
 
 .constrUpg {
@@ -477,7 +485,7 @@ button:focus {
 
 .noticeText {
     font-size: 15pt;
-    font-weight: 800;
+    font-weight: bold;
     color: #1c8a2e;
     text-align: center;
 }
@@ -499,7 +507,7 @@ button:focus {
     margin-bottom: 5px;
     color: #006ba0;
     font-size: 22pt;
-    font-weight: 800;
+    font-weight: bold;
     text-align: center;
     float: left;
 }
@@ -512,7 +520,7 @@ button:focus {
     margin-bottom: 5px;
     color: #006ba0;
     font-size: 22pt;
-    font-weight: 800;
+    font-weight: bold;
     text-align: center;
     float: right;
 }
