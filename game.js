@@ -577,7 +577,6 @@ function loadGame() {
     player = {};
     var savePlayer = localStorage.getItem('nekrosave');
     if (savePlayer === null || savePlayer === undefined) {
-        player = Object.assign({}, START_PLAYER);
         fixData(player, START_PLAYER);
     } else {
         player = Object.assign({}, JSON.parse(window.atob(savePlayer)));
@@ -596,7 +595,7 @@ function fixData(data, start) {
             }
         } else if (Array.isArray(start[item])) {
             if (data[item] === undefined) {
-                data[item] = {};
+                data[item] = [];
             } 
             fixData(data[item], start[item]);
         } else if (start[item] instanceof Decimal) {
