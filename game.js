@@ -797,6 +797,8 @@ function fixResetBug() {
             },
         }
     };
+    fixData(player, START_PLAYER);
+    save();
 }
 
 function exportGameState() {
