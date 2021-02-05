@@ -649,6 +649,13 @@ function fixResetBug() {
     START_PLAYER.nextSpaceReset = new Array(1, 5);
 }
 
+function exportGameState() {
+    document.getElementById('exportText').value = window.btoa(JSON.stringify(player) + '\n') + window.btoa(JSON.stringify(START_PLAYER) + '\n') + window.btoa(JSON.stringify(UNITS_DATA) + '\n') + window.btoa(JSON.stringify(BUILDS_DATA) + '\n') + window.btoa(JSON.stringify(CONSTR_DATA) + '\n') + window.btoa(JSON.stringify(TIME_DATA) + '\n');
+    document.getElementById('exportText').style.display = 'block';
+    document.getElementById('importConfirm').style.display = 'none';
+    document.getElementById('closeText').style.display = 'block';
+}
+
 function startInterval() {
     mainLoop = setInterval(function () {
         var currentUpdate = new Date().getTime();
