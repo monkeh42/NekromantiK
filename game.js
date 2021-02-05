@@ -627,6 +627,28 @@ function fixData(data, start) {
     }
 }
 
+function fixResetBug() {
+    var num = 2*(Math.round(player.spaceResets)-3)
+    switch (Math.round(player.spaceResets)) {
+        case 0:
+            player.nextSpaceReset = new Array(1, 5);
+            break;
+        case 1:
+            player.nextSpaceReset = new Array(1, 6);
+            break;
+        case 2:
+            player.nextSpaceReset = new Array(1, 7);
+            break;
+        case 3:
+            player.nextSpaceReset = new Array(1, 8);
+            break;
+        default:
+            player.nextSpaceReset = new Array(1+num, 8);
+
+    }
+    START_PLAYER.nextSpaceReset = new Array(1, 5);
+}
+
 function startInterval() {
     mainLoop = setInterval(function () {
         var currentUpdate = new Date().getTime();
