@@ -643,161 +643,158 @@ function fixResetBug() {
             player.nextSpaceReset = new Array(1+num, 8);
 
     }
-    /*START_PLAYER = Object.assign({}, {
-        corpses: new Decimal(10),
-        units: {
-            1: {
-                unlocked: true,
-                amount: new Decimal(0),
-                bought: new Decimal(0)
-            },
-            2: {
-                unlocked: false,
-                amount: new Decimal(0),
-                bought: new Decimal(0)
-            },
-            3: {
-                unlocked: false,
-                amount: new Decimal(0),
-                bought: new Decimal(0)
-            },
-            4: {
-                unlocked: false,
-                amount: new Decimal(0),
-                bought: new Decimal(0)
-            },
-            5: {
-                unlocked: false,
-                amount: new Decimal(0),
-                bought: new Decimal(0)
-            },
-            6: {
-                unlocked: false,
-                amount: new Decimal(0),
-                bought: new Decimal(0)
-            },
-            7: {
-                unlocked: false,
-                amount: new Decimal(0),
-                bought: new Decimal(0)
-            },
-            8: {
-                unlocked: false,
-                amount: new Decimal(0),
-                bought: new Decimal(0)
-            },
+    START_PLAYER.corpses = new Decimal(10);
+    START_PLAYER.units = Object.assign({}, {
+        1: {
+            unlocked: true,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
         },
-        
-        // this is [number of units, tier]
-        nextSpaceReset: [1, 5],
-        spaceResets: new Decimal(0),
-        worlds: new Decimal(0),
-    
-        buildings: {
-            1: {
-                built: false,
-                amount: new Decimal(0),
-                upgrades: {
-                    11: false,
-                    12: false,
-                    13: false,
-                    21: false,
-                    22: false,
-                    23: false,
-                }
-            },
-            2: {
-                built: false,
-                amount: new Decimal(0),
-                upgrades: {
-                    11: false,
-                    12: false,
-                    13: false,
-                    21: false,
-                    22: false,
-                    23: false,
-                }
-            },
-            3: {
-                built: false,
-                amount: new Decimal(0),
-                upgrades: {
-                    11: false,
-                    12: false,
-                    13: false,
-                }
-            },
+        2: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
         },
-    
-        construction: {
-            1: new Decimal(0),
-            2: new Decimal(0),
-            3: new Decimal(0),
-            4: new Decimal(0),
+        3: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
         },
-    
-        timeDims: {
-            1: {
-                unlocked: true,
-                amount: new Decimal(0),
-                bought: new Decimal(0)
-            },
-            2: {
-                unlocked: false,
-                amount: new Decimal(0),
-                bought: new Decimal(0)
-            },
-            3: {
-                unlocked: false,
-                amount: new Decimal(0),
-                bought: new Decimal(0)
-            },
-            4: {
-                unlocked: false,
-                amount: new Decimal(0),
-                bought: new Decimal(0)
-            },
+        4: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
         },
+        5: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        6: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        7: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        8: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+    });
     
-        bricks: new Decimal(0),
-        brickGainExp: 0.2,
-        astralFlag: false,
-    
-        crystals: new Decimal(0),
-        trueEssence: new Decimal(0),
-        truePercent: 50,
-        antiPercent: 50,
-        antiEssence: new Decimal(0),
-        timeResets: new Decimal(0),
-        totalTimeResets: new Decimal(0),
-        totalCrystals: new Decimal(0),
-        timeLocked: false,
-        
-        totalCorpses: new Decimal(0),
-        totalWorlds: new Decimal(0),
-        totalSpaceResets: new Decimal(0),
-        
-        lastUpdate: new Date(),
-        lastAutoSave: new Date(),
-    
-        unlocks: {
-            'unitsTab': {
-                'mainTab': true, 
-                'spacePrestige': false,  
-            },
-            'buildingsTab': {
-                'mainTab': false,
-                'factory': false,
-                'necropolis': false,
-                'sun': false,
-                'construction': false,
-            },
-            'timeTab': {
-                'mainTab': false,
-            },
-        }
-    }); */
+    // this is [number of units, tier]
     START_PLAYER.nextSpaceReset = new Array(1, 5);
+    START_PLAYER.spaceResets = new Decimal(0)
+    START_PLAYER.worlds = new Decimal(0);
+
+    START_PLAYER.buildings = Object.assign({}, {
+        1: {
+            built: false,
+            amount: new Decimal(0),
+            upgrades: {
+                11: false,
+                12: false,
+                13: false,
+                21: false,
+                22: false,
+                23: false,
+            }
+        },
+        2: {
+            built: false,
+            amount: new Decimal(0),
+            upgrades: {
+                11: false,
+                12: false,
+                13: false,
+                21: false,
+                22: false,
+                23: false,
+            }
+        },
+        3: {
+            built: false,
+            amount: new Decimal(0),
+            upgrades: {
+                11: false,
+                12: false,
+                13: false,
+            }
+        },
+    });
+
+    START_PLAYER.construction = Object.assign({}, {
+        1: new Decimal(0),
+        2: new Decimal(0),
+        3: new Decimal(0),
+        4: new Decimal(0),
+    });
+
+    START_PLAYER.timeDims = Object.assign({}, {
+        1: {
+            unlocked: true,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        2: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        3: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        4: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+    });
+
+    START_PLAYER.bricks = new Decimal(0);
+    START_PLAYER.brickGainExp = 0.2;
+    START_PLAYER.astralFlag = false;
+
+    START_PLAYER.crystals = new Decimal(0);
+    START_PLAYER.trueEssence = new Decimal(0);
+    START_PLAYER.truePercent = 50;
+    START_PLAYER.antiPercent = 50;
+    START_PLAYER.antiEssence = new Decimal(0);
+    START_PLAYER.timeResets = new Decimal(0);
+    START_PLAYER.totalTimeResets = new Decimal(0);
+    START_PLAYER.totalCrystals = new Decimal(0);
+    START_PLAYER.timeLocked = false;
+    
+    START_PLAYER.totalCorpses = new Decimal(0);
+    START_PLAYER.totalWorlds = new Decimal(0);
+    START_PLAYER.totalSpaceResets = new Decimal(0);
+    
+    START_PLAYER.lastUpdate = new Date();
+    START_PLAYER.lastAutoSave = new Date();
+
+    START_PLAYER.unlocks = Object.assign({}, {
+        'unitsTab': {
+            'mainTab': true, 
+            'spacePrestige': false,  
+        },
+        'buildingsTab': {
+            'mainTab': false,
+            'factory': false,
+            'necropolis': false,
+            'sun': false,
+            'construction': false,
+        },
+        'timeTab': {
+            'mainTab': false,
+        },
+    });
     fixData(player, START_PLAYER);
     save();
 }
