@@ -596,26 +596,25 @@ function fixData(data, start) {
             }
         } else if (Array.isArray(start[item])) {
             if (data[item] === undefined) {
-                data[item] = start[item];
-            } else {
-                fixData(data[item], start[item]);
-            }
+                data[item] = {};
+            } 
+            fixData(data[item], start[item]);
         } else if (start[item] instanceof Decimal) {
             if (data[item] === undefined) {
-                data[item] = start[item];
+                data[item] = new Decimal(start[item]);
             } else {
                 data[item] = new Decimal(data[item]);
             }
         } else if ((!!start[item]) && (typeof start[item] === "object")) {
             if (data[item] === undefined) {
-                data[item] = start[item];
-            } else {
-                fixData(data[item], start[item]);
+                data[item] = {};
             }
+            fixData(data[item], start[item]);
         } else {
             if (data[item] === undefined) {
                 data[item] = start[item];
             }
+            fixData(data[item], start[item]);
         }
     }
     for (var b in player.buildings) {
@@ -646,7 +645,160 @@ function fixResetBug() {
             player.nextSpaceReset = new Array(1+num, 8);
 
     }
-    START_PLAYER.nextSpaceReset = new Array(1, 5);
+    START_PLAYER = START_PLAYER = {
+        corpses: new Decimal(10),
+        units: {
+            1: {
+                unlocked: true,
+                amount: new Decimal(0),
+                bought: new Decimal(0)
+            },
+            2: {
+                unlocked: false,
+                amount: new Decimal(0),
+                bought: new Decimal(0)
+            },
+            3: {
+                unlocked: false,
+                amount: new Decimal(0),
+                bought: new Decimal(0)
+            },
+            4: {
+                unlocked: false,
+                amount: new Decimal(0),
+                bought: new Decimal(0)
+            },
+            5: {
+                unlocked: false,
+                amount: new Decimal(0),
+                bought: new Decimal(0)
+            },
+            6: {
+                unlocked: false,
+                amount: new Decimal(0),
+                bought: new Decimal(0)
+            },
+            7: {
+                unlocked: false,
+                amount: new Decimal(0),
+                bought: new Decimal(0)
+            },
+            8: {
+                unlocked: false,
+                amount: new Decimal(0),
+                bought: new Decimal(0)
+            },
+        },
+        
+        // this is [number of units, tier]
+        nextSpaceReset: [1, 5],
+        spaceResets: new Decimal(0),
+        worlds: new Decimal(0),
+    
+        buildings: {
+            1: {
+                built: false,
+                amount: new Decimal(0),
+                upgrades: {
+                    11: false,
+                    12: false,
+                    13: false,
+                    21: false,
+                    22: false,
+                    23: false,
+                }
+            },
+            2: {
+                built: false,
+                amount: new Decimal(0),
+                upgrades: {
+                    11: false,
+                    12: false,
+                    13: false,
+                    21: false,
+                    22: false,
+                    23: false,
+                }
+            },
+            3: {
+                built: false,
+                amount: new Decimal(0),
+                upgrades: {
+                    11: false,
+                    12: false,
+                    13: false,
+                }
+            },
+        },
+    
+        construction: {
+            1: new Decimal(0),
+            2: new Decimal(0),
+            3: new Decimal(0),
+            4: new Decimal(0),
+        },
+    
+        timeDims: {
+            1: {
+                unlocked: true,
+                amount: new Decimal(0),
+                bought: new Decimal(0)
+            },
+            2: {
+                unlocked: false,
+                amount: new Decimal(0),
+                bought: new Decimal(0)
+            },
+            3: {
+                unlocked: false,
+                amount: new Decimal(0),
+                bought: new Decimal(0)
+            },
+            4: {
+                unlocked: false,
+                amount: new Decimal(0),
+                bought: new Decimal(0)
+            },
+        },
+    
+        bricks: new Decimal(0),
+        brickGainExp: 0.2,
+        astralFlag: false,
+    
+        crystals: new Decimal(0),
+        trueEssence: new Decimal(0),
+        truePercent: 50,
+        antiPercent: 50,
+        antiEssence: new Decimal(0),
+        timeResets: new Decimal(0),
+        totalTimeResets: new Decimal(0),
+        totalCrystals: new Decimal(0),
+        timeLocked: false,
+        
+        totalCorpses: new Decimal(0),
+        totalWorlds: new Decimal(0),
+        totalSpaceResets: new Decimal(0),
+        
+        lastUpdate: new Date(),
+        lastAutoSave: new Date(),
+    
+        unlocks: {
+            'unitsTab': {
+                'mainTab': true, 
+                'spacePrestige': false,  
+            },
+            'buildingsTab': {
+                'mainTab': false,
+                'factory': false,
+                'necropolis': false,
+                'sun': false,
+                'construction': false,
+            },
+            'timeTab': {
+                'mainTab': false,
+            },
+        }
+    };
 }
 
 function exportGameState() {
