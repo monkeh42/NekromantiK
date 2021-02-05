@@ -578,6 +578,7 @@ function loadGame() {
     var savePlayer = localStorage.getItem('nekrosave');
     if (savePlayer === null || savePlayer === undefined) {
         player = Object.assign({}, START_PLAYER);
+        fixData(player, START_PLAYER);
     } else {
         player = Object.assign({}, JSON.parse(window.atob(savePlayer)));
         fixData(player, START_PLAYER);

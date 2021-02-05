@@ -238,7 +238,7 @@ function timePrestigeReset() {
 function resetSpaceCounts() {
     player.spaceResets = new Decimal(START_PLAYER.spaceResets);
     player.worlds = new Decimal(START_PLAYER.worlds);
-    player.nextSpaceReset = START_PLAYER.nextSpaceReset;
+    player.nextSpaceReset = START_PLAYER.nextSpaceReset.slice();
 }
 
 function timePrestige() {
