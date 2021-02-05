@@ -643,7 +643,7 @@ function fixResetBug() {
             player.nextSpaceReset = new Array(1+num, 8);
 
     }
-    START_PLAYER = Object.assign({}, {
+    /*START_PLAYER = Object.assign({}, {
         corpses: new Decimal(10),
         units: {
             1: {
@@ -796,7 +796,8 @@ function fixResetBug() {
                 'mainTab': false,
             },
         }
-    });
+    }); */
+    START_PLAYER.nextSpaceReset = new Array(1, 5);
     fixData(player, START_PLAYER);
     save();
 }
