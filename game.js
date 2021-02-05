@@ -596,8 +596,8 @@ function fixData(data, start) {
         } else if (Array.isArray(start[item])) {
             if (data[item] === undefined) {
                 data[item] = [];
-                fixData(data[item], start[item]);
             } 
+            fixData(data[item], start[item]);
         } else if (start[item] instanceof Decimal) {
             if (data[item] === undefined) {
                 data[item] = new Decimal(start[item]);
@@ -607,12 +607,13 @@ function fixData(data, start) {
         } else if ((!!start[item]) && (typeof start[item] === "object")) {
             if (data[item] === undefined) {
                 data[item] = {};
-                fixData(data[item], start[item]);
             }
+            fixData(data[item], start[item]);
         } else {
             if (data[item] === undefined) {
                 data[item] = start[item];
             }
+            fixData(data[item], start[item]);
         }
     }
     for (var b in player.buildings) {
