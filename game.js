@@ -613,7 +613,6 @@ function fixData(data, start) {
             if (data[item] === undefined) {
                 data[item] = start[item];
             }
-            fixData(data[item], start[item]);
         }
     }
     for (var b in player.buildings) {
