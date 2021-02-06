@@ -26,8 +26,8 @@ const TIME_DATA = {
         rowID: "timeRow1",
     },
     2: {
-        single: "first time dimension",
-        plural: "first time dimensions",
+        single: "second time dimension",
+        plural: "second time dimensions",
         baseCost: new Decimal(100),
         baseCostMult: new Decimal(100),
         baseMult: new Decimal(0),
@@ -50,8 +50,8 @@ const TIME_DATA = {
         rowID: "timeRow2",
     },
     3: {
-        single: "first time dimension",
-        plural: "first time dimensions",
+        single: "third time dimension",
+        plural: "third time dimensions",
         baseCost: new Decimal(1000),
         baseCostMult: new Decimal(100),
         baseMult: new Decimal(0),
@@ -74,8 +74,8 @@ const TIME_DATA = {
         rowID: "timeRow3",
     },
     4: {
-        single: "first time dimension",
-        plural: "first time dimensions",
+        single: "fourth time dimension",
+        plural: "fourth time dimensions",
         baseCost: new Decimal(10000),
         baseCostMult: new Decimal(1000),
         baseMult: new Decimal(0),
