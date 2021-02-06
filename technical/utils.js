@@ -112,9 +112,10 @@ function formatWhole(decimal) {
 
 function addFactorial(num) {
 	var f = 0;
-	while (num > 0) {
-		f = f+num;
-		num--;
+	var n = parseInt(num);
+	while (n > 0) {
+		f = f+n;
+		n--;
 	}
 	return f
 }
