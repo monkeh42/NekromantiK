@@ -10,6 +10,43 @@
     font-weight: bold;
 }
 
+.tooltip {
+    position: relative;
+ }
+
+ .tooltip::before {
+    white-space: pre;
+    background-color: black;
+    border: 3px solid white;
+    color: white;
+    box-shadow: 3px 3px #424242;
+    border-radius: 4px;
+    content: attr(data-title);
+    display: none;
+    font: 400 13.3333px Arial;
+    padding: 2px 5px;
+    position: absolute;
+    top: -20px;
+    left: 5px;
+    z-index: 1;
+ }
+
+ .tooltip:hover::before {
+    display: block;
+ }
+
+ .tooltip::before:empty {
+    display: none;
+ }
+
+body {
+    color: white;
+    background-color: black;
+    font-family: 'Cinzel', serif;
+    font-size: 13pt;
+    margin-bottom: 200px;
+}
+
 body {
     color: white;
     background-color: black;
@@ -47,6 +84,35 @@ body {
     font-size: 14pt;
     line-height: 120%;
     text-align: center;
+}
+
+.popup {
+    position: absolute;
+    left: 50%;
+	top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center;
+    background-color: black;
+    border: 3px solid white;
+    box-shadow: 3px 3px #424242;
+    width: 300px;
+    border-radius: 4px;
+    z-index: 2;
+    display: none;
+}
+
+.bpopup {
+    position: absolute;
+    left: 50%;
+	top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center;
+    background-color: black;
+    border: 3px solid white;
+    box-shadow: 3px 3px #424242;
+    width: 300px;
+    border-radius: 4px;
+    z-index: 2;
 }
 
 h1 {

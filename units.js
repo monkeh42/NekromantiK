@@ -5,9 +5,13 @@ const UNITS_DATA = {
         baseCost: new Decimal(10),
         baseMultPer: new Decimal(1.75),
         baseCostMult: new Decimal(100),
+        expCostMult: 10,
+        expCostStart: 10,
+        expCostStartCost: new Decimal(1e21),
         cost: function() {
             var c = this.baseCost;
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
+            if (c.gte(this.expCostStartCost)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(this.expCostStart)))); }
             return c;
         },
         corpseMult: function() {
@@ -36,9 +40,13 @@ const UNITS_DATA = {
         baseCost: new Decimal(100),
         baseMultPer: new Decimal(2),
         baseCostMult: new Decimal(10000),
+        expCostMult: 10,
+        expCostStart: 7,
+        expCostStartCost: new Decimal(1e30),
         cost: function() {
             var c = this.baseCost;
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
+            if (c.gte(this.expCostStartCost)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(this.expCostStart)))); }
             return c;
         },
         corpseMult: function() {
@@ -67,9 +75,13 @@ const UNITS_DATA = {
         baseCost: new Decimal(10000),
         baseMultPer: new Decimal(2),
         baseCostMult: new Decimal(10000),
+        expCostMult: 10,
+        expCostStart: 7,
+        expCostStartCost: new Decimal(1e32),
         cost: function() {
             var c = this.baseCost;
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
+            if (c.gte(this.expCostStartCost)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(this.expCostStart)))); }
             return c;
         },
         corpseMult: function() {
@@ -97,9 +109,13 @@ const UNITS_DATA = {
         baseCost: new Decimal(1000000),
         baseMultPer: new Decimal(2),
         baseCostMult: new Decimal(1000000),
+        expCostMult: 10,
+        expCostStart: 5,
+        expCostStartCost: new Decimal(1e36),
         cost: function() {
             var c = this.baseCost;
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
+            if (c.gte(this.expCostStartCost)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(this.expCostStart)))); }
             return c;
         },
         corpseMult: function() {
@@ -127,9 +143,13 @@ const UNITS_DATA = {
         baseCost: new Decimal(1e9),
         baseMultPer: new Decimal(2.2),
         baseCostMult: new Decimal(1e10),
+        expCostMult: 10,
+        expCostStart: 4,
+        expCostStartCost: new Decimal(1e49),
         cost: function() {
             var c = this.baseCost;
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
+            if (c.gte(this.expCostStartCost)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(this.expCostStart)))); }
             return c;
         },
         corpseMult: function() {
@@ -157,9 +177,13 @@ const UNITS_DATA = {
         baseCost: new Decimal(1e13),
         baseMultPer: new Decimal(2.2),
         baseCostMult: new Decimal(1e11),
+        expCostMult: 10,
+        expCostStart: 4,
+        expCostStartCost: new Decimal(1e58),
         cost: function() {
             var c = this.baseCost;
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
+            if (c.gte(this.expCostStartCost)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(this.expCostStart)))); }
             return c;
         },
         corpseMult: function() {
@@ -187,9 +211,13 @@ const UNITS_DATA = {
         baseCost: new Decimal(1e19),
         baseMultPer: new Decimal(2.5),
         baseCostMult: new Decimal(1e12),
+        expCostMult: 10,
+        expCostStart: 3,
+        expCostStartCost: new Decimal(1e55),
         cost: function() {
             var c = this.baseCost;
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
+            if (c.gte(this.expCostStartCost)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(this.expCostStart)))); }
             return c;
         },
         corpseMult: function() {
@@ -217,9 +245,13 @@ const UNITS_DATA = {
         baseCost: new Decimal(1e25),
         baseMultPer: new Decimal(2.5),
         baseCostMult: new Decimal(1e15),
+        expCostMult: 10,
+        expCostStart: 3,
+        expCostStartCost: new Decimal(1e70),
         cost: function() {
             var c = this.baseCost;
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
+            if (c.gte(this.expCostStartCost)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(this.expCostStart)))); }
             return c;
         },
         corpseMult: function() {

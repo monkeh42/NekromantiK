@@ -17,14 +17,21 @@
 </head>
 
 <body onload="init()">
-    <div id="game">
+    <div id="calcPopupContainer" width="100%" height="100%" style="background-color: black; display: block;">
+        <div class="bpopup" id="offlineCalcPopup">
+            <div>
+                <h2>Calculating offline production...</h2>
+            </div>
+        </div>
+    </div>
+    <div id="game" style="display: none;">
         <div id="helpDiv" style="display: none;">
             <div id="helpText">
             </div>
             <br>
         </div>
         <div width="100%"><div id="versionNumber" style="text-align: right;">v0.1.2</div></div>
-        <div width="100%" style="text-align: center;">IF ANYTHING ISN'T RESET THAT SHOULD BE ON WORLD/TIME RESETS, CLICK THE FIX BUTTON IN OPTIONS.<br><span style="font-size: 11pt">if you need to do this more than once, please let me know on discord, it should be a one-time fix.</span></div>
+        <div width="100%" style="text-align: center;">IF ANYTHING ISN'T RESET THAT SHOULD BE ON WORLD/TIME RESETS, CLICK THE FIX BUTTON IN OPTIONS.<br><span style="font-size: 11pt">if you need to do this more than once, please let me know on <a href="https://discord.gg/H2V7FfT4Rt" target="_blank">discord</a>, it should be a one-time fix.</span></div>
         <div id="resourceDisplay" style="width: auto; margin: 15px auto 25px; display: block; text-align: center;">
             <span style="font-size: 16pt; font-weight: bold;">You have <span id="corpseAmount" style="font-size: 20pt; white-space: pre; color: #6c00b4; font-variant-numeric: tabular-nums;"> 10 </span> <span id='pluralCorpse'> corpses </span>.</span><br>
             <span>You are harvesting <span id="corpseGain" style="font-size: 17pt; font-weight: bold; white-space: pre; color: #6c00b4; font-variant-numeric: tabular-nums;"> 0 </span> <span id='pluralCorpseG'> corpses </span>/sec.<span id="devSpeedContainer" style="white-space: pre; display: none;"> (@ <span id="devSpeedDisplay">3</span>x time speed)</span></span><br>
@@ -258,7 +265,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3">
+                    <td colspan="3" id="brickTooltip" data-title="corpse production rate ^2.0">
                         <div style="font-size: 18pt; white-space: pre;">Your unholy hordes have forged <span id="brickDisplay" style="font-size: 21pt; font-weight: bold; color: #1c8a2e; font-variant-numeric: tabular-nums;"> 0 </span> <span id="astralTextAmt" class="buildingResourceTexts">astral bricks</span>.</div>
                         <div id="brickGainDiv" style="font-size: 15pt; white-space: pre; display: none;">You are gaining <span id="brickGainDisplay" style="font-size: 18pt; font-weight: bold; color: #1c8a2e; font-variant-numeric: tabular-nums;"> 0 </span> <span id="bricksTextGain" class="buildingResourceTexts">bricks</span>/sec. (@ 10x slower time speed)</div>
                         <span style="font-size: 11pt">You can now force the dead you harvest to work for your rapidly growing empire. While Astral Enslavement is active, time goes 10x slower,
@@ -293,13 +300,13 @@
                     <tr id="factoryHeaderRow" style="display: none;">
                         <td colspan="3">
                             <h2 style="font-size: 18pt;">DEATH FACTORY</h2>
-                            you have <span id="factoryAmt" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> <span id="armamentsTextAmt" class="buildingResourceTexts">armaments</span>.<br>
-                            you are producing <span id="factoryProd" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> <span id="armamentsTextGain" class="buildingResourceTexts">armaments</span>/sec, based on your zombies.
+                            <div id="factoryTooltip" data-title="log(x)^0.5">you have <span id="factoryAmt" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> <span id="armamentsTextAmt" class="buildingResourceTexts">armaments</span>.<br>
+                            you are producing <span id="factoryProd" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> <span id="armamentsTextGain" class="buildingResourceTexts">armaments</span>/sec, based on your zombies.</div>
                         </td>
                     </tr>
                     <tr id="factoryUpgradesRow1" style="display: none;">
                         <td>
-                            <button id="factoryUpg11" class="factoryUpg" onclick="buyBUpg(1, 11)"></button>
+                            <button id="factoryUpg11" class="factoryUpg" data-title="1 + 2*sqrt(log(x))" onclick="buyBUpg(1, 11)"></button>
                         </td>
                         <td>
                             <button id="factoryUpg12" class="factoryUpg" onclick="buyBUpg(1, 12)"></button>
@@ -310,13 +317,13 @@
                     </tr>
                     <tr id="factoryUpgradesRow2" style="display: none;">
                         <td>
-                            <button id="factoryUpg21" class="factoryUpg" onclick="buyBUpg(1, 21)"></button>
+                            <button id="factoryUpg21" class="factoryUpg" data-title="1 + 2*sqrt(log(x))" onclick="buyBUpg(1, 21)"></button>
                         </td>
                         <td>
                             <button id="factoryUpg22" class="factoryUpg" onclick="buyBUpg(1, 22)"></button>
                         </td>
                         <td>
-                            <button id="factoryUpg23" class="factoryUpg" onclick="buyBUpg(1, 23)"></button>
+                            <button id="factoryUpg23" class="factoryUpg" data-title="1 + log(x)^2" onclick="buyBUpg(1, 23)"></button>
                         </td>
                     </tr>
                 </table>
@@ -330,31 +337,31 @@
                     <tr id="necropolisHeaderRow" style="display: none;">
                         <td colspan="3">
                             <h2 style="font-size: 18pt;">NECROPOLIS</h2>
-                            you have <span id="necropolisAmt" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> <span id="acolytesTextAmt" class="buildingResourceTexts">acolytes</span>.<br>
+                            <div id="necropolisTooltip" data-title="gain: x^0.2&#xA;effect: 1 + log(x)">you have <span id="necropolisAmt" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> <span id="acolytesTextAmt" class="buildingResourceTexts">acolytes</span>.<br>
                             you are producing <span id="necropolisProd" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> <span id="acolytesTextGain" class="buildingResourceTexts">acolytes</span>/sec, based on your bought sun eaters.<br>
-                            your acolytes chant into the astral abyss, boosting your astral brick gain by <span id="acolyteEff" style="font-size: 17pt; white-space: pre;"> 0</span>x.
+                            your acolytes chant into the astral abyss, boosting your astral brick gain by <span id="acolyteEff" style="font-size: 17pt; white-space: pre;"> 0</span>x.</div>
                         </td>
                     </tr>
                     <tr id="necropolisUpgradesRow1" style="display: none;">
                         <td>
-                            <button id="necropolisUpg11" class="necropolisUpg" onclick="buyBUpg(2, 11)"><strong>Upgrade 1</strong><br>description of upgrade</button>
+                            <button id="necropolisUpg11" class="necropolisUpg" data-title="1.2^OoM" onclick="buyBUpg(2, 11)"><strong>Upgrade 1</strong><br>description of upgrade</button>
                         </td>
                         <td>
-                            <button id="necropolisUpg12" class="necropolisUpg" onclick="buyBUpg(2, 12)"><strong>Upgrade 2</strong><br>description of upgrade</button>
+                            <button id="necropolisUpg12" class="necropolisUpg" data-title="1 + sqrt(log(x))" onclick="buyBUpg(2, 12)"><strong>Upgrade 2</strong><br>description of upgrade</button>
                         </td>
                         <td>
-                            <button id="necropolisUpg13" class="necropolisUpg" onclick="buyBUpg(2, 13)"><strong>Upgrade 3</strong><br>description of upgrade</button>
+                            <button id="necropolisUpg13" class="necropolisUpg" data-title="1 + sqrt(log(x))" onclick="buyBUpg(2, 13)"><strong>Upgrade 3</strong><br>description of upgrade</button>
                         </td>
                     </tr>
                     <tr id="necropolisUpgradesRow2" style="display: none;">
                         <td>
-                            <button id="necropolisUpg21" class="necropolisUpg" onclick="buyBUpg(2, 21)"><strong>Upgrade 4</strong><br>description of upgrade</button>
+                            <button id="necropolisUpg21" class="necropolisUpg" data-title="1 + log(x)^2" onclick="buyBUpg(2, 21)"><strong>Upgrade 4</strong><br>description of upgrade</button>
                         </td>
                         <td>
-                            <button id="necropolisUpg22" class="necropolisUpg" onclick="buyBUpg(2, 22)"><strong>Upgrade 5</strong><br>description of upgrade</button>
+                            <button id="necropolisUpg22" class="necropolisUpg" data-title="1 + log(x)^2" onclick="buyBUpg(2, 22)"><strong>Upgrade 5</strong><br>description of upgrade</button>
                         </td>
                         <td>
-                            <button id="necropolisUpg23" class="necropolisUpg" onclick="buyBUpg(2, 23)"><strong>Upgrade 6</strong><br>description of upgrade</button>
+                            <button id="necropolisUpg23" class="necropolisUpg" data-title="1 + log(x)/4" onclick="buyBUpg(2, 23)"><strong>Upgrade 6</strong><br>description of upgrade</button>
                         </td>
                     </tr>
                 </table>
@@ -368,9 +375,9 @@
                     <tr id="sunHeaderRow" style="display: none;">
                         <td colspan="3">
                             <h2 style="font-size: 18pt;">DEAD SUN</h2>
-                            you have <span id="sunAmt" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> <span id="photonsTextAmt" class="buildingResourceTexts">nekro-photons</span>.<br>
+                            <div id="sunTooltip" data-title="2/sec">you have <span id="sunAmt" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> <span id="photonsTextAmt" class="buildingResourceTexts">nekro-photons</span>.<br>
                             <span id="sunGainSpan">you are producing <span id="sunProd" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 5 </span> <span id="photonsTextGain" class="buildingResourceTexts">nekro-photons</span>/sec, but only during astral enslavement.</span><br>
-                            <span id="sunGainNotice">Nekro-photon production is disabled outside of astral enslavement.</span>
+                            <span id="sunGainNotice">Nekro-photon production is disabled outside of astral enslavement.</span></div>
                         </td>
                     </tr>
                     <tr id="sunUpgradesRow" style="display: none;">
@@ -421,7 +428,7 @@
             <table style="width: 75%; margin: auto auto ; text-align: center;">
                 <tr>
                     <div id="timePresContainer" style="text-align: center; margin: 25px;">
-                        <button id="timePrestige" class="timePrestigeBut" onclick="timePrestige()">
+                        <button id="timePrestige" class="timePrestigeBut" data-title="floor(10^(corpses_exponent/20 - 0.65))" onclick="timePrestige()">
                             <span style="font-size: 15pt;">sacrifice your empire</span><br>
                             <span id="timePresDesc">Perform a dark ritual to transmute all you have achieved into time crystals. This will reset all your corpses, units, worlds, bricks, buildings, upgrades, earned time dimensions, and time essence, but you will gain time crystals based on your corpses.</span><br>
                             <span id="timePrestigeReq" style="font-size: 13pt;">Requires at least <span style="font-size: 17pt; white-space: pre;"> 1e20 </span> corpses</span>
@@ -436,8 +443,8 @@
                     </td>
                     <td><div style="width: 100%;">You have <span id="crystalAmt" style="font-size: 17pt; white-space: pre; color: #006ba0; font-weight: bold; font-variant-numeric: tabular-nums;"> 0 </span> <span id="crystalsTextAmt" class="timeResourceTexts">time crystals</span></div>
                         <div style="min-width: 100%; min-height: 30px;"></div>
-                        <div style="width: 50%; float: left;">Your True Time Essence speeds up normal time by<br><span id="trueTimeBuff" style="font-size: 16pt;">1</span>x<br> but it divides the Anti Time Essence effect by<br><span id="trueTimeNerf" style="font-size: 16pt;">1</span></div>
-                        <div style="width: 50%; float: left;">Your Anti Time Essence speeds up astral time by<br><span id="antiTimeBuff" style="font-size: 16pt;">1</span>x<br> but it divides the True Time Essence effect by<br><span id="antiTimeNerf" style="font-size: 16pt;">1</span></div>
+                        <div id="trueTooltip" style="width: 50%; float: left;" data-title="boost: 1 + log(x)/(2*nerf)&#xA;nerf: 1 + (log(x)^0.2)/2">Your True Time Essence speeds up normal time by<br><span id="trueTimeBuff" style="font-size: 16pt;">1</span>x<br> but it divides the Anti Time Essence effect by<br><span id="trueTimeNerf" style="font-size: 16pt;">1</span></div>
+                        <div id="antiTooltip"style="width: 50%; float: left;" data-title="boost: 1 + log(x)/nerf&#xA;nerf: 1 + (log(x)^0.2)/2">Your Anti Time Essence speeds up astral time by<br><span id="antiTimeBuff" style="font-size: 16pt;">1</span>x<br> but it divides the True Time Essence effect by<br><span id="antiTimeNerf" style="font-size: 16pt;">1</span></div>
                     </td>
                     <td width="100px;">
                         <div class="timeLabelRight">ANTI<br>TIME</div>
@@ -599,6 +606,42 @@
                     <div style="height: 100%;"></div>
                 </tr>
                 <tr>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        <button id="toggleTooltips" class="optBut" style="font-size: 10pt;" onclick="toggleTooltips()">TOGGLE FORMULA TOOLTIPS</button>
+                    </td>
+                    <td>
+                        <div style="height: 50px; width: 100%; text-align: center;"><a href="https://discord.gg/H2V7FfT4Rt" target="_blank"><img src="discord.png" width="50px" style="margin-top:10px;"></a></div>
+                    </td>
+                    <td>
+                        
+                    </td>
+                </tr>
+                <tr style="height: 25px;">
+                    <div style="height: 100%;"></div>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <label id="exportTextLabel" for="exportText" style="display: none;">Paste your save here...</label>
+                        <textarea id="exportText" name="exportText" style="display: none;"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td id="importConfirm" style="display: none;">
+                        <button class="optBut" onclick="importSave()">IMPORT</button>
+                    </td>
+                    <td id="closeText" style="display: none;">
+                        <button class="optBut" onclick="closeText()">CLOSE</button>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr style="height: 25px;">
+                    <div style="height: 100%;"></div>
+                </tr>
+                <tr>
                     <td colspan="4">
                         <div style="font-size: 10pt; text-align: center;">This game was made by monkeh42, and is very heavily influenced by hevipelle's <a href="https://ivark.github.io/" target="_blank">Antimatter Dimensions</a>, jacorb's <a href="https://jacorb90.github.io/Prestige-Tree/" target="_blank">The Prestige Tree</a>, and similar games.<br>
                         Thanks to hevipelle and jacorb for making their games (and making their code open) and thanks to patashu for <a href="https://github.com/Patashu/break_infinity.js" target="_blank">break_infinity.js</a>.<br>
@@ -606,19 +649,21 @@
                     </td>
                 </tr>
             </table>
-            <textarea id="exportText" style="display: none;"></textarea>
-            <table style="width: 75%; margin: auto; text-align: center;">
-                <tr>
-                    <td id="importConfirm" style="display: none;">
-                        <button class="optBut" onclick="importSave()">IMPORT</button>
-                    </td>
-                    <td id="closeText" style="display: none;">
-                        <button class="optBut" onclick="closeText()">CLOSE</button>
-                    </td>
-                </tr>
-            </table>
             <div style="width: 100%; text-align: center;"><img src="NekromantiK_Logo.png" width="250px"></div>
-            <div style="height: 50px; width: 100%; text-align: center;"><a href="https://discord.gg/H2V7FfT4Rt" target="_blank"><img src="discord.png" width="50px"></a></div>
+        </div>
+        <div class="popup" id="offlineGainPopup">
+            <div>
+                <h2>Offline Production</h2>
+                You gained:<br>
+                <span id="offlineZero" style="display: none;">Nothing.<br></span>
+                <span id="offlineCorpse" style="display: none;"><span id="offlineCorpseGain" style="font-size: 15pt; font-weight: bold; white-space: pre; color: #6c00b4;"> 0 </span> corpses.<br></span>
+                <span id="offlineBrick" style="display: none;"><span id="offlineBrickGain" style="font-size: 15pt; font-weight: bold; white-space: pre; color: #1c8a2e;"> 0 </span> astral bricks.<br></span>
+                <span id="offlineArmament" style="display: none;"><span id="offlineArmamentGain" style="font-size: 15pt; font-weight: bold; white-space: pre;"> 0 </span> armaments.<br></span>
+                <span id="offlineAcolyte" style="display: none;"><span id="offlineAcolyteGain" style="font-size: 15pt; font-weight: bold; white-space: pre;"> 0 </span> acolytes.<br></span>
+                <span id="offlinePhoton" style="display: none;"><span id="offlinePhotonGain" style="font-size: 15pt; font-weight: bold; white-space: pre;"> 0 </span> nekro-photons. <br></span>
+                <span id="offlineEssence" style="display: none;"><span id="offlineTrueGain" style="font-size: 15pt; font-weight: bold; white-space: pre; color: #006ba0;"> 0 </span> true time essence and <span id="offlineAntiGain" style="font-size: 15pt; font-weight: bold; white-space: pre; color: #006ba0;"> 0 </span> anti time essence.<br></span>
+            </div>
+            <button class="optBut" id="closeOfflinePopup" style="margin: 10px;" onclick="closeOfflinePopup()">CLOSE</button>
         </div>
     </div>
 </body>

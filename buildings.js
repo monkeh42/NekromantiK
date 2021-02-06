@@ -43,6 +43,7 @@ const BUILDS_DATA = {
                 cost: new Decimal(1000),
                 buttonID: 'factoryUpg11',
                 displayEffect: true,
+                displayTooltip: true,
                 effect: function() {
                     var b = Decimal.max(player.buildings[1].amount, 1).log10();
                     var e = new Decimal(0.5);
@@ -55,6 +56,7 @@ const BUILDS_DATA = {
                 cost: new Decimal(5000),
                 buttonID: 'factoryUpg12',
                 displayEffect: false,
+                displayTooltip: false,
                 effect: function() {
                     var e = new Decimal(1.25);
                     return e;
@@ -66,6 +68,7 @@ const BUILDS_DATA = {
                 cost: new Decimal(10000),
                 buttonID: 'factoryUpg13',
                 displayEffect: false,
+                displayTooltip: false,
                 effect: function() {
                     return new Decimal(1);
                 }
@@ -76,6 +79,7 @@ const BUILDS_DATA = {
                 cost: new Decimal(100000),
                 buttonID: 'factoryUpg21',
                 displayEffect: true,
+                displayTooltip: true,
                 effect: function() {
                     var b = Decimal.max(player.units[2].amount, 1).log10();
                     var e = new Decimal(0.5);
@@ -88,6 +92,7 @@ const BUILDS_DATA = {
                 cost: new Decimal(250000),
                 buttonID: 'factoryUpg22',
                 displayEffect: false,
+                displayTooltip: false,
                 effect: function() {
                     return UNITS_DATA[8].corpseMult().gt(1);
                 }
@@ -98,10 +103,11 @@ const BUILDS_DATA = {
                 cost: new Decimal(500000),
                 buttonID: 'factoryUpg23',
                 displayEffect: true,
+                displayTooltip: true,
                 effect: function() {
                     var b = Decimal.max(player.corpses, 1);
-                    var e = new Decimal(0.2);
-                    return Decimal.pow(b, e);
+                    b = Decimal.pow(b.log10(), 2);
+                    return b.plus(1);
                 }
             },
         }
@@ -144,13 +150,14 @@ const BUILDS_DATA = {
         upgrades: {
             11: {
                 title: 'Astral Kilns',
-                desc: 'Gain 25% more astral bricks for each OoM (order of magnitude) of astral bricks owned.',
+                desc: 'Gain 20% more astral bricks for each OoM (order of magnitude) of astral bricks owned.',
                 cost: new Decimal(100000),
                 buttonID: 'necropolisUpg11',
                 displayEffect: true,
+                displayTooltip: true,
                 effect: function() {
                     var e = Decimal.floor(player.bricks.e);
-                    return Decimal.pow(1.25, e);
+                    return Decimal.pow(1.2, e);
                 }
             },
             12: {
@@ -159,6 +166,7 @@ const BUILDS_DATA = {
                 cost: new Decimal(500000),
                 buttonID: 'necropolisUpg12',
                 displayEffect: true,
+                displayTooltip: true,
                 effect: function() {
                     var e = Decimal.sqrt(Decimal.max(player.bricks, 1).log10()).plus(1);
                     return e;
@@ -170,6 +178,7 @@ const BUILDS_DATA = {
                 cost: new Decimal(1000000),
                 buttonID: 'necropolisUpg13',
                 displayEffect: true,
+                displayTooltip: true,
                 effect: function() {
                     var e = Decimal.sqrt(Decimal.max(player.bricks, 1).log10()).plus(1);
                     return e;
@@ -181,9 +190,11 @@ const BUILDS_DATA = {
                 cost: new Decimal(1e9),
                 buttonID: 'necropolisUpg21',
                 displayEffect: true,
+                displayTooltip: true,
                 effect: function() {
-                    var e = Decimal.floor(player.bricks);
-                    return Decimal.max(Decimal.pow(e, 0.2), 1);
+                    var b = Decimal.max(player.bricks, 1);
+                    b = Decimal.pow(b.log10(), 2);
+                    return b.plus(1);
                 }
             },
             22: {
@@ -192,9 +203,11 @@ const BUILDS_DATA = {
                 cost: new Decimal(1e12),
                 buttonID: 'necropolisUpg22',
                 displayEffect: true,
+                displayTooltip: true,
                 effect: function() {
-                    var e = Decimal.floor(player.bricks);
-                    return Decimal.max(Decimal.pow(e, 0.2), 1);
+                    var b = Decimal.max(player.bricks, 1);
+                    b = Decimal.pow(b.log10(), 2);
+                    return b.plus(1);
                 }
             },
             23: {
@@ -203,6 +216,7 @@ const BUILDS_DATA = {
                 cost: new Decimal(1e15),
                 buttonID: 'necropolisUpg23',
                 displayEffect: true,
+                displayTooltip: true,
                 effect: function() {
                     var e = Decimal.sqrt(Decimal.max(player.bricks, 1).log10()).plus(1);
                     return e;
@@ -253,6 +267,7 @@ const BUILDS_DATA = {
                 cost: new Decimal(1000),
                 buttonID: 'sunUpg11',
                 displayEffect: false,
+                displayTooltip: false,
                 effect: function() {
                     return new Decimal(1);
                 }
@@ -263,16 +278,18 @@ const BUILDS_DATA = {
                 cost: new Decimal(1000),
                 buttonID: 'sunUpg12',
                 displayEffect: false,
+                displayTooltip: false,
                 effect: function() {
                     return new Decimal(1);
                 }
             },
             13: {
                 title: 'Nekro-Time',
-                desc: 'Unlock Time Upgrades (permanently).<br>COMING SOON',
+                desc: 'Unlock Time Upgrades (You keep this upgrade when you sacrifice.)<br>COMING SOON',
                 cost: new Decimal("Infinity"),
                 buttonID: 'sunUpg13',
                 displayEffect: false,
+                displayTooltip: false,
                 effect: function() {
                     return new Decimal(1);
                 }

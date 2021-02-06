@@ -168,7 +168,7 @@ function getEssenceProdPerSecond() {
 function getTrueTimeBuff() {
     if (!player.timeLocked) { return new Decimal(1); }
     var b = new Decimal(Decimal.max(player.trueEssence, 1).log10());
-    b = b.div(2).div(getAntiTimeNerf());
+    b = b.div(getAntiTimeNerf());
     b = Decimal.add(b, 1);
     return b;
 }
@@ -176,7 +176,7 @@ function getTrueTimeBuff() {
 function getAntiTimeBuff() {
     if (!player.timeLocked) { return new Decimal(1); }
     var b = new Decimal(Decimal.max(player.antiEssence, 1).log10());
-    b = b.div(getTrueTimeNerf());
+    b = b.div(getTrueTimeNerf()).times(2);
     b = Decimal.add(b, 1);
     return b;
 }
@@ -184,15 +184,15 @@ function getAntiTimeBuff() {
 function getTrueTimeNerf() {
     if (!player.timeLocked) { return new Decimal(1); }
     var b = new Decimal(Decimal.max(player.trueEssence, 1).log10());
-    b = Decimal.sqrt(b).div(2);
-    return b.plus(1);
+    b = Decimal.pow(b, 0.2);
+    return b.max(1);
 }
 
 function getAntiTimeNerf() {
     if (!player.timeLocked) { return new Decimal(1); }
     var b = new Decimal(Decimal.max(player.antiEssence, 1).log10());
-    b = Decimal.sqrt(b).div(2);
-    return b.plus(1);
+    b = Decimal.pow(b, 0.2);
+    return b.max(1);
 }
 
 function canTimePrestige() {
@@ -255,7 +255,7 @@ function timePrestige() {
 function calculateCrystalGain() {
     if (canTimePrestige()) {
         var div = 20;
-        var ret = Decimal.pow(10, (player.corpses.e/div) - 0.45);
+        var ret = Decimal.pow(10, (player.corpses.e/div) - 0.65);
         return Decimal.floor(ret);
     } else {
         return new Decimal(0);

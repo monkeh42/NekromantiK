@@ -1,6 +1,6 @@
 const GAME_DATA = {
     author: 'monkeh42',
-    version: 'v0.2.4',
+    version: 'v0.2.5',
 }
 
 const NUM_UNITS = 8;
@@ -15,7 +15,8 @@ const TIERS = {
     8: 'sun eater',
 }
 
-const DEV_SPEED = 1;
+var DEV_SPEED = 1;
+var mainLoop;
 
 const START_PLAYER = {
     corpses: new Decimal(10),
@@ -169,18 +170,20 @@ const START_PLAYER = {
         'timeTab': {
             'mainTab': false,
         },
-    }
+    },
+
+    tooltipsEnabled: false,
 };
 
 var player = {};
 
 function init() {
-    loadGame();
-
     showTab('unitsTab');
     showSubTab('buildingsSubTab');
+    
+    loadGame();
 
-    startInterval();
+    startGame();
 }
 
 function updateSliderDisplay() {
@@ -423,9 +426,9 @@ function updateHTML() {
         else { document.getElementById(BUILDS_DATA[b].buildingButtonID).className = BUILDS_DATA[b].buildingButtonUnclick; }
         if (isBuilt(b)) {
             for (var u in BUILDS_DATA[b].upgrades) {
-                if (hasUpgrade(b, u)) { document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).className = BUILDS_DATA[b].upgradeBtnBought }
-                else if (canAffordBUpg(b, u)) { document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).className = BUILDS_DATA[b].upgradeBtnClass }
-                else { document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).className = BUILDS_DATA[b].upgradeBtnUnclick }
+                if (hasUpgrade(b, u)) { document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).className = BUILDS_DATA[b].upgradeBtnBought + ((player.tooltipsEnabled && BUILDS_DATA[b].upgrades[u].displayTooltip) ? ' tooltip' : '') }
+                else if (canAffordBUpg(b, u)) { document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).className = BUILDS_DATA[b].upgradeBtnClass + ((player.tooltipsEnabled && BUILDS_DATA[b].upgrades[u].displayTooltip) ? ' tooltip' : '') }
+                else { document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).className = BUILDS_DATA[b].upgradeBtnUnclick + ((player.tooltipsEnabled && BUILDS_DATA[b].upgrades[u].displayTooltip) ? ' tooltip' : '') }
                 document.getElementById(BUILDS_DATA[b].upgrades[u].buttonID).innerHTML = "<span style=\"font-weight: 900;\">" + getUpgName(b, u) + "</span><br>" + getUpgDesc(b, u) + "<br>Cost: " + formatWhole(getUpgCost(b, u)) + " " + BUILDS_DATA[b].upgResource + (isDisplayEffect(b, u) ? ("<br>Currently: " + formatDefault2(getUpgEffect(b, u)) + "x") : "");
             }
         }
@@ -477,7 +480,7 @@ function updatePrestige() {
         }
     } else { document.getElementById('spacePresDesc').style.display = 'none'; }
     document.getElementById('prestigeReq').innerHTML = "Requires <span style=\"font-size: 17pt; white-space: pre;\"> " + formatWhole(player.nextSpaceReset[0]) + " </span> " + unitSingulizer(player.nextSpaceReset[1], player.nextSpaceReset[0]);
-    document.getElementById('timePrestige').className =  (canTimePrestige() ? 'timePrestigeBut' : 'unclickablePrestige');
+    document.getElementById('timePrestige').className = (player.tooltipsEnabled ? (canTimePrestige() ? 'timePrestigeBut tooltip' : 'unclickablePrestige tooltip') : (canTimePrestige() ? 'timePrestigeBut' : 'unclickablePrestige'));
     if (canTimePrestige()) {
         document.getElementById('timePrestigeReq').style.display = 'none';
         document.getElementById('timePrestigeGainDesc').style.display = 'block';
@@ -529,14 +532,16 @@ function allDisplay() {
 function getWorldsBonus() {
     var b = new Decimal(player.worlds)
     var e = 1.5 + getCUpgEffect(4);
-    return Decimal.max(b.div(2).pow(e).plus(1), 1);
+    return Decimal.max(b.div(1.5).pow(e).plus(1), 1);
 }
 
 function importToggle() {
-    document.getElementById('exportText').innerHTML = 'Paste your save here...';
+    document.getElementById('exportTextLabel').style.display = 'block';
+    document.getElementById('exportText').value = '';
     document.getElementById('exportText').style.display = 'block';
-    document.getElementById('importConfirm').style.display = 'block';
-    document.getElementById('closeText').style.display = 'block';
+    document.getElementById('importConfirm').style.display = 'table-cell';
+    document.getElementById('closeText').style.display = 'table-cell';
+    document.getElementById('closeText').removeAttribute('colspan');
 }
 
 function exportSave() {
@@ -545,7 +550,8 @@ function exportSave() {
     document.getElementById('exportText').value = str;
     document.getElementById('exportText').style.display = 'block';
     document.getElementById('importConfirm').style.display = 'none';
-    document.getElementById('closeText').style.display = 'block';
+    document.getElementById('closeText').style.display = 'table-cell';
+    document.getElementById('closeText').setAttribute('colspan', '2');
 }
 
 function importSave() {
@@ -564,9 +570,11 @@ function importSave() {
 }
 
 function closeText() {
+    document.getElementById('exportTextLabel').style.display = 'none';
     document.getElementById('exportText').style.display = 'none';
     document.getElementById('importConfirm').style.display = 'none';
     document.getElementById('closeText').style.display = 'none';
+    document.getElementById('closeText').removeAttribute('colspan');
 }
 
 function save() {
@@ -582,8 +590,10 @@ function loadGame() {
         player = Object.assign({}, JSON.parse(window.atob(savePlayer)));
         fixData(player, START_PLAYER);
     }
-    player.lastUpdate = new Date().getTime();
-    player.lastAutoSave = new Date().getTime();
+    if (player.tooltipsEnabled) {
+        player.tooltipsEnabled = false;
+        toggleTooltips();
+    }
     allDisplay();
 }
 
@@ -806,42 +816,167 @@ function exportGameState() {
     document.getElementById('closeText').style.display = 'block';
 }
 
-function startInterval() {
-    mainLoop = setInterval(function () {
-        var currentUpdate = new Date().getTime();
-        var diff = new Decimal(currentUpdate - player.lastUpdate);
-        if (DEV_SPEED>0) { diff = diff.times(DEV_SPEED); }
-        var timeBuff = player.astralFlag ? getAntiTimeBuff().div(10) : getTrueTimeBuff();
-        diff = timeBuff.times(diff);
-        var realDiff = diff.div(timeBuff);
-        if (player.astralFlag) {
-            player.bricks = player.bricks.plus(getBricksPerSecond().times(diff.div(1000)));
-        } else {
-            player.corpses = player.corpses.plus(getCorpsesPerSecond().times(diff.div(1000)));
-        }
-        player.totalCorpses = player.totalCorpses.plus(getCorpsesPerSecond().times(diff.div(1000)));
-        for (var i=1; i<NUM_UNITS; i++) {
-            player.units[i].amount = player.units[i].amount.plus(getUnitProdPerSecond(i).times(diff.div(1000)));
-        }
-        if (player.timeLocked) {
-            for (var i=1; i<=NUM_TIMEDIMS; i++) {
-                if (i==1) {
-                    player.trueEssence = player.trueEssence.plus(getEssenceProdPerSecond().times(realDiff.div(1000)).times(player.truePercent/100));
-                    player.antiEssence = player.antiEssence.plus(getEssenceProdPerSecond().times(realDiff.div(1000)).times(player.antiPercent/100));
-                }
-                else { player.timeDims[i-1].amount = player.timeDims[i-1].amount.plus(getTimeDimProdPerSecond(i).times(realDiff.div(1000))); }
+function gameLoop(diff=new Decimal(0), offline=false) {
+    var currentUpdate = new Date().getTime();
+    if (diff.eq(0)) { var diff = new Decimal(currentUpdate - player.lastUpdate); }
+    if (DEV_SPEED>0) { diff = diff.times(DEV_SPEED); }
+    var timeBuff = player.astralFlag ? getAntiTimeBuff().div(10) : getTrueTimeBuff();
+    diff = timeBuff.times(diff);
+    var realDiff = diff.div(timeBuff);
+    if (player.astralFlag) {
+        player.bricks = player.bricks.plus(getBricksPerSecond().times(diff.div(1000)));
+    } else {
+        player.corpses = player.corpses.plus(getCorpsesPerSecond().times(diff.div(1000)));
+    }
+    player.totalCorpses = player.totalCorpses.plus(getCorpsesPerSecond().times(diff.div(1000)));
+    for (var i=1; i<NUM_UNITS; i++) {
+        player.units[i].amount = player.units[i].amount.plus(getUnitProdPerSecond(i).times(diff.div(1000)));
+    }
+    if (player.timeLocked) {
+        for (var i=1; i<=NUM_TIMEDIMS; i++) {
+            if (i==1) {
+                player.trueEssence = player.trueEssence.plus(getEssenceProdPerSecond().times(realDiff.div(1000)).times(player.truePercent/100));
+                player.antiEssence = player.antiEssence.plus(getEssenceProdPerSecond().times(realDiff.div(1000)).times(player.antiPercent/100));
             }
+            else { player.timeDims[i-1].amount = player.timeDims[i-1].amount.plus(getTimeDimProdPerSecond(i).times(realDiff.div(1000))); }
         }
-        for (var b in BUILDS_DATA) {
-            if (isBuilt(b)) {
-                player.buildings[b].amount = player.buildings[b].amount.plus(getBuildingProdPerSec(b).times(diff.div(1000)));
-            }
+    }
+    for (var b in BUILDS_DATA) {
+        if (isBuilt(b)) {
+            player.buildings[b].amount = player.buildings[b].amount.plus(getBuildingProdPerSec(b).times(diff.div(1000)));
         }
+    }
+    if (!offline) {
         allDisplay();
         if ((currentUpdate-player.lastAutoSave)>5000) { 
             player.lastAutoSave = currentUpdate;
             save();
         }
         player.lastUpdate = currentUpdate;
-    }, 50);
+    }
+}
+
+function calculateOfflineTime(seconds) {
+    document.getElementById('offlineCalcPopup').style.display = 'block';
+    var ticks = seconds * 20;
+    var extra = new Decimal(0);
+    if (ticks>1000) {
+        extra = new Decimal((ticks-1000)/20);
+        ticks = 1000;
+    }
+
+    var startCorpses = new Decimal(player.corpses);
+    var startBricks = new Decimal(player.bricks);
+    var startArms = new Decimal(player.buildings[1].amount);
+    var startAcolytes = new Decimal(player.buildings[2].amount);
+    var startPhotons = new Decimal(player.buildings[3].amount);
+    var startTrue = new Decimal(player.trueEssence);
+    var startAnti = new Decimal(player.antiEssence);
+
+    for (var done=0; done<ticks; done++) {
+        gameLoop(extra.plus(50), true);
+        console.log(done);
+    }
+    save();
+
+    var allZero = true;
+    if (player.corpses.gt(startCorpses)) {
+        document.getElementById('offlineCorpseGain').innerHTML = formatDefault(player.corpses.minus(startCorpses));
+        document.getElementById('offlineCorpse').style.display = 'block';
+        allZero = false;
+    } else {
+        document.getElementById('offlineCorpse').style.display = 'none';
+    }
+    if (player.bricks.gt(startBricks)) {
+        document.getElementById('offlineBrickGain').innerHTML = formatDefault(player.bricks.minus(startBricks));
+        document.getElementById('offlineBrick').style.display = 'block';
+        allZero = false;
+    } else {
+        document.getElementById('offlineBrick').style.display = 'none';
+    }
+    if (player.buildings[1].amount.gt(startArms)) {
+        document.getElementById('offlineArmamentGain').innerHTML = formatDefault(player.buildings[1].amount.minus(startArms));
+        document.getElementById('offlineArmament').style.display = 'block';
+        allZero = false;
+    } else {
+        document.getElementById('offlineArmament').style.display = 'none';
+    }
+    if (player.buildings[2].amount.gt(startAcolytes)) {
+        document.getElementById('offlineAcolyteGain').innerHTML = formatDefault(player.buildings[2].amount.minus(startAcolytes));
+        document.getElementById('offlineAcolyte').style.display = 'block';
+        allZero = false;
+    } else {
+        document.getElementById('offlineAcolyte').style.display = 'none';
+    }
+    if (player.buildings[3].amount.gt(startPhotons)) {
+        document.getElementById('offlinePhotonGain').innerHTML = formatDefault(player.buildings[3].amount.minus(startPhotons));
+        document.getElementById('offlinePhoton').style.display = 'block';
+        allZero = false;
+    } else {
+        document.getElementById('offlinePhoton').style.display = 'none';
+    }
+    if (player.trueEssence.gt(startTrue) || player.antiEssence.gt(startAnti)) {
+        document.getElementById('offlineTrueGain').innerHTML = formatDefault(player.trueEssence.minus(startTrue).gte(1) ? player.trueEssence.minus(startTrue) : '0');
+        document.getElementById('offlineAntiGain').innerHTML = formatDefault(player.antiEssence.minus(startAnti).gte(1) ? player.antiEssence.minus(startAnti) : '0');
+        document.getElementById('offlineEssence').style.display = 'block';
+        allZero = false;
+    } else {
+        document.getElementById('offlineEssence').style.display = 'none';
+    }
+
+    if (allZero) {
+        document.getElementById('offlineZero');
+    }
+    document.getElementById('offlineCalcPopup').style.display = 'none';
+    document.getElementById('offlineGainPopup').style.display = 'block';
+    player.lastUpdate = (new Date).getTime();
+    player.lastAutoSave = (new Date).getTime();
+}
+
+function closeOfflinePopup() {
+    document.getElementById('offlineGainPopup').style.display = 'none';
+}
+
+function startGame() {
+    var diff = (new Date).getTime() - player.lastUpdate;
+    if ((diff)>(1000*1000)) { calculateOfflineTime(new Decimal(diff/1000)); }
+    else {
+        player.lastUpdate = (new Date).getTime();
+        player.lastAutoSave = (new Date).getTime();
+        save();
+    }
+
+    document.getElementById('calcPopupContainer').style.display = 'none';
+    document.getElementById('game').style.display = 'block';
+
+    startInterval();
+}
+
+function startInterval() {
+    mainLoop = setInterval(gameLoop, 50);
+}
+
+function changeDevSpeed(num) {
+    DEV_SPEED = num;
+}
+
+function resetDevSpeed() {
+    DEV_SPEED = 1;
+}
+
+function rewindTime() {
+    clearInterval(mainLoop);
+    player.lastUpdate = player.lastUpdate - (3600*1000);
+    save();
+    window.location.reload();
+}
+
+function toggleTooltips() {
+    document.getElementById('brickTooltip').classList.toggle('tooltip');
+    document.getElementById('trueTooltip').classList.toggle('tooltip');
+    document.getElementById('antiTooltip').classList.toggle('tooltip');
+    document.getElementById('factoryTooltip').classList.toggle('tooltip');
+    document.getElementById('necropolisTooltip').classList.toggle('tooltip');
+    document.getElementById('sunTooltip').classList.toggle('tooltip');
+    player.tooltipsEnabled = !player.tooltipsEnabled;
 }
