@@ -559,7 +559,7 @@ button:focus {
 #exportText {
     width: 80%;
     height: 300px;
-    margin: 100px auto 0;
+    margin: auto;
     background-color: #525252;
     overflow: auto;
     display: none;
