@@ -194,7 +194,7 @@ const BUILDS_DATA = {
                 displayEffect: true,
                 effect: function() {
                     var e = Decimal.floor(player.bricks);
-                    return Decimal.max(Decimal.pow(e, 0.2));
+                    return Decimal.max(Decimal.pow(e, 0.2), 1);
                 }
             },
             23: {
