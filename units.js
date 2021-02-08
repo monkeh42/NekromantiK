@@ -280,7 +280,6 @@ function resetUnits() {
         copyData(player.units[z], START_PLAYER.units);
     }
     copyData(player.units, START_PLAYER.units);
-    fixData(player.units, START_PLAYER.units);
     for (var zz=2; zz<=NUM_UNITS; zz++) {
         document.getElementById(UNITS_DATA[zz].rowID).style.display = 'none';
     }

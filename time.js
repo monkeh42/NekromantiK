@@ -231,8 +231,6 @@ function timePrestigeReset() {
     player.timeLocked = false;
     copyData(player.unlocks['unitsTab'], START_PLAYER.unlocks['unitsTab']);
     copyData(player.unlocks['buildingsTab'], START_PLAYER.unlocks['buildingsTab']);
-    fixData(player.unlocks['unitsTab'], START_PLAYER.unlocks['unitsTab']);
-    fixData(player.unlocks['buildingsTab'], START_PLAYER.unlocks['buildingsTab']);
     document.getElementById('timeSlider').removeAttribute('disabled');
     allDisplay();
     save();

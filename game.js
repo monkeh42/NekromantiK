@@ -590,8 +590,8 @@ function loadGame() {
         copyData(player, START_PLAYER);
     } else {
         copyData(player, JSON.parse(window.atob(savePlayer)));
-        fixData(player, START_PLAYER);
     }
+    fixData(player, START_PLAYER);
     if (player.tooltipsEnabled) {
         player.tooltipsEnabled = false;
         toggleTooltips();
