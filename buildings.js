@@ -505,6 +505,7 @@ function resetBuildings() {
     if (player.astralFlag) { toggleAstral(); }
     copyData(player.buildings, START_PLAYER.buildings);
     copyData(player.construction, START_PLAYER.construction);
+    copyData(player.unlocks['buildingsTab'], START_PLAYER.unlocks['buildingsTab']);
     for (var b in BUILDS_DATA) {
         document.getElementById(BUILDS_DATA[b].buildingRowID).style.display = 'table-row';
         document.getElementById(BUILDS_DATA[b].upgradesRow1ID).style.display = 'none';
