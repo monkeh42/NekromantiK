@@ -24,7 +24,7 @@ const UNITS_DATA = {
         },
         prodMult: function() {
             var m = this.corpseMult();
-            hasUpgrade(1, 13) ? (m = m.pow(0.9)) : (m = m.sqrt())
+            if(!hasUpgrade(1, 13)) { m = m.sqrt(); }
             return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 1,
@@ -58,7 +58,7 @@ const UNITS_DATA = {
         },
         prodMult: function() {
             var m = this.corpseMult();
-            hasUpgrade(1, 13) ? (m = m.pow(0.9)) : (m = m.sqrt())
+            if(!hasUpgrade(1, 13)) { m = m.sqrt(); }
             m = m.times(getCUpgEffect(3));
             return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
@@ -93,7 +93,7 @@ const UNITS_DATA = {
         },
         prodMult: function() {
             var m = this.corpseMult();
-            hasUpgrade(1, 13) ? (m = m.pow(0.9)) : (m = m.sqrt())
+            if(!hasUpgrade(1, 13)) { m = m.sqrt(); }
             return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 3,
@@ -127,7 +127,7 @@ const UNITS_DATA = {
         },
         prodMult: function() {
             var m = this.corpseMult();
-            hasUpgrade(1, 13) ? (m = m.pow(0.9)) : (m = m.sqrt())
+            if(!hasUpgrade(1, 13)) { m = m.sqrt(); }
             return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 4,
@@ -161,7 +161,7 @@ const UNITS_DATA = {
         },
         prodMult: function() {
             var m = this.corpseMult();
-            hasUpgrade(1, 13) ? (m = m.pow(0.9)) : (m = m.sqrt())
+            if(!hasUpgrade(1, 13)) { m = m.sqrt(); }
             return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 5,
@@ -195,7 +195,7 @@ const UNITS_DATA = {
         },
         prodMult: function() {
             var m = this.corpseMult();
-            hasUpgrade(1, 13) ? (m = m.pow(0.9)) : (m = m.sqrt())
+            if(!hasUpgrade(1, 13)) { m = m.sqrt(); }
             return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 6,
@@ -229,7 +229,7 @@ const UNITS_DATA = {
         },
         prodMult: function() {
             var m = this.corpseMult();
-            hasUpgrade(1, 13) ? (m = m.pow(0.9)) : (m = m.sqrt())
+            if(!hasUpgrade(1, 13)) { m = m.sqrt(); }
             return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 7,
@@ -263,7 +263,7 @@ const UNITS_DATA = {
         },
         prodMult: function() {
             var m = this.corpseMult();
-            hasUpgrade(1, 13) ? (m = m.pow(0.9)) : (m = m.sqrt())
+            if(!hasUpgrade(1, 13)) { m = m.sqrt(); }
             return m;
         },
         tier: 8,
@@ -277,8 +277,9 @@ const UNITS_DATA = {
 
 function resetUnits() {
     for (var z=NUM_UNITS; z>0; z--) {
-        player.units[z] = Object.assign({}, START_PLAYER.units[z]);
+        copyData(player.units[z], START_PLAYER.units);
     }
+    copyData(player.units, START_PLAYER.units);
     fixData(player.units, START_PLAYER.units);
     for (var zz=2; zz<=NUM_UNITS; zz++) {
         document.getElementById(UNITS_DATA[zz].rowID).style.display = 'none';

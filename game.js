@@ -1,6 +1,6 @@
 const GAME_DATA = {
     author: 'monkeh42',
-    version: 'v0.2.5',
+    version: 'v0.2.6',
 }
 
 const NUM_UNITS = 8;
@@ -542,6 +542,7 @@ function importToggle() {
     document.getElementById('importConfirm').style.display = 'table-cell';
     document.getElementById('closeText').style.display = 'table-cell';
     document.getElementById('closeText').removeAttribute('colspan');
+    document.getElementById('exportText').focus();
 }
 
 function exportSave() {
@@ -552,13 +553,14 @@ function exportSave() {
     document.getElementById('importConfirm').style.display = 'none';
     document.getElementById('closeText').style.display = 'table-cell';
     document.getElementById('closeText').setAttribute('colspan', '2');
+    document.getElementById('exportText').select();
 }
 
 function importSave() {
     var imported = document.getElementById('exportText').value;
     if (imported !== undefined) {
         try {
-            player = Object.assign({}, JSON.parse(window.atob(imported)));
+            copyData(player, JSON.parse(window.atob(imported)));
         } catch(e) {
             return;
         }
@@ -585,9 +587,9 @@ function loadGame() {
     player = {};
     var savePlayer = localStorage.getItem('nekrosave');
     if (savePlayer === null || savePlayer === undefined) {
-        fixData(player, START_PLAYER);
+        copyData(player, START_PLAYER);
     } else {
-        player = Object.assign({}, JSON.parse(window.atob(savePlayer)));
+        copyData(player, JSON.parse(window.atob(savePlayer)));
         fixData(player, START_PLAYER);
     }
     if (player.tooltipsEnabled) {
@@ -634,6 +636,27 @@ function fixData(data, start) {
     }
 }
 
+function copyData(data, start) {
+    for (item in start) {
+        if (start[item] == null) {
+            if (data[item] === undefined) {
+                data[item] = null;
+            }
+        } else if (Array.isArray(start[item])) {
+            data[item] = [];
+            copyData(data[item], start[item]);
+        } else if (start[item] instanceof Decimal) {
+            data[item] = new Decimal(start[item]);
+        } else if ((!!start[item]) && (typeof start[item] === "object")) {
+            data[item] = {};
+            copyData(data[item], start[item]);
+        } else {
+            data[item] = start[item];
+        }
+    }
+
+}
+
 function fixResetBug() {
     var num = 2*(Math.round(player.spaceResets)-3)
     switch (Math.round(player.spaceResets)) {
@@ -654,7 +677,7 @@ function fixResetBug() {
 
     }
     START_PLAYER.corpses = new Decimal(10);
-    START_PLAYER.units = Object.assign({}, {
+    copyData(START_PLAYER.units, {
         1: {
             unlocked: true,
             amount: new Decimal(0),
@@ -702,7 +725,7 @@ function fixResetBug() {
     START_PLAYER.spaceResets = new Decimal(0)
     START_PLAYER.worlds = new Decimal(0);
 
-    START_PLAYER.buildings = Object.assign({}, {
+    copyData(START_PLAYER.buildings, {
         1: {
             built: false,
             amount: new Decimal(0),
@@ -738,14 +761,14 @@ function fixResetBug() {
         },
     });
 
-    START_PLAYER.construction = Object.assign({}, {
+    copyData(START_PLAYER.construction, {
         1: new Decimal(0),
         2: new Decimal(0),
         3: new Decimal(0),
         4: new Decimal(0),
     });
 
-    START_PLAYER.timeDims = Object.assign({}, {
+    copyData(START_PLAYER.timeDims, {
         1: {
             unlocked: true,
             amount: new Decimal(0),
@@ -789,7 +812,7 @@ function fixResetBug() {
     START_PLAYER.lastUpdate = new Date();
     START_PLAYER.lastAutoSave = new Date();
 
-    START_PLAYER.unlocks = Object.assign({}, {
+    copyData(START_PLAYER.unlocks, {
         'unitsTab': {
             'mainTab': true, 
             'spacePrestige': false,  

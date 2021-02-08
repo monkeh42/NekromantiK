@@ -215,17 +215,22 @@ function lockInTime() {
 function timePrestigeReset() {
     if (player.astralFlag) { toggleAstral(); }
     clearInterval(mainLoop);
+    console.log('clearinterval done');
     resetUnits();
+    console.log('resetUnits done');
     resetBuildingResources();
+    console.log('resetBuildingResources done');
     resetBuildings();
+    console.log('resetBuildingResources done');
     resetSpaceCounts();
+    console.log('resetSpaceCounts done');
     for (var i=1; i<=NUM_TIMEDIMS; i++) { player.timeDims[i].amount = player.timeDims[i].bought; }
     player.trueEssence = new Decimal(START_PLAYER.trueEssence);
     player.antiEssence = new Decimal(START_PLAYER.antiEssence);
     player.corpses = new Decimal(START_PLAYER.corpses);
     player.timeLocked = false;
-    player.unlocks['unitsTab'] = Object.assign({}, START_PLAYER.unlocks['unitsTab']);
-    player.unlocks['buildingsTab'] = Object.assign({}, START_PLAYER.unlocks['buildingsTab']);
+    copyData(player.unlocks['unitsTab'], START_PLAYER.unlocks['unitsTab']);
+    copyData(player.unlocks['buildingsTab'], START_PLAYER.unlocks['buildingsTab']);
     fixData(player.unlocks['unitsTab'], START_PLAYER.unlocks['unitsTab']);
     fixData(player.unlocks['buildingsTab'], START_PLAYER.unlocks['buildingsTab']);
     document.getElementById('timeSlider').removeAttribute('disabled');
