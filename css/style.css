@@ -321,13 +321,13 @@ button:focus {
     color: white;
     background-color:black;
     font-style: bold;
-    width: 150px;
-    height: 50px;
+    width: 100px;
+    height: 30px;
     border: 1px solid#e8000d;
     margin: 10px;
     cursor: pointer;
     font-family: 'Cinzel', serif;
-    font-size: 24pt;
+    font-size: 18pt;
     border-radius: 4px;
 }
 
@@ -335,13 +335,13 @@ button:focus {
     color: white;
     background-color:#e8000d;
     font-style: bold;
-    width: 150px;
-    height: 50px;
+    width: 100px;
+    height: 30px;
     border: 1px solid#e8000d;
     margin: 10px;
     cursor: pointer;
     font-family: 'Cinzel', serif;
-    font-size: 24pt;
+    font-size: 18pt;
     border-radius: 4px;
 }
 
