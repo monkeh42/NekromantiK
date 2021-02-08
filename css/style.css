@@ -66,6 +66,12 @@ body {
     text-align: center;
 }
 
+#changelog {
+    width: 1024px;
+    margin: auto;
+    text-align: center;
+}
+
 #helpDiv {
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
@@ -79,6 +85,14 @@ body {
 }
 
 .helpPageDiv {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 14pt;
+    line-height: 120%;
+    text-align: center;
+}
+
+.changelogPageDiv {
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
     font-size: 14pt;
@@ -291,7 +305,6 @@ button:focus {
     margin: 10px;
     cursor: pointer;
     font-family: 'Cinzel', serif;
-    
     font-size: 24pt;
     border-radius: 4px;
 }
@@ -301,6 +314,42 @@ button:focus {
 }
 
 .helpPageButSelected:hover {
+    background-color:black;
+}
+
+.changelogPageBut {
+    color: white;
+    background-color:black;
+    font-style: bold;
+    width: 150px;
+    height: 50px;
+    border: 1px solid#e8000d;
+    margin: 10px;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    font-size: 24pt;
+    border-radius: 4px;
+}
+
+.changelogPageButSelected {
+    color: white;
+    background-color:#e8000d;
+    font-style: bold;
+    width: 150px;
+    height: 50px;
+    border: 1px solid#e8000d;
+    margin: 10px;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    font-size: 24pt;
+    border-radius: 4px;
+}
+
+.changelogPageBut:hover {
+    background-color: #e8000d;
+}
+
+.changelogPageButSelected:hover {
     background-color:black;
 }
 

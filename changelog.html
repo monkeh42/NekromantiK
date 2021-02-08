@@ -1,0 +1,145 @@
+<!doctype html>
+
+<html>
+
+<head>
+    <title>NekromantiK Help</title>
+    <script type="text/javascript" src="technical/break_infinity.js"></script>
+    <script type="text/javascript" src="game.js"></script>
+    <script type="text/javascript" src="units.js"></script>
+    <script type="text/javascript" src="buildings.js"></script>
+    <script type="text/javascript" src="helptexts.js"></script>
+    <script type="text/javascript" src="technical/utils.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+
+<body id="changelog">
+    <div style="width: 100%; margin-top: 20px; display: block;">
+        <h3>Nekromantik Changelog</h3>
+        <table style="width: auto; margin: 50px auto 0;">
+            <tr>
+                <td>
+                    <button id="but022" class="changelogPageBut" onclick="showChangelog('div022')">v0.2.2</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="div022" class="changelogPageDiv" style="text-align: left; display: none;">
+                        <ul style="list-style-type: circle;">
+                            <li>First public release</li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button id="but023" class="changelogPageBut" onclick="showChangelog('div023')">v0.2.3</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="div023" class="changelogPageDiv" style="text-align: left; display: none;">
+                        <ul style="list-style-type: circle;">
+                            <li>Added monospace digits</li>
+                            <li>Fixed bugs causing Industrialize and Stronger Forges to have no effect</li>
+                            <li>Fixed Time Dimension 4 not producing</li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button id="but024" class="changelogPageBut" onclick="showChangelog('div024')">v0.2.4</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="div024" class="changelogPageDiv" style="text-align: left; display: none;">
+                        <ul style="list-style-type: circle;">
+                            <li>Added "reset bug fix" and "export game state" buttons in options tab</li>
+                            <li>First reset bug fix (ended up needing more)</li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button id="but025" class="changelogPageBut" onclick="showChangelog('div025')">v0.2.5</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="div025" class="changelogPageDiv" style="text-align: left; display: none;">
+                        <ul style="list-style-type: circle;">
+                            <li>BUFFS:</li>
+                            <ul style="list-style-type: disc;">
+                                <li>Buffed bonus from worlds 1 + (x/2)^1.5 -> 1 + (x/1.5)^1.5 (this is also a slight buff to World Refiner, before it had no effect at 2 worlds)</li>
+                                <li>Buffed Time Essence:</li>
+                                <ul style="list-style-type: circle;">
+                                    <li>Time Essence nerf formula 1 + sqrt(log(x))/2 -> max(log(x)^2, 1)</li>
+                                    <li>Anti Essence boost is now twice as strong as base instead of True Time being half as strong</li>
+                                </ul>
+                            </ul>
+                            <li>NERFS:</li>
+                            <ul style="list-style-type: disc;">
+                                <li>Astral Kilns: 25% -> 20%</li>
+                                <li>Arm The Dead, Astral Kiln Kilns, Astral Time Machine: max(x^0.2, 1) -> 1 + log(x)^2</li>
+                                <li>Time Crystal Gain formula: floor(10^(corpses_exponent/20 - 0.45)) -> floor(10^(corpses_exponent/20 - 0.65))</li>
+                                <li>Units exponential cost increase past a certain cost*: cost multiplier multiplied by 10 per bought</li>
+                                <li>*Unit exponential cost threshholds: zombies begin past 1e20 (first crystal gain), all other tiers begin past 1e20*baseCost*baseCostMult</li>
+                            </ul>
+                            <li>OTHER:</li>
+                            <ul style="list-style-type: disc;">
+                                <li>Offline production: triggers for offline time >1000 seconds (~17 minutes)</li>
+                                <li>Added formula tooltips on hover for upgrades and production (toggle in options)</li>
+                                <li>Reorganized options tab (no more text in save import box)</li>
+                                <li>Various minor bug fixes</li>
+                            </ul>
+                            <li><span style="font-weight: bold;">NOTE:</span> Corpse production was nerfed pretty hard (mostly due to the additional cost multiplers) and the 
+                                time esence boosts got a pretty hefty buff. You won't be able to sacrifice for nearly as much before this update, but this is how I initially 
+                                intended sacrifice to work, and it'll all make more sense in the next sublayer coming soon.</li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button id="but026" class="changelogPageBut" onclick="showChangelog('div026')">v0.2.6</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="div026" class="changelogPageDiv" style="text-align: left; display: none;">
+                        <ul style="list-style-type: circle;">
+                            <li>Digitize (Death Factory upgrade): now makes base unit miltiplier equal to corpse multiplier, instead of ^0.5 -> ^0.9</li>
+                            <li>Implemented a real deep copy function (BIG: this should FINALLY take care of any lingering reset bug issues. I'd recommend everyone click the "fix reset bug" button in options once you're on 0.2.6 - this won't reset anything if the bug already happened to you, but it'll make sure it doesn't happen again, or at all if it hasn't already)</li>
+                            <li>Import/export QoL: import text box now gets focus when you click Import, and export text is highlighted</li>
+                            <li>Moved bug fix text to options tab</li>
+                        </ul>
+
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button id="but027" class="changelogPageBut" onclick="showChangelog('div027')">v0.2.7</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="div026" class="changelogPageDiv" style="text-align: left; display: none;">
+                        <ul style="list-style-type: circle;">
+                            <li>Added changelog</li>
+                        </ul>
+
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

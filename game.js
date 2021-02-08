@@ -1,6 +1,6 @@
 const GAME_DATA = {
     author: 'monkeh42',
-    version: 'v0.2.6',
+    version: 'v0.2.7',
 }
 
 const NUM_UNITS = 8;
@@ -1002,4 +1002,17 @@ function toggleTooltips() {
     document.getElementById('necropolisTooltip').classList.toggle('tooltip');
     document.getElementById('sunTooltip').classList.toggle('tooltip');
     player.tooltipsEnabled = !player.tooltipsEnabled;
+}
+
+function showChangelog(divID) {
+    var allDivs = document.getElementsByClassName('changelogPageDiv');
+    var tab;
+    for (var i=0; i<allDivs.length; i++) {
+        tab = allDivs.item(i);
+        if (tab.id === divID) {
+            (tab.style.display == 'block') ? tab.style.display = 'none': tab.style.display = 'block'
+        } else {
+            tab.style.display = 'none';
+        }
+    }
 }
