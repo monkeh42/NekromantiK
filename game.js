@@ -163,7 +163,9 @@ const START_PLAYER = {
         'buildingsTab': {
             'mainTab': false,
             'factory': false,
+            'factoryRow2': false,
             'necropolis': false,
+            'necropolisRow2':false,
             'sun': false,
             'construction': false,
         },
@@ -820,7 +822,9 @@ function fixResetBug() {
         'buildingsTab': {
             'mainTab': false,
             'factory': false,
+            'factoryRow2': false,
             'necropolis': false,
+            'necropolisRow2':false,
             'sun': false,
             'construction': false,
         },
