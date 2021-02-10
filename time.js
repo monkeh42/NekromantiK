@@ -16,6 +16,7 @@ const TIME_DATA = {
             var m = new Decimal(2);
             if (player.timeDims[this.tier].bought.eq(0)) { return new Decimal(1); }
             m = m.pow(player.timeDims[this.tier].bought-1);
+            if (hasTUpgrade(31)) { m = m.times(getTUpgEffect(31)); }
             return m;
         },
         tier: 1,
@@ -40,6 +41,7 @@ const TIME_DATA = {
             var m = new Decimal(2);
             if (player.timeDims[this.tier].bought.eq(0)) { return new Decimal(1); }
             m = m.pow(player.timeDims[this.tier].bought-1);
+            if (hasTUpgrade(31)) { m = m.times(getTUpgEffect(31)); }
             return m;
         },
         tier: 2,
@@ -64,6 +66,7 @@ const TIME_DATA = {
             var m = new Decimal(2);
             if (player.timeDims[this.tier].bought.eq(0)) { return new Decimal(1); }
             m = m.pow(player.timeDims[this.tier].bought-1);
+            if (hasTUpgrade(31)) { m = m.times(getTUpgEffect(31)); }
             return m;
         },
         tier: 3,
@@ -88,6 +91,7 @@ const TIME_DATA = {
             var m = new Decimal(2);
             if (player.timeDims[this.tier].bought.eq(0)) { return new Decimal(1); }
             m = m.pow(player.timeDims[this.tier].bought-1);
+            if (hasTUpgrade(31)) { m = m.times(getTUpgEffect(31)); }
             return m;
         },
         tier: 4,
@@ -97,6 +101,210 @@ const TIME_DATA = {
         multID: "timeMult4",
         rowID: "timeRow4",
     },
+    upgrades: {
+        11: {
+            title: 'World Stasis 1',
+            desc: 'Start every sacrifice with one conquered world, and Buildings and Behemoths unlocked.',
+            cost: new Decimal(100),
+            preReq: null,
+            buttonID: 'timeUpg11',
+            displayEffect: false,
+            displayTooltip: false,
+            displayFormula: '',
+            effect: function() {
+                return new Decimal(1);
+            }
+        },
+        12: {
+            title: 'World Stasis 2',
+            desc: 'Start every sacrifice with two conquered worlds, and Construction and Ancient Ones unlocked.',
+            cost: new Decimal(250),
+            preReq: 11,
+            buttonID: 'timeUpg12',
+            displayEffect: false,
+            displayTooltip: false,
+            displayFormula: '',
+            effect: function() {
+                return new Decimal(1);
+            }
+        },
+        13: {
+            title: 'World Stasis 3',
+            desc: 'Start every sacrifice with three conquered worlds and Sun Eaters unlocked, and unlock autobuyers.',
+            cost: new Decimal(500),
+            preReq: 12,
+            buttonID: 'timeUpg13',
+            displayEffect: false,
+            displayTooltip: false,
+            displayFormula: '',
+            effect: function() {
+                return new Decimal(1);
+            }
+        },
+        14: {
+            title: 'Star Stasis',
+            desc: 'Start every sacrifice with four conquered worlds, and the dead sun does not reset on sacrifice.',
+            cost: new Decimal(1000),
+            preReq: 13,
+            buttonID: 'timeUpg14',
+            displayEffect: false,
+            displayTooltip: false,
+            displayFormula: '',
+            effect: function() {
+                return new Decimal(1);
+            }
+        },
+        21: {
+            title: 'Recrystallization',
+            desc: 'Double your time crystal gain.',
+            cost: new Decimal(1000),
+            preReq: null,
+            buttonID: 'timeUpg21',
+            displayEffect: false,
+            displayTooltip: false,
+            displayFormula: '',
+            effect: function() {
+                return new Decimal(1);
+            }
+        },
+        22: {
+            title: 'Unit Boost',
+            desc: 'Unit tier corpse multipliers get a boost based on unspent time crystals.',
+            cost: new Decimal(2500),
+            preReq: 21,
+            buttonID: 'timeUpg22',
+            displayEffect: true,
+            displayTooltip: true,
+            displayFormula: '1 + 7.5*log(x)',
+            effect: function() {
+                var e = player.crystals;
+                e = e.log10()*7.5;
+                return 1 + e;
+            }
+        },
+        23: {
+            title: 'Building Boost',
+            desc: 'All building resources get a production boost based on unspent time crystals.',
+            cost: new Decimal(10000),
+            preReq: 22,
+            buttonID: 'timeUpg23',
+            displayEffect: true,
+            displayTooltip: true,
+            displayFormula: '1 + log(x)',
+            effect: function() {
+                var e = player.crystals;
+                e = e.log10();
+                return 1 + e;
+            }
+        },
+        24: {
+            title: 'Rapid Fire',
+            desc: 'Unlock fast autobuyers, and the buildings/construction tabs are never reset on sacrifice (except bricks and resources).',
+            cost: new Decimal(15000),
+            preReq: 23,
+            buttonID: 'timeUpg24',
+            displayEffect: false,
+            displayTooltip: false,
+            displayFormula: '',
+            effect: function() {
+                return new Decimal(1);
+            }
+        },
+        31: {
+            title: 'Time Boost',
+            desc: 'Time dimension multipliers get a boost based on unspent time crystals.',
+            cost: new Decimal(15000),
+            preReq: null,
+            buttonID: 'timeUpg31',
+            displayEffect: true,
+            displayTooltip: true,
+            displayFormula: '1 + 10*log(x)',
+            effect: function() {
+                var e = player.crystals;
+                e = e.log10()*10
+                return 1 + e;
+            }
+        },
+        32: {
+            title: 'Forgotten Worlds',
+            desc: 'The corpse production multiplier from conquered worlds is 1.5x stronger.',
+            cost: new Decimal(25000),
+            preReq: 31,
+            buttonID: 'timeUpg32',
+            displayEffect: false,
+            displayTooltip: false,
+            displayFormula: '',
+            effect: function() {
+                return new Decimal(1.5);
+            }
+        },
+        33: {
+            title: 'Automation',
+            desc: 'Unlock bulk autobuyers, and post-25 construction cost scaling is halved.',
+            cost: new Decimal(50000),
+            preReq: 32,
+            buttonID: 'timeUpg33',
+            displayEffect: false,
+            displayTooltip: false,
+            displayFormula: '',
+            effect: function() {
+                return new Decimal(0.5);
+            }
+        },
+        34: {
+            title: 'Supernova',
+            desc: 'Unlock advanced sacrifice autobuyer options and the second row of Dead Sun upgrades.<br>COMING SOON',
+            cost: new Decimal("Infinity"),
+            preReq: 33,
+            buttonID: 'timeUpg34',
+            displayEffect: false,
+            displayTooltip: false,
+            displayFormula: '',
+            effect: function() {
+                return new Decimal(1);
+            }
+        },
+    }
+}
+
+function hasPrereqTUpg(t) {
+    if (t==11 || t==21 || t==31) { return true; }
+    else { return player.timeUpgs[TIME_DATA.upgrades[t].preReq]; }
+}
+
+function isDisplayEffectT(t) {
+    return TIME_DATA.upgrades[t].displayEffect;
+}
+
+function hasTUpgrade(t) {
+    return player.timeUpgs[t];
+}
+
+function getTUpgName(t) {
+    return TIME_DATA.upgrades[t].title;
+}
+
+function getTUpgDesc(t) {
+    return TIME_DATA.upgrades[t].desc;
+}
+
+function getTUpgCost(t) {
+    return TIME_DATA.upgrades[t].cost;
+}
+
+function getTUpgEffect(t) {
+    return TIME_DATA.upgrades[t].effect();
+}
+
+function canAffordTUpg(t) {
+    return (player.crystals.gte(getTUpgCost(t)) && hasPrereqTUpg(t));
+}
+
+function buyTUpg(t) {
+    if (canAffordTUpg(t) && !hasTUpgrade(t)) {
+        player.timeUpgs[t] = true;
+        player.crystals = player.crystals.minus(getTUpgCost(t));
+    }
 }
 
 function canAffordTime(tier) {
@@ -202,7 +410,9 @@ function canTimePrestige() {
 function respecTime() {
     if (player.timeResets.gte(1)) {
         if (player.timeLocked) {
-            if (!confirm("Are you sure? This will reset ALL of your progress before unlocking Time Warp, and all of your time essense.")) return
+            if (player.confirmations['timeRespec']) {
+                if (!confirm("Are you sure? This will reset ALL of your progress before unlocking Time Warp, and all of your time essense.")) return
+            }
             timePrestigeReset();
         }
     }
@@ -212,18 +422,19 @@ function lockInTime() {
     player.timeLocked = true;
 }
 
-function timePrestigeReset() {
+function timePrestigeReset(auto=false) {
+    var timeUpgUnlocked = hasUpgrade(3, 13) ? true : false
     if (player.astralFlag) { toggleAstral(); }
     clearInterval(mainLoop);
-    console.log('clearinterval done');
+    player.pastRuns.lastRun.crystalGain = calculateCrystalGain();
+    player.pastRuns.lastRun.timeSpent = (new Date).getTime()-player.pastRuns.lastRun.timeSacrificed;
+    player.pastRuns.lastRun.timeSacrificed = (new Date).getTime();
+    for (var i=9; i>0; i--) { copyData(player.pastRuns.lastTen[i], player.pastRuns.lastTen[i-1]); }
+    copyData(player.pastRuns.lastTen[0], player.pastRuns.lastRun);
     resetUnits();
-    console.log('resetUnits done');
     resetBuildingResources();
-    console.log('resetBuildingResources done');
-    resetBuildings();
-    console.log('resetBuildingResources done');
+    if (!hasTUpgrade(24)) { resetBuildings(); }
     resetSpaceCounts();
-    console.log('resetSpaceCounts done');
     for (var i=1; i<=NUM_TIMEDIMS; i++) { player.timeDims[i].amount = player.timeDims[i].bought; }
     player.trueEssence = new Decimal(START_PLAYER.trueEssence);
     player.antiEssence = new Decimal(START_PLAYER.antiEssence);
@@ -231,22 +442,43 @@ function timePrestigeReset() {
     player.timeLocked = false;
     copyData(player.unlocks['unitsTab'], START_PLAYER.unlocks['unitsTab']);
     copyData(player.unlocks['buildingsTab'], START_PLAYER.unlocks['buildingsTab']);
+    if (timeUpgUnlocked) { player.buildings[3].upgrades[13] = true; }
     document.getElementById('timeSlider').removeAttribute('disabled');
     allDisplay();
     save();
-    showSubTab('buildingsSubTab');
+    showBuildingSubTab('buildingsSubTab');
     startInterval();
+    if (auto) { lockInTime(); }
 }
 
 function resetSpaceCounts() {
     player.spaceResets = new Decimal(START_PLAYER.spaceResets);
     player.worlds = new Decimal(START_PLAYER.worlds);
     player.nextSpaceReset = START_PLAYER.nextSpaceReset.slice();
+    if (hasTUpgrade(14)) {
+        player.worlds = new Decimal(4);
+        player.spaceResets = new Decimal(4);
+        player.nextSpaceReset = [3, 8];
+    } else if (hasTUpgrade(13)) {
+        player.worlds = new Decimal(3);
+        player.spaceResets = new Decimal(3);
+        player.nextSpaceReset = [1, 8];
+    } else if (hasTUpgrade(12)) {
+        player.worlds = new Decimal(2);
+        player.spaceResets = new Decimal(2);
+        player.nextSpaceReset = [1, 7];
+    } else if (hasTUpgrade(11)) {
+        player.worlds = new Decimal(1);
+        player.spaceResets = new Decimal(1);
+        player.nextSpaceReset = [1, 6];
+    }
 }
 
 function timePrestige() {
     if (canTimePrestige()) {
-        if (!confirm("Are you sure? This will reset ALL of your progress before unlocking Time Warp, and all of your time essense.")) return
+        if (player.confirmations['timePrestige']) {
+            if (!confirm("Are you sure? This will reset ALL of your progress before unlocking Time Warp, and all of your time essense.")) return
+        }
         player.crystals = player.crystals.plus(calculateCrystalGain());
         player.totalCrystals = player.totalCrystals.plus(calculateCrystalGain());
         player.timeResets = player.timeResets.plus(1);
@@ -255,11 +487,22 @@ function timePrestige() {
     }
 }
 
+function timePrestigeNoConfirm(auto=false) {
+    if (canTimePrestige()) {
+        player.crystals = player.crystals.plus(calculateCrystalGain());
+        player.totalCrystals = player.totalCrystals.plus(calculateCrystalGain());
+        player.timeResets = player.timeResets.plus(1);
+        player.totalTimeResets = player.totalSpaceResets.plus(1);
+        timePrestigeReset(auto);
+    }
+}
+
 function calculateCrystalGain() {
     if (canTimePrestige()) {
         var div = 20;
-        var ret = Decimal.pow(10, (player.corpses.e/div) - 0.65);
-        return Decimal.floor(ret);
+        var ret = Decimal.floor(Decimal.pow(10, (player.corpses.e/div) - 0.65));
+        if (hasTUpgrade(21)) { ret = ret.times(2); }
+        return ret;
     } else {
         return new Decimal(0);
     }

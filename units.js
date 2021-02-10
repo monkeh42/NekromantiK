@@ -20,11 +20,12 @@ const UNITS_DATA = {
             if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             m = m.pow(player.units[this.tier].bought-1);
             if (hasUpgrade(1, 11)) m = m.times(getUpgEffect(1, 11));
+            if (hasTUpgrade(22)) { m = m.times(getTUpgEffect(22)); }
             return m;
         },
         prodMult: function() {
             var m = this.corpseMult();
-            if(!hasUpgrade(1, 13)) { m = m.sqrt(); }
+            if (!hasUpgrade(1, 13)) { m = m.sqrt(); }
             return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 1,
@@ -54,11 +55,12 @@ const UNITS_DATA = {
             if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
             if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             m = m.pow(player.units[this.tier].bought-1);
+            if (hasTUpgrade(22)) { m = m.times(getTUpgEffect(22)); }
             return m;
         },
         prodMult: function() {
             var m = this.corpseMult();
-            if(!hasUpgrade(1, 13)) { m = m.sqrt(); }
+            if (!hasUpgrade(1, 13)) { m = m.sqrt(); }
             m = m.times(getCUpgEffect(3));
             return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
@@ -89,11 +91,12 @@ const UNITS_DATA = {
             if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
             if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             m = m.pow(player.units[this.tier].bought-1);
+            if (hasTUpgrade(22)) { m = m.times(getTUpgEffect(22)); }
             return m;
         },
         prodMult: function() {
             var m = this.corpseMult();
-            if(!hasUpgrade(1, 13)) { m = m.sqrt(); }
+            if (!hasUpgrade(1, 13)) { m = m.sqrt(); }
             return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 3,
@@ -123,11 +126,12 @@ const UNITS_DATA = {
             if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
             if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             m = m.pow(player.units[this.tier].bought-1);
+            if (hasTUpgrade(22)) { m = m.times(getTUpgEffect(22)); }
             return m;
         },
         prodMult: function() {
             var m = this.corpseMult();
-            if(!hasUpgrade(1, 13)) { m = m.sqrt(); }
+            if (!hasUpgrade(1, 13)) { m = m.sqrt(); }
             return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 4,
@@ -157,11 +161,12 @@ const UNITS_DATA = {
             if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
             if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             m = m.pow(player.units[this.tier].bought-1);
+            if (hasTUpgrade(22)) { m = m.times(getTUpgEffect(22)); }
             return m;
         },
         prodMult: function() {
             var m = this.corpseMult();
-            if(!hasUpgrade(1, 13)) { m = m.sqrt(); }
+            if (!hasUpgrade(1, 13)) { m = m.sqrt(); }
             return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 5,
@@ -191,11 +196,12 @@ const UNITS_DATA = {
             if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
             if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             m = m.pow(player.units[this.tier].bought-1);
+            if (hasTUpgrade(22)) { m = m.times(getTUpgEffect(22)); }
             return m;
         },
         prodMult: function() {
             var m = this.corpseMult();
-            if(!hasUpgrade(1, 13)) { m = m.sqrt(); }
+            if (!hasUpgrade(1, 13)) { m = m.sqrt(); }
             return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 6,
@@ -225,11 +231,12 @@ const UNITS_DATA = {
             if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
             if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             m = m.pow(player.units[this.tier].bought-1);
+            if (hasTUpgrade(22)) { m = m.times(getTUpgEffect(22)); }
             return m;
         },
         prodMult: function() {
             var m = this.corpseMult();
-            if(!hasUpgrade(1, 13)) { m = m.sqrt(); }
+            if (!hasUpgrade(1, 13)) { m = m.sqrt(); }
             return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 7,
@@ -259,11 +266,12 @@ const UNITS_DATA = {
             if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
             if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             m = m.pow(player.units[this.tier].bought-1);
+            if (hasTUpgrade(22)) { m = m.times(getTUpgEffect(22)); }
             return m;
         },
         prodMult: function() {
             var m = this.corpseMult();
-            if(!hasUpgrade(1, 13)) { m = m.sqrt(); }
+            if (!hasUpgrade(1, 13)) { m = m.sqrt(); }
             return m;
         },
         tier: 8,
@@ -277,7 +285,7 @@ const UNITS_DATA = {
 
 function resetUnits() {
     for (var z=NUM_UNITS; z>0; z--) {
-        copyData(player.units[z], START_PLAYER.units);
+        copyData(player.units[z], START_PLAYER.units[z]);
     }
     copyData(player.units, START_PLAYER.units);
     for (var zz=2; zz<=NUM_UNITS; zz++) {
@@ -291,7 +299,8 @@ function canSpacePrestige() {
 
 function spacePrestige() {
     if (canSpacePrestige()) {
-        if (!confirm("Are you sure? This will reset ALL of your corpses, units, and astral bricks.")) return
+        if (player.confirmations['worldPrestige'])
+            if (!confirm("Are you sure? This will reset ALL of your corpses, units, and astral bricks.")) return
         if (player.astralFlag) { toggleAstral(); }
         clearInterval(mainLoop);
         player.spaceResets = player.spaceResets.plus(1);
@@ -308,7 +317,6 @@ function spacePrestige() {
         
         save();
         showTab('unitsTab');
-        showSubTab('buildingsSubTab');
         startInterval();
     }
 }

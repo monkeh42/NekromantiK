@@ -9,6 +9,7 @@
     <script type="text/javascript" src="units.js"></script>
     <script type="text/javascript" src="buildings.js"></script>
     <script type="text/javascript" src="time.js"></script>
+    <script type="text/javascript" src="autobuyers.js"></script>
     <script type="text/javascript" src="helptexts.js"></script>
     <script type="text/javascript" src="technical/utils.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -21,6 +22,7 @@
         <div class="bpopup" id="offlineCalcPopup">
             <div>
                 <h2>Calculating offline production...</h2>
+                if you see this for more than a few seconds, something's wrong. please contact the dev on <a href="https://discord.gg/H2V7FfT4Rt" target="_blank">discord</a>.
             </div>
         </div>
     </div>
@@ -65,195 +67,686 @@
             </table>
         </div>
         <div id="unitsTab" class="pageTab">
-            <table style="width: 100%; margin: auto;">
-                <tr>
-                    <td width="5%">
-                        <h1>Tier</h1>
-                    </td>
-                    <td width="15%">
-                        <h1>Unit type</h1>
-                    </td>
-                    <td width="20%">
-                        <div style="min-width: 45%; float: left;"><h1>Corpse<br>mult</h1></div><div style="min-width: 45%; float: left;"><h1>(Unit<br>mult)</h1></div>
-                    </td>
-                    <td width="30%">
-                        <div style="min-width: 33%; float: left;"><h1>Owned</h1></div><div style="width: 27%; float: left;"><h1>(Bought)</h1></div><div style="min-width: 35%; float: right; text-align: center;"><h1>Gain</h1></div>
-                    </td>
-                    <td colspan="2" width="30%">
-                        <div style="width: 100%; text-align: center;">
-                            <button id="maxAllBut" class="unitMax" onclick="buyMaxAll()" style="margin: auto;">Max all</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr height="10px"></tr>
-                <tr id="zombieRow" style="display: table-row;">
-                    <td>
-                        1
-                    </td>
-                    <td>
-                        Zombies
-                    </td>
-                    <td>
-                        <div id="zombieMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
-                    </td>
-                    <td>
-                        <div id="zombieAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: left;"></div></div>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="zombieBut" class="unitBut" onclick="buySingleUnit(1)">Cost: 10 corpses</button>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="zombieMax" class="unitMax" onclick="buyMaxUnits(1)">Max: 1 for &#162;10</button>
-                    </td>
-                </tr>
-                <tr id="abomRow" style="display: none;">
-                    <td>
-                        2
-                    </td>
-                    <td>
-                        Abominations
-                    </td>
-                    <td>
-                        <div id="abomMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
-                    </td>
-                    <td>
-                        <div id="abomAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="abomBut" class="unitBut" onclick="buySingleUnit(2)">Cost: 100 corpses</button>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="abomMax" class="unitMax" onclick="buyMaxUnits(2)">Max: 0</button>
-                    </td>
-                </tr>
-                <tr id="mageRow" style="display: none;">
-                    <td>
-                        3
-                    </td>
-                    <td>
-                        Skeleton Mages
-                    </td>
-                    <td>
-                        <div id="mageMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
-                    </td>
-                    <td>
-                        <div id="mageAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="mageBut" class="unitBut" onclick="buySingleUnit(3)">Cost: 10000 corpses</button>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="mageMax" class="unitMax" onclick="buyMaxUnits(3)">Max: 0</button>
-                    </td>
-                </tr>
-                <tr id="bansheeRow" style="display: none;">
-                    <td>
-                        4
-                    </td>
-                    <td>
-                        Banshees
-                    </td>
-                    <td>
-                        <div id="bansheeMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
-                    </td>
-                    <td>
-                        <div id="bansheeAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="bansheeBut" class="unitBut" onclick="buySingleUnit(4)">Cost: 1000000 corpses</button>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="bansheeMax" class="unitMax" onclick="buyMaxUnits(4)">Max: 0</button>
-                    </td>
-                </tr>
-                <tr id="lichRow" style="display: none;">
-                    <td>
-                        5
-                    </td>
-                    <td>
-                        Liches
-                    </td>
-                    <td>
-                        <div id="lichMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
-                    </td>
-                    <td>
-                        <div id="lichAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="lichBut" class="unitBut" onclick="buySingleUnit(5)">Cost: 1000000 corpses</button>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="lichMax" class="unitMax" onclick="buyMaxUnits(5)">Max: 0</button>
-                    </td>
-                </tr>
-                <tr id="beheRow" style="display: none;">
-                    <td>
-                        6
-                    </td>
-                    <td>
-                        Behemoths
-                    </td>
-                    <td>
-                        <div id="beheMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
-                    </td>
-                    <td>
-                        <div id="beheAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="beheBut" class="unitBut" onclick="buySingleUnit(6)">Cost: 1000000 corpses</button>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="beheMax" class="unitMax" onclick="buyMaxUnits(6)">Max: 0</button>
-                    </td>
-                </tr>
-                <tr id="oneRow" style="display: none;">
-                    <td>
-                        7
-                    </td>
-                    <td>
-                        Ancient Ones
-                    </td>
-                    <td>
-                        <div id="oneMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
-                    </td>
-                    <td>
-                        <div id="oneAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="oneBut" class="unitBut" onclick="buySingleUnit(7)">Cost: 1000000 corpses</button>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="oneMax" class="unitMax" onclick="buyMaxUnits(7)">Max: 0</button>
-                    </td>
-                </tr>
-                <tr id="sunRow" style="display: none;">
-                    <td>
-                        8
-                    </td>
-                    <td>
-                        Sun Eaters
-                    </td>
-                    <td>
-                        <div id="sunMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
-                    </td>
-                    <td>
-                        <div id="sunAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="sunBut" class="unitBut" onclick="buySingleUnit(8)">Cost: 1000000 corpses</button>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="sunMax" class="unitMax" onclick="buyMaxUnits(8)">Max: 0</button>
-                    </td>
-                </tr>
-            </table>
-            <div id="spacePresContainer" style="text-align: center; margin: 50px; display: none;">
-                <button id="spacePrestige" class="prestigeBut" onclick="spacePrestige()">
-                    <span style="font-size: 15pt;">This world is dead and empty...</span><br>
-                    <span id="spacePresDesc">Give up all your units and corpses to conquer a new world. You gain a boost to corpse gain based on total conquered worlds.<br>
-                    This World Prestige will unlock <span id="spacePresUnlock">Buildings</span> and a new unit tier.</span><br>
-                    <span id="prestigeReq" style="font-size: 13pt;">Requires <span style="font-size: 17pt; white-space: pre;"> 1 </span> Liches</span>
-                </button>
+            <div id="unitsSubMenu" style="width: 100%; margin-top: 20px; display: none;">
+                <table style="width: auto; margin: auto;">
+                    <tr>
+                        <td>
+                            <button id="unitsSubTabBut" class="subTabBut" onclick="showUnitSubTab('unitsSubTab')">UNITS</button>
+                        </td>
+                        <td>
+                            <button id="autobuyersSubTabBut" class="subTabBut" onclick="showUnitSubTab('autobuyersSubTab')" style="display: none;">AUTOBUYERS</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="unitsSubTab" class="unitSubTab">
+                <table style="width: 100%; margin: auto; margin-top: 20px;">
+                    <tr>
+                        <td width="5%">
+                            <h1>Tier</h1>
+                        </td>
+                        <td width="15%">
+                            <h1>Unit type</h1>
+                        </td>
+                        <td width="20%">
+                            <div style="min-width: 45%; float: left;"><h1>Corpse<br>mult</h1></div><div style="min-width: 45%; float: left;"><h1>(Unit<br>mult)</h1></div>
+                        </td>
+                        <td width="30%">
+                            <div style="min-width: 33%; float: left;"><h1>Owned</h1></div><div style="width: 27%; float: left;"><h1>(Bought)</h1></div><div style="min-width: 35%; float: right; text-align: center;"><h1>Gain</h1></div>
+                        </td>
+                        <td colspan="2" width="30%">
+                            <div style="width: 100%; text-align: center;">
+                                <button id="maxAllBut" class="unitMax" onclick="buyMaxAll()" style="margin: auto;">Max all</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr height="10px"></tr>
+                    <tr id="zombieRow" style="display: table-row;">
+                        <td>
+                            1
+                        </td>
+                        <td>
+                            Zombies
+                        </td>
+                        <td>
+                            <div id="zombieMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                        </td>
+                        <td>
+                            <div id="zombieAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: left;"></div></div>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="zombieBut" class="unitBut" onclick="buySingleUnit(1)">Cost: 10 corpses</button>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="zombieMax" class="unitMax" onclick="buyMaxUnits(1)">Max: 1 for &#162;10</button>
+                        </td>
+                    </tr>
+                    <tr id="abomRow" style="display: none;">
+                        <td>
+                            2
+                        </td>
+                        <td>
+                            Abominations
+                        </td>
+                        <td>
+                            <div id="abomMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                        </td>
+                        <td>
+                            <div id="abomAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="abomBut" class="unitBut" onclick="buySingleUnit(2)">Cost: 100 corpses</button>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="abomMax" class="unitMax" onclick="buyMaxUnits(2)">Max: 0</button>
+                        </td>
+                    </tr>
+                    <tr id="mageRow" style="display: none;">
+                        <td>
+                            3
+                        </td>
+                        <td>
+                            Skeleton Mages
+                        </td>
+                        <td>
+                            <div id="mageMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                        </td>
+                        <td>
+                            <div id="mageAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="mageBut" class="unitBut" onclick="buySingleUnit(3)">Cost: 10000 corpses</button>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="mageMax" class="unitMax" onclick="buyMaxUnits(3)">Max: 0</button>
+                        </td>
+                    </tr>
+                    <tr id="bansheeRow" style="display: none;">
+                        <td>
+                            4
+                        </td>
+                        <td>
+                            Banshees
+                        </td>
+                        <td>
+                            <div id="bansheeMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                        </td>
+                        <td>
+                            <div id="bansheeAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="bansheeBut" class="unitBut" onclick="buySingleUnit(4)">Cost: 1000000 corpses</button>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="bansheeMax" class="unitMax" onclick="buyMaxUnits(4)">Max: 0</button>
+                        </td>
+                    </tr>
+                    <tr id="lichRow" style="display: none;">
+                        <td>
+                            5
+                        </td>
+                        <td>
+                            Liches
+                        </td>
+                        <td>
+                            <div id="lichMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                        </td>
+                        <td>
+                            <div id="lichAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="lichBut" class="unitBut" onclick="buySingleUnit(5)">Cost: 1000000 corpses</button>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="lichMax" class="unitMax" onclick="buyMaxUnits(5)">Max: 0</button>
+                        </td>
+                    </tr>
+                    <tr id="beheRow" style="display: none;">
+                        <td>
+                            6
+                        </td>
+                        <td>
+                            Behemoths
+                        </td>
+                        <td>
+                            <div id="beheMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                        </td>
+                        <td>
+                            <div id="beheAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="beheBut" class="unitBut" onclick="buySingleUnit(6)">Cost: 1000000 corpses</button>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="beheMax" class="unitMax" onclick="buyMaxUnits(6)">Max: 0</button>
+                        </td>
+                    </tr>
+                    <tr id="oneRow" style="display: none;">
+                        <td>
+                            7
+                        </td>
+                        <td>
+                            Ancient Ones
+                        </td>
+                        <td>
+                            <div id="oneMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                        </td>
+                        <td>
+                            <div id="oneAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="oneBut" class="unitBut" onclick="buySingleUnit(7)">Cost: 1000000 corpses</button>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="oneMax" class="unitMax" onclick="buyMaxUnits(7)">Max: 0</button>
+                        </td>
+                    </tr>
+                    <tr id="sunRow" style="display: none;">
+                        <td>
+                            8
+                        </td>
+                        <td>
+                            Sun Eaters
+                        </td>
+                        <td>
+                            <div id="sunMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                        </td>
+                        <td>
+                            <div id="sunAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="sunBut" class="unitBut" onclick="buySingleUnit(8)">Cost: 1000000 corpses</button>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="sunMax" class="unitMax" onclick="buyMaxUnits(8)">Max: 0</button>
+                        </td>
+                    </tr>
+                </table>
+                <div id="spacePresContainer" style="text-align: center; margin: 50px; display: none;">
+                    <button id="spacePrestige" class="prestigeBut" onclick="spacePrestige()">
+                        <span style="font-size: 15pt;">This world is dead and empty...</span><br>
+                        <span id="spacePresDesc">Give up all your units and corpses to conquer a new world. You gain a boost to corpse gain based on total conquered worlds.<br>
+                        This World Prestige will unlock <span id="spacePresUnlock">Buildings</span> and a new unit tier.</span><br>
+                        <span id="prestigeReq" style="font-size: 13pt;">Requires <span style="font-size: 17pt; white-space: pre;"> 1 </span> Liches</span>
+                    </button>
+                </div>
+            </div>
+            <div id="autobuyersSubTab" class="unitSubTab">
+                <div id="autobuyerInfo" style="text-align: center; margin-top: 20px;">
+                    Unit autobuyers attempt to buy in order from priority 1 to priority 8.<br>
+                    Slow autobuyers trigger every 15 <span style="font-weight: bold;">real-world</span> seconds, unaffected by astral enslavement or time essence.
+                </div>
+                <table style="width: auto; margin: auto; margin-top: 20px; text-align: center;">
+                    <tr>
+                        <td>
+                            <div id="zombieBuyerOptions" class="autobuyerOptions">
+                                <h2>Zombies</h2>
+                                <div id="zombieBuyerEnabledContainter" class="buyerOptionsContainer">
+                                    <div id="zombieBuyerEnabledOff" class="buyerEnabledOffContainer buyerEnabledContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="zombieBuyerOff" name="zombieBuyerEnabled" value="off" class="buyerRadio" checked><br>
+                                        <label for="zombieBuyerOff">off</label>
+                                    </div>
+                                    <div id="zombieBuyerEnabledOn" class="buyerEnabledOnContainer buyerEnabledContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="zombieBuyerOn" name="zombieBuyerEnabled" value="on" class="buyerRadio onBuyerRadio"><br>
+                                        <label for="zombieBuyerOn">on</label>
+                                    </div>
+                                </div>
+                                <div id="zombieBuyerSpeedContainter" class="buyerOptionsContainer">
+                                    <div id="zombieBuyerSpeedOff" class="buyerSpeedOffContainer buyerSpeedContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="zombieBuyerSlow" name="zombieBuyerSpeed" value="slow" class="buyerRadio" checked><br>
+                                        <label for="zombieBuyerSlow">slow (every 15 seconds)</label>
+                                    </div>
+                                    <div id="zombieBuyerSpeedOn" class="buyerSpeedOnContainer buyerSpeedContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="zombieBuyerFast" name="zombieBuyerSpeed" value="fast" class="buyerRadio speedBuyerRadio" disabled><br>
+                                        <label for="zombieBuyerFast">fast (every tick)</label>
+                                    </div>
+                                </div>
+                                <div id="zombieBuyerBulkContainter" class="buyerOptionsContainer">
+                                    <div id="zombieBuyerBulkOff" class="buyerBulkOffContainer buyerBulkContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="zombieBuyerBulkOff" name="zombieBuyerBulk" value="off" class="buyerRadio" checked><br>
+                                        <label for="zombieBuyerBulkOff">buys singles</label>
+                                    </div>
+                                    <div id="zombieBuyerBulkOn" class="buyerBulkOnContainer buyerBulkContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="zombieBuyerBulkOn" name="zombieBuyerBulk" value="on" class="buyerRadio bulkBuyerRadio" disabled><br>
+                                        <label for="zombieBuyerBulkOn">buys max</label>
+                                    </div>
+                                </div>
+                                <div id="zombieBuyerPriorityContainter" class="buyerOptionsContainer priorityContainer">
+                                    <label for="zombiePriority">Priority:</label>
+                                    <select oninput="updateAutobuyers()" id="zombiePriority" name="zombiePriority" class="buyerDropdown">
+                                        <option id="11" class="priorityOptions" value="1" selected>1</option>
+                                        <option id="12" class="priorityOptions" value="2">2</option>
+                                        <option id="13" class="priorityOptions" value="3">3</option>
+                                        <option id="14" class="priorityOptions" value="4">4</option>
+                                        <option id="15" class="priorityOptions" value="5">5</option>
+                                        <option id="16" class="priorityOptions" value="6">6</option>
+                                        <option id="17" class="priorityOptions" value="7">7</option>
+                                        <option id="18" class="priorityOptions" value="8">8</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div id="abominationBuyerOptions" class="autobuyerOptions">
+                                <h2>Abominations</h2>
+                                <div id="abominationBuyerEnabledContainter" class="buyerOptionsContainer">
+                                    <div id="abominationBuyerEnabledOff" class="buyerEnabledOffContainer buyerEnabledContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="abominationBuyerOff" name="abominationBuyerEnabled" value="off" class="buyerRadio" checked><br>
+                                        <label for="abominationBuyerOff">off</label>
+                                    </div>
+                                    <div id="abominationBuyerEnabledOn" class="buyerEnabledOnContainer buyerEnabledContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="abominationBuyerOn" name="abominationBuyerEnabled" value="on" class="buyerRadio onBuyerRadio"><br>
+                                        <label for="abominationBuyerOn">on</label>
+                                    </div>
+                                </div>
+                                <div id="abominationBuyerSpeedContainter" class="buyerOptionsContainer">
+                                    <div id="abominationBuyerSpeedOff" class="buyerSpeedOffContainer buyerSpeedContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="abominationBuyerSlow" name="abominationBuyerSpeed" value="slow" class="buyerRadio" checked><br>
+                                        <label for="abominationBuyerSlow">slow (every 15 seconds)</label>
+                                    </div>
+                                    <div id="abominationBuyerSpeedOn" class="buyerSpeedOnContainer buyerSpeedContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="abominationBuyerFast" name="abominationBuyerSpeed" value="fast" class="buyerRadio speedBuyerRadio" disabled><br>
+                                        <label for="abominationBuyerFast">fast (every tick)</label>
+                                    </div>
+                                </div>
+                                <div id="abominationBuyerBulkContainter" class="buyerOptionsContainer">
+                                    <div id="abominationBuyerBulkOff" class="buyerBulkOffContainer buyerBulkContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="abominationBuyerBulkOff" name="abominationBuyerBulk" value="off" class="buyerRadio" checked><br>
+                                        <label for="abominationBuyerBulkOff">buys singles</label>
+                                    </div>
+                                    <div id="abominationBuyerBulkOn" class="buyerBulkOnContainer buyerBulkContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="abominationBuyerBulkOn" name="abominationBuyerBulk" value="on" class="buyerRadio bulkBuyerRadio" disabled><br>
+                                        <label for="abominationBuyerBulkOn">buys max</label>
+                                    </div>
+                                </div>
+                                <div id="abominationBuyerPriorityContainter" class="buyerOptionsContainer priorityContainer">
+                                    <label for="abominationPriority">Priority:</label>
+                                    <select oninput="updateAutobuyers()" id="abominationPriority" name="abominationPriority" class="buyerDropdown">
+                                        <option id="21" class="priorityOptions" value="1">1</option>
+                                        <option id="22" class="priorityOptions" value="2" selected>2</option>
+                                        <option id="23" class="priorityOptions" value="3">3</option>
+                                        <option id="24" class="priorityOptions" value="4">4</option>
+                                        <option id="25" class="priorityOptions" value="5">5</option>
+                                        <option id="26" class="priorityOptions" value="6">6</option>
+                                        <option id="27" class="priorityOptions" value="7">7</option>
+                                        <option id="28" class="priorityOptions" value="8">8</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="skeletonmageBuyerOptions" class="autobuyerOptions">
+                                <h2>Skeleton Mages</h2>
+                                <div id="skeletonmageBuyerEnabledContainter" class="buyerOptionsContainer">
+                                    <div id="skeletonmageBuyerEnabledOff" class="buyerEnabledOffContainer buyerEnabledContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="skeletonmageBuyerOff" name="skeletonmageBuyerEnabled" value="off" class="buyerRadio" checked><br>
+                                        <label for="skeletonmageBuyerOff">off</label>
+                                    </div>
+                                    <div id="skeletonmageBuyerEnabledOn" class="buyerEnabledOnContainer buyerEnabledContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="skeletonmageBuyerOn" name="skeletonmageBuyerEnabled" value="on" class="buyerRadio onBuyerRadio"><br>
+                                        <label for="skeletonmageBuyerOn">on</label>
+                                    </div>
+                                </div>
+                                <div id="skeletonmageBuyerSpeedContainter" class="buyerOptionsContainer">
+                                    <div id="skeletonmageBuyerSpeedOff" class="buyerSpeedOffContainer buyerSpeedContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="skeletonmageBuyerSlow" name="skeletonmageBuyerSpeed" value="slow" class="buyerRadio" checked><br>
+                                        <label for="skeletonmageBuyerSlow">slow (every 15 seconds)</label>
+                                    </div>
+                                    <div id="skeletonmageBuyerSpeedOn" class="buyerSpeedOnContainer buyerSpeedContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="skeletonmageBuyerFast" name="skeletonmageBuyerSpeed" value="fast" class="buyerRadio speedBuyerRadio" disabled><br>
+                                        <label for="skeletonmageBuyerFast">fast (every tick)</label>
+                                    </div>
+                                </div>
+                                <div id="skeletonmageBuyerBulkContainter" class="buyerOptionsContainer">
+                                    <div id="skeletonmageBuyerBulkOff" class="buyerBulkOffContainer buyerBulkContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="skeletonmageBuyerBulkOff" name="skeletonmageBuyerBulk" value="off" class="buyerRadio" checked><br>
+                                        <label for="skeletonmageBuyerBulkOff">buys singles</label>
+                                    </div>
+                                    <div id="skeletonmageBuyerBulkOn" class="buyerBulkOnContainer buyerBulkContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="skeletonmageBuyerBulkOn" name="skeletonmageBuyerBulk" value="on" class="buyerRadio bulkBuyerRadio" disabled><br>
+                                        <label for="skeletonmageBuyerBulkOn">buys max</label>
+                                    </div>
+                                </div>
+                                <div id="skeletonmageBuyerPriorityContainter" class="buyerOptionsContainer priorityContainer">
+                                    <label for="skeletonmagePriority">Priority:</label>
+                                    <select oninput="updateAutobuyers()" id="skeletonmagePriority" name="skeletonmagePriority" class="buyerDropdown">
+                                        <option id="31" class="priorityOptions" value="1">1</option>
+                                        <option id="32" class="priorityOptions" value="2">2</option>
+                                        <option id="33" class="priorityOptions" value="3" selected>3</option>
+                                        <option id="34" class="priorityOptions" value="4">4</option>
+                                        <option id="35" class="priorityOptions" value="5">5</option>
+                                        <option id="36" class="priorityOptions" value="6">6</option>
+                                        <option id="37" class="priorityOptions" value="7">7</option>
+                                        <option id="38" class="priorityOptions" value="8">8</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div id="bansheeBuyerOptions" class="autobuyerOptions">
+                                <h2>Banshees</h2>
+                                <div id="bansheeBuyerEnabledContainter" class="buyerOptionsContainer">
+                                    <div id="bansheeBuyerEnabledOff" class="buyerEnabledOffContainer buyerEnabledContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="bansheeBuyerOff" name="bansheeBuyerEnabled" value="off" class="buyerRadio" checked><br>
+                                        <label for="bansheeBuyerOff">off</label>
+                                    </div>
+                                    <div id="bansheeBuyerEnabledOn" class="buyerEnabledOnContainer buyerEnabledContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="bansheeBuyerOn" name="bansheeBuyerEnabled" value="on" class="buyerRadio onBuyerRadio"><br>
+                                        <label for="bansheeBuyerOn">on</label>
+                                    </div>
+                                </div>
+                                <div id="bansheeBuyerSpeedContainter" class="buyerOptionsContainer">
+                                    <div id="bansheeBuyerSpeedOff" class="buyerSpeedOffContainer buyerSpeedContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="bansheeBuyerSlow" name="bansheeBuyerSpeed" value="slow" class="buyerRadio" checked><br>
+                                        <label for="bansheeBuyerSlow">slow (every 15 seconds)</label>
+                                    </div>
+                                    <div id="bansheeBuyerSpeedOn" class="buyerSpeedOnContainer buyerSpeedContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="bansheeBuyerFast" name="bansheeBuyerSpeed" value="fast" class="buyerRadio speedBuyerRadio" disabled><br>
+                                        <label for="bansheeBuyerFast">fast (every tick)</label>
+                                    </div>
+                                </div>
+                                <div id="bansheeBuyerBulkContainter" class="buyerOptionsContainer">
+                                    <div id="bansheeBuyerBulkOff" class="buyerBulkOffContainer buyerBulkContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="bansheeBuyerBulkOff" name="bansheeBuyerBulk" value="off" class="buyerRadio" checked><br>
+                                        <label for="bansheeBuyerBulkOff">buys singles</label>
+                                    </div>
+                                    <div id="bansheeBuyerBulkOn" class="buyerBulkOnContainer buyerBulkContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="bansheeBuyerBulkOn" name="bansheeBuyerBulk" value="on" class="buyerRadio bulkBuyerRadio" disabled><br>
+                                        <label for="bansheeBuyerBulkOn">buys max</label>
+                                    </div>
+                                </div>
+                                <div id="bansheeBuyerPriorityContainter" class="buyerOptionsContainer priorityContainer">
+                                    <label for="bansheePriority">Priority:</label>
+                                    <select oninput="updateAutobuyers()" id="bansheePriority" name="bansheePriority" class="buyerDropdown">
+                                        <option id="41" class="priorityOptions" value="1">1</option>
+                                        <option id="42" class="priorityOptions" value="2">2</option>
+                                        <option id="43" class="priorityOptions" value="3">3</option>
+                                        <option id="44" class="priorityOptions" value="4" selected>4</option>
+                                        <option id="45" class="priorityOptions" value="5">5</option>
+                                        <option id="46" class="priorityOptions" value="6">6</option>
+                                        <option id="47" class="priorityOptions" value="7">7</option>
+                                        <option id="48" class="priorityOptions" value="8">8</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="lichBuyerOptions" class="autobuyerOptions">
+                                <h2>Liches</h2>
+                                <div id="lichBuyerEnabledContainter" class="buyerOptionsContainer">
+                                    <div id="lichBuyerEnabledOff" class="buyerEnabledOffContainer buyerEnabledContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="lichBuyerOff" name="lichBuyerEnabled" value="off" class="buyerRadio" checked><br>
+                                        <label for="lichBuyerOff">off</label>
+                                    </div>
+                                    <div id="lichBuyerEnabledOn" class="buyerEnabledOnContainer buyerEnabledContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="lichBuyerOn" name="lichBuyerEnabled" value="on" class="buyerRadio onBuyerRadio"><br>
+                                        <label for="lichBuyerOn">on</label>
+                                    </div>
+                                </div>
+                                <div id="lichBuyerSpeedContainter" class="buyerOptionsContainer">
+                                    <div id="lichBuyerSpeedOff" class="buyerSpeedOffContainer buyerSpeedContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="lichBuyerSlow" name="lichBuyerSpeed" value="slow" class="buyerRadio" checked><br>
+                                        <label for="lichBuyerSlow">slow (every 15 seconds)</label>
+                                    </div>
+                                    <div id="lichBuyerSpeedOn" class="buyerSpeedOnContainer buyerSpeedContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="lichBuyerFast" name="lichBuyerSpeed" value="fast" class="buyerRadio speedBuyerRadio" disabled><br>
+                                        <label for="lichBuyerFast">fast (every tick)</label>
+                                    </div>
+                                </div>
+                                <div id="lichBuyerBulkContainter" class="buyerOptionsContainer">
+                                    <div id="lichBuyerBulkOff" class="buyerBulkOffContainer buyerBulkContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="lichBuyerBulkOff" name="lichBuyerBulk" value="off" class="buyerRadio" checked><br>
+                                        <label for="lichBuyerBulkOff">buys singles</label>
+                                    </div>
+                                    <div id="lichBuyerBulkOn" class="buyerBulkOnContainer buyerBulkContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="lichBuyerBulkOn" name="lichBuyerBulk" value="on" class="buyerRadio bulkBuyerRadio" disabled><br>
+                                        <label for="lichBuyerBulkOn">buys max</label>
+                                    </div>
+                                </div>
+                                <div id="lichBuyerPriorityContainter" class="buyerOptionsContainer priorityContainer">
+                                    <label for="lichPriority">Priority:</label>
+                                    <select oninput="updateAutobuyers()" id="lichPriority" name="lichPriority" class="buyerDropdown">
+                                        <option id="51" class="priorityOptions" value="1">1</option>
+                                        <option id="52" class="priorityOptions" value="2">2</option>
+                                        <option id="53" class="priorityOptions" value="3">3</option>
+                                        <option id="54" class="priorityOptions" value="4">4</option>
+                                        <option id="55" class="priorityOptions" value="5" selected>5</option>
+                                        <option id="56" class="priorityOptions" value="6">6</option>
+                                        <option id="57" class="priorityOptions" value="7">7</option>
+                                        <option id="58" class="priorityOptions" value="8">8</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div id="behemothBuyerOptions" class="autobuyerOptions">
+                                <h2>Behemoths</h2>
+                                <div id="behemothBuyerEnabledContainter" class="buyerOptionsContainer">
+                                    <div id="behemothBuyerEnabledOff" class="buyerEnabledOffContainer buyerEnabledContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="behemothBuyerOff" name="behemothBuyerEnabled" value="off" class="buyerRadio" checked><br>
+                                        <label for="behemothBuyerOff">off</label>
+                                    </div>
+                                    <div id="behemothBuyerEnabledOn" class="buyerEnabledOnContainer buyerEnabledContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="behemothBuyerOn" name="behemothBuyerEnabled" value="on" class="buyerRadio onBuyerRadio"><br>
+                                        <label for="behemothBuyerOn">on</label>
+                                    </div>
+                                </div>
+                                <div id="behemothBuyerSpeedContainter" class="buyerOptionsContainer">
+                                    <div id="behemothBuyerSpeedOff" class="buyerSpeedOffContainer buyerSpeedContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="behemothBuyerSlow" name="behemothBuyerSpeed" value="slow" class="buyerRadio" checked><br>
+                                        <label for="behemothBuyerSlow">slow (every 15 seconds)</label>
+                                    </div>
+                                    <div id="behemothBuyerSpeedOn" class="buyerSpeedOnContainer buyerSpeedContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="behemothBuyerFast" name="behemothBuyerSpeed" value="fast" class="buyerRadio speedBuyerRadio" disabled><br>
+                                        <label for="behemothBuyerFast">fast (every tick)</label>
+                                    </div>
+                                </div>
+                                <div id="behemothBuyerBulkContainter" class="buyerOptionsContainer">
+                                    <div id="behemothBuyerBulkOff" class="buyerBulkOffContainer buyerBulkContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="behemothBuyerBulkOff" name="behemothBuyerBulk" value="off" class="buyerRadio" checked>
+                                        <label for="behemothBuyerBulkOff">buys singles</label>
+                                    </div>
+                                    <div id="behemothBuyerBulkOn" class="buyerBulkOnContainer buyerBulkContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="behemothBuyerBulkOn" name="behemothBuyerBulk" value="on" class="buyerRadio bulkBuyerRadio" disabled><br>
+                                        <label for="behemothBuyerBulkOn">buys max</label>
+                                    </div>
+                                </div>
+                                <div id="behemothBuyerPriorityContainter" class="buyerOptionsContainer priorityContainer">
+                                    <label for="behemothPriority">Priority:</label>
+                                    <select oninput="updateAutobuyers()" id="behemothPriority" name="behemothPriority" class="buyerDropdown">
+                                        <option id="61" class="priorityOptions" value="1">1</option>
+                                        <option id="62" class="priorityOptions" value="2">2</option>
+                                        <option id="63" class="priorityOptions" value="3">3</option>
+                                        <option id="64" class="priorityOptions" value="4">4</option>
+                                        <option id="65" class="priorityOptions" value="5">5</option>
+                                        <option id="66" class="priorityOptions" value="6" selected>6</option>
+                                        <option id="67" class="priorityOptions" value="7">7</option>
+                                        <option id="68" class="priorityOptions" value="8">8</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="ancientoneBuyerOptions" class="autobuyerOptions">
+                                <h2>Ancient Ones</h2>
+                                <div id="ancientoneBuyerEnabledContainter" class="buyerOptionsContainer">
+                                    <div id="ancientoneBuyerEnabledOff" class="buyerEnabledOffContainer buyerEnabledContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="ancientoneBuyerOff" name="ancientoneBuyerEnabled" value="off" class="buyerRadio" checked><br>
+                                        <label for="ancientoneBuyerOff">off</label>
+                                    </div>
+                                    <div id="ancientoneBuyerEnabledOn" class="buyerEnabledOnContainer buyerEnabledContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="ancientoneBuyerOn" name="ancientoneBuyerEnabled" value="on" class="buyerRadio onBuyerRadio"><br>
+                                        <label for="ancientoneBuyerOn">on</label>
+                                    </div>
+                                </div>
+                                <div id="ancientoneBuyerSpeedContainter" class="buyerOptionsContainer">
+                                    <div id="ancientoneBuyerSpeedOff" class="buyerSpeedOffContainer buyerSpeedContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="ancientoneBuyerSlow" name="ancientoneBuyerSpeed" value="slow" class="buyerRadio" checked><br>
+                                        <label for="ancientoneBuyerSlow">slow (every 15 seconds)</label>
+                                    </div>
+                                    <div id="ancientoneBuyerSpeedOn" class="buyerSpeedOnContainer buyerSpeedContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="ancientoneBuyerFast" name="ancientoneBuyerSpeed" value="fast" class="buyerRadio speedBuyerRadio" disabled><br>
+                                        <label for="ancientoneBuyerFast">fast (every tick)</label>
+                                    </div>
+                                </div>
+                                <div id="ancientoneBuyerBulkContainter" class="buyerOptionsContainer">
+                                    <div id="ancientoneBuyerBulkOff" class="buyerBulkOffContainer buyerBulkContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="ancientoneBuyerBulkOff" name="ancientoneBuyerBulk" value="off" class="buyerRadio" checked><br>
+                                        <label for="ancientoneBuyerBulkOff">buys singles</label>
+                                    </div>
+                                    <div id="ancientoneBuyerBulkOn" class="buyerBulkOnContainer buyerBulkContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="ancientoneBuyerBulkOn" name="ancientoneBuyerBulk" value="on" class="buyerRadio bulkBuyerRadio" disabled><br>
+                                        <label for="ancientoneBuyerBulkOn">buys max</label>
+                                    </div>
+                                </div>
+                                <div id="ancientoneBuyerPriorityContainter" class="buyerOptionsContainer priorityContainer">
+                                    <label for="ancientonePriority">Priority:</label>
+                                    <select oninput="updateAutobuyers()" id="ancientonePriority" name="ancientonePriority" class="buyerDropdown">
+                                        <option id="71" class="priorityOptions" value="1">1</option>
+                                        <option id="72" class="priorityOptions" value="2">2</option>
+                                        <option id="73" class="priorityOptions" value="3">3</option>
+                                        <option id="74" class="priorityOptions" value="4">4</option>
+                                        <option id="75" class="priorityOptions" value="5">5</option>
+                                        <option id="76" class="priorityOptions" value="6">6</option>
+                                        <option id="77" class="priorityOptions" value="7" selected>7</option>
+                                        <option id="78" class="priorityOptions" value="8">8</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div id="suneaterBuyerOptions" class="autobuyerOptions">
+                                <h2>Sun Eaters</h2>
+                                <div id="suneaterBuyerEnabledContainter" class="buyerOptionsContainer">
+                                    <div id="suneaterBuyerEnabledOff" class="buyerEnabledOffContainer buyerEnabledContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="suneaterBuyerOff" name="suneaterBuyerEnabled" value="off" class="buyerRadio" checked><br>
+                                        <label for="suneaterBuyerOff">off</label>
+                                    </div>
+                                    <div id="suneaterBuyerEnabledOn" class="buyerEnabledOnContainer buyerEnabledContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="suneaterBuyerOn" name="suneaterBuyerEnabled" value="on" class="buyerRadio onBuyerRadio"><br>
+                                        <label for="suneaterBuyerOn">on</label>
+                                    </div>
+                                </div>
+                                <div id="suneaterBuyerSpeedContainter" class="buyerOptionsContainer">
+                                    <div id="suneaterBuyerSpeedOff" class="buyerSpeedOffContainer buyerSpeedContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="suneaterBuyerSlow" name="suneaterBuyerSpeed" value="slow" class="buyerRadio" checked><br>
+                                        <label for="suneaterBuyerSlow">slow (every 15 seconds)</label>
+                                    </div>
+                                    <div id="suneaterBuyerSpeedOn" class="buyerSpeedOnContainer buyerSpeedContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="suneaterBuyerFast" name="suneaterBuyerSpeed" value="fast" class="buyerRadio speedBuyerRadio" disabled><br>
+                                        <label for="suneaterBuyerFast">fast (every tick)</label>
+                                    </div>
+                                </div>
+                                <div id="suneaterBuyerBulkContainter" class="buyerOptionsContainer">
+                                    <div id="suneaterBuyerBulkOff" class="buyerBulkOffContainer buyerBulkContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="suneaterBuyerBulkOff" name="suneaterBuyerBulk" value="off" class="buyerRadio" checked><br>
+                                        <label for="suneaterBuyerBulkOff">buys singles</label>
+                                    </div>
+                                    <div id="suneaterBuyerBulkOn" class="buyerBulkOnContainer buyerBulkContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="suneaterBuyerBulkOn" name="suneaterBuyerBulk" value="on" class="buyerRadio bulkBuyerRadio" disabled><br>
+                                        <label for="suneaterBuyerBulkOn">buys max</label>
+                                    </div>
+                                </div>
+                                <div id="suneaterBuyerPriorityContainter" class="buyerOptionsContainer priorityContainer">
+                                    <label for="suneaterPriority">Priority:</label>
+                                    <select oninput="updateAutobuyers()" id="suneaterPriority" name="suneaterPriority" class="buyerDropdown">
+                                        <option id="81" class="priorityOptions" value="1">1</option>
+                                        <option id="82" class="priorityOptions" value="2">2</option>
+                                        <option id="83" class="priorityOptions" value="3">3</option>
+                                        <option id="84" class="priorityOptions" value="4">4</option>
+                                        <option id="85" class="priorityOptions" value="5">5</option>
+                                        <option id="86" class="priorityOptions" value="6">6</option>
+                                        <option id="87" class="priorityOptions" value="7">7</option>
+                                        <option id="88" class="priorityOptions" value="8" selected>8</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="sacrificeBuyerOptions" class="autobuyerOptions">
+                                <h2>Sacrifice</h2>
+                                <div id="sacrificeBuyerEnabledContainter" class="buyerOptionsContainer">
+                                    <div id="sacrificeBuyerEnabledOff" class="buyerEnabledOffContainer buyerEnabledContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="sacrificeBuyerOff" name="sacrificeBuyerEnabled" value="off" class="buyerRadio" checked><br>
+                                        <label for="sacrificeBuyerOff">off</label>
+                                    </div>
+                                    <div id="sacrificeBuyerEnabledOn" class="buyerEnabledOnContainer buyerEnabledContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="sacrificeBuyerOn" name="sacrificeBuyerEnabled" value="on" class="buyerRadio onBuyerRadio"><br>
+                                        <label for="sacrificeBuyerOn">on</label>
+                                    </div>
+                                </div>
+                                <div id="sacrificeBuyerSpeedContainter" class="buyerOptionsContainer">
+                                    <div id="sacrificeBuyerSpeedOff" class="buyerSpeedOffContainer buyerSpeedContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="sacrificeBuyerSlow" name="sacrificeBuyerSpeed" value="slow" class="buyerRadio" checked><br>
+                                        <label for="sacrificeBuyerSlow">slow (every 15 seconds)</label>
+                                    </div>
+                                    <div id="sacrificeBuyerSpeedOn" class="buyerSpeedOnContainer buyerSpeedContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="sacrificeBuyerFast" name="sacrificeBuyerSpeed" value="fast" class="buyerRadio speedBuyerRadio" disabled><br>
+                                        <label for="sacrificeBuyerFast">fast (every<br>tick)</label>
+                                    </div>
+                                </div>
+                                <div id="sacrificeBuyerAmountsContainter" class="buyerOptionsContainer">
+                                    <div id="sacrificeBuyerAmountInput" class="buyerAmountInputContainer buyerAmountContainer">
+                                        <label for="sacrificeBuyerAmount">at x crystals</label>
+                                        <input oninput="updateAutobuyers()" type="text" size id="sacrificeBuyerAmount" name="sacrificeBuyerConditions" class="buyerText" value="1"><br>
+                                        <label for="sacrificeBuyerAutolock" style="font-size: 11pt;">auto lock in</label>
+                                        <input oninput="updateAutobuyers()" type="checkbox" id="sacrificeBuyerAutolock" name="sacrificeBuyerAutolock" value="slow" class="buyerCheckbox" checked>
+                                    </div>
+                                    <div id="sacrificeBuyerAmountsInput" class="buyerAmountOptionsContainer buyerAmountContainer">
+                                        <select oninput="updateAutobuyers()" id="sacrificeBuyerOptionsList" name="sacrificeBuyerOptionList" class="buyerList" size="3" disabled>
+                                            <option id="atx" value="atx" selected>at x crystals</option>
+                                            <option id="xtimes" value="xtimes">at x times last</option>
+                                            <option id="afterx" value="afterx">after x seconds</option>
+                                        </select><br>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div id="prestigeBuyerOptions" class="autobuyerOptions">
+                                <h2>World Prestige</h2>
+                                <div id="prestigeBuyerEnabledContainter" class="buyerOptionsContainer">
+                                    <div id="prestigeBuyerEnabledOff" class="buyerEnabledOffContainer buyerEnabledContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="prestigeBuyerOff" name="prestigeBuyerEnabled" value="off" class="buyerRadio" checked><br>
+                                        <label for="prestigeBuyerOff">off</label>
+                                    </div>
+                                    <div id="prestigeBuyerEnabledOn" class="buyerEnabledOnContainer buyerEnabledContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="prestigeBuyerOn" name="prestigeBuyerEnabled" value="on" class="buyerRadio onBuyerRadio"><br>
+                                        <label for="prestigeBuyerOn">on</label>
+                                    </div>
+                                </div>
+                                <div id="prestigeBuyerSpeedContainter" class="buyerOptionsContainer">
+                                    <div id="prestigeBuyerSpeedOff" class="buyerSpeedOffContainer buyerSpeedContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="prestigeBuyerSlow" name="prestigeBuyerSpeed" value="slow" class="buyerRadio" checked><br>
+                                        <label for="prestigeBuyerSlow">slow (every 15 seconds)</label>
+                                    </div>
+                                    <div id="prestigeBuyerSpeedOn" class="buyerSpeedOnContainer buyerSpeedContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="prestigeBuyerFast" name="prestigeBuyerSpeed" value="fast" class="buyerRadio speedBuyerRadio" disabled><br>
+                                        <label for="prestigeBuyerFast">fast (every<br>tick)</label>
+                                    </div>
+                                </div>
+                                <div id="prestigeBuyerBulkContainter" class="buyerOptionsContainer">
+                                    <div id="prestigeBuyerBulkOff" class="buyerBulkOffContainer buyerBulkContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="prestigeBuyerBulkOff" name="prestigeBuyerBulk" value="off" class="buyerRadio" checked><br>
+                                        <label for="prestigeBuyerBulkOff">buys singles</label>
+                                    </div>
+                                    <div id="prestigeBuyerBulkOn" class="buyerBulkOnContainer buyerBulkContainer">
+                                        <input oninput="updateAutobuyers()" type="radio" id="prestigeBuyerBulkOn" name="prestigeBuyerBulk" value="on" class="buyerRadio bulkBuyerRadio" disabled><br>
+                                        <label for="prestigeBuyerBulkOn">buys max</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
         <div id="buildingsTab" class="pageTab">
@@ -281,15 +774,15 @@
                 <table style="width: auto; margin: auto;">
                     <tr>
                         <td>
-                            <button id="buildingsSubTabBut" class="subTabBut" onclick="showSubTab('buildingsSubTab')">BUILDINGS</button>
+                            <button id="buildingsSubTabBut" class="subTabBut" onclick="showBuildingSubTab('buildingsSubTab')">BUILDINGS</button>
                         </td>
                         <td>
-                            <button id="constructionSubTabBut" class="subTabBut" onclick="showSubTab('constructionSubTab')" style="display: none;">CONSTRUCTION</button>
+                            <button id="constructionSubTabBut" class="subTabBut" onclick="showBuildingSubTab('constructionSubTab')" style="display: none;">CONSTRUCTION</button>
                         </td>
                     </tr>
                 </table>
             </div>
-            <div id="buildingsSubTab" class="subTab">
+            <div id="buildingsSubTab" class="buildingSubTab">
                 <table style="width: 75%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse;" class="buildingsTable">
                     <tr id="factoryBuildRow">
                         <td colspan="3">
@@ -305,7 +798,7 @@
                     </tr>
                     <tr id="factoryUpgradesRow1" style="display: none;">
                         <td>
-                            <button id="factoryUpg11" class="factoryUpg" data-title="1 + 2*sqrt(log(x))" onclick="buyBUpg(1, 11)"></button>
+                            <button id="factoryUpg11" class="factoryUpg" onclick="buyBUpg(1, 11)"></button>
                         </td>
                         <td>
                             <button id="factoryUpg12" class="factoryUpg" onclick="buyBUpg(1, 12)"></button>
@@ -316,13 +809,13 @@
                     </tr>
                     <tr id="factoryUpgradesRow2" style="display: none;">
                         <td>
-                            <button id="factoryUpg21" class="factoryUpg" data-title="1 + 2*sqrt(log(x))" onclick="buyBUpg(1, 21)"></button>
+                            <button id="factoryUpg21" class="factoryUpg" onclick="buyBUpg(1, 21)"></button>
                         </td>
                         <td>
                             <button id="factoryUpg22" class="factoryUpg" onclick="buyBUpg(1, 22)"></button>
                         </td>
                         <td>
-                            <button id="factoryUpg23" class="factoryUpg" data-title="1 + log(x)^2" onclick="buyBUpg(1, 23)"></button>
+                            <button id="factoryUpg23" class="factoryUpg" onclick="buyBUpg(1, 23)"></button>
                         </td>
                     </tr>
                 </table>
@@ -338,29 +831,29 @@
                             <h2 style="font-size: 18pt;">NECROPOLIS</h2>
                             <div id="necropolisTooltip" data-title="gain: x^0.2&#xA;effect: 1 + log(x)">you have <span id="necropolisAmt" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> <span id="acolytesTextAmt" class="buildingResourceTexts">acolytes</span>.<br>
                             you are producing <span id="necropolisProd" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> <span id="acolytesTextGain" class="buildingResourceTexts">acolytes</span>/sec, based on your bought sun eaters.<br>
-                            your acolytes chant into the astral abyss, boosting your astral brick gain by <span id="acolyteEff" style="font-size: 17pt; white-space: pre;"> 0</span>x.</div>
+                            your acolytes chant into the astral abyss, boosting your astral brick gain by <span id="acolyteEff" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0</span>x.</div>
                         </td>
                     </tr>
                     <tr id="necropolisUpgradesRow1" style="display: none;">
                         <td>
-                            <button id="necropolisUpg11" class="necropolisUpg" data-title="1.2^OoM" onclick="buyBUpg(2, 11)"><strong>Upgrade 1</strong><br>description of upgrade</button>
+                            <button id="necropolisUpg11" class="necropolisUpg" onclick="buyBUpg(2, 11)"><strong>Upgrade 1</strong><br>description of upgrade</button>
                         </td>
                         <td>
-                            <button id="necropolisUpg12" class="necropolisUpg" data-title="1 + sqrt(log(x))" onclick="buyBUpg(2, 12)"><strong>Upgrade 2</strong><br>description of upgrade</button>
+                            <button id="necropolisUpg12" class="necropolisUpg" onclick="buyBUpg(2, 12)"><strong>Upgrade 2</strong><br>description of upgrade</button>
                         </td>
                         <td>
-                            <button id="necropolisUpg13" class="necropolisUpg" data-title="1 + sqrt(log(x))" onclick="buyBUpg(2, 13)"><strong>Upgrade 3</strong><br>description of upgrade</button>
+                            <button id="necropolisUpg13" class="necropolisUpg" onclick="buyBUpg(2, 13)"><strong>Upgrade 3</strong><br>description of upgrade</button>
                         </td>
                     </tr>
                     <tr id="necropolisUpgradesRow2" style="display: none;">
                         <td>
-                            <button id="necropolisUpg21" class="necropolisUpg" data-title="1 + log(x)^2" onclick="buyBUpg(2, 21)"><strong>Upgrade 4</strong><br>description of upgrade</button>
+                            <button id="necropolisUpg21" class="necropolisUpg" onclick="buyBUpg(2, 21)"><strong>Upgrade 4</strong><br>description of upgrade</button>
                         </td>
                         <td>
-                            <button id="necropolisUpg22" class="necropolisUpg" data-title="1 + log(x)^2" onclick="buyBUpg(2, 22)"><strong>Upgrade 5</strong><br>description of upgrade</button>
+                            <button id="necropolisUpg22" class="necropolisUpg" onclick="buyBUpg(2, 22)"><strong>Upgrade 5</strong><br>description of upgrade</button>
                         </td>
                         <td>
-                            <button id="necropolisUpg23" class="necropolisUpg" data-title="1 + log(x)/4" onclick="buyBUpg(2, 23)"><strong>Upgrade 6</strong><br>description of upgrade</button>
+                            <button id="necropolisUpg23" class="necropolisUpg" onclick="buyBUpg(2, 23)"><strong>Upgrade 6</strong><br>description of upgrade</button>
                         </td>
                     </tr>
                 </table>
@@ -390,11 +883,21 @@
                             <button id="sunUpg13" class="sunUpg" onclick="buyBUpg(3, 13)"><strong>Upgrade 3</strong><br>description of upgrade</button>
                         </td>
                     </tr>
-                    <tr id="sunUpgradesRow2" style="display: none;"></tr>
+                    <tr id="sunUpgradesRow2" style="display: none;">
+                        <td>
+                            <button id="sunUpg21" class="sunUpg" onclick="buyBUpg(3, 21)"><strong>Upgrade 1</strong><br>description of upgrade</button>
+                        </td>
+                        <td>
+                            <button id="sunUpg22" class="sunUpg" onclick="buyBUpg(3, 22)"><strong>Upgrade 2</strong><br>description of upgrade</button>
+                        </td>
+                        <td>
+                            <button id="sunUpg23" class="sunUpg" onclick="buyBUpg(3, 23)"><strong>Upgrade 3</strong><br>description of upgrade</button>
+                        </td>
+                    </tr>
                 </table>
                 <div style="min-height: 25px;"></div>
             </div>
-            <div id="constructionSubTab" class="subTab" style="display: none;">
+            <div id="constructionSubTab" class="buildingSubTab" style="display: none;">
                 <table style="width: 75%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse;">
                     <tr id="cUpgHeaderRow">
                         <td colspan="4">
@@ -404,7 +907,7 @@
                     </tr>
                     <tr id="cUpgRow">
                         <td>
-                            <button id="constrUpg1" class="constrUpg" onclick="buyCUpg(1)"><strong>Upgrade 1</strong><br>description of upgrade</button><br>
+                            <button id="constrUpg1" class="constrUpg" onclick="buyCUpg(1)"><strong>Upgrade 1</strong><br>description of upgrade</button>
                             <button id="maxConstr1" class="constrMax" onclick="buyMaxConstr(1)">Buy max</button>
                         </td>
                         <td>
@@ -424,7 +927,7 @@
             </div>
         </div>
         <div id="timeTab" class="pageTab">
-            <table style="width: 75%; margin: auto auto ; text-align: center;">
+            <table style="width: 75%; margin: auto auto; text-align: center;">
                 <tr>
                     <div id="timePresContainer" style="text-align: center; margin: 25px;">
                         <button id="timePrestige" class="timePrestigeBut" data-title="floor(10^(corpses_exponent/20 - 0.65))" onclick="timePrestige()">
@@ -442,8 +945,8 @@
                     </td>
                     <td><div style="width: 100%;">You have <span id="crystalAmt" style="font-size: 17pt; white-space: pre; color: #006ba0; font-weight: bold; font-variant-numeric: tabular-nums;"> 0 </span> <span id="crystalsTextAmt" class="timeResourceTexts">time crystals</span></div>
                         <div style="min-width: 100%; min-height: 30px;"></div>
-                        <div id="trueTooltip" style="width: 50%; float: left;" data-title="boost: 1 + log(x)/(2*nerf)&#xA;nerf: 1 + (log(x)^0.2)/2">Your True Time Essence speeds up normal time by<br><span id="trueTimeBuff" style="font-size: 16pt;">1</span>x<br> but it divides the Anti Time Essence effect by<br><span id="trueTimeNerf" style="font-size: 16pt;">1</span></div>
-                        <div id="antiTooltip"style="width: 50%; float: left;" data-title="boost: 1 + log(x)/nerf&#xA;nerf: 1 + (log(x)^0.2)/2">Your Anti Time Essence speeds up astral time by<br><span id="antiTimeBuff" style="font-size: 16pt;">1</span>x<br> but it divides the True Time Essence effect by<br><span id="antiTimeNerf" style="font-size: 16pt;">1</span></div>
+                        <div id="trueTooltip" style="width: 50%; float: left;" data-title="boost: 1 + log(x)/nerf&#xA;nerf: log(x)^0.2">Your True Time Essence speeds up normal time by<br><span id="trueTimeBuff" style="font-size: 16pt;">1</span>x<br> but it divides the Anti Time Essence effect by<br><span id="trueTimeNerf" style="font-size: 16pt;">1</span></div>
+                        <div id="antiTooltip"style="width: 50%; float: left;" data-title="boost: 1 + 2*log(x)/nerf&#xA;nerf: log(x)^0.2">Your Anti Time Essence speeds up astral time by<br><span id="antiTimeBuff" style="font-size: 16pt;">1</span>x<br> but it divides the True Time Essence effect by<br><span id="antiTimeNerf" style="font-size: 16pt;">1</span></div>
                     </td>
                     <td width="100px;">
                         <div class="timeLabelRight">ANTI<br>TIME</div>
@@ -456,117 +959,179 @@
                     <td></td>
                 </tr>
             </table>
-            <table style="width: 75%; margin: auto; margin-top: 20px; text-align: center;">
-                <tr>
-                    <td width="10%">
-                        <div style="float: left;"><span id="sliderValueLeft" style="font-size: 16pt;">50</span>%</div>
-                    </td>
-                    <td width="80%">
-                        <div><button id="lockInTimeBut" class="timeSliderBut" onclick="lockInTime()">Lock in and begin time production</button></div>
-                    </td>
-                    <td width="10%">
-                        <div style="float: right;"><span id="sliderValueRight" style="font-size: 16pt;">50</span>%</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        <div class="slidecontainer" style="text-align: center;">
-                            <input type="range" min="0" max="100" value="50" class="slider" id="timeSlider" oninput="updateSliderDisplay()">
-                        </div>
-                        <div><button id="respecTimeBut" class="timeSliderBut" onclick="respecTime()">Respec slider - forces sacrifice</button></div>
-                    </td>
-                </tr>
-                <tr style="height: 25px;">
-                    <div style="height: 100%;"></div>
-                </tr>
-            </table>
-            <table style="width: 100%; margin: auto;">
-                <tr>
-                    <td width="20%">
-                        <h1>Dimension</h1>
-                    </td>
-                    <td width="15%">
-                        <div><h1>Multiplier</h1></div>
-                    </td>
-                    <td width="35%">
-                        <div style="min-width: 30%; float: left;"><h1>Owned</h1></div><div style="width: 30%; float: left;"><h1>(Bought)</h1></div><div style="min-width: 40%; float: right; text-align: center;"><h1>Gain</h1></div>
-                    </td>
-                    <td colspan="2" width="30%">
-                        <div style="width: 100%; text-align: center;">
-                            <button id="maxAllButT" class="unitMaxT" onclick="buyMaxAllTime()" style="margin: auto;">Max all</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr height="10px"></tr>
-                <tr id="timeRow1" style="display: table-row;">
-                    <td>
-                        Time Dimension 1
-                    </td>
-                    <td>
-                        <div id="timeMult1">x1</div>
-                    </td>
-                    <td>
-                        <div id="timeAmount1"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: left;"></div></div>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="timeBut1" class="unitButT" onclick="buySingleTime(1)">Cost: 10 crystals</button>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="timeMax1" class="unitMaxT" onclick="buyMaxTime(1)">Max: 1 for &#162;10</button>
-                    </td>
-                </tr>
-                <tr id="timeRow2" style="display: none;">
-                    <td>
-                        Time Dimension 2
-                    </td>
-                    <td>
-                        <div id="timeMult2">x1</div>
-                    </td>
-                    <td>
-                        <div id="timeAmount2"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: left;"></div></div>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="timeBut2" class="unitButT" onclick="buySingleTime(2)">Cost: 100 crystals</button>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="timeMax2" class="unitMaxT" onclick="buyMaxTime(2)">Max: 1 for &#162;10</button>
-                    </td>
-                </tr>
-                <tr id="timeRow3" style="display: none;">
-                    <td>
-                        Time Dimension 3
-                    </td>
-                    <td>
-                        <div id="timeMult3">x1</div>
-                    </td>
-                    <td>
-                        <div id="timeAmount3"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: left;"></div></div>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="timeBut3" class="unitButT" onclick="buySingleTime(3)">Cost: 1e6 crystals</button>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="timeMax3" class="unitMaxT" onclick="buyMaxTime(3)">Max: 1 for &#162;10</button>
-                    </td>
-                </tr>
-                <tr id="timeRow4" style="display: none;">
-                    <td>
-                        Time Dimension 4
-                    </td>
-                    <td>
-                        <div id="timeMult4">x1</div>
-                    </td>
-                    <td>
-                        <div id="timeAmount4"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: left;"></div></div>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="timeBut4" class="unitButT" onclick="buySingleTime(4)">Cost: 1e9 crystals</button>
-                    </td>
-                    <td class="buttonTD">
-                        <button id="timeMax4" class="unitMaxT" onclick="buyMaxTime(4)">Max: 1 for &#162;10</button>
-                    </td>
-                </tr>
-            </table>
+            <div id="timeSubMenu" style="width: 100%; margin-top: 20px; display: none;">
+                <table style="width: auto; margin: auto;">
+                    <tr>
+                        <td>
+                            <button id="timeDimSubTabBut" class="subTabBut" onclick="showTimeSubTab('timeDimSubTab')">DIMENSIONS</button>
+                        </td>
+                        <td>
+                            <button id="timeUpgSubTabBut" class="subTabBut" onclick="showTimeSubTab('timeUpgSubTab')" style="display: none;">UPGRADES</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="timeDimSubTab" class="timeSubTab">
+                <table style="width: 75%; margin: auto; margin-top: 20px; text-align: center;">
+                    <tr>
+                        <td width="10%">
+                            <div style="float: left;"><span id="sliderValueLeft" style="font-size: 16pt;">50</span>%</div>
+                        </td>
+                        <td width="80%">
+                            <div><button id="lockInTimeBut" class="timeSliderBut" onclick="lockInTime()">Lock in and begin time production</button></div>
+                        </td>
+                        <td width="10%">
+                            <div style="float: right;"><span id="sliderValueRight" style="font-size: 16pt;">50</span>%</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div class="slidecontainer" style="text-align: center;">
+                                <input type="range" min="0" max="100" value="50" class="slider" id="timeSlider" oninput="updateSliderDisplay()">
+                            </div>
+                            <div><button id="respecTimeBut" class="timeSliderBut" onclick="respecTime()">Respec slider - forces sacrifice</button></div>
+                        </td>
+                    </tr>
+                    <tr style="height: 25px;">
+                        <div style="height: 100%;"></div>
+                    </tr>
+                </table>
+                <table style="width: 100%; margin: auto;">
+                    <tr>
+                        <td width="20%">
+                            <h1>Dimension</h1>
+                        </td>
+                        <td width="15%">
+                            <div><h1>Multiplier</h1></div>
+                        </td>
+                        <td width="35%">
+                            <div style="min-width: 30%; float: left;"><h1>Owned</h1></div><div style="width: 30%; float: left;"><h1>(Bought)</h1></div><div style="min-width: 40%; float: right; text-align: center;"><h1>Gain</h1></div>
+                        </td>
+                        <td colspan="2" width="30%">
+                            <div style="width: 100%; text-align: center;">
+                                <button id="maxAllButT" class="unitMaxT" onclick="buyMaxAllTime()" style="margin: auto;">Max all</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr height="10px"></tr>
+                    <tr id="timeRow1" style="display: table-row;">
+                        <td>
+                            Time Dimension 1
+                        </td>
+                        <td>
+                            <div id="timeMult1">x1</div>
+                        </td>
+                        <td>
+                            <div id="timeAmount1"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: left;"></div></div>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="timeBut1" class="unitButT" onclick="buySingleTime(1)">Cost: 10 crystals</button>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="timeMax1" class="unitMaxT" onclick="buyMaxTime(1)">Max: 1 for &#162;10</button>
+                        </td>
+                    </tr>
+                    <tr id="timeRow2" style="display: none;">
+                        <td>
+                            Time Dimension 2
+                        </td>
+                        <td>
+                            <div id="timeMult2">x1</div>
+                        </td>
+                        <td>
+                            <div id="timeAmount2"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: left;"></div></div>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="timeBut2" class="unitButT" onclick="buySingleTime(2)">Cost: 100 crystals</button>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="timeMax2" class="unitMaxT" onclick="buyMaxTime(2)">Max: 1 for &#162;10</button>
+                        </td>
+                    </tr>
+                    <tr id="timeRow3" style="display: none;">
+                        <td>
+                            Time Dimension 3
+                        </td>
+                        <td>
+                            <div id="timeMult3">x1</div>
+                        </td>
+                        <td>
+                            <div id="timeAmount3"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: left;"></div></div>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="timeBut3" class="unitButT" onclick="buySingleTime(3)">Cost: 1e6 crystals</button>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="timeMax3" class="unitMaxT" onclick="buyMaxTime(3)">Max: 1 for &#162;10</button>
+                        </td>
+                    </tr>
+                    <tr id="timeRow4" style="display: none;">
+                        <td>
+                            Time Dimension 4
+                        </td>
+                        <td>
+                            <div id="timeMult4">x1</div>
+                        </td>
+                        <td>
+                            <div id="timeAmount4"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: left;"></div></div>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="timeBut4" class="unitButT" onclick="buySingleTime(4)">Cost: 1e9 crystals</button>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="timeMax4" class="unitMaxT" onclick="buyMaxTime(4)">Max: 1 for &#162;10</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="timeUpgSubTab" class="timeSubTab" style="display: none;">
+                <table id="timeUpgTable" style="width: 75%; margin: auto; margin-top: 20px; text-align: center;">
+                    <tr>
+                        <td class="timeUpgTDs">
+                            <button id="timeUpg11" class="timeUpg" onclick="buyTUpg(11)"><strong>Upgrade 1.1</strong><br>description of upgrade</button>
+                        </td>
+                        <td class="timeUpgTDs">
+                            <button id="timeUpg21" class="timeUpg" onclick="buyTUpg(21)"><strong>Upgrade 2.1</strong><br>description of upgrade</button>
+                        </td>
+                        <td class="timeUpgTDs">
+                            <button id="timeUpg31" class="timeUpg" onclick="buyTUpg(31)"><strong>Upgrade 3.1</strong><br>description of upgrade</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="timeUpgTDs">
+                            <button id="timeUpg12" class="timeUpg" onclick="buyTUpg(12)"><strong>Upgrade 1.2</strong><br>description of upgrade</button>
+                        </td>
+                        <td class="timeUpgTDs">
+                            <button id="timeUpg22" class="timeUpg" onclick="buyTUpg(22)"><strong>Upgrade 2.2</strong><br>description of upgrade</button>
+                        </td>
+                        <td class="timeUpgTDs">
+                            <button id="timeUpg32" class="timeUpg" onclick="buyTUpg(32)"><strong>Upgrade 3.2</strong><br>description of upgrade</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="timeUpgTDs">
+                            <button id="timeUpg13" class="timeUpg" onclick="buyTUpg(13)"><strong>Upgrade 1.3</strong><br>description of upgrade</button>
+                        </td>
+                        <td class="timeUpgTDs">
+                            <button id="timeUpg23" class="timeUpg" onclick="buyTUpg(23)"><strong>Upgrade 2.3</strong><br>description of upgrade</button>
+                        </td>
+                        <td class="timeUpgTDs">
+                            <button id="timeUpg33" class="timeUpg" onclick="buyTUpg(33)"><strong>Upgrade 3.3</strong><br>description of upgrade</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="timeUpgTDs">
+                            <button id="timeUpg14" class="timeUpg" onclick="buyTUpg(14)"><strong>Upgrade 1.4</strong><br>description of upgrade</button>
+                        </td>
+                        <td class="timeUpgTDs">
+                            <button id="timeUpg24" class="timeUpg" onclick="buyTUpg(24)"><strong>Upgrade 2.4</strong><br>description of upgrade</button>
+                        </td>
+                        <td class="timeUpgTDs">
+                            <button id="timeUpg34" class="timeUpg" onclick="buyTUpg(34)"><strong>Upgrade 3.4</strong><br>description of upgrade</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
         <div id="optionsTab" class="pageTab">
             <table id="optionsTable" style="width: 75%; margin: auto; text-align: center;">
@@ -606,16 +1171,16 @@
                 </tr>
                 <tr>
                     <td>
+                        <button id="toggleConfBut" class="optBut" style="font-size: 10pt;" onclick="openConfirmationsPopup()">TOGGLE CONFIRMATIONS</button>
+                    </td>
+                    <td>
+                        <button id="toggleTooltips" class="optBut" style="font-size: 10pt;" onclick="toggleTooltips()">TOGGLE FORMULA TOOLTIPS: OFF</button>
+                    </td>
+                    <td>
                         <a href="changelog.html" target="_blank"><button id="helpBut" class="optBut">CHANGELOG</button></a>
                     </td>
                     <td>
-                        <button id="toggleTooltips" class="optBut" style="font-size: 10pt;" onclick="toggleTooltips()">TOGGLE FORMULA TOOLTIPS</button>
-                    </td>
-                    <td>
                         <div style="height: 50px; width: 100%; text-align: center;"><a href="https://discord.gg/H2V7FfT4Rt" target="_blank"><img src="discord.png" width="50px" style="margin-top:10px;"></a></div>
-                    </td>
-                    <td>
-                        
                     </td>
                 </tr>
                 <tr style="height: 25px;">
@@ -636,6 +1201,13 @@
                         <button class="optBut" onclick="closeText()">CLOSE</button>
                     </td>
                     <td></td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <div style="text-align: center; width: 80%; margin: auto;">
+                            <span style="font-weight: bold;">HOTKEYS: </span><span id="hotkeysList" style="font-size: 11pt;"></span>
+                        </div>
+                    </td>
                 </tr>
                 <tr style="height: 25px;">
                     <div style="height: 100%;"></div>
@@ -664,6 +1236,58 @@
                 <span id="offlineEssence" style="display: none;"><span id="offlineTrueGain" style="font-size: 15pt; font-weight: bold; white-space: pre; color: #006ba0;"> 0 </span> true time essence and <span id="offlineAntiGain" style="font-size: 15pt; font-weight: bold; white-space: pre; color: #006ba0;"> 0 </span> anti time essence.<br></span>
             </div>
             <button class="optBut" id="closeOfflinePopup" style="margin: 10px;" onclick="closeOfflinePopup()">CLOSE</button>
+        </div>
+        <div class="popup" id="confirmationsPopup">
+            <div>
+                <h2>Confirmations</h2>
+                <table>
+                    <tr>
+                        <td width="50%">
+                            <strong>Action</strong>
+                        </td>
+                        <td width="25%">
+                            <strong>On Click</strong>
+                        </td>
+                        <td width="25%">
+                            <strong>On Hotkey</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            World Prestige
+                        </td>
+                        <td>
+                            <button id="worldPrestigeClickBut" class="confBut" onclick="toggleConfirmations('worldPrestige', 'click', 'worldPrestigeClickBut')">ON</button>
+                        </td>
+                        <td>
+                            <button id="worldPrestigeKeyBut" class="confBut" onclick="toggleConfirmations('worldPrestige', 'key', 'worldPrestigeKeyBut')">ON</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Sacrifice
+                        </td>
+                        <td>
+                            <button id="timePrestigeClickBut" class="confBut" onclick="toggleConfirmations('timePrestige', 'click', 'timePrestigeClickBut')">ON</button>
+                        </td>
+                        <td>
+                            <button id="timePrestigeKeyBut" class="confBut" onclick="toggleConfirmations('timePrestige', 'key', 'timePrestigeKeyBut')">ON</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Respec Time
+                        </td>
+                        <td>
+                            <button id="timeRespecClickBut" class="confBut" onclick="toggleConfirmations('timeRespec', 'click', 'timeRespecClickBut')">ON</button>
+                        </td>
+                        <td>
+                            <button id="timeRespecKeyBut" class="confBut" onclick="toggleConfirmations('timeRespec', 'key', 'timeRespecKeyBut')">ON</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <button class="optBut" id="closeConfPopup" style="margin: 10px;" onclick="closeConfirmationsPopup()">CLOSE</button>
         </div>
     </div>
 </body>

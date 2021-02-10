@@ -1,3 +1,9 @@
+:root {
+    --speedDisplay: block;
+    --bulkDisplay: block;
+    --optionsDisplay: block;
+}
+
 @font-face {
     font-family: 'Cinzel';
     src: url(/fonts/Cinzel-Medium.otf);
@@ -38,14 +44,6 @@
  .tooltip::before:empty {
     display: none;
  }
-
-body {
-    color: white;
-    background-color: black;
-    font-family: 'Cinzel', serif;
-    font-size: 13pt;
-    margin-bottom: 200px;
-}
 
 body {
     color: white;
@@ -236,7 +234,6 @@ button:focus {
     cursor: pointer;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
-    
     font-size: 15pt;
 }
 
@@ -254,7 +251,6 @@ button:focus {
     cursor: pointer;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
-    
     font-size: 12pt;
 }
 
@@ -272,7 +268,6 @@ button:focus {
     cursor: pointer;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
-    
     font-size: 13pt;
 }
 
@@ -290,7 +285,6 @@ button:focus {
     margin: 10px;
     cursor: pointer;
     font-family: 'Cinzel', serif;
-    
     font-size: 24pt;
     border-radius: 4px;
 }
@@ -363,7 +357,6 @@ button:focus {
     margin: 10px;
     cursor: pointer;
     font-family: 'Cinzel', serif;
-    
     font-size: 13pt;
     border-radius: 4px;
 }
@@ -381,7 +374,6 @@ button:focus {
     border: 1px solid #4b4b4b;
     margin: 10px;
     font-family: 'Cinzel', serif;
-    
     font-size: 13pt;
     border-radius: 4px;
 }
@@ -395,7 +387,6 @@ button:focus {
     cursor: pointer;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
-    
 }
 
 .astralOn {
@@ -407,7 +398,6 @@ button:focus {
     cursor: pointer;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
-    
 }
 
 .astralBut:hover {
@@ -506,7 +496,6 @@ button:focus {
     cursor: pointer;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
-    
 }
 
 .prestigeBut:hover {
@@ -522,7 +511,6 @@ button:focus {
     cursor: pointer;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
-    
 }
 
 .timePrestigeBut:hover {
@@ -538,7 +526,6 @@ button:focus {
     border: 1px solid #4b4b4b;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
-    
 }
 
 .constrUpg {
@@ -566,6 +553,17 @@ button:focus {
     background-color: #db9448;
 } 
 
+.timeUpg {
+    color: white;
+    background-color: #006ba0;
+    width: 200px;
+    height: 140px;
+    border: 1px solid white;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 10px;
+}
+
 .constrMax {
     color: white;
     background-color: #7b3f00;
@@ -580,7 +578,32 @@ button:focus {
 
 .constrMax:hover {
     background-color: #db9448;
+}
+
+.unclickableTimeUpg {
+    color: white;
+    background-color: #4b4b4b;
+    width: 200px;
+    height: 140px;
+    border: 1px solid #4b4b4b;
+    border-radius: 4px;
+    margin: 10px;
+}
+
+.timeUpg:hover {
+    background-color: white;
+    color: #006ba0;
 } 
+
+.boughtTimeUpg {
+    color: white;
+    background-color:black;
+    width: 200px;
+    height: 140px;
+    border: 1px solid #006ba0;
+    border-radius: 4px;
+    margin: 10px;
+}
 
 .buildingsTable {
     border: 1px solid #085e16;
@@ -733,4 +756,315 @@ button:focus {
     border: 1px solid #4b4b4b;
     cursor: pointer;
     border-radius: 4px;
+}
+
+.timeUpgTDs {
+    border-left: 1px solid #006ba0;
+    border-right: 1px solid #006ba0;
+}
+
+#timeUpgTable {
+    border: 1px solid #006ba0;
+    border-collapse: collapse;
+}
+
+.autobuyerOptions {
+    color: white;
+    background-color: #170424;
+    position: relative;
+    width: 250px;
+    height: 285px;
+    border: 1px solid #460573;
+    border-radius: 4px;
+}
+
+.buyerEnabledOffContainer {
+    float: left;
+    margin-bottom: 10px;
+}
+
+.buyerEnabledOnContainer {
+    float: right;
+    position: relative;
+    width: 125px;
+    height: 46px;
+    margin-bottom: 10px;
+}
+
+.buyerEnabledOnContainer:after {
+    content: "LOCKED";
+    position: absolute;
+    width: 125px;
+    height: 36px;
+    right: 0;
+    top: 0;
+    background-color: #3d3d3d;
+    border: 1px solid #a3a3a3;
+    font-size: 16pt;
+    font-weight: bold;
+    padding-top: 15px;
+    opacity: 0.8;
+    z-index: 2;
+    display: none;
+}
+
+.buyerEnabledContainer {
+    width: 50%;
+}
+
+.buyerSpeedOffContainer {
+    float: left;
+    margin-bottom: 10px;
+}
+
+.buyerSpeedOnContainer {
+    float: right;
+    position: relative;
+    width: 125px;
+    height: 70px;
+    margin-bottom: 10px;
+}
+
+.buyerSpeedOnContainer:after {
+    content: "LOCKED";
+    position: absolute;
+    width: 122px;
+    height: 48px;
+    right: 3px;
+    top: 0;
+    background-color: #3d3d3d;
+    border: 1px solid #a3a3a3;
+    font-size: 16pt;
+    font-weight: bold;
+    padding-top: 27px;
+    opacity: 0.8;
+    z-index: 2;
+    display: var(--speedDisplay);
+}
+
+.buyerSpeedContainer {
+    width: 50%;
+}
+
+.buyerBulkOffContainer {
+    float: left;
+    margin-bottom: 10px;
+}
+
+.buyerBulkOnContainer {
+    float: right;
+    position: relative;
+    width: 125px;
+    height: 46px;
+    margin-bottom: 10px;
+}
+
+.buyerBulkOnContainer:after {
+    content: "LOCKED";
+    position: absolute;
+    width: 122px;
+    height: 36px;
+    right: 3px;
+    top: 0;
+    background-color: #3d3d3d;
+    border: 1px solid #a3a3a3;
+    padding-top: 13px;
+    font-size: 16pt;
+    font-weight: bold;
+    opacity: 0.8;
+    z-index: 2;
+    display: var(--bulkDisplay);
+}
+
+.buyerBulkContainer {
+    width: 50%;
+}
+
+#sacrificeBuyerOptions {
+    height: 285px;
+}
+
+.buyerAmountInputContainer {
+    float: left;
+    margin-bottom: 10px;
+}
+
+.buyerAmountOptionsContainer {
+    float: right;
+    position: relative;
+    width: 125px;
+    height: 70px;
+    right: 0;
+    top: 0;
+    margin-bottom: 10px;
+}
+
+.buyerAmountOptionsContainer:after {
+    content: "LOCKED";
+    position: absolute;
+    width: 122px;
+    height: 60px;
+    right: 3px;
+    top: 0;
+    background-color: #3d3d3d;
+    border: 1px solid #a3a3a3;
+    padding-top: 30px;
+    font-size: 16pt;
+    font-weight: bold;
+    opacity: 0.8;
+    z-index: 2;
+    display: var(--optionsDisplay);
+}
+
+.buyerAmountContainer {
+    width: 50%;
+    height: 70px;
+}
+
+#sacrificeBuyerSpeedOn {
+    float: right;
+    position: relative;
+    width: 125px;
+    height: 70px;
+    margin-bottom: 10px;
+}
+
+#sacrificeBuyerSpeedOn:after {
+    content: "LOCKED";
+    position: absolute;
+    width: 122px;
+    height: 48px;
+    right: 3px;
+    top: 0;
+    background-color: #3d3d3d;
+    border: 1px solid #a3a3a3;
+    padding-top: 27px;
+    font-size: 16pt;
+    font-weight: bold;
+    opacity: 0.8;
+    z-index: 2;
+}
+
+#prestigeBuyerOptions:after {
+    content: "LOCKED";
+    position: absolute;
+    font-size: 20pt;
+    font-weight: bold;
+    width: 243px;
+    height: 176px;
+    right: 3px;
+    top: 3px;
+    background-color: #3d3d3d;
+    border: 1px solid #a3a3a3;
+    padding-top: 100px;
+    opacity: 0.8;
+    z-index: 2;
+}
+
+.buyerText {
+    width: 80px;
+    text-align: center;
+    background-color: black;
+    color: white;
+    border: 1px solid #460573;
+    margin-top: 10px;
+}
+
+.buyerList {
+    width: 120px;
+    margin-top: 8px;
+    background-color: black;
+    color: white;
+    border: 1px solid #460573;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    margin-right: -20px;
+    margin-left: -20px;
+}
+
+.buyerDropdown {
+    display: inline-block;
+    background-color: black;
+    color: white;
+    border: 1px solid #460573;
+}
+
+.buyerRadio {
+    height: 13px;
+    width: 13px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    outline: none;
+    background-color: white;
+    cursor: pointer;
+}
+
+.buyerRadio:checked {
+    background-color: #170424;
+    border: 3px solid white;
+}
+
+.buyerRadio:checked:hover {
+    background-color: #170424;
+    border: 3px solid white;
+    opacity: 1;
+    cursor: default;
+}
+
+.buyerRadio:hover {
+    background-color: #170424;
+    border: 3px solid white;
+    opacity: 0.5;
+}
+
+.buyerCheckbox {
+    height: 13px;
+    width: 13px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    outline: none;
+    background-color: white;
+    cursor: pointer;
+}
+
+.buyerCheckbox:checked {
+    background-color: #170424;
+    border: 3px solid white;
+}
+
+.buyerCheckbox:checked:hover {
+    background-color: #170424;
+    border: 3px solid white;
+    opacity: 0.5;
+}
+
+.buyerCheckbox:hover {
+    background-color: white;
+    opacity: 0.5;
+}
+
+.priorityContainer {
+    text-align: center;
+    position: absolute;
+    top: 245px;
+    width: 250px;
+    height: 40px;
+}
+
+.confBut {
+    color: white;
+    background-color: #1f1f1f;
+    font-style: bold;
+    width: 50px;
+    height: 50px;
+    border: 1px solid #525252;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 12pt;
 }

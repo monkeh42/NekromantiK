@@ -100,12 +100,30 @@ function format(decimal, precision=2) {
 	else return commaFormat(decimal, precision)
 }
 
+function formatNoComma(decimal, precision=2) {
+	decimal = new Decimal(decimal)
+	if (decimal.gte("1e9000000000000000")) return 'infinity';
+	if (decimal.gte("1e100000")) return exponentialFormat(decimal, 0, false)
+	else if (decimal.gte("1e1000")) return exponentialFormat(decimal, 0)
+	else if (decimal.gte(1e9)) return exponentialFormat(decimal, precision)
+	else if (decimal.gte(1e3)) return regularFormat(decimal, 0)
+	else return regularFormat(decimal, precision)
+}
+
 function formatWhole(decimal) {
 	decimal = new Decimal(decimal)
 	if (decimal.gte("1e9000000000000000")) return 'infinity';
 	//if (decimal.gte(1e9)) return format(decimal, 2)
 	if (decimal.lte(0.98) && !decimal.eq(0)) return format(decimal, 2)
 	return format(decimal, 0)
+}
+
+function formatWholeNoComma(decimal) {
+	decimal = new Decimal(decimal)
+	if (decimal.gte("1e9000000000000000")) return 'infinity';
+	//if (decimal.gte(1e9)) return format(decimal, 2)
+	if (decimal.lte(0.98) && !decimal.eq(0)) return format(decimal, 2)
+	return formatNoComma(decimal, 0)
 }
 
 //end stolen
