@@ -400,7 +400,9 @@ function calculateMaxUnitsCost(tier) {
 
 function buyMaxAll() {
     for (var i=NUM_UNITS; i>0; i--) {
-        buyMaxUnits(i);
+        if (player.units[i].unlocked) {
+            buyMaxUnits(i);
+        }
     }
 }
 
