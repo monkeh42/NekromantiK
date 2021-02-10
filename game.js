@@ -364,49 +364,49 @@ const HOTKEYS = {
     '1': {
         desc: 'Buy One Zombie',
         onPress: function(ctrlPressed, shiftPressed) {
-            shiftPressed ? buyMaxUnits(1) : buySingleUnit(1)
+            if (!ctrlPressed) { shiftPressed ? buyMaxUnits(1) : buySingleUnit(1) }
         }
     },
     '2': {
         desc: 'Buy One Abomination',
         onPress: function(ctrlPressed, shiftPressed) {
-            shiftPressed ? buyMaxUnits(2) : buySingleUnit(2)
+            if (!ctrlPressed) { shiftPressed ? buyMaxUnits(2) : buySingleUnit(2) }
         }
     },
     '3': {
         desc: 'Buy One Skeleton Mage',
         onPress: function(ctrlPressed, shiftPressed) {
-            shiftPressed ? buyMaxUnits(3) : buySingleUnit(3)
+            if (!ctrlPressed) { shiftPressed ? buyMaxUnits(3) : buySingleUnit(3) }
         }
     },
     '4': {
         desc: 'Buy One Banshee',
         onPress: function(ctrlPressed, shiftPressed) {
-            shiftPressed ? buyMaxUnits(4) : buySingleUnit(4)
+            if (!ctrlPressed) { shiftPressed ? buyMaxUnits(4) : buySingleUnit(4) }
         }
     },
     '5': {
         desc: 'Buy One Lich',
         onPress: function(ctrlPressed, shiftPressed) {
-            shiftPressed ? buyMaxUnits(5) : buySingleUnit(5)
+            if (!ctrlPressed) { shiftPressed ? buyMaxUnits(5) : buySingleUnit(5) }
         }
     },
     '6': {
         desc: 'Buy One Behemoth',
         onPress: function(ctrlPressed, shiftPressed) {
-            shiftPressed ? buyMaxUnits(6) : buySingleUnit(6)
+            if (!ctrlPressed) { shiftPressed ? buyMaxUnits(6) : buySingleUnit(6) }
         }
     },
     '7': {
         desc: 'Buy One Ancient One',
         onPress: function(ctrlPressed, shiftPressed) {
-            shiftPressed ? buyMaxUnits(7) : buySingleUnit(7)
+            if (!ctrlPressed) { shiftPressed ? buyMaxUnits(7) : buySingleUnit(7) }
         }
     },
     '8': {
         desc: 'Buy One Sun Eater',
         onPress: function(ctrlPressed, shiftPressed) {
-            shiftPressed ? buyMaxUnits(8) : buySingleUnit(8)
+            if (!ctrlPressed) { shiftPressed ? buyMaxUnits(8) : buySingleUnit(8) }
         }
     },
 };
