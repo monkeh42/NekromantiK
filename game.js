@@ -327,37 +327,38 @@ const START_PLAYER = {
 
     tooltipsEnabled: false,
     activeTabs: ['unitsTab', 'unitsSubTab', 'buildingsSubTab', 'timeDimSubTab'],
+    hotkeysOn: true,
 };
 
 const HOTKEYS = {
     'm': {
         desc: 'Max All Units',
-        onPress: function() {
-            buyMaxAll();
+        onPress: function(ctrlPressed) {
+            if (!ctrlPressed) { buyMaxAll(); }
         }
     },
     'a': {
         desc: 'Toggle Astral Enslavement',
-        onPress: function() {
-            toggleAstral();
+        onPress: function(ctrlPressed) {
+            if (!ctrlPressed) { toggleAstral(); }
         }
     },
     'w': {
         desc: 'World Prestige',
-        onPress: function() {
-            spacePrestigeKey();
+        onPress: function(ctrlPressed) {
+            if (!ctrlPressed) { spacePrestigeKey(); }
         }
     },
     's': {
         desc: 'Sacrifice',
-        onPress: function() {
-            timePrestigeKey();
+        onPress: function(ctrlPressed) {
+            if (!ctrlPressed) { timePrestigeKey(); }
         }
     },
     'r': {
         desc: 'Respec Time Production',
-        onPress: function() {
-            respecTimeKey();
+        onPress: function(ctrlPressed) {
+            if (!ctrlPressed) { respecTimeKey(); }
         }
     },
     '1': {
@@ -411,6 +412,7 @@ const HOTKEYS = {
 };
 
 document.onkeydown = function(e) {
+    if (!player.hotkeysOn) {return}
     var key = e.key;
     var ctrlDown = e.ctrlKey;
     if (HOTKEYS[key] !== undefined) { HOTKEYS[key].onPress(ctrlDown); }
@@ -1249,6 +1251,12 @@ function openConfirmationsPopup() {
 
 function closeConfirmationsPopup() {
     document.getElementById('confirmationsPopup').style.display = 'none';
+}
+
+function toggleHotkeys() {
+    player.hotkeysOn = !player.hotkeysOn;
+    if (player.hotkeysOn) { document.getElementById('toggleHotkeysBut').innerHTML = 'ENABLE HOTKEYS: ON'; }
+    else { document.getElementById('toggleHotkeysBut').innerHTML = 'ENABLE HOTKEYS: OFF'; }
 }
 
 function fixResetBug() {
