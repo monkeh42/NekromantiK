@@ -932,7 +932,7 @@ function loadGame() {
         }
     }
     element.innerHTML = element.innerHTML.slice(0, -2);
-    element.innerHTML += 'hotkeys do not trigger if ctrl is pressed.'
+    element.innerHTML += '<br>hotkeys do not trigger if ctrl is pressed.'
 
     for (var b in BUILDS_DATA) {
         for (var u in BUILDS_DATA[b].upgrades) {
