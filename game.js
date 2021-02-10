@@ -333,80 +333,80 @@ const START_PLAYER = {
 const HOTKEYS = {
     'm': {
         desc: 'Max All Units',
-        onPress: function(ctrlPressed) {
+        onPress: function(ctrlPressed, shiftPressed) {
             if (!ctrlPressed) { buyMaxAll(); }
         }
     },
     'a': {
         desc: 'Toggle Astral Enslavement',
-        onPress: function(ctrlPressed) {
+        onPress: function(ctrlPressed, shiftPressed) {
             if (!ctrlPressed) { toggleAstral(); }
         }
     },
     'w': {
         desc: 'World Prestige',
-        onPress: function(ctrlPressed) {
+        onPress: function(ctrlPressed, shiftPressed) {
             if (!ctrlPressed) { spacePrestigeKey(); }
         }
     },
     's': {
         desc: 'Sacrifice',
-        onPress: function(ctrlPressed) {
+        onPress: function(ctrlPressed, shiftPressed) {
             if (!ctrlPressed) { timePrestigeKey(); }
         }
     },
     'r': {
         desc: 'Respec Time Production',
-        onPress: function(ctrlPressed) {
+        onPress: function(ctrlPressed, shiftPressed) {
             if (!ctrlPressed) { respecTimeKey(); }
         }
     },
     '1': {
         desc: 'Buy One Zombie',
-        onPress: function(ctrlPressed) {
-            ctrlPressed ? buyMaxUnits(1) : buySingleUnit(1)
+        onPress: function(ctrlPressed, shiftPressed) {
+            shiftPressed ? buyMaxUnits(1) : buySingleUnit(1)
         }
     },
     '2': {
         desc: 'Buy One Abomination',
-        onPress: function(ctrlPressed) {
-            ctrlPressed ? buyMaxUnits(2) : buySingleUnit(2)
+        onPress: function(ctrlPressed, shiftPressed) {
+            shiftPressed ? buyMaxUnits(2) : buySingleUnit(2)
         }
     },
     '3': {
         desc: 'Buy One Skeleton Mage',
-        onPress: function(ctrlPressed) {
-            ctrlPressed ? buyMaxUnits(3) : buySingleUnit(3)
+        onPress: function(ctrlPressed, shiftPressed) {
+            shiftPressed ? buyMaxUnits(3) : buySingleUnit(3)
         }
     },
     '4': {
         desc: 'Buy One Banshee',
-        onPress: function(ctrlPressed) {
-            ctrlPressed ? buyMaxUnits(4) : buySingleUnit(4)
+        onPress: function(ctrlPressed, shiftPressed) {
+            shiftPressed ? buyMaxUnits(4) : buySingleUnit(4)
         }
     },
     '5': {
         desc: 'Buy One Lich',
-        onPress: function(ctrlPressed) {
-            ctrlPressed ? buyMaxUnits(5) : buySingleUnit(5)
+        onPress: function(ctrlPressed, shiftPressed) {
+            shiftPressed ? buyMaxUnits(5) : buySingleUnit(5)
         }
     },
     '6': {
         desc: 'Buy One Behemoth',
-        onPress: function(ctrlPressed) {
-            ctrlPressed ? buyMaxUnits(6) : buySingleUnit(6)
+        onPress: function(ctrlPressed, shiftPressed) {
+            shiftPressed ? buyMaxUnits(6) : buySingleUnit(6)
         }
     },
     '7': {
         desc: 'Buy One Ancient One',
-        onPress: function(ctrlPressed) {
-            ctrlPressed ? buyMaxUnits(7) : buySingleUnit(7)
+        onPress: function(ctrlPressed, shiftPressed) {
+            shiftPressed ? buyMaxUnits(7) : buySingleUnit(7)
         }
     },
     '8': {
         desc: 'Buy One Sun Eater',
-        onPress: function(ctrlPressed) {
-            ctrlPressed ? buyMaxUnits(8) : buySingleUnit(8)
+        onPress: function(ctrlPressed, shiftPressed) {
+            shiftPressed ? buyMaxUnits(8) : buySingleUnit(8)
         }
     },
 };
@@ -415,7 +415,8 @@ document.onkeydown = function(e) {
     if (!player.hotkeysOn) {return}
     var key = e.key;
     var ctrlDown = e.ctrlKey;
-    if (HOTKEYS[key] !== undefined) { HOTKEYS[key].onPress(ctrlDown); }
+    var shiftDown = e.shiftKey;
+    if (HOTKEYS[key] !== undefined) { HOTKEYS[key].onPress(ctrlDown, shiftDown); }
 }
 
 var player = {};
@@ -919,7 +920,7 @@ function loadGame() {
 
     var element = document.getElementById('hotkeysList');
     var count = 0;
-    element.innerHTML = 'Number Keys 1-8: Buy Single Unit; ctrl+(1-8): Buy Max Units;<br>';
+    element.innerHTML = 'Number Keys 1-8: Buy Single Unit; shift+(1-8): Buy Max Units;<br>';
     for (var k in HOTKEYS) {
         if (count == 3) {
             count = 0;
@@ -931,6 +932,7 @@ function loadGame() {
         }
     }
     element.innerHTML = element.innerHTML.slice(0, -2);
+    element.innerHTML += 'hotkeys do not trigger if ctrl is pressed.'
 
     for (var b in BUILDS_DATA) {
         for (var u in BUILDS_DATA[b].upgrades) {
