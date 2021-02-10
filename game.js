@@ -1111,6 +1111,9 @@ function calculateOfflineTime(seconds) {
         autobuyerTick(simMilliseconds>=15000);
         if (simMilliseconds>=15000) { simMilliseconds = 0; }
     }
+    player.lastUpdate = (new Date).getTime();
+    player.lastAutoSave = (new Date).getTime();
+    player.lastAutobuy = (new Date).getTime();
     save();
 
     var allZero = true;
@@ -1163,9 +1166,6 @@ function calculateOfflineTime(seconds) {
     }
     document.getElementById('offlineCalcPopup').style.display = 'none';
     document.getElementById('offlineGainPopup').style.display = 'block';
-    player.lastUpdate = (new Date).getTime();
-    player.lastAutoSave = (new Date).getTime();
-    player.lastAutobuy = (new Date).getTime();
 }
 
 function closeOfflinePopup() {
