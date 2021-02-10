@@ -345,19 +345,19 @@ const HOTKEYS = {
     'w': {
         desc: 'World Prestige',
         onPress: function() {
-            spacePrestige();
+            spacePrestigeKey();
         }
     },
     's': {
         desc: 'Sacrifice',
         onPress: function() {
-            timePrestige();
+            timePrestigeKey();
         }
     },
     'r': {
         desc: 'Respec Time Production',
         onPress: function() {
-            timePrestige();
+            respecTimeKey();
         }
     },
     '1': {

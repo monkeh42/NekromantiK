@@ -263,7 +263,7 @@
                     </tr>
                 </table>
                 <div id="spacePresContainer" style="text-align: center; margin: 50px; display: none;">
-                    <button id="spacePrestige" class="prestigeBut" onclick="spacePrestige()">
+                    <button id="spacePrestige" class="prestigeBut" onclick="spacePrestigeClick()">
                         <span style="font-size: 15pt;">This world is dead and empty...</span><br>
                         <span id="spacePresDesc">Give up all your units and corpses to conquer a new world. You gain a boost to corpse gain based on total conquered worlds.<br>
                         This World Prestige will unlock <span id="spacePresUnlock">Buildings</span> and a new unit tier.</span><br>
@@ -930,7 +930,7 @@
             <table style="width: 75%; margin: auto auto; text-align: center;">
                 <tr>
                     <div id="timePresContainer" style="text-align: center; margin: 25px;">
-                        <button id="timePrestige" class="timePrestigeBut" data-title="floor(10^(corpses_exponent/20 - 0.65))" onclick="timePrestige()">
+                        <button id="timePrestige" class="timePrestigeBut" data-title="floor(10^(corpses_exponent/20 - 0.65))" onclick="timePrestigeClick()">
                             <span style="font-size: 15pt;">sacrifice your empire</span><br>
                             <span id="timePresDesc">Perform a dark ritual to transmute all you have achieved into time crystals. This will reset all your corpses, units, worlds, bricks, buildings, upgrades, earned time dimensions, and time essence, but you will gain time crystals based on your corpses.</span><br>
                             <span id="timePrestigeReq" style="font-size: 13pt;">Requires at least <span style="font-size: 17pt; white-space: pre;"> 1e20 </span> corpses</span>
@@ -989,7 +989,7 @@
                             <div class="slidecontainer" style="text-align: center;">
                                 <input type="range" min="0" max="100" value="50" class="slider" id="timeSlider" oninput="updateSliderDisplay()">
                             </div>
-                            <div><button id="respecTimeBut" class="timeSliderBut" onclick="respecTime()">Respec slider - forces sacrifice</button></div>
+                            <div><button id="respecTimeBut" class="timeSliderBut" onclick="respecTimeClick()">Respec slider - forces sacrifice</button></div>
                         </td>
                     </tr>
                     <tr style="height: 25px;">

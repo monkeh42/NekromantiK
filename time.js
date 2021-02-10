@@ -407,10 +407,21 @@ function canTimePrestige() {
     return player.corpses.gte(new Decimal(1e20));
 }
 
-function respecTime() {
+function respecTimeClick() {
     if (player.timeResets.gte(1)) {
         if (player.timeLocked) {
-            if (player.confirmations['timeRespec']) {
+            if (player.confirmations['timeRespec']['click']) {
+                if (!confirm("Are you sure? This will reset ALL of your progress before unlocking Time Warp, and all of your time essense.")) return
+            }
+            timePrestigeReset();
+        }
+    }
+}
+
+function respecTimeKey() {
+    if (player.timeResets.gte(1)) {
+        if (player.timeLocked) {
+            if (player.confirmations['timeRespec']['key']) {
                 if (!confirm("Are you sure? This will reset ALL of your progress before unlocking Time Warp, and all of your time essense.")) return
             }
             timePrestigeReset();
@@ -472,6 +483,16 @@ function resetSpaceCounts() {
         player.spaceResets = new Decimal(1);
         player.nextSpaceReset = [1, 6];
     }
+}
+
+function timePrestigeClick() {
+    if (player.confirmations['timePrestige']['click']) { timePrestige(); }
+    else { timePrestigeNoConfirm(); }
+}
+
+function timePrestigeKey() {
+    if (player.confirmations['timePrestige']['key']) { timePrestige(); }
+    else { timePrestigeNoConfirm(); }
 }
 
 function timePrestige() {

@@ -297,28 +297,53 @@ function canSpacePrestige() {
     return player.units[player.nextSpaceReset[1]].bought.gte(player.nextSpaceReset[0]);
 }
 
+function spacePrestigeClick() {
+    if (player.confirmations['worldPrestige']['click']) { spacePrestige(); }
+    else { spacePrestigeNoConfirm(); }
+}
+
+function spacePrestigeKey() {
+    if (player.confirmations['worldPrestige']['key']) { spacePrestige(); }
+    else { spacePrestigeNoConfirm(); }
+}
+
 function spacePrestige() {
     if (canSpacePrestige()) {
-        if (player.confirmations['worldPrestige'])
+        if (player.confirmations['worldPrestige']) {
             if (!confirm("Are you sure? This will reset ALL of your corpses, units, and astral bricks.")) return
-        if (player.astralFlag) { toggleAstral(); }
-        clearInterval(mainLoop);
+        }
         player.spaceResets = player.spaceResets.plus(1);
         player.worlds = player.worlds.plus(1);
         player.totalSpaceResets = player.totalSpaceResets.plus(1);
         player.totalWorlds = player.totalWorlds.plus(1);
-        if (player.nextSpaceReset[1] < NUM_UNITS) { player.nextSpaceReset[1] += 1; }
-        else { player.nextSpaceReset[0] += 2; }
-        resetUnits();
-        resetBuildingResources();
-        //unitSetup(START_PLAYER);
-        player.corpses = new Decimal(START_PLAYER.corpses);
-        allDisplay();
-        
-        save();
-        showTab('unitsTab');
-        startInterval();
+        spacePrestigeReset();
     }
+}
+
+function spacePrestigeNoConfirm() {
+    if (canSpacePrestige()) {
+        player.spaceResets = player.spaceResets.plus(1);
+        player.worlds = player.worlds.plus(1);
+        player.totalSpaceResets = player.totalSpaceResets.plus(1);
+        player.totalWorlds = player.totalWorlds.plus(1);
+        spacePrestigeReset();
+    }
+}
+
+function spacePrestigeReset() {
+    if (player.astralFlag) { toggleAstral(); }
+    clearInterval(mainLoop);
+    if (player.nextSpaceReset[1] < NUM_UNITS) { player.nextSpaceReset[1] += 1; }
+    else { player.nextSpaceReset[0] += 2; }
+    resetUnits();
+    resetBuildingResources();
+    //unitSetup(START_PLAYER);
+    player.corpses = new Decimal(START_PLAYER.corpses);
+    allDisplay();
+    
+    save();
+    showTab('unitsTab');
+    startInterval();
 }
 
 function canUnlock(tier) {
