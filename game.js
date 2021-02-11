@@ -1361,7 +1361,11 @@ function fixResetBug() {
                 11: false,
                 12: false,
                 13: false,
+                21: false,
+                22: false,
+                23: false,
             }
+            
         },
     });
 
