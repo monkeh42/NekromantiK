@@ -413,7 +413,8 @@ function respecTimeClick() {
             if (player.confirmations['timeRespec']['click']) {
                 if (!confirm("Are you sure? This will reset ALL of your progress before unlocking Time Warp, and all of your time essense.")) return
             }
-            timePrestigeReset();
+            if (canTimePrestige()) { timePrestigeNoConfirm(); }
+            else { timePrestigeReset(); }
         }
     }
 }
@@ -424,7 +425,8 @@ function respecTimeKey() {
             if (player.confirmations['timeRespec']['key']) {
                 if (!confirm("Are you sure? This will reset ALL of your progress before unlocking Time Warp, and all of your time essense.")) return
             }
-            timePrestigeReset();
+            if (canTimePrestige()) { timePrestigeNoConfirm(); }
+            else { timePrestigeReset(); }
         }
     }
 }
