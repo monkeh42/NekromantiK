@@ -140,6 +140,80 @@
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <button id="but028" class="changelogPageBut" onclick="showChangelog('div028')">v0.2.8</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="div028" class="changelogPageDiv" style="text-align: left; display: none;">
+                        <ul style="list-style-type: circle;">
+                            <li>New Features:</li>
+                            <ul style="list-style-type: disc;">
+                                <li>Added Time Upgrades (unlocked with third dead sun upgrade): purchase with time crystals, mostly designed to allow faster sacrifices to grind crystals</li>
+                                <li>Added Autobuyers (unlocked with a time upgrade): pretty self-explanatory, read the help text </li>
+                            </ul>
+                            <li>QoL changes:</li>
+                            <ul style="list-style-type: disc;">
+                                <li>Added hotkeys (check the options tab)</li>
+                                <li>Reworked tooltips (the tooltips toggle button also now shows on/off)</li>
+                                <li>Added reset confirmation toggles (in options)</li>
+                                <li>Construction upgrade costs now display 3 significant digits</li>
+                                <li>The game now remembers your active tabs and puts you back where you were on load</li>
+                            </ul>
+                            <li>Changes:</li>
+                            <ul style="list-style-type: disc;">
+                                <li>Astral Magnifying Glass buff: 1 + sqrt(log(x)) -> 1 + log(x)/4</li>
+                            </ul>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button id="but029" class="changelogPageBut" onclick="showChangelog('div029')">v0.2.9</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="div029" class="changelogPageDiv" style="text-align: left; display: none;">
+                        <ul style="list-style-type: circle;">
+                            <li>Back End:</li>
+                            <ul style="list-style-type: disc;">
+                                <li>Totally reworked visual update process</li>
+                                <li>Mostly new data/organizational structure - getting rid of that spaghetti I had should once and for all stop these dumb reset bugs</li>
+                            </ul>
+                            <li>New Features:</li>
+                            <ul style="list-style-type: disc;">
+                                <li>Stats & Achievements tab: shows best/total values for all time and this sacrifice, plus crystal gain info for the last 10 sacrifices</li>
+                                <li>Achievements: fairly self-explanatory, achievements with a '+' symbol have an additional permanent reward, also get a boost to corpse multipliers based on number of achievements</li>
+                                <li>Final time upgrade can now be bought and two of the three dead sun upgrades it unlocks</li>
+                                <li>Units exponential cost increase past a certain cost*: cost multiplier multiplied by 10 per bought</li>
+                                <li>*Unit exponential cost threshholds: zombies begin past 1e20 (first crystal gain), all other tiers begin past 1e20*baseCost*baseCostMult</li>
+                            </ul>
+                            <li>Balance Changes:</li>
+                            <ul style="list-style-type: disc;">
+                                <li> Last time upgrade unlocks the world prestige autobuyer now instead of the advanced sacrifice one (which is now unlocked by a 2nd row dead sun upgrade)</li>
+                                <li>"<strong>Automation</strong>" time upgrade is now "<strong>Lightspeed</strong>: Unlock bulk autobuyers, and crystal gain is boosted based on your nekro-photons."</li>
+                                <li>Time crystal gain is now based on best corpses this sacrifice instead of current corpses</li>
+                            </ul>
+                            <li>Visual/QoL Changes:</li>
+                            <ul style="list-style-type: disc;">
+                                <li>Added crystals/minute display on sacrifice button (only after 2000 total crystals when the other text on the button goes away)</li>
+                                <li>Visual redesign of the autobuyers tab, should be significantly easier on the eyes now</li>
+                                <li>Added nav button styles to indicate active tabs</li>
+                                <li>Added indicators on nav buttons for new unlocks</li>
+                                <li>Changing active main tab will now close help</li>
+                                <li>Added "all autobuyers" buttons: toggle all, all on, all off</li>
+                                <li>Added "respec on next sacrifice" checkbox (<strong>NOTE</strong> this becomes pretty important to use once you get the Thyme Lord achievement)</li>
+                                <li>"Conquered Worlds" are now called "Exterminated Worlds" (just fits the theme better)</li>
+                            </ul>
+                            <li>Various Minor Bug Fixes</li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
         </table>
     </div>
 </body>
