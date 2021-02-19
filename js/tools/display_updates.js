@@ -129,7 +129,7 @@ function updateTimeUpgs() {
 
 function updateResourceDisplays() {
     player.displayData.push(['html', 'achBoost', formatDefault2(getAchievementBoost())]);
-    player.displayData.push(['html', 'numAch', formatWhole(player.numAchievements)]);
+    player.displayData.push(['html', 'numAch', formatWhole(getNumAchievements())]);
     updateCorpseDisplays();
     updateBuildingDisplays();
     updateTimeDisplays()
@@ -676,7 +676,6 @@ function updateAchievements() {
             ACH_DATA[id].onUnlock();
             player.achievements[id].unlocked = true;
             player.achievements[id].new = true;
-            player.numAchievements += 1;
             player.displayData.push(['addClass', ACH_DATA[id].divID, 'achievementUnlocked']);
             player.displayData.push(['addClass', ACH_DATA[id].divID, 'achievementNew']);
             player.displayData.push(['remClass', ACH_DATA[id].divID, 'achievement']);
