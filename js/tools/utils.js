@@ -128,6 +128,18 @@ function formatWholeNoComma(decimal) {
 
 //end stolen
 
+//takes milliseconds as first argument and 'text' or 'num' as the second
+function formatTime(time, format) {
+	time = time/1000;
+	let hours = Math.floor(time/3600);
+	time = time % 3600;
+	let minutes = Math.floor(time/60);
+	time = Math.floor(time % 60);
+
+	if (format == 'text') { return `${ hours>0 ? formatWhole(hours) + " hours, " : "" }${ (minutes>0 || hours>0) ? formatWhole(minutes) + " minutes, " : "" }${ formatWhole(time) + " seconds" }` }
+	else { return `${ (hours<10 ? "0" : "") + formatWhole(hours) }:${ (minutes<10 ? "0" : "") + formatWhole(minutes) }:${ (time<10 ? "0" : "") + formatWhole(time) }` }
+}
+
 function addFactorial(num) {
 	var f = 0;
 	var n = parseInt(num);
