@@ -143,7 +143,7 @@ function toggleAstral() {
 function resetBuildingResources(sacrifice=false) {
     if (player.astralFlag) { toggleAstral(); }
     if (!hasAchievement(25)) { player.bricks = new Decimal(START_PLAYER.bricks); }
-    else { if (sacrifice) { player.bricks = new Decimal(getAchievementEffect(25)); } }
+    else if (sacrifice) { player.bricks = new Decimal(getAchievementEffect(15)); } 
     for (var b in BUILDS_DATA) {
         player.buildings[b].amount = new Decimal(START_PLAYER.buildings[b].amount);
     }
@@ -164,6 +164,7 @@ function resetBuildings() {
         player.displayData.push(['setProp', BUILDS_DATA[b].upgradesRow1ID, 'display', 'none']);
         player.displayData.push(['setProp', BUILDS_DATA[b].upgradesRow2ID, 'display', 'none']);
     }
+    player.displayData.push(['setProp', 'buildingsTabCell', 'display', 'none']);
     if (hasTUpgrade(14)) {
         copyData(player.buildings[3], tempSun);
         player.unlocks['buildingsTab']['sun'] = tempSunUnlock[0];
@@ -477,7 +478,7 @@ const BUILDS_DATA = {
         },
         prod: function() {
             var p = Decimal.pow(this.pBase(), this.pExp());
-            if (hasAchievement(15)) { p = p.times(getAchievementEffect(15)) }
+            if (hasAchievement(25)) { p = p.times(getAchievementEffect(25)) }
             if (hasUpgrade(2, 23)) { p = p.times(getUpgEffect(2, 23)); }
             if (hasTUpgrade(23)) { p = p.times(getTUpgEffect(23)) }
             if (player.astralFlag) { return p; }

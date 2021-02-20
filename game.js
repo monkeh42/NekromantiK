@@ -79,6 +79,8 @@ function loadGame() {
     if (player.thisSacStats.totalWorlds.eq(0)) { player.thisSacStats.totalWorlds = new Decimal(player.worlds); }
     if (player.allTimeStats.totalCrystals.eq(0)) { player.allTimeStats.totalCrystals = new Decimal(player.crystals); }
 
+    if (player.allTimeStats.totalTimeResets.gt(player.timeResets)) { player.allTimeStats.totalTimeResets = new Decimal(player.timeResets); }
+
     //updateFixes();
     player.displayData.splice(0, player.displayData.length);
     if (player.tooltipsEnabled) {
@@ -124,7 +126,7 @@ function loadStyles() {
 
     for (let tab in UNLOCKS_DATA) {
         for (let key in UNLOCKS_DATA[tab]) {
-            if (player.unlocks[tab][key]) { unlockElements(tab, key, false) }
+            if (player.unlocks[tab][key]) { unlockElementsOnLoad(tab, key) }
             else if (!player.unlocks[tab][key] && key == 'mainTab') { break; }
         }
     }
@@ -184,7 +186,7 @@ function loadStyles() {
     for (var c in CONSTR_DATA) {
         if (!canAffordCUpg(c)) {
             document.getElementById(CONSTR_DATA[c].buttonID).classList.add('unclickableConstrUpg');
-            document.getElementById(CONSTR_DATA[c].buttonID).classList.remove('timeUpg');
+            document.getElementById(CONSTR_DATA[c].buttonID).classList.remove('constrUpg');
         }
     }    
 
@@ -295,7 +297,7 @@ function gameLoop(diff=new Decimal(0), offline=false) {
             player.buildings[b].amount = player.buildings[b].amount.plus(getBuildingProdPerSec(b).times(diff.div(1000)));
         }
     }
-    updateUnlocks(!justReset);
+    updateUnlocks();
     updateAchievements();
 
     if (!offline && player.unlocks['unitsTab']['autobuyers']) {

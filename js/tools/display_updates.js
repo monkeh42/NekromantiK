@@ -120,7 +120,7 @@ function updateTimeUpgs() {
                 remTUpgClass(t, 'unclickableTimeUpg');
             } else if (!canAffordTUpg(t) && document.getElementById(TIME_DATA.upgrades[t].buttonID).classList.contains('timeUpg')) {
                 remTUpgClass(t, 'timeUpg');
-                addTUpgClass(t, 'unclickableConstrUpg');
+                addTUpgClass(t, 'unclickableTimeUpg');
             }
         }
         writeHTMLTUpg(t, `<span style="font-weight: 900;">${getTUpgName(t)}</span><br>${getTUpgDesc(t)}${(TIME_DATA.upgrades[t].preReq != null) ? "<br>Requires <span style=\"font-weight: 800;\">" + TIME_DATA.upgrades[TIME_DATA.upgrades[t].preReq].title + "</span>" : ""}<br>Cost: ${formatWhole(getTUpgCost(t))} time crystals${isDisplayEffectT(t) ? ("<br>Currently: " + formatDefault2(getTUpgEffect(t)) + "x") : ""}`);
@@ -289,7 +289,7 @@ function updateTDimTiers() {
 
 //style/display updaters for unlocks
 
-function unlockElements(mainTab, subTab, notify=true) {
+function unlockElements(mainTab, subTab) {
     let data = UNLOCKS_DATA[mainTab][subTab];
     player.unlocks[mainTab][subTab] = true;
     if (data.idsToShow.length > 0) {
@@ -319,6 +319,34 @@ function unlockElements(mainTab, subTab, notify=true) {
         if (data.notifyID !== undefined) { player.displayData.push(['addClass', data.notifyID, 'tabButNotify']); }
         if (data.parentNotify !== undefined) { player.displayData.push(['addClass', data.parentNotify, 'tabButIndirectNotify']); }
     } 
+}
+
+function unlockElementsOnLoad(mainTab, subTab) {
+    let data = UNLOCKS_DATA[mainTab][subTab];
+    player.unlocks[mainTab][subTab] = true;
+    if (data.idsToShow.length > 0) {
+        for (let i=0; i<data.idsToShow.length; i++) {
+            element = document.getElementById(data.idsToShow[i]);
+            if (element.tagName == 'TR') { player.displayData.push(['setProp', element.id, 'display', 'table-row']); } 
+            else if (element.tagName == 'TD') { player.displayData.push(['setProp', element.id, 'display', 'table-cell']); }
+            else { player.displayData.push(['setProp', element.id, 'display', 'block']); }
+        }
+    }
+    if (data.idsToHide.length > 0 || data.classNotID) {
+        if (data.classNotID) {
+            player.displayData.push(['setProp', 'docElement', data.cssVar, 'none']);
+            if (data.classToEnable !== undefined) {
+                let els = document.getElementsByClassName(data.classToEnable);
+                for (let el in els) {
+                    els[el].disabled = false;
+                }
+            }
+        } else {
+            for (let i=0; i<data.idsToHide.length; i++) {
+                player.displayData.push(['setProp', data.idsToHide[i], 'display', 'none']);
+            }
+        }
+    }
 }
 
 function lockElements(mainTab, subTab) {
@@ -649,10 +677,10 @@ function getActiveTabs() {
     return aTabs;
 }
 
-function updateUnlocks(notify=true) {
+function updateUnlocks() {
     for (var tab in UNLOCKS_DATA) {
         for (var key in UNLOCKS_DATA[tab]) {
-            if (!player.unlocks[tab][key] && UNLOCKS_DATA[tab][key].condition()) { unlockElements(tab, key, notify) }
+            if (!player.unlocks[tab][key] && UNLOCKS_DATA[tab][key].condition()) { unlockElements(tab, key) }
             else if (!player.unlocks[tab][key] && key == 'mainTab') { break; }
         }
     }
@@ -892,8 +920,8 @@ function updateStatsTab() {
     document.getElementById('bestCrystals').innerHTML = formatWhole(player.allTimeStats.bestCrystals);
     document.getElementById('totPrestige').innerHTML = formatWhole(player.allTimeStats.totalSpaceResets);
     document.getElementById('totSacrifice').innerHTML = formatWhole(player.allTimeStats.totalTimeResets);
-    document.getElementById('bestGain').innerHTML = formatWhole(player.allTimeStats.bestCrystalGain);
-    document.getElementById('bestRate').innerHTML = formatWhole(player.allTimeStats.bestCrystalRate);
+    document.getElementById('bestGain').innerHTML = formatWhole(player.bestCrystalGain);
+    document.getElementById('bestRate').innerHTML = formatWhole(player.bestCrystalRate);
 
     document.getElementById('totCorpsesRun').innerHTML = formatWhole(player.thisSacStats.totalCorpses);
     document.getElementById('totBricksRun').innerHTML = formatWhole(player.thisSacStats.totalBricks);
