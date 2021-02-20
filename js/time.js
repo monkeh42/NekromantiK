@@ -236,7 +236,7 @@ function timePrestige() {
         player.allTimeStats.totalCrystals = player.allTimeStats.totalCrystals.plus(calculateCrystalGain());
         if (player.crystals.gt(player.allTimeStats.bestCrystals)) { player.allTimeStats.bestCrystals = new Decimal(player.crystals); }
         player.timeResets = player.timeResets.plus(1);
-        player.allTimeStats.totalTimeResets = player.allTimeStats.totalSpaceResets.plus(1);
+        player.allTimeStats.totalTimeResets = player.allTimeStats.totalTimeResets.plus(1);
         if (document.getElementById('respecOnSac').checked) {
             player.timeLocked = false;
             toggleTimeLockDisplay();
