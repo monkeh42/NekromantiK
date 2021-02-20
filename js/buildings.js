@@ -568,7 +568,7 @@ const BUILDS_DATA = {
             },
             23: {
                 title: 'Cosmogenesis',
-                desc: 'Unlock <strong>Depleted Galaxies</strong>.<br>(COMING SOON)',
+                desc: function() { return `Unlock <strong>Depleted Galaxies</strong>.<br>(COMING SOON)` },
                 cost: new Decimal("Infinity"),
                 buttonID: 'sunUpg23',
                 displayEffect: false,
