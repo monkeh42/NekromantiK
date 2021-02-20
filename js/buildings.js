@@ -171,7 +171,7 @@ function resetBuildings() {
         if (tempSunUnlock['sun']) { unlockElements('buildingsTab', 'sun') }
         if (tempSunUnlock['sunRow2']) { unlockElements('buildingsTab', 'sunRow2') }
     }
-    else { player.buildings[3].upgrades[33] = tempSun.upgrades[33]; }
+    else { player.buildings[3].upgrades[13] = tempSun.upgrades[13]; }
     player.buildings[3].amount = new Decimal(0);
 }
 
