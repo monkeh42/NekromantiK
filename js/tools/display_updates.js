@@ -170,7 +170,7 @@ function updateBuildingDisplays() {
     //document.getElementById('sunGainSpan').style.display = player.astralFlag ? 'block' : 'none'
     //document.getElementById('sunGainNotice').style.display = player.astralFlag ? 'none' : 'block'
     player.displayData.push(['html', 'acolyteEff', formatDefault2(BUILDS_DATA[2].resourceEff())]);
-    player.displayData.push(['html', 'brickKeepDisplay', ` ${formatUnitRow(getAchievementEffect(25))} `]);
+    player.displayData.push(['html', 'brickKeepDisplay', ` ${formatUnitRow(getAchievementEffect(15))} `]);
     var buildingTextElements = document.getElementsByClassName('buildingResourceTexts');
     for (var el=0; el<buildingTextElements.length; el++) {
         player.displayData.push(['html', buildingTextElements[el].id, buildingSingulizer(buildingTextElements[el].id)]);
