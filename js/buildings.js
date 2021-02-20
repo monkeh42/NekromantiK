@@ -142,7 +142,7 @@ function toggleAstral() {
 
 function resetBuildingResources(sacrifice=false) {
     if (player.astralFlag) { toggleAstral(); }
-    if (!hasAchievement(25)) { player.bricks = new Decimal(START_PLAYER.bricks); }
+    if (!hasAchievement(15)) { player.bricks = new Decimal(START_PLAYER.bricks); }
     else if (sacrifice) { player.bricks = new Decimal(getAchievementEffect(15)); } 
     for (var b in BUILDS_DATA) {
         player.buildings[b].amount = new Decimal(START_PLAYER.buildings[b].amount);
