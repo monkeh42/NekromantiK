@@ -69,7 +69,7 @@ function isAutoSacTriggered() {
             return (calculateCrystalGain().gte(player.autobuyers[9].amount));
 
         case 'xtimes':
-            return (calculateCrystalGain().times(player.pastRuns.lastRun.crystalGain).gte(player.autobuyers[9].amount));
+            return calculateCrystalGain().gte(player.pastRuns.lastRun.crystalGain.times(player.autobuyers[9].amount));
 
         case 'afterx':
             return player.autobuyers[9].amount.lt(((new Date).getTime()-player.pastRuns.lastRun.timeSacrificed)/1000);
