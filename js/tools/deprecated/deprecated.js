@@ -113,6 +113,7 @@ function updateHTML() {
             document.getElementById(TIME_DATA[i].maxID).className = canAffordTime(i) ? "unitMaxT" : 'unclickableMax';
         }
     }
+    
     for (var g in GALAXIES_DATA) {
         for (var u in GALAXIES_DATA[g].upgrades) {
             if (player.galaxyUpgs[g][u].locked) {

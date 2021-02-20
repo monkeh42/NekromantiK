@@ -405,7 +405,6 @@ const START_PLAYER = {
     tooltipsEnabled: false,
     activeTabs: ['unitsTab', 'unitsSubTab', 'buildingsSubTab', 'timeDimSubTab', 'statSubTab'],
     hotkeysOn: true,
-    displayData: [],
 }
 
 const ACH_DATA = {
@@ -495,7 +494,7 @@ const ACH_DATA = {
             return e.pow(0.2);
         },
         onUnlock: function() {
-            return;
+            document.getElementById('keptBricks').style.display = 'block';
         }
     },
     21: {
@@ -580,18 +579,18 @@ const ACH_DATA = {
             return new Decimal(2);
         },
         onUnlock: function() {
-            document.getElementById('keptBricks').style.display = 'block';
+            return;
         }
     },
     31: {
         title: 'The Grind',
-        desc: 'Sacrifice ten times.',
+        desc: 'Sacrifice fifteen times.',
         reward: 'Your unit corpse multipliers get a boost based on number of sacrifices.',
         hasReward: true,
         showEffect: true,
         divID: 'ach31',
         canUnlock: function() {
-            return player.timeResets.gte(10);
+            return player.timeResets.gte(15);
         },
         effect: function() {
             let e = new Decimal(player.timeResets);
@@ -671,7 +670,7 @@ const ACH_DATA = {
             return e.pow(0.2);
         },
         onUnlock: function() {
-            document.getElementById('keptBricks').style.display = 'block';
+            return;
         }
     },
 }
@@ -1437,7 +1436,6 @@ function fixResetBug() {
     START_PLAYER.tooltipsEnabled = false;
     START_PLAYER.activeTabs = new Array('unitsTab', 'unitsSubTab', 'buildingsSubTab', 'timeDimSubTab', 'statSubTab');
     START_PLAYER.hotkeysOn = true,
-    START_PLAYER.displayData = new Array(0);
 
     fixData(player, START_PLAYER);
     save();

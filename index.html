@@ -269,7 +269,7 @@
                     </tr>
                 </table>
                 <div id="spacePresContainer" style="text-align: center; margin: 50px; display: none;">
-                    <button id="spacePrestige" class="prestigeBut" onclick="spacePrestigeClick()">
+                    <button id="spacePrestige" class="spacePrestigeBut" onclick="spacePrestigeClick()">
                         <span style="font-size: 15pt;">This world is dead and empty...</span><br>
                         <span id="spacePresDesc">Give up all your units and corpses to exterminate a new world. You gain a boost to corpse gain based on total exterminated worlds.<br>
                         This World Prestige will unlock <span id="spacePresUnlock">Buildings</span> and a new unit tier.</span><br>
@@ -811,9 +811,7 @@
                     </tr>
                 </table>
             </div>
-            <div id="buildingsSubTab" class="buildingSubTab" style="position: relative;">
-                <!--<div id="testBox" style="position: absolute; right: -400px; top: 0; width: 400px; height: 600px; border: 1px solid white; font-variant-numeric: tabular-nums;"></div>
-                <div id="testBoxL" style="position: absolute; left: -400px; top: 0; width: 400px; height: 600px; border: 1px solid white; font-variant-numeric: tabular-nums;"></div>-->
+            <div id="buildingsSubTab" class="buildingSubTab">
                 <table style="width: 75%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse;" class="buildingsTable">
                     <tr id="factoryBuildRow">
                         <td colspan="3">
@@ -892,7 +890,7 @@
                 <table style="width: 75%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse;" class="buildingsTable">
                     <tr id="sunBuildRow">
                         <td colspan="3">
-                            <button id="sunBuild" class="buildBut" onclick="buyBuilding(3)">Build the<h2><span id="sunBuildLabel" style="font-size: 18pt;">Dead Sun.</span></h2>Cost: <span id="sunCostLabel">100,000,000</span> astral bricks</button>
+                            <button id="sunBuild" class="buildBut" onclick="buyBuilding(3)">Build the<h2><span id="sunBuildLabel" style="font-size: 18pt;">Dead Sun.</span></h2>Cost: <span id="sunCostLabel">1e8</span> astral bricks</button>
                         </td>
                     </tr>
                     <tr id="sunHeaderRow" style="display: none;">

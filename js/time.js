@@ -279,51 +279,72 @@ function timePrestigeReset() {
     player.pastRuns.lastRun.crystalGain = calculateCrystalGain();
     player.pastRuns.lastRun.timeSpent = (new Date).getTime()-player.pastRuns.lastRun.timeSacrificed;
     player.pastRuns.lastRun.timeSacrificed = (new Date).getTime();
-    if (player.pastRuns.lastRun.crystalGain.gt(player.bestCrystalGain)) { player.bestCrystalGain = new Decimal(player.pastRuns.lastRun.crystalGain) }
-    if (player.pastRuns.lastRun.crystalGain.div(player.pastRuns.lastRun.timeSpent/60000).gt(player.bestCrystalRate)) { player.bestCrystalRate = new Decimal(player.pastRuns.lastRun.crystalGain.div(player.pastRuns.lastRun.timeSpent/60000)) }
+    if (player.pastRuns.lastRun.crystalGain.gt(player.allTimeStats.bestCrystalGain)) { player.allTimeStats.bestCrystalGain = new Decimal(player.pastRuns.lastRun.crystalGain) }
+    if (player.pastRuns.lastRun.crystalGain.div(player.pastRuns.lastRun.timeSpent/60000).gt(player.allTimeStats.bestCrystalRate)) { player.allTimeStats.bestCrystalRate = new Decimal(player.pastRuns.lastRun.crystalGain.div(player.pastRuns.lastRun.timeSpent/60000)) }
     for (var i=9; i>0; i--) { copyData(player.pastRuns.lastTen[i], player.pastRuns.lastTen[i-1]); }
     copyData(player.pastRuns.lastTen[0], player.pastRuns.lastRun);
-    resetUnits();
-    if (!hasTUpgrade(24)) { resetBuildings(); }
-    resetBuildingResources(true);
-    resetSpaceCounts();
-    for (var i=1; i<=NUM_TIMEDIMS; i++) { player.timeDims[i].amount = player.timeDims[i].bought; }
     player.trueEssence = new Decimal(START_PLAYER.trueEssence);
     player.antiEssence = new Decimal(START_PLAYER.antiEssence);
     player.corpses = new Decimal(START_PLAYER.corpses)
-    copyData(player.unlocks['unitsTab'], START_PLAYER.unlocks['unitsTab']);
-    copyData(player.unlocks['buildingsTab'], START_PLAYER.unlocks['buildingsTab']);
+    resetUnits();
+    resetSpaceCounts();
+    if (!hasTUpgrade(24)) { resetBuildings(); }
+    resetBuildingResources(true);
+    for (var i=1; i<=NUM_TIMEDIMS; i++) { player.timeDims[i].amount = player.timeDims[i].bought; }
+    lockTab('unitsTab');
     if (timeUpgUnlocked) { player.buildings[3].upgrades[13] = true; }
-    //allDisplay();
-    save();
-    loadStyles();
     showBuildingSubTab('buildingsSubTab');
-    justReset = true;
-    startInterval();
+    save();
+    window.location.reload(true);
 }
 
 function resetSpaceCounts() {
-    player.spaceResets = new Decimal(START_PLAYER.spaceResets);
-    player.worlds = new Decimal(START_PLAYER.worlds);
-    player.nextSpaceReset = START_PLAYER.nextSpaceReset.slice();
-    copyData(player.thisSacStats, START_PLAYER.thisSacStats);
     if (hasTUpgrade(14)) {
         player.worlds = new Decimal(4);
         player.spaceResets = new Decimal(4);
         player.nextSpaceReset = [3, 8];
+        lockElements('buildingsTab', 'factory');
+        lockElements('buildingsTab', 'factoryRow2');
+        lockElements('buildingsTab', 'necropolis');
+        lockElements('buildingsTab', 'necropolisRow2');
     } else if (hasTUpgrade(13)) {
         player.worlds = new Decimal(3);
         player.spaceResets = new Decimal(3);
         player.nextSpaceReset = [1, 8];
+        lockElements('buildingsTab', 'factory');
+        lockElements('buildingsTab', 'factoryRow2');
+        lockElements('buildingsTab', 'necropolis');
+        lockElements('buildingsTab', 'necropolisRow2');
+        lockElements('buildingsTab', 'sun');
+        lockElements('buildingsTab', 'sunRow2');
     } else if (hasTUpgrade(12)) {
         player.worlds = new Decimal(2);
         player.spaceResets = new Decimal(2);
         player.nextSpaceReset = [1, 7];
+        lockElements('buildingsTab', 'factory');
+        lockElements('buildingsTab', 'factoryRow2');
+        lockElements('buildingsTab', 'necropolis');
+        lockElements('buildingsTab', 'necropolisRow2');
+        lockElements('buildingsTab', 'sun');
+        lockElements('buildingsTab', 'sunRow2');
     } else if (hasTUpgrade(11)) {
         player.worlds = new Decimal(1);
         player.spaceResets = new Decimal(1);
         player.nextSpaceReset = [1, 6];
+        lockElements('buildingsTab', 'factory');
+        lockElements('buildingsTab', 'factoryRow2');
+        lockElements('buildingsTab', 'necropolis');
+        lockElements('buildingsTab', 'necropolisRow2');
+        lockElements('buildingsTab', 'sun');
+        lockElements('buildingsTab', 'sunRow2');
+        lockElements('buildingsTab', 'construction');
+    } else {
+        player.spaceResets = new Decimal(START_PLAYER.spaceResets);
+        player.worlds = new Decimal(START_PLAYER.worlds);
+        player.nextSpaceReset = START_PLAYER.nextSpaceReset.slice();
+        lockTab('buildingsTab');
     }
+    copyData(player.thisSacStats, START_PLAYER.thisSacStats);
     player.thisSacStats.totalWorlds = player.worlds;
     player.thisSacStats.bestWorlds = player.worlds;
 }
@@ -530,7 +551,7 @@ const TIME_DATA = {
         24: {
             title: 'Rapid Fire',
             desc: 'Unlock fast autobuyers, and the buildings/construction tabs are never reset on sacrifice (except bricks and resources).',
-            cost: new Decimal(15000),
+            cost: new Decimal(20000),
             preReq: 23,
             buttonID: 'timeUpg24',
             displayEffect: false,
@@ -543,7 +564,7 @@ const TIME_DATA = {
         31: {
             title: 'Time Boost',
             desc: 'Time dimension multipliers get a boost based on unspent time crystals.',
-            cost: new Decimal(15000),
+            cost: new Decimal(20000),
             preReq: null,
             buttonID: 'timeUpg31',
             displayEffect: true,
@@ -558,7 +579,7 @@ const TIME_DATA = {
         32: {
             title: 'Forgotten Worlds',
             desc: 'The corpse production multiplier from exterminated worlds is 1.5x stronger.',
-            cost: new Decimal(25000),
+            cost: new Decimal(50000),
             preReq: 31,
             buttonID: 'timeUpg32',
             displayEffect: false,
@@ -571,7 +592,7 @@ const TIME_DATA = {
         33: {
             title: 'Lightspeed',
             desc: 'Unlock bulk autobuyers, and crystal gain is boosted based on your nekro-photons.',
-            cost: new Decimal(50000),
+            cost: new Decimal(150000),
             preReq: 32,
             buttonID: 'timeUpg33',
             displayEffect: true,
@@ -586,7 +607,7 @@ const TIME_DATA = {
         34: {
             title: 'Supernova',
             desc: 'Unlock the world prestige autobuyer and the second row of Dead Sun upgrades.',
-            cost: new Decimal(100000),
+            cost: new Decimal(1000000),
             preReq: 33,
             buttonID: 'timeUpg34',
             displayEffect: false,

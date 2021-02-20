@@ -166,7 +166,7 @@ function resetUnits() {
     }
     copyData(player.units, START_PLAYER.units);
     for (var zz=2; zz<=NUM_UNITS; zz++) {
-        player.displayData.push(['setProp', UNITS_DATA[zz].rowID, 'display', 'none']);
+        displayData.push(['setProp', UNITS_DATA[zz].rowID, 'display', 'none']);
     }
 }
 

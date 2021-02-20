@@ -26,11 +26,11 @@ var DEV_SPEED = 1;
 
 var mainLoop;
 
-var justReset = false;
-
 var popupShownTime;
 
 var hidden, visibilityChange, isHidden;
+
+var displayData = new Array(0);
 
 var player = {};
 
@@ -80,14 +80,13 @@ function loadGame() {
     if (player.allTimeStats.totalCrystals.eq(0)) { player.allTimeStats.totalCrystals = new Decimal(player.crystals); }
 
     if (player.allTimeStats.totalTimeResets.gt(player.timeResets)) { player.allTimeStats.totalTimeResets = new Decimal(player.timeResets); }
+    if (player.displayData !== undefined) { delete player.displayData; }
 
-    //updateFixes();
-    player.displayData.splice(0, player.displayData.length);
     if (player.tooltipsEnabled) {
         player.tooltipsEnabled = false;
         toggleTooltips();
     }
-
+    
     if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support
         hidden = "hidden";
         visibilityChange = "visibilitychange";
@@ -118,7 +117,7 @@ function loadGame() {
 }
 
 function loadStyles() {
-    if (player.displayData.length>0) {
+    if (displayData.length>0) {
         updateDisplay();
     }
 
@@ -178,9 +177,12 @@ function loadStyles() {
         if (player.timeUpgs[t]) {
             document.getElementById(TIME_DATA.upgrades[t].buttonID).classList.add('boughtTimeUpg');
             document.getElementById(TIME_DATA.upgrades[t].buttonID).classList.remove('timeUpg');
-        } else if (!canAffordTUpg(t)) {
-            document.getElementById(TIME_DATA.upgrades[t].buttonID).classList.add('unclickableTimeUpg');
-            document.getElementById(TIME_DATA.upgrades[t].buttonID).classList.remove('timeUpg');
+        } else {
+            document.getElementById(TIME_DATA.upgrades[t].buttonID).classList.remove('boughtTimeUpg');
+            if (!canAffordTUpg(t)) {
+                document.getElementById(TIME_DATA.upgrades[t].buttonID).classList.add('unclickableTimeUpg');
+                document.getElementById(TIME_DATA.upgrades[t].buttonID).classList.remove('timeUpg');
+            }
         }
     }
     for (var c in CONSTR_DATA) {
@@ -215,8 +217,8 @@ function loadStyles() {
             document.getElementById(ACH_DATA[id].divID).classList.remove('achievement');
             if (player.achievements[id].new) {
                 document.getElementById(ACH_DATA[id].divID).classList.add('achievementNew');
-                player.displayData.push(['addClass', 'achSubTabBut', 'tabButNotify']);
-                player.displayData.push(['addClass', 'statsTabBut', 'tabButIndirectNotify']);
+                displayData.push(['addClass', 'achSubTabBut', 'tabButNotify']);
+                displayData.push(['addClass', 'statsTabBut', 'tabButIndirectNotify']);
             }
         }
     }
@@ -236,7 +238,9 @@ function save() {
 
 function startGame() {
     var diff = (new Date).getTime() - player.lastUpdate;
-    if ((diff)>(1000*1000)) { calculateOfflineTime(new Decimal(diff/1000)); }
+    if ((diff)>(1000*1000)) {
+        calculateOfflineTime(new Decimal(diff/1000));
+    }
     else {
         player.lastUpdate = (new Date).getTime();
         player.lastAutoSave = (new Date).getTime();
@@ -246,13 +250,11 @@ function startGame() {
     }
 
     if (player.pastRuns.lastRun.timeSacrificed == 0) { player.pastRuns.lastRun.timeSacrificed = (new Date).getTime(); }
-
     document.getElementById('calcPopupContainer').style.display = 'none';
     document.getElementById('game').style.display = 'block';
 
     updateDisplay();
     loadStyles();
-
     startInterval();
 }
 
@@ -313,19 +315,18 @@ function gameLoop(diff=new Decimal(0), offline=false) {
         }
         player.lastUpdate = currentUpdate;
     }
-    justReset = false;
-    if (popupShownTime !== undefined && popupShownTime !== null) {
+    if (!offline && popupShownTime !== undefined && popupShownTime !== null) {
         if (currentUpdate-popupShownTime >= 2000) {
-            player.displayData.push(['setProp', 'achUnlockPopup', 'opacity', '0']);
+            displayData.push(['setProp', 'achUnlockPopup', 'opacity', '0']);
             popupShownTime = null;
         }
     }
-    if (!isHidden) { window.requestAnimationFrame(updateDisplay); }
+    if (!offline && !isHidden) { window.requestAnimationFrame(updateDisplay); }
 }
 
 function handleVisibilityChange() {
     if (!document[hidden]) {
-        player.displayData = new Array(0);
+        displayData = new Array(0);
         isHidden = false;
     } else { isHidden = true; }
 }
@@ -372,8 +373,11 @@ function calculateOfflineTime(seconds) {
     for (var done=0; done<ticks; done++) {
         gameLoop(extra.plus(50), true);
         simMilliseconds += extra.plus(50);
-        autobuyerTick(simMilliseconds>=15000);
-        if (simMilliseconds>=15000) { simMilliseconds = 0; }
+        
+        if (simMilliseconds>=15000) {
+            simMilliseconds = 0;
+            autobuyerTick(true);
+        } else { autobuyerTick(false); }
     }
     player.lastUpdate = (new Date).getTime();
     player.lastAutoSave = (new Date).getTime();
@@ -548,10 +552,6 @@ function copyData(data, start) {
     }
 
 }
-
-/*function updateFixes() {
-    if player.activeTabs[4] == 
-}*/
 
 function fixData(data, start) {
     for (item in start) {

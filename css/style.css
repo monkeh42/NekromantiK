@@ -539,7 +539,7 @@ option:active, option.active {
     border-radius: 4px;
 }
 
-.prestigeBut {
+.spacePrestigeBut {
     color: white;
     background-color: #170424;
     width: 500px;
@@ -550,7 +550,7 @@ option:active, option.active {
     font-family: 'Cinzel', serif;
 }
 
-.prestigeBut:hover {
+.spacePrestigeBut:hover {
     background-color: #460573;
 }
 

@@ -6,11 +6,11 @@ function updateDisplay(timestamp) {
     updateTierDisplays();
     updatePrestigeDisplays();
     
-    for (let z=0; z<player.displayData.length; z++) {
-        updateElement(player.displayData[z]);
+    for (let z=0; z<displayData.length; z++) {
+        updateElement(displayData[z]);
     }
 
-    player.displayData = new Array(0);
+    displayData = new Array(0);
     /*document.getElementById('testBox').innerHTML = `<h2>log(x) -> sqrt(x)</h2>
                                                     <br>Industrialize: ${formatDefault2(Decimal.pow(player.buildings[1].amount.sqrt(), 0.5).times(2).plus(1))}x boost,<br>
                                                     ${formatDefault2(Decimal.pow(player.buildings[1].amount.sqrt(), 0.5).times(2).plus(1).div(getUpgEffect(1, 11)))}x stronger<br>
@@ -128,73 +128,73 @@ function updateTimeUpgs() {
 }
 
 function updateResourceDisplays() {
-    player.displayData.push(['html', 'achBoost', formatDefault2(getAchievementBoost())]);
-    player.displayData.push(['html', 'numAch', formatWhole(getNumAchievements())]);
+    displayData.push(['html', 'achBoost', formatDefault2(getAchievementBoost())]);
+    displayData.push(['html', 'numAch', formatWhole(getNumAchievements())]);
     updateCorpseDisplays();
     updateBuildingDisplays();
     updateTimeDisplays()
 }
 
 function updateCorpseDisplays() {
-    player.displayData.push(['html', 'corpseAmount', formatDefault(player.corpses)]);
-    player.displayData.push(['html', 'pluralCorpse', corpseSingulizer(false)]);
-    player.displayData.push(['html', 'pluralCorpseG', corpseSingulizer(true)]);
-    player.displayData.push(['html', 'corpseGain', player.astralFlag ? formatWhole(0) : formatDefault(getCorpsesPerSecond())]);
-    player.displayData.push(['html', 'totalMult', `${formatDefault2(getCorpseMultFromUnits())}x`]);
-    player.displayData.push(['html', 'worldsMult', `${formatDefault2(getWorldsBonus())}x`]);
-    player.displayData.push(['html', 'worldsNum', `${formatWhole(player.worlds)}`]);
-    player.displayData.push(['html', 'pluralWorld', worldSingulizer()]);
-    player.displayData.push(['html', 'totalMultAll', `${formatDefault2(getTotalCorpseMult())}x`]);
-    player.displayData.push(['html', 'normalAstral', player.astralFlag ? 'ASTRAL' : 'NORMAL']);
-    //player.displayData.push(['setProp', 'normalAstral', 'color', player.astralFlag ? '#42d35a' : 'white']);
-    //player.displayData.push(['setProp', 'normalAstral', player.astralFlag ? '#42d35a' : 'white']);
-    player.displayData.push(['html', 'timeMult', `${player.astralFlag ? formatDefault2(getAntiTimeBuff()) : formatDefault2(getTrueTimeBuff())}x`]);
-    player.displayData.push(['html', 'devSpeedDisplay', formatWhole(DEV_SPEED)]);
+    displayData.push(['html', 'corpseAmount', formatDefault(player.corpses)]);
+    displayData.push(['html', 'pluralCorpse', corpseSingulizer(false)]);
+    displayData.push(['html', 'pluralCorpseG', corpseSingulizer(true)]);
+    displayData.push(['html', 'corpseGain', player.astralFlag ? formatWhole(0) : formatDefault(getCorpsesPerSecond())]);
+    displayData.push(['html', 'totalMult', `${formatDefault2(getCorpseMultFromUnits())}x`]);
+    displayData.push(['html', 'worldsMult', `${formatDefault2(getWorldsBonus())}x`]);
+    displayData.push(['html', 'worldsNum', `${formatWhole(player.worlds)}`]);
+    displayData.push(['html', 'pluralWorld', worldSingulizer()]);
+    displayData.push(['html', 'totalMultAll', `${formatDefault2(getTotalCorpseMult())}x`]);
+    displayData.push(['html', 'normalAstral', player.astralFlag ? 'ASTRAL' : 'NORMAL']);
+    //displayData.push(['setProp', 'normalAstral', 'color', player.astralFlag ? '#42d35a' : 'white']);
+    //displayData.push(['setProp', 'normalAstral', player.astralFlag ? '#42d35a' : 'white']);
+    displayData.push(['html', 'timeMult', `${player.astralFlag ? formatDefault2(getAntiTimeBuff()) : formatDefault2(getTrueTimeBuff())}x`]);
+    displayData.push(['html', 'devSpeedDisplay', formatWhole(DEV_SPEED)]);
 }
 
 function updateBuildingDisplays() {
-    player.displayData.push(['html', 'brickDisplay', formatUnitRow(player.bricks)]);
-    player.displayData.push(['html', 'brickGainDisplay', ` ${(player.astralFlag ? formatUnitRow(getBricksPerSecond()) : formatWhole(0))} `]);
-    player.displayData.push(['html', 'factoryProd', formatDefault(getBuildingProdPerSec(1))]);
-    player.displayData.push(['html', 'factoryAmt', formatDefault(player.buildings[1].amount)]);
-    //player.displayData.push(['html', 'factoryBuildLabel', BUILDS_DATA[1].id]);
-    //player.displayData.push(['html', 'factoryCostLabel', formatWhole(BUILDS_DATA[1].cost)]);
-    player.displayData.push(['html', 'necropolisProd', formatDefault(getBuildingProdPerSec(2))]);
-    player.displayData.push(['html', 'necropolisAmt', formatDefault(player.buildings[2].amount)]);
-    //player.displayData.push(['html', 'necropolisBuildLabel', BUILDS_DATA[2].id]);
-    //player.displayData.push(['html', 'necropolisCostLabel', formatWhole(BUILDS_DATA[2].cost)]);
-    player.displayData.push(['html', 'sunProd', formatDefault(getBuildingProdPerSec(3))]);
-    player.displayData.push(['html', 'sunAmt', formatDefault(player.buildings[3].amount)]);
-    //player.displayData.push(['html', 'sunBuildLabel', BUILDS_DATA[3].id]);
-    //player.displayData.push(['html', 'sunCostLabel', formatWhole(BUILDS_DATA[3].cost)]);
+    displayData.push(['html', 'brickDisplay', formatUnitRow(player.bricks)]);
+    displayData.push(['html', 'brickGainDisplay', ` ${(player.astralFlag ? formatUnitRow(getBricksPerSecond()) : formatWhole(0))} `]);
+    displayData.push(['html', 'factoryProd', formatDefault(getBuildingProdPerSec(1))]);
+    displayData.push(['html', 'factoryAmt', formatDefault(player.buildings[1].amount)]);
+    //displayData.push(['html', 'factoryBuildLabel', BUILDS_DATA[1].id]);
+    //displayData.push(['html', 'factoryCostLabel', formatWhole(BUILDS_DATA[1].cost)]);
+    displayData.push(['html', 'necropolisProd', formatDefault(getBuildingProdPerSec(2))]);
+    displayData.push(['html', 'necropolisAmt', formatDefault(player.buildings[2].amount)]);
+    //displayData.push(['html', 'necropolisBuildLabel', BUILDS_DATA[2].id]);
+    //displayData.push(['html', 'necropolisCostLabel', formatWhole(BUILDS_DATA[2].cost)]);
+    displayData.push(['html', 'sunProd', formatDefault(getBuildingProdPerSec(3))]);
+    displayData.push(['html', 'sunAmt', formatDefault(player.buildings[3].amount)]);
+    //displayData.push(['html', 'sunBuildLabel', BUILDS_DATA[3].id]);
+    //displayData.push(['html', 'sunCostLabel', formatWhole(BUILDS_DATA[3].cost)]);
     //document.getElementById('sunGainSpan').style.display = player.astralFlag ? 'block' : 'none'
     //document.getElementById('sunGainNotice').style.display = player.astralFlag ? 'none' : 'block'
-    player.displayData.push(['html', 'acolyteEff', formatDefault2(BUILDS_DATA[2].resourceEff())]);
-    player.displayData.push(['html', 'brickKeepDisplay', ` ${formatUnitRow(getAchievementEffect(15))} `]);
+    displayData.push(['html', 'acolyteEff', formatDefault2(BUILDS_DATA[2].resourceEff())]);
+    displayData.push(['html', 'brickKeepDisplay', ` ${formatUnitRow(getAchievementEffect(15))} `]);
     var buildingTextElements = document.getElementsByClassName('buildingResourceTexts');
     for (var el=0; el<buildingTextElements.length; el++) {
-        player.displayData.push(['html', buildingTextElements[el].id, buildingSingulizer(buildingTextElements[el].id)]);
+        displayData.push(['html', buildingTextElements[el].id, buildingSingulizer(buildingTextElements[el].id)]);
     }
 }
 
 function updateTimeDisplays() {
-    player.displayData.push(['html', 'trueTimeAmt', formatUnitRow(player.trueEssence)]);
-    player.displayData.push(['html', 'antiTimeAmt', formatUnitRow(player.antiEssence)]);
-    player.displayData.push(['html', 'trueTimeGain', formatUnitRow(getTimeDimProdPerSecond(1).times(player.truePercent/100))]);
-    player.displayData.push(['html', 'antiTimeGain', formatUnitRow(getTimeDimProdPerSecond(1).times(player.antiPercent/100))]);
-    player.displayData.push(['html', 'trueTimeBuff', formatDefault2(getTrueTimeBuff())]);
-    player.displayData.push(['html', 'antiTimeBuff', formatDefault2(getAntiTimeBuff())]);
-    player.displayData.push(['html', 'trueTimeNerf', formatDefault2(getTrueTimeNerf())]);
-    player.displayData.push(['html', 'antiTimeNerf', formatDefault2(getAntiTimeNerf())]);
-    player.displayData.push(['html', 'crystalAmt', ' ' + formatWhole(player.crystals) + ' ']);
+    displayData.push(['html', 'trueTimeAmt', formatUnitRow(player.trueEssence)]);
+    displayData.push(['html', 'antiTimeAmt', formatUnitRow(player.antiEssence)]);
+    displayData.push(['html', 'trueTimeGain', formatUnitRow(getTimeDimProdPerSecond(1).times(player.truePercent/100))]);
+    displayData.push(['html', 'antiTimeGain', formatUnitRow(getTimeDimProdPerSecond(1).times(player.antiPercent/100))]);
+    displayData.push(['html', 'trueTimeBuff', formatDefault2(getTrueTimeBuff())]);
+    displayData.push(['html', 'antiTimeBuff', formatDefault2(getAntiTimeBuff())]);
+    displayData.push(['html', 'trueTimeNerf', formatDefault2(getTrueTimeNerf())]);
+    displayData.push(['html', 'antiTimeNerf', formatDefault2(getAntiTimeNerf())]);
+    displayData.push(['html', 'crystalAmt', ' ' + formatWhole(player.crystals) + ' ']);
     if (player.allTimeStats.totalCrystals.gte(2000)) {
-        player.displayData.push(['setProp', 'timePresDesc', 'display', 'none']);
-        player.displayData.push(['setProp', 'crystalRateDesc', 'display', 'block']);
-        player.displayData.push(['html', 'crystalRateDesc', '(' + formatDefault(calculateCrystalsPerMin()) + '/min)'])
+        displayData.push(['setProp', 'timePresDesc', 'display', 'none']);
+        displayData.push(['setProp', 'crystalRateDesc', 'display', 'block']);
+        displayData.push(['html', 'crystalRateDesc', '(' + formatDefault(calculateCrystalsPerMin()) + '/min)'])
     }
     let timeTextElements = document.getElementsByClassName('timeResourceTexts');
     for (let el=0; el<timeTextElements.length; el++) {
-        player.displayData.push(['html', timeTextElements[el].id, timeSingulizer(timeTextElements[el].id)]);
+        displayData.push(['html', timeTextElements[el].id, timeSingulizer(timeTextElements[el].id)]);
     }
 }
 
@@ -204,42 +204,39 @@ function updatePrestigeDisplays() {
 }
 
 function updateSpacePrestigeDisplay() {
-    if (canSpacePrestige() && !document.getElementById('spacePrestige').classList.contains('prestigeBut')) {
-        addPresClass('space', 'prestigeBut');
+    if (canSpacePrestige() && !document.getElementById('spacePrestige').classList.contains('spacePrestigeBut')) {
+        addPresClass('space', 'spacePrestigeBut');
         remPresClass('space', 'unclickablePrestige');
-    } else if (!canSpacePrestige() && document.getElementById('spacePrestige').classList.contains('prestigeBut')) {
-        remPresClass('space', 'prestigeBut');
+    } else if (!canSpacePrestige() && document.getElementById('spacePrestige').classList.contains('spacePrestigeBut')) {
+        remPresClass('space', 'spacePrestigeBut');
         addPresClass('space', 'unclickablePrestige');
     }
     if (player.spaceResets.lt(3)) {
-        player.displayData.push(['setProp', 'spacePresDesc', 'display', 'block']);
+        displayData.push(['setProp', 'spacePresDesc', 'display', 'block']);
         if (player.spaceResets.gt(1)) {
-            player.displayData.push(['html', 'spacePresUnlock', 'Time Warp']);
+            displayData.push(['html', 'spacePresUnlock', 'Time Warp']);
         } else if (player.spaceResets.gt(0)) {
-            player.displayData.push(['html', 'spacePresUnlock', 'Construction Upgrades']);
+            displayData.push(['html', 'spacePresUnlock', 'Construction Upgrades']);
         } else {
-            player.displayData.push(['html', 'spacePresUnlock', 'Buildings']);
+            displayData.push(['html', 'spacePresUnlock', 'Buildings']);
         }
-    } else { player.displayData.push(['setProp', 'spacePresDesc', 'display', 'none']); }
-    player.displayData.push(['html', 'prestigeReq', `Requires <span style="font-size: 17pt; white-space: pre;"> ${formatWhole(player.nextSpaceReset[0])} </span> ${unitSingulizer(player.nextSpaceReset[1], player.nextSpaceReset[0])}`]);
+    } else { displayData.push(['setProp', 'spacePresDesc', 'display', 'none']); }
+    displayData.push(['html', 'prestigeReq', `Requires <span style="font-size: 17pt; white-space: pre;"> ${formatWhole(player.nextSpaceReset[0])} </span> ${unitSingulizer(player.nextSpaceReset[1], player.nextSpaceReset[0])}`]);
 }
 
 function updateTimePrestigeDisplay() {
     if (canTimePrestige() && !document.getElementById('timePrestige').classList.contains('timePrestigeBut')) {
         addPresClass('time', 'timePrestigeBut');
         remPresClass('time', 'unclickablePrestige');
+        displayData.push(['setProp', 'timePrestigeReq', 'display', 'none']);
+        displayData.push(['setProp', 'timePrestigeGainDesc', 'display', '']);
     } else if (!canTimePrestige() && document.getElementById('timePrestige').classList.contains('timePrestigeBut')) {
         remPresClass('time', 'timePrestigeBut');
         addPresClass('time', 'unclickablePrestige');
+        displayData.push(['setProp', 'timePrestigeReq', 'display', '']);
+        displayData.push(['setProp', 'timePrestigeGainDesc', 'display', 'none']);
     }
-    if (canTimePrestige() && !document.getElementById('timePrestige').classList.contains('timePrestigeBut')) {
-        player.displayData.push(['setProp', 'timePrestigeReq', 'display', 'none']);
-        player.displayData.push(['setProp', 'timePrestigeGainDesc', 'display', '']);
-    } else if (!canTimePrestige() && document.getElementById('timePrestige').classList.contains('timePrestigeBut')) {
-        player.displayData.push(['setProp', 'timePrestigeReq', 'display', '']);
-        player.displayData.push(['setProp', 'timePrestigeGainDesc', 'display', 'none']);
-    }
-    player.displayData.push(['html', 'timePrestigeGain', ` ${formatWhole(calculateCrystalGain())} `]);
+    displayData.push(['html', 'timePrestigeGain', ` ${formatWhole(calculateCrystalGain())} `]);
 }
 
 function updateTierDisplays() {
@@ -252,18 +249,18 @@ function updateUnitTiers() {
         if (player.units[i].unlocked && canAffordUnit(i) && !document.getElementById(UNITS_DATA[i].buttonID).classList.contains('unitBut')) {
             addUnitClass(i, 'unitBut');
             remUnitClass(i, 'unclickableUnit');
-            player.displayData.push(['addClass', UNITS_DATA[i].maxID, 'unitMax']);
-            player.displayData.push(['remClass', UNITS_DATA[i].maxID, 'unclickableMax']);
+            displayData.push(['addClass', UNITS_DATA[i].maxID, 'unitMax']);
+            displayData.push(['remClass', UNITS_DATA[i].maxID, 'unclickableMax']);
         } else if (player.units[i].unlocked && !canAffordUnit(i) && document.getElementById(UNITS_DATA[i].buttonID).classList.contains('unitBut')) {
             remUnitClass(i, 'unitBut');
             addUnitClass(i, 'unclickableUnit');
-            player.displayData.push(['remClass', UNITS_DATA[i].maxID, 'unitMax']);
-            player.displayData.push(['addClass', UNITS_DATA[i].maxID, 'unclickableMax']);
+            displayData.push(['remClass', UNITS_DATA[i].maxID, 'unitMax']);
+            displayData.push(['addClass', UNITS_DATA[i].maxID, 'unclickableMax']);
         }
-        player.displayData.push(['html', UNITS_DATA[i].amountID, `<div style="min-width: 35%; float: left;">${formatUnitRow(player.units[i].amount)}</div><div style="min-width: 35%; float: left;">(${formatWholeUnitRow(player.units[i].bought)})</div><div style="min-width: 30%; float: left;">${getUnitProdPerSecond(i).gt(0) ? "(+" + formatDefault(Decimal.times((getUnitProdPerSecond(i).div(player.units[i].amount.max(1))), 100), 2) + "%/s)</div>" : ""}`]);
-        player.displayData.push(['html', UNITS_DATA[i].multID, `<div style="min-width: 45%; float: left;">${formatUnitRow2(UNITS_DATA[i].corpseMult())}x</div><div style="min-width: 45%; float: left;">(${(i > 1) ? formatUnitRow2(UNITS_DATA[i].prodMult()) : "~"}x)</div>`]);
-        player.displayData.push(['html', UNITS_DATA[i].buttonID, `Cost: ${formatWhole(UNITS_DATA[i].cost())} corpses`]);
-        player.displayData.push(['html', UNITS_DATA[i].maxID, canAffordUnit(i) ? `Max: ${calculateMaxUnits(i)} for &#162;${formatWhole(calculateMaxUnitsCost(i))}` : "Max: 0"]);
+        displayData.push(['html', UNITS_DATA[i].amountID, `<div style="min-width: 35%; float: left;">${formatUnitRow(player.units[i].amount)}</div><div style="min-width: 35%; float: left;">(${formatWholeUnitRow(player.units[i].bought)})</div><div style="min-width: 30%; float: left;">${getUnitProdPerSecond(i).gt(0) ? "(+" + formatDefault(Decimal.times((getUnitProdPerSecond(i).div(player.units[i].amount.max(1))), 100), 2) + "%/s)</div>" : ""}`]);
+        displayData.push(['html', UNITS_DATA[i].multID, `<div style="min-width: 45%; float: left;">${formatUnitRow2(UNITS_DATA[i].corpseMult())}x</div><div style="min-width: 45%; float: left;">(${(i > 1) ? formatUnitRow2(UNITS_DATA[i].prodMult()) : "~"}x)</div>`]);
+        displayData.push(['html', UNITS_DATA[i].buttonID, `Cost: ${formatWhole(UNITS_DATA[i].cost())} corpses`]);
+        displayData.push(['html', UNITS_DATA[i].maxID, canAffordUnit(i) ? `Max: ${calculateMaxUnits(i)} for &#162;${formatWhole(calculateMaxUnitsCost(i))}` : "Max: 0"]);
     }
 }
 
@@ -272,18 +269,18 @@ function updateTDimTiers() {
         if (player.timeDims[i].unlocked && canAffordTime(i) && !document.getElementById(TIME_DATA[i].buttonID).classList.contains('unitButT')) {
             addTDimClass(i, 'unitButT');
             remTDimClass(i, 'unclickableUnitT');
-            player.displayData.push(['addClass', TIME_DATA[i].maxID, 'unitMaxT']);
-            player.displayData.push(['remClass', TIME_DATA[i].maxID, 'unclickableMaxT']);
+            displayData.push(['addClass', TIME_DATA[i].maxID, 'unitMaxT']);
+            displayData.push(['remClass', TIME_DATA[i].maxID, 'unclickableMaxT']);
         } else if (player.timeDims[i].unlocked && !canAffordTime(i) && document.getElementById(TIME_DATA[i].buttonID).classList.contains('unitButT')) {
             remTDimClass(i, 'unitButT');
             addTDimClass(i, 'unclickableUnitT');
-            player.displayData.push(['remClass', TIME_DATA[i].maxID, 'unitMaxT']);
-            player.displayData.push(['addClass', TIME_DATA[i].maxID, 'unclickableMaxT']);
+            displayData.push(['remClass', TIME_DATA[i].maxID, 'unitMaxT']);
+            displayData.push(['addClass', TIME_DATA[i].maxID, 'unclickableMaxT']);
         }
-        player.displayData.push(['html', TIME_DATA[i].amountID, `<div style="min-width: 30%; float: left;">${formatUnitRow(player.timeDims[i].amount)}</div><div style="min-width: 30%; float: left;">(${formatWholeUnitRow(player.timeDims[i].bought)})</div><div style="min-width: 40%; float: left;">${getTimeDimProdPerSecond(i + 1).gt(0) ? "(+" + formatDefault(Decimal.times((getTimeDimProdPerSecond(i + 1).div(player.timeDims[i].amount.max(1))), 100), 2) + "%/s)</div>" : ""}`]);
-        player.displayData.push(['html', TIME_DATA[i].multID, `<div>${formatUnitRow2(TIME_DATA[i].mult())}x</div>`]);
-        player.displayData.push(['html', TIME_DATA[i].buttonID, `Cost: ${formatWhole(TIME_DATA[i].cost())} crystals`]);
-        player.displayData.push(['html', TIME_DATA[i].maxID, canAffordTime(i) ? `Max: ${calculateMaxTime(i)} for &#162;${formatWhole(calculateMaxTimeCost(i))}` : "Max: 0"]);
+        displayData.push(['html', TIME_DATA[i].amountID, `<div style="min-width: 30%; float: left;">${formatUnitRow(player.timeDims[i].amount)}</div><div style="min-width: 30%; float: left;">(${formatWholeUnitRow(player.timeDims[i].bought)})</div><div style="min-width: 40%; float: left;">${getTimeDimProdPerSecond(i + 1).gt(0) ? "(+" + formatDefault(Decimal.times((getTimeDimProdPerSecond(i + 1).div(player.timeDims[i].amount.max(1))), 100), 2) + "%/s)</div>" : ""}`]);
+        displayData.push(['html', TIME_DATA[i].multID, `<div>${formatUnitRow2(TIME_DATA[i].mult())}x</div>`]);
+        displayData.push(['html', TIME_DATA[i].buttonID, `Cost: ${formatWhole(TIME_DATA[i].cost())} crystals`]);
+        displayData.push(['html', TIME_DATA[i].maxID, canAffordTime(i) ? `Max: ${calculateMaxTime(i)} for &#162;${formatWhole(calculateMaxTimeCost(i))}` : "Max: 0"]);
     }
 }
 
@@ -295,14 +292,14 @@ function unlockElements(mainTab, subTab) {
     if (data.idsToShow.length > 0) {
         for (let i=0; i<data.idsToShow.length; i++) {
             element = document.getElementById(data.idsToShow[i]);
-            if (element.tagName == 'TR') { player.displayData.push(['setProp', element.id, 'display', 'table-row']); } 
-            else if (element.tagName == 'TD') { player.displayData.push(['setProp', element.id, 'display', 'table-cell']); }
-            else { player.displayData.push(['setProp', element.id, 'display', 'block']); }
+            if (element.tagName == 'TR') { displayData.push(['setProp', element.id, 'display', 'table-row']); } 
+            else if (element.tagName == 'TD') { displayData.push(['setProp', element.id, 'display', 'table-cell']); }
+            else { displayData.push(['setProp', element.id, 'display', 'block']); }
         }
     }
     if (data.idsToHide.length > 0 || data.classNotID) {
         if (data.classNotID) {
-            player.displayData.push(['setProp', 'docElement', data.cssVar, 'none']);
+            displayData.push(['setProp', 'docElement', data.cssVar, 'none']);
             if (data.classToEnable !== undefined) {
                 let els = document.getElementsByClassName(data.classToEnable);
                 for (let el in els) {
@@ -311,13 +308,13 @@ function unlockElements(mainTab, subTab) {
             }
         } else {
             for (let i=0; i<data.idsToHide.length; i++) {
-                player.displayData.push(['setProp', data.idsToHide[i], 'display', 'none']);
+                displayData.push(['setProp', data.idsToHide[i], 'display', 'none']);
             }
         }
     }
     if (UNLOCKS_DATA[mainTab][subTab].shouldNotify()) {
-        if (data.notifyID !== undefined) { player.displayData.push(['addClass', data.notifyID, 'tabButNotify']); }
-        if (data.parentNotify !== undefined) { player.displayData.push(['addClass', data.parentNotify, 'tabButIndirectNotify']); }
+        if (data.notifyID !== undefined) { displayData.push(['addClass', data.notifyID, 'tabButNotify']); }
+        if (data.parentNotify !== undefined) { displayData.push(['addClass', data.parentNotify, 'tabButIndirectNotify']); }
     } 
 }
 
@@ -327,14 +324,14 @@ function unlockElementsOnLoad(mainTab, subTab) {
     if (data.idsToShow.length > 0) {
         for (let i=0; i<data.idsToShow.length; i++) {
             element = document.getElementById(data.idsToShow[i]);
-            if (element.tagName == 'TR') { player.displayData.push(['setProp', element.id, 'display', 'table-row']); } 
-            else if (element.tagName == 'TD') { player.displayData.push(['setProp', element.id, 'display', 'table-cell']); }
-            else { player.displayData.push(['setProp', element.id, 'display', 'block']); }
+            if (element.tagName == 'TR') { displayData.push(['setProp', element.id, 'display', 'table-row']); } 
+            else if (element.tagName == 'TD') { displayData.push(['setProp', element.id, 'display', 'table-cell']); }
+            else { displayData.push(['setProp', element.id, 'display', 'block']); }
         }
     }
     if (data.idsToHide.length > 0 || data.classNotID) {
         if (data.classNotID) {
-            player.displayData.push(['setProp', 'docElement', data.cssVar, 'none']);
+            displayData.push(['setProp', 'docElement', data.cssVar, 'none']);
             if (data.classToEnable !== undefined) {
                 let els = document.getElementsByClassName(data.classToEnable);
                 for (let el in els) {
@@ -343,7 +340,7 @@ function unlockElementsOnLoad(mainTab, subTab) {
             }
         } else {
             for (let i=0; i<data.idsToHide.length; i++) {
-                player.displayData.push(['setProp', data.idsToHide[i], 'display', 'none']);
+                displayData.push(['setProp', data.idsToHide[i], 'display', 'none']);
             }
         }
     }
@@ -354,21 +351,30 @@ function lockElements(mainTab, subTab) {
     player.unlocks[mainTab][subTab] = false;
     if (data.idsToShow.length > 0) {
         for (let i=0; i<data.idsToShow.length; i++) {
-            player.displayData.push(['togDisplay', data.idsToShow[i]]);
+            displayData.push(['setProp', data.idsToShow[i], 'display', 'none']);
         }
     }
-    if (data.idsToHide.length > 0) {
+    if (data.idsToHide.length > 0 || data.classNotID) {
         if (data.classNotID) {
-            player.displayData.push(['setProp', 'docElement', data.cssVar, 'block']);
-            let els = document.getElementsByClassName(data.classToEnable);
-            for (let el in els) {
-                player.displayData.push(['setProp', el.id, 'disabled', 'true']);
+            displayData.push(['setProp', 'docElement', data.cssVar, 'block']);
+            if (data.classToEnable !== undefined) {
+                let els = document.getElementsByClassName(data.classToEnable);
+                for (let el in els) {
+                    els[el].disabled = true;
+                }
             }
         } else {
             for (let i=0; i<data.idsToHide.length; i++) {
-                player.displayData.push(['togDisplay', data.idsToHide[i]]);
+                displayData.push(['setProp', data.idsToHide[i], 'display', '']);
             }
         }
+    }
+}
+
+function lockTab(mainTab) {
+    copyData(player.unlocks[mainTab], START_PLAYER.unlocks[mainTab]);
+    for (let subTab in UNLOCKS_DATA[mainTab]) {
+        if (player.unlocks[mainTab][subTab]) { lockElements(mainTab, subTab); }
     }
 }
 
@@ -381,25 +387,25 @@ function formatCrystalsPerSec() {
 }
 
 function toggleAstralDisplay() {
-    player.displayData.push(['togDisplay', 'brickGainDiv']);
-    player.displayData.push(['togClass', 'astralToggle', 'astralBut']);
-    player.displayData.push(['togClass', 'astralToggle', 'astralOn']);
-    player.displayData.push(['html', 'astralText', player.astralFlag ? 'disable' : 'enable']);
-    player.displayData.push(['togDisplay', 'astralNotice']);
-    player.displayData.push(['html', 'normalAstral', player.astralFlag ? 'ASTRAL' : 'NORMAL']);
-    player.displayData.push(['setProp', 'normalAstral', 'color', player.astralFlag ? '#42d35a' : 'white']);
-    player.displayData.push(['setProp', 'normalAstral', 'color', player.astralFlag ? '#42d35a' : 'white']);
-    player.displayData.push(['togDisplay', 'sunGainSpan']);
-    player.displayData.push(['togDisplay', 'sunGainNotice']);
+    displayData.push(['togDisplay', 'brickGainDiv']);
+    displayData.push(['togClass', 'astralToggle', 'astralBut']);
+    displayData.push(['togClass', 'astralToggle', 'astralOn']);
+    displayData.push(['html', 'astralText', player.astralFlag ? 'disable' : 'enable']);
+    displayData.push(['togDisplay', 'astralNotice']);
+    displayData.push(['html', 'normalAstral', player.astralFlag ? 'ASTRAL' : 'NORMAL']);
+    displayData.push(['setProp', 'normalAstral', 'color', player.astralFlag ? '#42d35a' : 'white']);
+    displayData.push(['setProp', 'normalAstral', 'color', player.astralFlag ? '#42d35a' : 'white']);
+    displayData.push(['togDisplay', 'sunGainSpan']);
+    displayData.push(['togDisplay', 'sunGainNotice']);
 }
 
 function toggleTimeLockDisplay() {
-    player.displayData.push(['togClass', 'lockInTimeBut', 'unclickSliderBut']);
-    player.displayData.push(['togClass', 'lockInTimeBut', 'timeSliderBut']);
-    player.displayData.push(['togClass', 'respecTimeBut', 'timeSliderBut']);
-    player.displayData.push(['togClass', 'respecTimeBut', 'unclickSliderBut']);
-    player.displayData.push(['togClass', 'timeSlider', 'sliderLocked']);
-    player.displayData.push(['togClass', 'timeSlider', 'slider']);
+    displayData.push(['togClass', 'lockInTimeBut', 'unclickSliderBut']);
+    displayData.push(['togClass', 'lockInTimeBut', 'timeSliderBut']);
+    displayData.push(['togClass', 'respecTimeBut', 'timeSliderBut']);
+    displayData.push(['togClass', 'respecTimeBut', 'unclickSliderBut']);
+    displayData.push(['togClass', 'timeSlider', 'sliderLocked']);
+    displayData.push(['togClass', 'timeSlider', 'slider']);
 }
 
 function updateAutobuyers() {
@@ -475,13 +481,17 @@ function updateAutobuyersDisplay() {
 function updateSliderDisplay() {
     player.truePercent = 100 - Number(document.getElementById('timeSlider').value);
     player.antiPercent = Number(document.getElementById('timeSlider').value);
-    player.displayData.push(['html', 'sliderValueRight', player.antiPercent]);
-    player.displayData.push(['html', 'sliderValueLeft', player.truePercent]);
+    displayData.push(['html', 'sliderValueRight', player.antiPercent]);
+    displayData.push(['html', 'sliderValueLeft', player.truePercent]);
 }
 
 //generic UI stuff (tabs, toggles, popups etc)
 
 function toggleTooltips() {
+    player.tooltipsEnabled = !player.tooltipsEnabled;
+    if (player.tooltipsEnabled) { document.getElementById('toggleTooltips').innerHTML = 'TOGGLE FORMULA TOOLTIPS: ON'; }
+    else { document.getElementById('toggleTooltips').innerHTML = 'TOGGLE FORMULA TOOLTIPS: OFF'; }
+
     document.getElementById('brickTooltip').classList.toggle('tooltip');
     document.getElementById('trueTooltip').classList.toggle('tooltip');
     document.getElementById('antiTooltip').classList.toggle('tooltip');
@@ -498,9 +508,6 @@ function toggleTooltips() {
     for (let t in TIME_DATA.upgrades) {
         if (TIME_DATA.upgrades[t].displayTooltip) { document.getElementById(TIME_DATA.upgrades[t].buttonID).classList.toggle('tooltip'); }
     }
-    player.tooltipsEnabled = !player.tooltipsEnabled;
-    if (player.tooltipsEnabled) { document.getElementById('toggleTooltips').innerHTML = 'TOGGLE FORMULA TOOLTIPS: ON'; }
-    else { document.getElementById('toggleTooltips').innerHTML = 'TOGGLE FORMULA TOOLTIPS: OFF'; }
 }
 
 function showChangelog(divID) {
@@ -548,10 +555,10 @@ function showTab(tabName, buttonName) {
         }
     }
     if (document.getElementById('helpDiv').style.display != 'none') {
-        player.displayData.push(['togDisplay', 'helpDiv']);
-        player.displayData.push(['togClass', 'helpTabBut', 'tabButSelected'])
+        displayData.push(['togDisplay', 'helpDiv']);
+        displayData.push(['togClass', 'helpTabBut', 'tabButSelected'])
     }
-    player.displayData.push(['addClass', bName, 'tabButSelected'])
+    displayData.push(['addClass', bName, 'tabButSelected'])
     player.activeTabs[0] = tabName;
     if (buttonName !== undefined) { document.getElementById(buttonName).classList.remove('tabButNotify'); }
 }
@@ -570,7 +577,7 @@ function showStatsSubTab(subTabName) {
             document.getElementById(tab.id + 'But').classList.remove('tabButSelected');
         }
     }
-    player.displayData.push(['addClass', bName, 'tabButSelected'])
+    displayData.push(['addClass', bName, 'tabButSelected'])
     player.activeTabs[4] = subTabName;
 }
 
@@ -593,7 +600,7 @@ function showUnitSubTab(subTabName, buttonName, parentButton) {
         document.getElementById(buttonName).classList.remove('tabButNotify');
         document.getElementById(parentButton).classList.remove('tabButIndirectNotify');
     }
-    player.displayData.push(['addClass', bName, 'tabButSelected'])
+    displayData.push(['addClass', bName, 'tabButSelected'])
 }
 
 function showBuildingSubTab(subTabName, buttonName, parentButton) {
@@ -615,7 +622,7 @@ function showBuildingSubTab(subTabName, buttonName, parentButton) {
         document.getElementById(buttonName).classList.remove('tabButNotify');
         document.getElementById(parentButton).classList.remove('tabButIndirectNotify');
     }
-    player.displayData.push(['addClass', bName, 'tabButSelected'])
+    displayData.push(['addClass', bName, 'tabButSelected'])
 }
 
 function showTimeSubTab(subTabName, buttonName, parentButton) {
@@ -637,7 +644,7 @@ function showTimeSubTab(subTabName, buttonName, parentButton) {
         document.getElementById(buttonName).classList.remove('tabButNotify');
         document.getElementById(parentButton).classList.remove('tabButIndirectNotify');
     }
-    player.displayData.push(['addClass', bName, 'tabButSelected'])
+    displayData.push(['addClass', bName, 'tabButSelected'])
 }
 
 function isActiveTab(tabName) {
@@ -687,13 +694,13 @@ function updateUnlocks() {
     for (var i=1; i<NUM_UNITS; i++) {
         if (player.units[i].bought.gte(1) && canUnlock(i+1)) {
             player.units[i+1].unlocked = true;
-            player.displayData.push(['setProp', UNITS_DATA[i+1].rowID, 'display', 'table-row']);
+            displayData.push(['setProp', UNITS_DATA[i+1].rowID, 'display', 'table-row']);
         } 
     }
     for (var i=1; i<NUM_TIMEDIMS; i++) {
         if (player.timeDims[i].bought.gte(1) && !player.timeDims[i+1].unlocked) {
             player.timeDims[i+1].unlocked = true;
-            player.displayData.push(['setProp', TIME_DATA[i+1].rowID, 'display', 'table-row']);
+            displayData.push(['setProp', TIME_DATA[i+1].rowID, 'display', 'table-row']);
         } 
     }
 }
@@ -704,12 +711,12 @@ function updateAchievements() {
             ACH_DATA[id].onUnlock();
             player.achievements[id].unlocked = true;
             player.achievements[id].new = true;
-            player.displayData.push(['addClass', ACH_DATA[id].divID, 'achievementUnlocked']);
-            player.displayData.push(['addClass', ACH_DATA[id].divID, 'achievementNew']);
-            player.displayData.push(['remClass', ACH_DATA[id].divID, 'achievement']);
-            player.displayData.push(['addClass', 'achSubTabBut', 'tabButNotify']);
-            player.displayData.push(['addClass', 'statsTabBut', 'tabButIndirectNotify']);
-            player.displayData.push(['setProp', 'achUnlockPopup', 'opacity', '1']);
+            displayData.push(['addClass', ACH_DATA[id].divID, 'achievementUnlocked']);
+            displayData.push(['addClass', ACH_DATA[id].divID, 'achievementNew']);
+            displayData.push(['remClass', ACH_DATA[id].divID, 'achievement']);
+            displayData.push(['addClass', 'achSubTabBut', 'tabButNotify']);
+            displayData.push(['addClass', 'statsTabBut', 'tabButIndirectNotify']);
+            displayData.push(['setProp', 'achUnlockPopup', 'opacity', '1']);
             popupShownTime = (new Date).getTime();
         }
     }
@@ -718,12 +725,12 @@ function updateAchievements() {
 function mouseoverAchievement(ach) {
     if (player.achievements[ach].new) {
         player.achievements[ach].new = false;
-        player.displayData.push(['remClass', ACH_DATA[ach].divID, 'achievementNew']);
+        displayData.push(['remClass', ACH_DATA[ach].divID, 'achievementNew']);
         for (let id in player.achievements) {
             if (player.achievements[id].new) { return; }
         }
-        player.displayData.push(['remClass', 'achSubTabBut', 'tabButNotify']);
-        player.displayData.push(['remClass', 'statsTabBut', 'tabButIndirectNotify']);
+        displayData.push(['remClass', 'achSubTabBut', 'tabButNotify']);
+        displayData.push(['remClass', 'statsTabBut', 'tabButIndirectNotify']);
     }
 }
 
@@ -827,8 +834,8 @@ function checkUnlocked(tab, unlock) {
 }
 
 function showHelp() {
-    player.displayData.push(['togDisplay', 'helpDiv']); 
-    player.displayData.push(['togClass', 'helpTabBut', 'tabButSelected'])
+    displayData.push(['togDisplay', 'helpDiv']); 
+    displayData.push(['togClass', 'helpTabBut', 'tabButSelected'])
     var active = getActiveTab();
         
     if (HELP_TEXTS[active] === undefined) {return;}
@@ -935,197 +942,197 @@ function updateStatsTab() {
 //add/remove/set/toggle etc for QoL
 
 function addBButtonClass(b, className) {
-    player.displayData.push(['addClass', BUILDS_DATA[b].buildingButtonID, className]);
+    displayData.push(['addClass', BUILDS_DATA[b].buildingButtonID, className]);
 }
 
 function remBButtonClass(b, className) {
-    player.displayData.push(['remClass', BUILDS_DATA[b].buildingButtonID, className]);
+    displayData.push(['remClass', BUILDS_DATA[b].buildingButtonID, className]);
 }
 
 function togBButtonClass(b, className) {
-    player.displayData.push(['remClass', BUILDS_DATA[b].buildingButtonID, className]);
+    displayData.push(['remClass', BUILDS_DATA[b].buildingButtonID, className]);
 }
 
 function setAttrBButton(b, attr, val) {
-    player.displayData.push(['setAttr', BUILDS_DATA[b].buildingButtonID, attr, val]);
+    displayData.push(['setAttr', BUILDS_DATA[b].buildingButtonID, attr, val]);
 }
 
 function setPropBButton(b, prop, val) {
-    player.displayData.push(['setProp', BUILDS_DATA[b].buildingButtonID, prop, val]);
+    displayData.push(['setProp', BUILDS_DATA[b].buildingButtonID, prop, val]);
 }
 
 function togDisplayBButton(b) {
-    player.displayData.push(['togDisplay', BUILDS_DATA[b].buildingButtonID]);
+    displayData.push(['togDisplay', BUILDS_DATA[b].buildingButtonID]);
 }
 
 function writeHTMLBButton(b, text) {
-    player.displayData.push(['html', BUILDS_DATA[b].buildingButtonID, text]);
+    displayData.push(['html', BUILDS_DATA[b].buildingButtonID, text]);
 }
 
 function addBUpgClass(b, u, className) {
-    player.displayData.push(['addClass', BUILDS_DATA[b].upgrades[u].buttonID, className]);
+    displayData.push(['addClass', BUILDS_DATA[b].upgrades[u].buttonID, className]);
 }
 
 function remBUpgClass(b, u, className) {
-    player.displayData.push(['remClass', BUILDS_DATA[b].upgrades[u].buttonID, className]);
+    displayData.push(['remClass', BUILDS_DATA[b].upgrades[u].buttonID, className]);
 }
 
 function togBUpgClass(b, u, className) {
-    player.displayData.push(['remClass', BUILDS_DATA[b].upgrades[u].buttonID, className]);
+    displayData.push(['remClass', BUILDS_DATA[b].upgrades[u].buttonID, className]);
 }
 
 function setAttrBUpg(b, u, attr, val) {
-    player.displayData.push(['setAttr', BUILDS_DATA[b].upgrades[u].buttonID, attr, val]);
+    displayData.push(['setAttr', BUILDS_DATA[b].upgrades[u].buttonID, attr, val]);
 }
 
 function setPropBUpg(b, u, prop, val) {
-    player.displayData.push(['setProp', BUILDS_DATA[b].upgrades[u].buttonID, prop, val]);
+    displayData.push(['setProp', BUILDS_DATA[b].upgrades[u].buttonID, prop, val]);
 }
 
 function togDisplayBUpg(b, u) {
-    player.displayData.push(['togDisplay', BUILDS_DATA[b].upgrades[u].buttonID]);
+    displayData.push(['togDisplay', BUILDS_DATA[b].upgrades[u].buttonID]);
 }
 
 function writeHTMLBUpg(b, u, text) {
-    player.displayData.push(['html', BUILDS_DATA[b].upgrades[u].buttonID, text]);
+    displayData.push(['html', BUILDS_DATA[b].upgrades[u].buttonID, text]);
 }
 
 function addCUpgClass(c, className) {
-    player.displayData.push(['addClass', CONSTR_DATA[c].buttonID, className]);
+    displayData.push(['addClass', CONSTR_DATA[c].buttonID, className]);
 }
 
 function remCUpgClass(c, className) {
-    player.displayData.push(['remClass', CONSTR_DATA[c].buttonID, className]);
+    displayData.push(['remClass', CONSTR_DATA[c].buttonID, className]);
 }
 
 function togCUpgClass(c, className) {
-    player.displayData.push(['remClass', CONSTR_DATA[c].buttonID, className]);
+    displayData.push(['remClass', CONSTR_DATA[c].buttonID, className]);
 }
 
 function setAttrCUpg(c, attr, val) {
-    player.displayData.push(['setAttr', CONSTR_DATA[c].buttonID, attr, val]);
+    displayData.push(['setAttr', CONSTR_DATA[c].buttonID, attr, val]);
 }
 
 function setPropCUpg(c, prop, val) {
-    player.displayData.push(['setProp', CONSTR_DATA[c].buttonID, prop, val]);
+    displayData.push(['setProp', CONSTR_DATA[c].buttonID, prop, val]);
 }
 
 function togDisplayCUpg(c) {
-    player.displayData.push(['togDisplay', CONSTR_DATA[c].buttonID]);
+    displayData.push(['togDisplay', CONSTR_DATA[c].buttonID]);
 }
 
 function writeHTMLCUpg(c, text) {
-    player.displayData.push(['html', CONSTR_DATA[c].buttonID, text]);
+    displayData.push(['html', CONSTR_DATA[c].buttonID, text]);
 }
 
 function addTUpgClass(t, className) {
-    player.displayData.push(['addClass', TIME_DATA.upgrades[t].buttonID, className]);
+    displayData.push(['addClass', TIME_DATA.upgrades[t].buttonID, className]);
 }
 
 function remTUpgClass(t, className) {
-    player.displayData.push(['remClass', TIME_DATA.upgrades[t].buttonID, className]);
+    displayData.push(['remClass', TIME_DATA.upgrades[t].buttonID, className]);
 }
 
 function togTUpgClass(t, className) {
-    player.displayData.push(['remClass', TIME_DATA.upgrades[t].buttonID, className]);
+    displayData.push(['remClass', TIME_DATA.upgrades[t].buttonID, className]);
 }
 
 function setAttrTUpg(t, attr, val) {
-    player.displayData.push(['setAttr', TIME_DATA.upgrades[t].buttonID, attr, val]);
+    displayData.push(['setAttr', TIME_DATA.upgrades[t].buttonID, attr, val]);
 }
 
 function setPropTUpg(t, prop, val) {
-    player.displayData.push(['setProp', TIME_DATA.upgrades[t].buttonID, prop, val]);
+    displayData.push(['setProp', TIME_DATA.upgrades[t].buttonID, prop, val]);
 }
 
 function togDisplayTUpg(t) {
-    player.displayData.push(['togDisplay', TIME_DATA.upgrades[t].buttonID]);
+    displayData.push(['togDisplay', TIME_DATA.upgrades[t].buttonID]);
 }
 
 function writeHTMLTUpg(t, text) {
-    player.displayData.push(['html', TIME_DATA.upgrades[t].buttonID, text]);
+    displayData.push(['html', TIME_DATA.upgrades[t].buttonID, text]);
 }
 
 function addUnitClass(tier, className) {
-    player.displayData.push(['addClass', UNITS_DATA[tier].buttonID, className]);
+    displayData.push(['addClass', UNITS_DATA[tier].buttonID, className]);
 }
 
 function remUnitClass(tier, className) {
-    player.displayData.push(['remClass', UNITS_DATA[tier].buttonID, className]);
+    displayData.push(['remClass', UNITS_DATA[tier].buttonID, className]);
 }
 
 function togUnitClass(tier, className) {
-    player.displayData.push(['remClass', UNITS_DATA[tier].buttonID, className]);
+    displayData.push(['remClass', UNITS_DATA[tier].buttonID, className]);
 }
 
 function setAttrUnit(tier, attr, val) {
-    player.displayData.push(['setAttr', UNITS_DATA[tier].buttonID, attr, val]);
+    displayData.push(['setAttr', UNITS_DATA[tier].buttonID, attr, val]);
 }
 
 function setPropUnit(tier, prop, val) {
-    player.displayData.push(['setProp', UNITS_DATA[tier].buttonID, prop, val]);
+    displayData.push(['setProp', UNITS_DATA[tier].buttonID, prop, val]);
 }
 
 function togDisplayUnit(tier) {
-    player.displayData.push(['togDisplay', UNITS_DATA[tier].rowID]);
+    displayData.push(['togDisplay', UNITS_DATA[tier].rowID]);
 }
 
 function writeHTMLUnit(tier, text) {
-    player.displayData.push(['html', UNITS_DATA[tier].buttonID, text]);
+    displayData.push(['html', UNITS_DATA[tier].buttonID, text]);
 }
 
 function addTDimClass(tier, className) {
-    player.displayData.push(['addClass', TIME_DATA[tier].buttonID, className]);
+    displayData.push(['addClass', TIME_DATA[tier].buttonID, className]);
 }
 
 function remTDimClass(tier, className) {
-    player.displayData.push(['remClass', TIME_DATA[tier].buttonID, className]);
+    displayData.push(['remClass', TIME_DATA[tier].buttonID, className]);
 }
 
 function togTDimClass(tier, className) {
-    player.displayData.push(['togClass', TIME_DATA[tier].buttonID, className]);
+    displayData.push(['togClass', TIME_DATA[tier].buttonID, className]);
 }
 
 function setAttrTDim(tier, attr, val) {
-    player.displayData.push(['setAttr', TIME_DATA[tier].buttonID, attr, val]);
+    displayData.push(['setAttr', TIME_DATA[tier].buttonID, attr, val]);
 }
 
 function setPropTDim(tier, prop, val) {
-    player.displayData.push(['setProp', TIME_DATA[tier].buttonID, prop, val]);
+    displayData.push(['setProp', TIME_DATA[tier].buttonID, prop, val]);
 }
 
 function togDisplayTDim(tier) {
-    player.displayData.push(['togDisplay', TIME_DATA[tier].rowID]);
+    displayData.push(['togDisplay', TIME_DATA[tier].rowID]);
 }
 
 function writeHTMLTDim(tier, text) {
-    player.displayData.push(['html', TIME_DATA[tier].buttonID, text]);
+    displayData.push(['html', TIME_DATA[tier].buttonID, text]);
 }
 
 function addPresClass(presType, className) {
-    player.displayData.push(['addClass', presType + 'Prestige', className]);
+    displayData.push(['addClass', presType + 'Prestige', className]);
 }
 
 function remPresClass(presType, className) {
-    player.displayData.push(['remClass', presType + 'Prestige', className]);
+    displayData.push(['remClass', presType + 'Prestige', className]);
 }
 
 function togPresClass(presType, className) {
-    player.displayData.push(['togClass', presType + 'Prestige', className]);
+    displayData.push(['togClass', presType + 'Prestige', className]);
 }
 
 function setAttrPres(presType, attr, val) {
-    player.displayData.push(['setAttr', presType + 'Prestige', attr, val]);
+    displayData.push(['setAttr', presType + 'Prestige', attr, val]);
 }
 
 function setPropPres(presType, prop, val) {
-    player.displayData.push(['setProp', presType + 'Prestige', prop, val]);
+    displayData.push(['setProp', presType + 'Prestige', prop, val]);
 }
 
 function togDisplayPres(presType) {
-    player.displayData.push(['togDisplay', presType + 'Prestige']);
+    displayData.push(['togDisplay', presType + 'Prestige']);
 }
 
 function writeHTMLPres(presType, text) {
-    player.displayData.push(['html', presType + 'Prestige', text]);
+    displayData.push(['html', presType + 'Prestige', text]);
 }
