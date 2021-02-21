@@ -374,7 +374,7 @@ function lockElements(mainTab, subTab) {
 function lockTab(mainTab) {
     copyData(player.unlocks[mainTab], START_PLAYER.unlocks[mainTab]);
     for (let subTab in UNLOCKS_DATA[mainTab]) {
-        if (player.unlocks[mainTab][subTab]) { lockElements(mainTab, subTab); }
+        lockElements(mainTab, subTab); 
     }
 }
 
