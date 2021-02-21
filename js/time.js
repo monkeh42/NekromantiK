@@ -295,7 +295,8 @@ function timePrestigeReset() {
     if (timeUpgUnlocked) { player.buildings[3].upgrades[13] = true; }
     showBuildingSubTab('buildingsSubTab');
     save();
-    window.location.reload(true);
+    loadStyles();
+    startInterval();
 }
 
 function resetSpaceCounts() {
