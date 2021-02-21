@@ -287,10 +287,10 @@ function timePrestigeReset() {
     player.antiEssence = new Decimal(START_PLAYER.antiEssence);
     player.corpses = new Decimal(START_PLAYER.corpses)
     resetUnits();
-    resetSpaceCounts();
     if (!hasTUpgrade(24)) { resetBuildings(); }
     showBuildingSubTab('buildingsSubTab');
     resetBuildingResources(true);
+    resetSpaceCounts();
     for (var i=1; i<=NUM_TIMEDIMS; i++) { player.timeDims[i].amount = player.timeDims[i].bought; }
     lockTab('unitsTab');
     if (timeUpgUnlocked) { player.buildings[3].upgrades[13] = true; }
