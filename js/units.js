@@ -117,7 +117,7 @@ function spacePrestigeKey() {
 function spacePrestige() {
     if (canSpacePrestige()) {
         if (player.confirmations['worldPrestige']) {
-            if (!confirm("Are you sure? This will reset ALL of your corpses, units, and astral bricks.")) return
+            if (!confirm('Are you sure? This will reset ALL of your corpses, units, and astral bricks.<br>(These confirmations can be disabled in options)')) return
         }
         player.spaceResets = player.spaceResets.plus(1);
         player.worlds = player.worlds.plus(1);
