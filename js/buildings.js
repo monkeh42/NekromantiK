@@ -157,7 +157,6 @@ function resetBuildings() {
         player.spaceResets = new Decimal(4);
         player.nextSpaceReset = [3, 8];
         copyData(player.thisSacStats, START_PLAYER.thisSacStats);
-        if (hasGUpgrade(2, 22)) { player.worlds = player.worlds.plus(1); }
         player.thisSacStats.totalWorlds = player.worlds;
         player.thisSacStats.bestWorlds = player.worlds;
         return;
@@ -216,7 +215,6 @@ function resetBuildings() {
         lockTab('buildingsTab');
     }
     copyData(player.thisSacStats, START_PLAYER.thisSacStats);
-    if (hasGUpgrade(2, 22)) { player.worlds = player.worlds.plus(1); }
     player.thisSacStats.totalWorlds = player.worlds;
     player.thisSacStats.bestWorlds = player.worlds;
 
