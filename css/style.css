@@ -822,121 +822,125 @@ option:active, option.active {
     background-color: black;
     position: relative;
     font-size: 11pt;
-    width: 300px;
-    height: 300px;
+    width: 250px;
+    min-height: 300px;;
+    text-align: center;
     border: 1px solid #460573;
     border-radius: 4px;
-    margin: 10px;
 }
 
-.buyerEnabledOffContainer {
-    float: left;
-    margin-bottom: 10px;
-}
-
-.buyerEnabledOnContainer {
-    float: right;
+.buyerPriBut {
     position: relative;
-    width: 50%;
-    height: 46px;
-    margin-bottom: 10px;
-}
-
-.buyerEnabledOnContainer:after {
-    content: "LOCKED";
-    position: absolute;
+    color: white;
+    background-color: #1f1f1f;
+    font-style: bold;
+    margin: auto;
     width: 125px;
-    height: 36px;
-    right: 0;
-    top: 0;
-    background-color: #3d3d3d;
-    border: 1px solid #a3a3a3;
-    font-size: 16pt;
+    height: 40px;
+    border: 1px solid #525252;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
     font-weight: bold;
-    padding-top: 15px;
-    opacity: 0.8;
-    z-index: 2;
-    display: none;
+    font-size: 20pt;
+    cursor: pointer;
 }
 
-.buyerEnabledContainer {
-    width: 50%;
-    height: 50px;
-}
-
-.buyerSpeedOffContainer {
-    float: left;
-    margin-bottom: 10px;
-}
-
-.buyerSpeedOnContainer {
-    float: right;
+.buyerEnabledLock {
     position: relative;
-    width: 50%;
-    height: 70px;
-    margin-bottom: 10px;
+    text-align: center;
+    height: 0px;
 }
 
-.buyerSpeedOnContainer:after {
-    content: "LOCKED";
-    position: absolute;
-    width: 97%;
-    height: 48px;
-    right: 3px;
-    top: 0;
-    background-color: #3d3d3d;
-    border: 1px solid #a3a3a3;
-    font-size: 16pt;
-    font-weight: bold;
-    padding-top: 27px;
-    opacity: 0.8;
-    z-index: 2;
-    display: var(--speedDisplay);
-}
-
-.buyerSpeedContainer {
-    width: 50%;
-    height: 70px;
-}
-
-.buyerBulkOffContainer {
-    float: left;
-    margin-bottom: 10px;
-}
-
-.buyerBulkOnContainer {
-    float: right;
+.buyerEnabledBut {
     position: relative;
-    width: 50%;
-    height: 46px;
-    margin-bottom: 10px;
-}
-
-.buyerBulkOnContainer:after {
-    content: "LOCKED";
-    position: absolute;
-    width: 97%;
-    height: 36px;
-    right: 3px;
-    top: 0;
-    background-color: #3d3d3d;
-    border: 1px solid #a3a3a3;
-    padding-top: 13px;
-    font-size: 16pt;
+    color: white;
+    background-color: #1f1f1f;
+    font-style: bold;
+    margin: 0 auto 20px;
+    width: 125px;
+    height: 40px;
+    border: 1px solid #525252;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
     font-weight: bold;
-    opacity: 0.8;
+    font-size: 20pt;
+    cursor: pointer;
+}
+
+.buyerSpeedLock {
+    position: relative;
+    text-align: center;
+    height: 0px;
+}
+
+.buyerSpeedBut {
+    position: relative;
+    color: white;
+    background-color: #1f1f1f;
+    font-style: bold;
+    margin: 0 auto 20px;
+    width: 125px;
+    height: 40px;
+    border: 1px solid #525252;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+    font-size: 20pt;
+    cursor: pointer;
+}
+
+.buyerSpeedLock:after {
+    content: "LOCKED";
+    position: relative;
+    width: 125px;
+    height: 40px;
+    right: 0px;
+    bottom: 56px;
+    padding: 4px 7px;
+    background-color: #666666;
+    color: white;
+    font-size: 18pt;
+    font-weight: bold;
+    border-radius: 4px;
     z-index: 2;
-    display: var(--bulkDisplay);
 }
 
-.buyerBulkContainer {
-    width: 50%;
-    height: 70px;
+.buyerBulkLock {
+    position: relative;
+    text-align: center;
+    height: 0px;
 }
 
-#prestigeBuyerPriorityContainter {
-    top: 180px;
-    width: 100%;
+.buyerBulkBut {
+    position: relative;
+    color: white;
+    background-color: #1f1f1f;
+    font-style: bold;
+    margin: 0 auto 20px;
+    width: 125px;
+    height: 40px;
+    border: 1px solid #525252;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+    font-size: 20pt;
+    cursor: pointer;
+}
+
+.buyerBulkLock:after {
+    content: "LOCKED";
+    position: relative;
+    width: 125px;
+    height: 40px;
+    right: 0px;
+    bottom: 56px;
+    padding: 4px 7px;
+    background-color: #666666;
+    color: white;
+    font-size: 18pt;
+    font-weight: bold;
+    border-radius: 4px;
+    z-index: 2;
 }
 
 .buyerBulkContainerx2 {
@@ -947,32 +951,33 @@ option:active, option.active {
     text-align: center;
 }
 
-.buyerAmountInputContainer {
-    float: left;
-    margin-bottom: 10px;
-}
-
-.buyerAmountOptionsContainer {
-    float: right;
+.buyerAmountTextContainer {
     position: relative;
+    text-align: center;
     width: 125px;
     height: 70px;
-    right: 0;
-    top: 0;
-    margin-bottom: 10px;
+    margin: 0px auto;
 }
 
-.buyerAmountOptionsContainer:after {
+.buyerAdvancedContainer {
+    text-align: center;
+    position: relative;
+    width: 125px;
+    height: 0px;
+    margin: 0px auto;
+}
+
+.buyerAdvancedContainer:after {
     content: "LOCKED";
-    position: absolute;
-    width: 97%;
-    height: 60px;
-    right: 3px;
-    top: 0;
+    position: relative;
+    width: 98px;
+    height: 38px;
+    bottom: 70px;
+    left: 12px;
     background-color: #3d3d3d;
     border: 1px solid #a3a3a3;
-    padding-top: 30px;
-    font-size: 16pt;
+    padding-top: 13px;
+    font-size: 14pt;
     font-weight: bold;
     opacity: 0.8;
     z-index: 2;
@@ -980,49 +985,43 @@ option:active, option.active {
 }
 
 .buyerAmountContainer {
-    width: 50%;
-    height: 70px;
+    width: 100%;
 }
 
-#sacrificeBuyerSpeedOn {
-    float: right;
-    position: relative;
+.buyerOptionsContainerHalf {
+    margin-top: 9px;
     width: 50%;
-    height: 70px;
-    margin-bottom: 10px;
 }
 
-#sacrificeBuyerSpeedOn:after {
+.buyerOptionsContainer {
+    width: 125px;
+    margin: 0px auto;
+    text-align: center;
+}
+
+#sacrificeBuyerAmountsContainer {
+    float: left;
+}
+
+#sacrificeBuyerAdvancedContainer {
+    float: left;
+}
+
+#prestigeLockScreen:after {
     content: "LOCKED";
     position: absolute;
-    width: 97%;
-    height: 48px;
-    right: 3px;
-    top: 0;
+    font-size: 32pt;
+    font-weight: bold;
+    width: 248px;
+    height: 178px !important;
+    right: 0px;
+    top: 0px;
+    border-radius: 4px;
+    padding-top: 120px;
     background-color: #3d3d3d;
     border: 1px solid #a3a3a3;
-    padding-top: 27px;
-    font-size: 16pt;
-    font-weight: bold;
     opacity: 0.8;
     z-index: 2;
-}
-
-#prestigeBuyerOptions:after {
-    content: "LOCKED";
-    position: absolute;
-    font-size: 20pt;
-    font-weight: bold;
-    width: 292px;
-    height: 192px;
-    right: 3px;
-    top: 3px;
-    background-color: #3d3d3d;
-    border: 1px solid #a3a3a3;
-    padding-top: 100px;
-    opacity: 0.8;
-    z-index: 2;
-    display: var(--prestigeDisplay)
 }
 
 .buyerText {
@@ -1031,21 +1030,18 @@ option:active, option.active {
     background-color: black;
     color: white;
     border: 1px solid #460573;
-    margin-top: 10px;
+    margin-top: 20px;
     margin-bottom: 15px;
 }
 
 .buyerList {
-    width: 120px;
-    margin-top: 8px;
+    width: 100px;
     background-color: black;
     color: white;
     border: 1px solid #460573;
     display: inline-block;
     overflow: hidden;
-    vertical-align: top;
-    margin-right: -20px;
-    margin-left: -20px;
+    cursor: pointer;
 }
 
 .buyerDropdown {
@@ -1069,19 +1065,19 @@ option:active, option.active {
 
 .buyerRadio:checked {
     background-color: #170424;
-    border: 3px solid white;
+    border: 1px solid white;
 }
 
 .buyerRadio:checked:hover {
     background-color: #170424;
-    border: 3px solid white;
+    border: 1px solid white;
     opacity: 1;
     cursor: default;
 }
 
 .buyerRadio:hover {
     background-color: #170424;
-    border: 3px solid white;
+    border: 1px solid white;
     opacity: 0.5;
 }
 

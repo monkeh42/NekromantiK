@@ -335,8 +335,8 @@ function autobuyerTick(slow) {
     var tier;
     for (var i=0; i<player.autobuyers.priority.length; i++) {
         tier = player.autobuyers.priority[i];
-        if (player.autobuyers[tier].on && (player.autobuyers[tier].fast || slow)) {
-            if (player.autobuyers[tier].bulk) {
+        if (player.autobuyers[tier]['on'] && (player.autobuyers[tier]['fast'] || slow)) {
+            if (player.autobuyers[tier]['bulk']) {
                 buyMaxUnits(tier);
             } else {
                 buySingleUnit(tier);
@@ -344,11 +344,11 @@ function autobuyerTick(slow) {
         }
     }
     if (player.autobuyers[10].priority) {
-        if (player.autobuyers[10].on && (player.autobuyers[10].fast || slow)) { if (canSpacePrestige()) { spacePrestigeNoConfirm(); } }
-        if (player.autobuyers[9].on && (player.autobuyers[9].fast || slow)) { if (isAutoSacTriggered()) { timePrestigeNoConfirm(); } }
+        if (player.autobuyers[10]['on'] && (player.autobuyers[10]['fast'] || slow)) { if (canSpacePrestige()) { spacePrestigeNoConfirm(); } }
+        if (player.autobuyers[9]['on'] && (player.autobuyers[9]['fast'] || slow)) { if (isAutoSacTriggered()) { timePrestigeNoConfirm(); } }
     } else {
-        if (player.autobuyers[9].on && (player.autobuyers[9].fast || slow)) { if (isAutoSacTriggered()) { timePrestigeNoConfirm(); } }
-        if (player.autobuyers[10].on && (player.autobuyers[10].fast || slow)) { if (canSpacePrestige()) { spacePrestigeNoConfirm(); } }
+        if (player.autobuyers[9]['on'] && (player.autobuyers[9]['fast'] || slow)) { if (isAutoSacTriggered()) { timePrestigeNoConfirm(); } }
+        if (player.autobuyers[10]['on'] && (player.autobuyers[10]['fast'] || slow)) { if (canSpacePrestige()) { spacePrestigeNoConfirm(); } }
     }
 }
 
@@ -644,21 +644,53 @@ function toggleHotkeys() {
 }
 
 function allAuto(n) {
+    let cbox = document.getElementById('allBuyers');
     if (n<0) {
-        for (let i=1; i<10; i++) {
-            player.autobuyers[i].on = false;
+        for (let i=1; i<9; i++) {
+            player.autobuyers[i]['on'] = false;
         }
-        if (player.unlocks['unitsTab']['prestigeBuyer']) { player.autobuyers[10].on = false; }
+        if (cbox.checked) {
+            player.autobuyers[9]['on'] = false;
+            if (player.unlocks['unitsTab']['prestigeBuyer']) { player.autobuyers[10]['on'] = false; }
+        }
     } else if (n>0) {
-        for (let i=1; i<10; i++) {
-            player.autobuyers[i].on = true;
+        for (let i=1; i<9; i++) {
+            player.autobuyers[i]['on'] = true;
         }
-        if (player.unlocks['unitsTab']['prestigeBuyer']) { player.autobuyers[10].on = true; }
+        if (cbox.checked) {
+            player.autobuyers[9]['on'] = true;
+            if (player.unlocks['unitsTab']['prestigeBuyer']) { player.autobuyers[10]['on'] = true; }
+        }
     } else {
-        for (let i=1; i<10; i++) {
-            player.autobuyers[i].on = !player.autobuyers[i].on;
+        for (let i=1; i<9; i++) {
+            player.autobuyers[i]['on'] = !player.autobuyers[i]['on'];
         }
-        if (player.unlocks['unitsTab']['prestigeBuyer']) { player.autobuyers[10].on = !player.autobuyers[10].on; }
+        if (cbox.checked) {
+            player.autobuyers[9]['on'] = !player.autobuyers[9]['on'];
+            if (player.unlocks['unitsTab']['prestigeBuyer']) { player.autobuyers[10]['on'] = !player.autobuyers[10]['on']; }
+        }
+    }
+    updateAutobuyersDisplay();
+}
+
+function allSpeed() {
+    for (let i=1; i<9; i++) {
+        player.autobuyers[i]['fast'] = !player.autobuyers[i]['fast'];
+    }
+    if (document.getElementById('allBuyers').checked) {
+        player.autobuyers[9]['fast'] = !player.autobuyers[9]['fast'];
+        if (player.unlocks['unitsTab']['prestigeBuyer']) { player.autobuyers[10]['fast'] = !player.autobuyers[10]['fast']; }
+    }
+    updateAutobuyersDisplay();
+}
+
+function allAmount() {
+    for (let i=1; i<9; i++) {
+        player.autobuyers[i]['bulk'] = !player.autobuyers[i]['bulk'];
+    }
+    if (document.getElementById('allBuyers').checked) {
+        player.autobuyers[9]['bulk'] = !player.autobuyers[9]['bulk'];
+        if (player.unlocks['unitsTab']['prestigeBuyer']) { player.autobuyers[10]['bulk'] = !player.autobuyers[10]['bulk']; }
     }
     updateAutobuyersDisplay();
 }

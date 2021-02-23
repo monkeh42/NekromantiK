@@ -288,14 +288,30 @@
                         <div style="height: 100%;"></div>
                     </tr>
                     <tr>
-                        <td>
-                            <button id="toggleAllAuto" class="allAutoBut" onclick="allAuto(0)">Toggle All On/Off</button>
+                        <td colspan="2" width="50%">
+                            <input type="radio" id="allBuyers" name="allBuyersCheck" class="buyerRadio" checked><label for="allBuyers">toggle all autobuyers</label>
                         </td>
-                        <td>
-                            <button id="allAutoOn" class="allAutoBut" onclick="allAuto(1)">Turn All On</button>
+                        <td colspan="2" width="50%">
+                            <input type="radio" id="unitsOnly" name="allBuyersCheck" class="buyerRadio"><label for="unitsOnly">toggle unit autobuyers</label>
                         </td>
-                        <td>
-                            <button id="allAutoOff" class="allAutoBut" onclick="allAuto(-1)">Turn All Off</button>
+                    </tr>
+                    <tr>
+                        <td width="33.3%">
+                            <button id="toggleAllAuto" class="allAutoBut" onclick="allAuto(0)" style="float: right;">Toggle All On/Off</button>
+                        </td>
+                        <td colspan="2">
+                            <button id="allAutoOn" class="allAutoBut" onclick="allAuto(1)" style="margin: 0 auto;">Turn All On</button>
+                        </td>
+                        <td width="33.3%">
+                            <button id="allAutoOff" class="allAutoBut" onclick="allAuto(-1)" style="float: left;">Turn All Off</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button id="toggleAllSpeed" class="allAutoBut" onclick="allSpeed()" style="float: right;">Toggle All Speed</button>
+                        </td>
+                        <td colspan="2">
+                            <button id="toggleAllAmount" class="allAutoBut" onclick="allAmount()" style="float: left;">Toggle All Amount</button>
                         </td>
                     </tr>
                 </table>
@@ -303,428 +319,259 @@
                     <tr>
                         <td>
                             <div id="zombieBuyerOptions" class="autobuyerOptions">
-                                <h2>Zombies</h2>
-                                <div id="zombieBuyerEnabledContainter" class="buyerOptionsContainer">
-                                    <div id="zombieBuyerEnabledOff" class="buyerEnabledOffContainer buyerEnabledContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="zombieBuyerOff" name="zombieBuyerEnabled" value="off" class="buyerRadio" checked><br>
-                                        <label for="zombieBuyerOff">off</label>
+                                <div class="buyerFrame">
+                                    <h2>Zombies</h2>
+                                    <div id="zombieBuyerEnabledContainer" class="buyerOptionsContainer">
+                                        <label for="zombieEnabledBut">on/off:</label><!-- --><button onclick="updateSingleBuyer(1, 'on', 'zombieEnabledBut')" name="zombieEnabledBut" id="zombieEnabledBut" class="buyerEnabledBut">OFF</button><!-- -->
+                                        <div class="buyerEnabledLock"></div>
                                     </div>
-                                    <div id="zombieBuyerEnabledOn" class="buyerEnabledOnContainer buyerEnabledContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="zombieBuyerOn" name="zombieBuyerEnabled" value="on" class="buyerRadio onBuyerRadio"><br>
-                                        <label for="zombieBuyerOn">on</label>
+                                    <div id="zombieBuyerSpeedContainer" class="buyerOptionsContainer">
+                                        <label for="zombieSpeedBut">speed:</label><!-- --><button onclick="updateSingleBuyer(1, 'fast', 'zombieSpeedBut', 'zombieSpeedBut')" name="zombieSpeedBut" id="zombieSpeedBut" class="buyerSpeedBut" disabled>SLOW</button><!-- -->
+                                        <div id="zombieSpeedLock" class="buyerSpeedLock"></div>
                                     </div>
-                                </div>
-                                <div id="zombieBuyerSpeedContainter" class="buyerOptionsContainer">
-                                    <div id="zombieBuyerSpeedOff" class="buyerSpeedOffContainer buyerSpeedContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="zombieBuyerSlow" name="zombieBuyerSpeed" value="slow" class="buyerRadio" checked><br>
-                                        <label for="zombieBuyerSlow">slow (every 15 seconds)</label>
+                                    <div id="zombieBuyerBulkContainer" class="buyerOptionsContainer">
+                                        <label for="zombieBulkBut">amount:</label><!-- --><button onclick="updateSingleBuyer(1, 'bulk', 'zombieBulkBut', 'zombieBulkBut')" name="zombieBulkBut" id="zombieBulkBut" class="buyerBulkBut" disabled>SINGLE</button><!-- -->
+                                        <div id="zombieBulkLock" class="buyerBulkLock"></div>
                                     </div>
-                                    <div id="zombieBuyerSpeedOn" class="buyerSpeedOnContainer buyerSpeedContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="zombieBuyerFast" name="zombieBuyerSpeed" value="fast" class="buyerRadio speedBuyerRadio" disabled><br>
-                                        <label for="zombieBuyerFast">fast (every tick)</label>
+                                    <div id="zombieBuyerPriorityContainer" class="buyerOptionsContainer priorityContainer">
+                                        <label for="zombiePriority">Priority:</label>
+                                        <select oninput="updateBuyerOrder(1, 'zombiePriority')" id="zombiePriority" name="zombiePriority" class="buyerDropdown">
+                                            <option id="11" class="priorityOptions" value="1" selected>1</option>
+                                            <option id="12" class="priorityOptions" value="2">2</option>
+                                            <option id="13" class="priorityOptions" value="3">3</option>
+                                            <option id="14" class="priorityOptions" value="4">4</option>
+                                            <option id="15" class="priorityOptions" value="5">5</option>
+                                            <option id="16" class="priorityOptions" value="6">6</option>
+                                            <option id="17" class="priorityOptions" value="7">7</option>
+                                            <option id="18" class="priorityOptions" value="8">8</option>
+                                        </select>
                                     </div>
-                                </div>
-                                <div id="zombieBuyerBulkContainter" class="buyerOptionsContainer">
-                                    <div id="zombieBuyerBulkOff" class="buyerBulkOffContainer buyerBulkContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="zombieBuysOne" name="zombieBuyerBulk" value="off" class="buyerRadio" checked><br>
-                                        <label for="zombieBuysOne">buys singles</label>
-                                    </div>
-                                    <div id="zombieBuyerBulkOn" class="buyerBulkOnContainer buyerBulkContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="zombieBuysBulk" name="zombieBuyerBulk" value="on" class="buyerRadio bulkBuyerRadio" disabled><br>
-                                        <label for="zombieBuysBulk">buys max</label>
-                                    </div>
-                                </div>
-                                <div id="zombieBuyerPriorityContainter" class="buyerOptionsContainer priorityContainer">
-                                    <label for="zombiePriority">Priority:</label>
-                                    <select oninput="updateAutobuyers()" id="zombiePriority" name="zombiePriority" class="buyerDropdown">
-                                        <option id="11" class="priorityOptions" value="1" selected>1</option>
-                                        <option id="12" class="priorityOptions" value="2">2</option>
-                                        <option id="13" class="priorityOptions" value="3">3</option>
-                                        <option id="14" class="priorityOptions" value="4">4</option>
-                                        <option id="15" class="priorityOptions" value="5">5</option>
-                                        <option id="16" class="priorityOptions" value="6">6</option>
-                                        <option id="17" class="priorityOptions" value="7">7</option>
-                                        <option id="18" class="priorityOptions" value="8">8</option>
-                                    </select>
-                                </div>
                             </div>
+                        </div>
                         </td>
                         <td>
                             <div id="abominationBuyerOptions" class="autobuyerOptions">
-                                <h2>Abominations</h2>
-                                <div id="abominationBuyerEnabledContainter" class="buyerOptionsContainer">
-                                    <div id="abominationBuyerEnabledOff" class="buyerEnabledOffContainer buyerEnabledContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="abominationBuyerOff" name="abominationBuyerEnabled" value="off" class="buyerRadio" checked><br>
-                                        <label for="abominationBuyerOff">off</label>
+                                <div class="buyerFrame">
+                                    <h2>Abominations</h2>
+                                    <div id="abominationBuyerEnabledContainer" class="buyerOptionsContainer">
+                                        <label for="abominationEnabledBut">on/off:</label><!-- --><button onclick="updateSingleBuyer(2, 'on', 'abominationEnabledBut')" name="abominationEnabledBut" id="abominationEnabledBut" class="buyerEnabledBut">OFF</button><!-- -->
+                                        <div class="buyerEnabledLock"></div>
                                     </div>
-                                    <div id="abominationBuyerEnabledOn" class="buyerEnabledOnContainer buyerEnabledContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="abominationBuyerOn" name="abominationBuyerEnabled" value="on" class="buyerRadio onBuyerRadio"><br>
-                                        <label for="abominationBuyerOn">on</label>
+                                    <div id="abominationBuyerSpeedContainer" class="buyerOptionsContainer">
+                                        <label for="abominationSpeedBut">speed:</label><!-- --><button onclick="updateSingleBuyer(2, 'fast', 'abominationSpeedBut')" name="abominationSpeedBut" id="abominationSpeedBut" class="buyerSpeedBut" disabled>SLOW</button><!-- -->
+                                        <div id="abominationSpeedLock" class="buyerSpeedLock"></div>
+                                        
                                     </div>
-                                </div>
-                                <div id="abominationBuyerSpeedContainter" class="buyerOptionsContainer">
-                                    <div id="abominationBuyerSpeedOff" class="buyerSpeedOffContainer buyerSpeedContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="abominationBuyerSlow" name="abominationBuyerSpeed" value="slow" class="buyerRadio" checked><br>
-                                        <label for="abominationBuyerSlow">slow (every 15 seconds)</label>
+                                    <div id="abominationBuyerBulkContainer" class="buyerOptionsContainer">
+                                        <label for="abominationBulkBut">amount:</label><!-- --><button onclick="updateSingleBuyer(2, 'bulk', 'abominationBulkBut')" name="abominationBulkBut" id="abominationBulkBut" class="buyerBulkBut" disabled>SINGLE</button><!-- -->
+                                        <div id="abominationBulkLock" class="buyerBulkLock"></div>
                                     </div>
-                                    <div id="abominationBuyerSpeedOn" class="buyerSpeedOnContainer buyerSpeedContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="abominationBuyerFast" name="abominationBuyerSpeed" value="fast" class="buyerRadio speedBuyerRadio" disabled><br>
-                                        <label for="abominationBuyerFast">fast (every tick)</label>
+                                    <div id="abominationBuyerPriorityContainer" class="buyerOptionsContainer priorityContainer">
+                                        <label for="abominationPriority">Priority:</label>
+                                        <select oninput="updateBuyerOrder(2, 'abominationPriority')" id="abominationPriority" name="abominationPriority" class="buyerDropdown">
+                                            <option id="21" class="priorityOptions" value="1">1</option>
+                                            <option id="22" class="priorityOptions" value="2" selected>2</option>
+                                            <option id="23" class="priorityOptions" value="3">3</option>
+                                            <option id="24" class="priorityOptions" value="4">4</option>
+                                            <option id="25" class="priorityOptions" value="5">5</option>
+                                            <option id="26" class="priorityOptions" value="6">6</option>
+                                            <option id="27" class="priorityOptions" value="7">7</option>
+                                            <option id="28" class="priorityOptions" value="8">8</option>
+                                        </select>
                                     </div>
-                                </div>
-                                <div id="abominationBuyerBulkContainter" class="buyerOptionsContainer">
-                                    <div id="abominationBuyerBulkOff" class="buyerBulkOffContainer buyerBulkContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="abominationBuysOne" name="abominationBuyerBulk" value="off" class="buyerRadio" checked><br>
-                                        <label for="abominationBuysOne">buys singles</label>
-                                    </div>
-                                    <div id="abominationBuyerBulkOn" class="buyerBulkOnContainer buyerBulkContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="abominationBuysBulk" name="abominationBuyerBulk" value="on" class="buyerRadio bulkBuyerRadio" disabled><br>
-                                        <label for="abominationBuysBulk">buys max</label>
-                                    </div>
-                                </div>
-                                <div id="abominationBuyerPriorityContainter" class="buyerOptionsContainer priorityContainer">
-                                    <label for="abominationPriority">Priority:</label>
-                                    <select oninput="updateAutobuyers()" id="abominationPriority" name="abominationPriority" class="buyerDropdown">
-                                        <option id="21" class="priorityOptions" value="1">1</option>
-                                        <option id="22" class="priorityOptions" value="2" selected>2</option>
-                                        <option id="23" class="priorityOptions" value="3">3</option>
-                                        <option id="24" class="priorityOptions" value="4">4</option>
-                                        <option id="25" class="priorityOptions" value="5">5</option>
-                                        <option id="26" class="priorityOptions" value="6">6</option>
-                                        <option id="27" class="priorityOptions" value="7">7</option>
-                                        <option id="28" class="priorityOptions" value="8">8</option>
-                                    </select>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div id="skeletonmageBuyerOptions" class="autobuyerOptions">
-                                <h2>Skeleton Mages</h2>
-                                <div id="skeletonmageBuyerEnabledContainter" class="buyerOptionsContainer">
-                                    <div id="skeletonmageBuyerEnabledOff" class="buyerEnabledOffContainer buyerEnabledContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="skeletonmageBuyerOff" name="skeletonmageBuyerEnabled" value="off" class="buyerRadio" checked><br>
-                                        <label for="skeletonmageBuyerOff">off</label>
+                                <div class="buyerFrame">
+                                    <h2>Skeleton Mages</h2>
+                                    <div id="skeletonmageBuyerEnabledContainer" class="buyerOptionsContainer">
+                                        <label for="skeletonmageEnabledBut">on/off:</label><!-- --><button onclick="updateSingleBuyer(3, 'on', 'skeletonmageEnabledBut')" name="skeletonmageEnabledBut" id="skeletonmageEnabledBut" class="buyerEnabledBut">OFF</button><!-- -->
+                                        <div class="buyerEnabledLock"></div>
                                     </div>
-                                    <div id="skeletonmageBuyerEnabledOn" class="buyerEnabledOnContainer buyerEnabledContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="skeletonmageBuyerOn" name="skeletonmageBuyerEnabled" value="on" class="buyerRadio onBuyerRadio"><br>
-                                        <label for="skeletonmageBuyerOn">on</label>
+                                    <div id="skeletonmageBuyerSpeedContainer" class="buyerOptionsContainer">
+                                        <label for="skeletonmageSpeedBut">speed:</label><!-- --><button onclick="updateSingleBuyer(3, 'fast', 'skeletonmageSpeedBut')" name="skeletonmageSpeedBut" id="skeletonmageSpeedBut" class="buyerSpeedBut" disabled>SLOW</button><!-- -->
+                                        <div id="skeletonmageSpeedLock" class="buyerSpeedLock"></div>
                                     </div>
-                                </div>
-                                <div id="skeletonmageBuyerSpeedContainter" class="buyerOptionsContainer">
-                                    <div id="skeletonmageBuyerSpeedOff" class="buyerSpeedOffContainer buyerSpeedContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="skeletonmageBuyerSlow" name="skeletonmageBuyerSpeed" value="slow" class="buyerRadio" checked><br>
-                                        <label for="skeletonmageBuyerSlow">slow (every 15 seconds)</label>
+                                    <div id="skeletonmageBuyerBulkContainer" class="buyerOptionsContainer">
+                                        <label for="skeletonmageBulkBut">amount:</label><!-- --><button onclick="updateSingleBuyer(3, 'bulk', 'skeletonmageBulkBut')" name="skeletonmageBulkBut" id="skeletonmageBulkBut" class="buyerBulkBut" disabled>SINGLE</button><!-- -->
+                                        <div id="skeletonmageBulkLock" class="buyerBulkLock"></div>
                                     </div>
-                                    <div id="skeletonmageBuyerSpeedOn" class="buyerSpeedOnContainer buyerSpeedContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="skeletonmageBuyerFast" name="skeletonmageBuyerSpeed" value="fast" class="buyerRadio speedBuyerRadio" disabled><br>
-                                        <label for="skeletonmageBuyerFast">fast (every tick)</label>
-                                    </div>
-                                </div>
-                                <div id="skeletonmageBuyerBulkContainter" class="buyerOptionsContainer">
-                                    <div id="skeletonmageBuyerBulkOff" class="buyerBulkOffContainer buyerBulkContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="skeletonmageBuysOne" name="skeletonmageBuyerBulk" value="off" class="buyerRadio" checked><br>
-                                        <label for="skeletonmageBuysOne">buys singles</label>
-                                    </div>
-                                    <div id="skeletonmageBuyerBulkOn" class="buyerBulkOnContainer buyerBulkContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="skeletonmageBuysBulk" name="skeletonmageBuyerBulk" value="on" class="buyerRadio bulkBuyerRadio" disabled><br>
-                                        <label for="skeletonmageBuysBulk">buys max</label>
+                                    <div id="skeletonmageBuyerPriorityContainer" class="buyerOptionsContainer priorityContainer">
+                                        <label for="skeletonmagePriority">Priority:</label>
+                                        <select oninput="updateBuyerOrder(3, 'skeletonmagePriority')" id="skeletonmagePriority" name="skeletonmagePriority" class="buyerDropdown">
+                                            <option id="31" class="priorityOptions" value="1">1</option>
+                                            <option id="32" class="priorityOptions" value="2">2</option>
+                                            <option id="33" class="priorityOptions" value="3" selected>3</option>
+                                            <option id="34" class="priorityOptions" value="4">4</option>
+                                            <option id="35" class="priorityOptions" value="5">5</option>
+                                            <option id="36" class="priorityOptions" value="6">6</option>
+                                            <option id="37" class="priorityOptions" value="7">7</option>
+                                            <option id="38" class="priorityOptions" value="8">8</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <div id="skeletonmageBuyerPriorityContainter" class="buyerOptionsContainer priorityContainer">
-                                    <label for="skeletonmagePriority">Priority:</label>
-                                    <select oninput="updateAutobuyers()" id="skeletonmagePriority" name="skeletonmagePriority" class="buyerDropdown">
-                                        <option id="31" class="priorityOptions" value="1">1</option>
-                                        <option id="32" class="priorityOptions" value="2">2</option>
-                                        <option id="33" class="priorityOptions" value="3" selected>3</option>
-                                        <option id="34" class="priorityOptions" value="4">4</option>
-                                        <option id="35" class="priorityOptions" value="5">5</option>
-                                        <option id="36" class="priorityOptions" value="6">6</option>
-                                        <option id="37" class="priorityOptions" value="7">7</option>
-                                        <option id="38" class="priorityOptions" value="8">8</option>
-                                    </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div id="bansheeBuyerOptions" class="autobuyerOptions">
+                                <div class="buyerFrame">
+                                    <h2>Banshees</h2>
+                                    <div id="bansheeBuyerEnabledContainer" class="buyerOptionsContainer">
+                                        <label for="bansheeEnabledBut">on/off:</label><!-- --><button onclick="updateSingleBuyer(4, 'on', 'bansheeEnabledBut')" name="bansheeEnabledBut" id="bansheeEnabledBut" class="buyerEnabledBut">OFF</button><!-- -->
+                                        <div class="buyerEnabledLock"></div>
+                                    </div>
+                                    <div id="bansheeBuyerSpeedContainer" class="buyerOptionsContainer">
+                                        <label for="bansheeSpeedBut">speed:</label><!-- --><button onclick="updateSingleBuyer(4, 'fast', 'bansheeSpeedBut')" name="bansheeSpeedBut" id="bansheeSpeedBut" class="buyerSpeedBut" disabled>SLOW</button><!-- -->
+                                        <div id="bansheeSpeedLock" class="buyerSpeedLock"></div>
+                                    </div>
+                                    <div id="bansheeBuyerBulkContainer" class="buyerOptionsContainer">
+                                        <label for="bansheeBulkBut">amount:</label><!-- --><button onclick="updateSingleBuyer(4, 'bulk', 'bansheeBulkBut')" name="bansheeBulkBut" id="bansheeBulkBut" class="buyerBulkBut" disabled>SINGLE</button><!-- -->
+                                        <div id="bansheeBulkLock" class="buyerBulkLock"></div>
+                                    </div>
+                                    <div id="bansheeBuyerPriorityContainer" class="buyerOptionsContainer priorityContainer">
+                                        <label for="bansheePriority">Priority:</label>
+                                        <select oninput="updateBuyerOrder(4, 'bansheePriority')" id="bansheePriority" name="bansheePriority" class="buyerDropdown">
+                                            <option id="41" class="priorityOptions" value="1">1</option>
+                                            <option id="42" class="priorityOptions" value="2">2</option>
+                                            <option id="43" class="priorityOptions" value="3">3</option>
+                                            <option id="44" class="priorityOptions" value="4" selected>4</option>
+                                            <option id="45" class="priorityOptions" value="5">5</option>
+                                            <option id="46" class="priorityOptions" value="6">6</option>
+                                            <option id="47" class="priorityOptions" value="7">7</option>
+                                            <option id="48" class="priorityOptions" value="8">8</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <div id="bansheeBuyerOptions" class="autobuyerOptions">
-                                <h2>Banshees</h2>
-                                <div id="bansheeBuyerEnabledContainter" class="buyerOptionsContainer">
-                                    <div id="bansheeBuyerEnabledOff" class="buyerEnabledOffContainer buyerEnabledContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="bansheeBuyerOff" name="bansheeBuyerEnabled" value="off" class="buyerRadio" checked><br>
-                                        <label for="bansheeBuyerOff">off</label>
-                                    </div>
-                                    <div id="bansheeBuyerEnabledOn" class="buyerEnabledOnContainer buyerEnabledContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="bansheeBuyerOn" name="bansheeBuyerEnabled" value="on" class="buyerRadio onBuyerRadio"><br>
-                                        <label for="bansheeBuyerOn">on</label>
-                                    </div>
-                                </div>
-                                <div id="bansheeBuyerSpeedContainter" class="buyerOptionsContainer">
-                                    <div id="bansheeBuyerSpeedOff" class="buyerSpeedOffContainer buyerSpeedContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="bansheeBuyerSlow" name="bansheeBuyerSpeed" value="slow" class="buyerRadio" checked><br>
-                                        <label for="bansheeBuyerSlow">slow (every 15 seconds)</label>
-                                    </div>
-                                    <div id="bansheeBuyerSpeedOn" class="buyerSpeedOnContainer buyerSpeedContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="bansheeBuyerFast" name="bansheeBuyerSpeed" value="fast" class="buyerRadio speedBuyerRadio" disabled><br>
-                                        <label for="bansheeBuyerFast">fast (every tick)</label>
-                                    </div>
-                                </div>
-                                <div id="bansheeBuyerBulkContainter" class="buyerOptionsContainer">
-                                    <div id="bansheeBuyerBulkOff" class="buyerBulkOffContainer buyerBulkContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="bansheeBuysOne" name="bansheeBuyerBulk" value="off" class="buyerRadio" checked><br>
-                                        <label for="bansheeBuysOne">buys singles</label>
-                                    </div>
-                                    <div id="bansheeBuyerBulkOn" class="buyerBulkOnContainer buyerBulkContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="bansheeBuysBulk" name="bansheeBuyerBulk" value="on" class="buyerRadio bulkBuyerRadio" disabled><br>
-                                        <label for="bansheeBuysBulk">buys max</label>
-                                    </div>
-                                </div>
-                                <div id="bansheeBuyerPriorityContainter" class="buyerOptionsContainer priorityContainer">
-                                    <label for="bansheePriority">Priority:</label>
-                                    <select oninput="updateAutobuyers()" id="bansheePriority" name="bansheePriority" class="buyerDropdown">
-                                        <option id="41" class="priorityOptions" value="1">1</option>
-                                        <option id="42" class="priorityOptions" value="2">2</option>
-                                        <option id="43" class="priorityOptions" value="3">3</option>
-                                        <option id="44" class="priorityOptions" value="4" selected>4</option>
-                                        <option id="45" class="priorityOptions" value="5">5</option>
-                                        <option id="46" class="priorityOptions" value="6">6</option>
-                                        <option id="47" class="priorityOptions" value="7">7</option>
-                                        <option id="48" class="priorityOptions" value="8">8</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
                             <div id="lichBuyerOptions" class="autobuyerOptions">
-                                <h2>Liches</h2>
-                                <div id="lichBuyerEnabledContainter" class="buyerOptionsContainer">
-                                    <div id="lichBuyerEnabledOff" class="buyerEnabledOffContainer buyerEnabledContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="lichBuyerOff" name="lichBuyerEnabled" value="off" class="buyerRadio" checked><br>
-                                        <label for="lichBuyerOff">off</label>
+                                <div class="buyerFrame">
+                                    <h2>Liches</h2>
+                                    <div id="lichBuyerEnabledContainer" class="buyerOptionsContainer">
+                                        <label for="lichEnabledBut">on/off:</label><!-- --><button onclick="updateSingleBuyer(5, 'on', 'lichEnabledBut')" name="lichEnabledBut" id="lichEnabledBut" class="buyerEnabledBut">OFF</button><!-- -->
+                                        <div class="buyerEnabledLock"></div>
                                     </div>
-                                    <div id="lichBuyerEnabledOn" class="buyerEnabledOnContainer buyerEnabledContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="lichBuyerOn" name="lichBuyerEnabled" value="on" class="buyerRadio onBuyerRadio"><br>
-                                        <label for="lichBuyerOn">on</label>
+                                    <div id="lichBuyerSpeedContainer" class="buyerOptionsContainer">
+                                        <label for="lichSpeedBut">speed:</label><!-- --><button onclick="updateSingleBuyer(5, 'fast', 'lichSpeedBut')" name="lichSpeedBut" id="lichSpeedBut" class="buyerSpeedBut" disabled>SLOW</button><!-- -->
+                                        <div id="lichSpeedLock" class="buyerSpeedLock"></div>
                                     </div>
-                                </div>
-                                <div id="lichBuyerSpeedContainter" class="buyerOptionsContainer">
-                                    <div id="lichBuyerSpeedOff" class="buyerSpeedOffContainer buyerSpeedContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="lichBuyerSlow" name="lichBuyerSpeed" value="slow" class="buyerRadio" checked><br>
-                                        <label for="lichBuyerSlow">slow (every 15 seconds)</label>
+                                    <div id="lichBuyerBulkContainer" class="buyerOptionsContainer">
+                                        <label for="lichBulkBut">amount:</label><!-- --><button onclick="updateSingleBuyer(5, 'bulk', 'lichBulkBut')" name="lichBulkBut" id="lichBulkBut" class="buyerBulkBut" disabled>SINGLE</button><!-- -->
+                                        <div id="lichBulkLock" class="buyerBulkLock"></div>
                                     </div>
-                                    <div id="lichBuyerSpeedOn" class="buyerSpeedOnContainer buyerSpeedContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="lichBuyerFast" name="lichBuyerSpeed" value="fast" class="buyerRadio speedBuyerRadio" disabled><br>
-                                        <label for="lichBuyerFast">fast (every tick)</label>
+                                    <div id="lichBuyerPriorityContainer" class="buyerOptionsContainer priorityContainer">
+                                        <label for="lichPriority">Priority:</label>
+                                        <select oninput="updateBuyerOrder(5, 'lichPriority')" id="lichPriority" name="lichPriority" class="buyerDropdown">
+                                            <option id="51" class="priorityOptions" value="1">1</option>
+                                            <option id="52" class="priorityOptions" value="2">2</option>
+                                            <option id="53" class="priorityOptions" value="3">3</option>
+                                            <option id="54" class="priorityOptions" value="4">4</option>
+                                            <option id="55" class="priorityOptions" value="5" selected>5</option>
+                                            <option id="56" class="priorityOptions" value="6">6</option>
+                                            <option id="57" class="priorityOptions" value="7">7</option>
+                                            <option id="58" class="priorityOptions" value="8">8</option>
+                                        </select>
                                     </div>
-                                </div>
-                                <div id="lichBuyerBulkContainter" class="buyerOptionsContainer">
-                                    <div id="lichBuyerBulkOff" class="buyerBulkOffContainer buyerBulkContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="lichBuysOne" name="lichBuyerBulk" value="off" class="buyerRadio" checked><br>
-                                        <label for="lichBuysOne">buys singles</label>
-                                    </div>
-                                    <div id="lichBuyerBulkOn" class="buyerBulkOnContainer buyerBulkContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="lichBuysBulk" name="lichBuyerBulk" value="on" class="buyerRadio bulkBuyerRadio" disabled><br>
-                                        <label for="lichBuysBulk">buys max</label>
-                                    </div>
-                                </div>
-                                <div id="lichBuyerPriorityContainter" class="buyerOptionsContainer priorityContainer">
-                                    <label for="lichPriority">Priority:</label>
-                                    <select oninput="updateAutobuyers()" id="lichPriority" name="lichPriority" class="buyerDropdown">
-                                        <option id="51" class="priorityOptions" value="1">1</option>
-                                        <option id="52" class="priorityOptions" value="2">2</option>
-                                        <option id="53" class="priorityOptions" value="3">3</option>
-                                        <option id="54" class="priorityOptions" value="4">4</option>
-                                        <option id="55" class="priorityOptions" value="5" selected>5</option>
-                                        <option id="56" class="priorityOptions" value="6">6</option>
-                                        <option id="57" class="priorityOptions" value="7">7</option>
-                                        <option id="58" class="priorityOptions" value="8">8</option>
-                                    </select>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div id="behemothBuyerOptions" class="autobuyerOptions">
-                                <h2>Behemoths</h2>
-                                <div id="behemothBuyerEnabledContainter" class="buyerOptionsContainer">
-                                    <div id="behemothBuyerEnabledOff" class="buyerEnabledOffContainer buyerEnabledContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="behemothBuyerOff" name="behemothBuyerEnabled" value="off" class="buyerRadio" checked><br>
-                                        <label for="behemothBuyerOff">off</label>
+                                <div class="buyerFrame">
+                                    <h2>Behemoths</h2>
+                                    <div id="behemothBuyerEnabledContainer" class="buyerOptionsContainer">
+                                        <label for="behemothEnabledBut">on/off:</label><!-- --><button onclick="updateSingleBuyer(6, 'on', 'behemothEnabledBut')" name="behemothEnabledBut" id="behemothEnabledBut" class="buyerEnabledBut">OFF</button><!-- -->
+                                        <div class="buyerEnabledLock"></div>
                                     </div>
-                                    <div id="behemothBuyerEnabledOn" class="buyerEnabledOnContainer buyerEnabledContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="behemothBuyerOn" name="behemothBuyerEnabled" value="on" class="buyerRadio onBuyerRadio"><br>
-                                        <label for="behemothBuyerOn">on</label>
+                                    <div id="behemothBuyerSpeedContainer" class="buyerOptionsContainer">
+                                        <label for="behemothSpeedBut">speed:</label><!-- --><button onclick="updateSingleBuyer(6, 'fast', 'behemothSpeedBut')" name="behemothSpeedBut" id="behemothSpeedBut" class="buyerSpeedBut" disabled>SLOW</button><!-- -->
+                                        <div id="behemothSpeedLock" class="buyerSpeedLock"></div>
                                     </div>
-                                </div>
-                                <div id="behemothBuyerSpeedContainter" class="buyerOptionsContainer">
-                                    <div id="behemothBuyerSpeedOff" class="buyerSpeedOffContainer buyerSpeedContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="behemothBuyerSlow" name="behemothBuyerSpeed" value="slow" class="buyerRadio" checked><br>
-                                        <label for="behemothBuyerSlow">slow (every 15 seconds)</label>
+                                    <div id="behemothBuyerBulkContainer" class="buyerOptionsContainer">
+                                        <label for="behemothBulkBut">amount:</label><!-- --><button onclick="updateSingleBuyer(6, 'bulk', 'behemothBulkBut')" name="behemothBulkBut" id="behemothBulkBut" class="buyerBulkBut" disabled>SINGLE</button><!-- -->
+                                        <div id="behemothBulkLock" class="buyerBulkLock"></div>
                                     </div>
-                                    <div id="behemothBuyerSpeedOn" class="buyerSpeedOnContainer buyerSpeedContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="behemothBuyerFast" name="behemothBuyerSpeed" value="fast" class="buyerRadio speedBuyerRadio" disabled><br>
-                                        <label for="behemothBuyerFast">fast (every tick)</label>
+                                    <div id="behemothBuyerPriorityContainer" class="buyerOptionsContainer priorityContainer">
+                                        <label for="behemothPriority">Priority:</label>
+                                        <select oninput="updateBuyerOrder(6, 'behemothPriority')" id="behemothPriority" name="behemothPriority" class="buyerDropdown">
+                                            <option id="61" class="priorityOptions" value="1">1</option>
+                                            <option id="62" class="priorityOptions" value="2">2</option>
+                                            <option id="63" class="priorityOptions" value="3">3</option>
+                                            <option id="64" class="priorityOptions" value="4">4</option>
+                                            <option id="65" class="priorityOptions" value="5">5</option>
+                                            <option id="66" class="priorityOptions" value="6" selected>6</option>
+                                            <option id="67" class="priorityOptions" value="7">7</option>
+                                            <option id="68" class="priorityOptions" value="8">8</option>
+                                        </select>
                                     </div>
-                                </div>
-                                <div id="behemothBuyerBulkContainter" class="buyerOptionsContainer">
-                                    <div id="behemothBuyerBulkOff" class="buyerBulkOffContainer buyerBulkContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="behemothBuysOne" name="behemothBuyerBulk" value="off" class="buyerRadio" checked><br>
-                                        <label for="behemothBuysOne">buys singles</label>
-                                    </div>
-                                    <div id="behemothBuyerBulkOn" class="buyerBulkOnContainer buyerBulkContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="behemothBuysBulk" name="behemothBuyerBulk" value="on" class="buyerRadio bulkBuyerRadio" disabled><br>
-                                        <label for="behemothBuysBulk">buys max</label>
-                                    </div>
-                                </div>
-                                <div id="behemothBuyerPriorityContainter" class="buyerOptionsContainer priorityContainer">
-                                    <label for="behemothPriority">Priority:</label>
-                                    <select oninput="updateAutobuyers()" id="behemothPriority" name="behemothPriority" class="buyerDropdown">
-                                        <option id="61" class="priorityOptions" value="1">1</option>
-                                        <option id="62" class="priorityOptions" value="2">2</option>
-                                        <option id="63" class="priorityOptions" value="3">3</option>
-                                        <option id="64" class="priorityOptions" value="4">4</option>
-                                        <option id="65" class="priorityOptions" value="5">5</option>
-                                        <option id="66" class="priorityOptions" value="6" selected>6</option>
-                                        <option id="67" class="priorityOptions" value="7">7</option>
-                                        <option id="68" class="priorityOptions" value="8">8</option>
-                                    </select>
                                 </div>
                             </div>
                         </td>
-                    </tr>
-                    <tr>
                         <td>
                             <div id="ancientoneBuyerOptions" class="autobuyerOptions">
-                                <h2>Ancient Ones</h2>
-                                <div id="ancientoneBuyerEnabledContainter" class="buyerOptionsContainer">
-                                    <div id="ancientoneBuyerEnabledOff" class="buyerEnabledOffContainer buyerEnabledContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="ancientoneBuyerOff" name="ancientoneBuyerEnabled" value="off" class="buyerRadio" checked><br>
-                                        <label for="ancientoneBuyerOff">off</label>
+                                <div class="buyerFrame">
+                                    <h2>Ancient Ones</h2>
+                                    <div id="ancientoneBuyerEnabledContainer" class="buyerOptionsContainer">
+                                        <label for="ancientoneEnabledBut">on/off:</label><!-- --><button onclick="updateSingleBuyer(7, 'on', 'ancientoneEnabledBut')" name="ancientoneEnabledBut" id="ancientoneEnabledBut" class="buyerEnabledBut">OFF</button><!-- -->
+                                        <div class="buyerEnabledLock"></div>
                                     </div>
-                                    <div id="ancientoneBuyerEnabledOn" class="buyerEnabledOnContainer buyerEnabledContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="ancientoneBuyerOn" name="ancientoneBuyerEnabled" value="on" class="buyerRadio onBuyerRadio"><br>
-                                        <label for="ancientoneBuyerOn">on</label>
+                                    <div id="ancientoneBuyerSpeedContainer" class="buyerOptionsContainer">
+                                        <label for="ancientoneSpeedBut">speed:</label><!-- --><button onclick="updateSingleBuyer(7, 'fast', 'ancientoneSpeedBut')" name="ancientoneSpeedBut" id="ancientoneSpeedBut" class="buyerSpeedBut" disabled>SLOW</button><!-- -->
+                                        <div id="ancientoneSpeedLock" class="buyerSpeedLock"></div>
                                     </div>
-                                </div>
-                                <div id="ancientoneBuyerSpeedContainter" class="buyerOptionsContainer">
-                                    <div id="ancientoneBuyerSpeedOff" class="buyerSpeedOffContainer buyerSpeedContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="ancientoneBuyerSlow" name="ancientoneBuyerSpeed" value="slow" class="buyerRadio" checked><br>
-                                        <label for="ancientoneBuyerSlow">slow (every 15 seconds)</label>
+                                    <div id="ancientoneBuyerBulkContainer" class="buyerOptionsContainer">
+                                        <label for="ancientoneBulkBut">amount:</label><!-- --><button onclick="updateSingleBuyer(7, 'bulk', 'ancientoneBulkBut')" name="ancientoneBulkBut" id="ancientoneBulkBut" class="buyerBulkBut" disabled>SINGLE</button><!-- -->
+                                        <div id="ancientoneBulkLock" class="buyerBulkLock"></div>
                                     </div>
-                                    <div id="ancientoneBuyerSpeedOn" class="buyerSpeedOnContainer buyerSpeedContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="ancientoneBuyerFast" name="ancientoneBuyerSpeed" value="fast" class="buyerRadio speedBuyerRadio" disabled><br>
-                                        <label for="ancientoneBuyerFast">fast (every tick)</label>
+                                    <div id="ancientoneBuyerPriorityContainer" class="buyerOptionsContainer priorityContainer">
+                                        <label for="ancientonePriority">Priority:</label>
+                                        <select oninput="updateBuyerOrder(7, ancientonePriority)" id="ancientonePriority" name="ancientonePriority" class="buyerDropdown">
+                                            <option id="71" class="priorityOptions" value="1">1</option>
+                                            <option id="72" class="priorityOptions" value="2">2</option>
+                                            <option id="73" class="priorityOptions" value="3">3</option>
+                                            <option id="74" class="priorityOptions" value="4">4</option>
+                                            <option id="75" class="priorityOptions" value="5">5</option>
+                                            <option id="76" class="priorityOptions" value="6">6</option>
+                                            <option id="77" class="priorityOptions" value="7" selected>7</option>
+                                            <option id="78" class="priorityOptions" value="8">8</option>
+                                        </select>
                                     </div>
-                                </div>
-                                <div id="ancientoneBuyerBulkContainter" class="buyerOptionsContainer">
-                                    <div id="ancientoneBuyerBulkOff" class="buyerBulkOffContainer buyerBulkContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="ancientoneBuysOne" name="ancientoneBuyerBulk" value="off" class="buyerRadio" checked><br>
-                                        <label for="ancientoneBuysOne">buys singles</label>
-                                    </div>
-                                    <div id="ancientoneBuyerBulkOn" class="buyerBulkOnContainer buyerBulkContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="ancientoneBuysBulk" name="ancientoneBuyerBulk" value="on" class="buyerRadio bulkBuyerRadio" disabled><br>
-                                        <label for="ancientoneBuysBulk">buys max</label>
-                                    </div>
-                                </div>
-                                <div id="ancientoneBuyerPriorityContainter" class="buyerOptionsContainer priorityContainer">
-                                    <label for="ancientonePriority">Priority:</label>
-                                    <select oninput="updateAutobuyers()" id="ancientonePriority" name="ancientonePriority" class="buyerDropdown">
-                                        <option id="71" class="priorityOptions" value="1">1</option>
-                                        <option id="72" class="priorityOptions" value="2">2</option>
-                                        <option id="73" class="priorityOptions" value="3">3</option>
-                                        <option id="74" class="priorityOptions" value="4">4</option>
-                                        <option id="75" class="priorityOptions" value="5">5</option>
-                                        <option id="76" class="priorityOptions" value="6">6</option>
-                                        <option id="77" class="priorityOptions" value="7" selected>7</option>
-                                        <option id="78" class="priorityOptions" value="8">8</option>
-                                    </select>
                                 </div>
                             </div>
                         </td>
                         <td>
                             <div id="suneaterBuyerOptions" class="autobuyerOptions">
-                                <h2>Sun Eaters</h2>
-                                <div id="suneaterBuyerEnabledContainter" class="buyerOptionsContainer">
-                                    <div id="suneaterBuyerEnabledOff" class="buyerEnabledOffContainer buyerEnabledContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="suneaterBuyerOff" name="suneaterBuyerEnabled" value="off" class="buyerRadio" checked><br>
-                                        <label for="suneaterBuyerOff">off</label>
+                                <div class="buyerFrame">
+                                    <h2>Sun Eaters</h2>
+                                    <div id="suneaterBuyerEnabledContainer" class="buyerOptionsContainer">
+                                        <label for="suneaterEnabledBut">on/off:</label><!-- --><button onclick="updateSingleBuyer(8, 'on', 'suneaterEnabledBut')" name="suneaterEnabledBut" id="suneaterEnabledBut" class="buyerEnabledBut">OFF</button><!-- -->
+                                        <div class="buyerEnabledLock"></div>
                                     </div>
-                                    <div id="suneaterBuyerEnabledOn" class="buyerEnabledOnContainer buyerEnabledContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="suneaterBuyerOn" name="suneaterBuyerEnabled" value="on" class="buyerRadio onBuyerRadio"><br>
-                                        <label for="suneaterBuyerOn">on</label>
+                                    <div id="suneaterBuyerSpeedContainer" class="buyerOptionsContainer">
+                                        <label for="suneaterSpeedBut">speed:</label><!-- --><button onclick="updateSingleBuyer(8, 'fast', 'suneaterSpeedBut')" name="suneaterSpeedBut" id="suneaterSpeedBut" class="buyerSpeedBut" disabled>SLOW</button><!-- -->
+                                        <div id="suneaterSpeedLock" class="buyerSpeedLock"></div>
                                     </div>
-                                </div>
-                                <div id="suneaterBuyerSpeedContainter" class="buyerOptionsContainer">
-                                    <div id="suneaterBuyerSpeedOff" class="buyerSpeedOffContainer buyerSpeedContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="suneaterBuyerSlow" name="suneaterBuyerSpeed" value="slow" class="buyerRadio" checked><br>
-                                        <label for="suneaterBuyerSlow">slow (every 15 seconds)</label>
+                                    <div id="suneaterBuyerBulkContainer" class="buyerOptionsContainer">
+                                        <label for="suneaterBulkBut">amount:</label><!-- --><button onclick="updateSingleBuyer(8, 'bulk', 'suneaterBulkBut')" name="suneaterBulkBut" id="suneaterBulkBut" class="buyerBulkBut" disabled>SINGLE</button><!-- -->
+                                        <div id="suneaterBulkLock" class="buyerBulkLock"></div>
                                     </div>
-                                    <div id="suneaterBuyerSpeedOn" class="buyerSpeedOnContainer buyerSpeedContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="suneaterBuyerFast" name="suneaterBuyerSpeed" value="fast" class="buyerRadio speedBuyerRadio" disabled><br>
-                                        <label for="suneaterBuyerFast">fast (every tick)</label>
-                                    </div>
-                                </div>
-                                <div id="suneaterBuyerBulkContainter" class="buyerOptionsContainer">
-                                    <div id="suneaterBuyerBulkOff" class="buyerBulkOffContainer buyerBulkContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="suneaterBuysOne" name="suneaterBuysOne" value="off" class="buyerRadio" checked><br>
-                                        <label for="suneaterBuysOne">buys singles</label>
-                                    </div>
-                                    <div id="suneaterBuyerBulkOn" class="buyerBulkOnContainer buyerBulkContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="suneaterBuysBulk" name="suneaterBuysBulk" value="on" class="buyerRadio bulkBuyerRadio" disabled><br>
-                                        <label for="suneaterBuysBulk">buys max</label>
-                                    </div>
-                                </div>
-                                <div id="suneaterBuyerPriorityContainter" class="buyerOptionsContainer priorityContainer">
-                                    <label for="suneaterPriority">Priority:</label>
-                                    <select oninput="updateAutobuyers()" id="suneaterPriority" name="suneaterPriority" class="buyerDropdown">
-                                        <option id="81" class="priorityOptions" value="1">1</option>
-                                        <option id="82" class="priorityOptions" value="2">2</option>
-                                        <option id="83" class="priorityOptions" value="3">3</option>
-                                        <option id="84" class="priorityOptions" value="4">4</option>
-                                        <option id="85" class="priorityOptions" value="5">5</option>
-                                        <option id="86" class="priorityOptions" value="6">6</option>
-                                        <option id="87" class="priorityOptions" value="7">7</option>
-                                        <option id="88" class="priorityOptions" value="8" selected>8</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div id="sacrificeBuyerOptions" class="autobuyerOptions">
-                                <h2>Sacrifice</h2>
-                                <div id="sacrificeBuyerEnabledContainter" class="buyerOptionsContainer">
-                                    <div id="sacrificeBuyerEnabledOff" class="buyerEnabledOffContainer buyerEnabledContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="sacrificeBuyerOff" name="sacrificeBuyerEnabled" value="off" class="buyerRadio" checked><br>
-                                        <label for="sacrificeBuyerOff">off</label>
-                                    </div>
-                                    <div id="sacrificeBuyerEnabledOn" class="buyerEnabledOnContainer buyerEnabledContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="sacrificeBuyerOn" name="sacrificeBuyerEnabled" value="on" class="buyerRadio onBuyerRadio"><br>
-                                        <label for="sacrificeBuyerOn">on</label>
-                                    </div>
-                                </div>
-                                <div id="sacrificeBuyerSpeedContainter" class="buyerOptionsContainer">
-                                    <div id="sacrificeBuyerSpeedOff" class="buyerSpeedOffContainer buyerSpeedContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="sacrificeBuyerSlow" name="sacrificeBuyerSpeed" value="slow" class="buyerRadio" checked><br>
-                                        <label for="sacrificeBuyerSlow">slow (every 15 seconds)</label>
-                                    </div>
-                                    <div id="sacrificeBuyerSpeedOn" class="buyerSpeedOnContainer buyerSpeedContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="sacrificeBuyerFast" name="sacrificeBuyerSpeed" value="fast" class="buyerRadio speedBuyerRadio" disabled><br>
-                                        <label for="sacrificeBuyerFast">fast (every<br>tick)</label>
-                                    </div>
-                                </div>
-                                <div id="sacrificeBuyerAmountsContainter" class="buyerOptionsContainer">
-                                    <div id="sacrificeBuyerAmountInput" class="buyerAmountInputContainer buyerAmountContainer">
-                                        <input oninput="updateAutobuyers()" type="text" size id="sacrificeBuyerAmount" name="sacrificeBuyerConditions" class="buyerText" value="1"><br>
-                                        <label id="sacrificeBuyerAmountLabel" for="sacrificeBuyerAmount">at x crystals</label>
-                                        <!--<label for="sacrificeBuyerAutolock" style="font-size: 11pt;">auto lock in</label>
-                                        <input oninput="updateAutobuyers()" type="checkbox" id="sacrificeBuyerAutolock" name="sacrificeBuyerAutolock" value="slow" class="buyerCheckbox" checked>-->
-                                    </div>
-                                    <div id="sacrificeBuyerAmountsInput" class="buyerAmountOptionsContainer buyerAmountContainer">
-                                        <select oninput="updateAutobuyers()" id="sacrificeBuyerOptionsList" name="sacrificeBuyerOptionList" class="buyerList" size="3" disabled>
-                                            <option id="atx" value="atx" selected>at x crystals</option>
-                                            <option id="xtimes" value="xtimes">at x times last</option>
-                                            <option id="afterx" value="afterx">after x seconds</option>
-                                        </select><br>
+                                    <div id="suneaterBuyerPriorityContainer" class="buyerOptionsContainer priorityContainer">
+                                        <label for="suneaterPriority">Priority:</label>
+                                        <select oninput="updateBuyerOrder(8, 'suneaterPriority')" id="suneaterPriority" name="suneaterPriority" class="buyerDropdown">
+                                            <option id="81" class="priorityOptions" value="1">1</option>
+                                            <option id="82" class="priorityOptions" value="2">2</option>
+                                            <option id="83" class="priorityOptions" value="3">3</option>
+                                            <option id="84" class="priorityOptions" value="4">4</option>
+                                            <option id="85" class="priorityOptions" value="5">5</option>
+                                            <option id="86" class="priorityOptions" value="6">6</option>
+                                            <option id="87" class="priorityOptions" value="7">7</option>
+                                            <option id="88" class="priorityOptions" value="8" selected>8</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -733,44 +580,56 @@
                     <tr>
                         <td></td>
                         <td>
+                            <div id="sacrificeBuyerOptions" class="autobuyerOptions">
+                                <div class="buyerFrame">
+                                    <h2>Sacrifice</h2>
+                                    <div id="sacrificeBuyerEnabledContainer" class="buyerOptionsContainer">
+                                        <label for="sacrificeEnabledBut">on/off:</label><!-- --><button onclick="updateSingleBuyer(9, 'on', 'sacrificeEnabledBut')" name="sacrificeEnabledBut" id="sacrificeEnabledBut" class="buyerEnabledBut">OFF</button><!-- -->
+                                        <div class="buyerEnabledLock"></div>
+                                    </div>
+                                    <div id="sacrificeBuyerSpeedContainer" class="buyerOptionsContainer">
+                                        <label for="sacrificeSpeedBut">speed:</label><!-- --><button onclick="updateSingleBuyer(9, 'fast', 'sacrificeSpeedBut')" name="sacrificeSpeedBut" id="sacrificeSpeedBut" class="buyerSpeedBut" disabled>SLOW</button><!-- -->
+                                        <div id="sacrificeSpeedLock" class="buyerSpeedLock"></div>
+                                    </div>
+                                    <span style="position: relative; right: 62px;"><label for="sacrificeBuyerAdvancedList">condition:</label></span>
+                                    <div id="sacrificeBuyerAmountsContainer" class="buyerOptionsContainerHalf">
+                                        <div class="buyerOptionsContainer">
+                                            <div class="buyerAmountTextContainer">
+                                                <input oninput="updateSacBuyer()" type="text" size id="sacrificeBuyerAmount" name="sacrificeBuyerConditions" class="buyerText" value="1"><br>
+                                                <label id="sacrificeBuyerAmountLabel" for="sacrificeBuyerAmount" style="font-size: 10pt;">at x crystals</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="sacrificeBuyerAdvancedContainer" class="buyerOptionsContainerHalf">
+                                        <div class="buyerAmountTextContainer">
+                                            <select oninput="updateSacBuyer()" id="sacrificeBuyerAdvancedList" name="sacrificeBuyerAdvancedList" class="buyerList" size="3" disabled>
+                                                <option id="atx" value="atx" selected>at x crystals</option>
+                                                <option id="xtimes" value="xtimes">at x times last</option>
+                                                <option id="afterx" value="afterx">after x seconds</option>
+                                            </select>
+                                        </div>
+                                        <div id="advancedSacLock" class="buyerAdvancedContainer"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
                             <div id="prestigeBuyerOptions" class="autobuyerOptions">
-                                <h2>World Prestige</h2>
-                                <div id="prestigeBuyerEnabledContainter" class="buyerOptionsContainer">
-                                    <div id="prestigeBuyerEnabledOff" class="buyerEnabledOffContainer buyerEnabledContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="prestigeBuyerOff" name="prestigeBuyerEnabled" value="off" class="buyerRadio" checked><br>
-                                        <label for="prestigeBuyerOff">off</label>
+                                <div class="buyerFrame">
+                                    <h2>World Prestige</h2>
+                                    <div id="prestigeBuyerEnabledContainer" class="buyerOptionsContainer">
+                                        <label for="prestigeEnabledBut">on/off:</label><!-- --><button onclick="updateSingleBuyer(10, 'on', 'prestigeEnabledBut')" name="prestigeEnabledBut" id="prestigeEnabledBut" class="buyerEnabledBut">OFF</button><!-- -->
+                                        <div class="buyerEnabledLock"></div>
                                     </div>
-                                    <div id="prestigeBuyerEnabledOn" class="buyerEnabledOnContainer buyerEnabledContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="prestigeBuyerOn" name="prestigeBuyerEnabled" value="on" class="buyerRadio onBuyerRadio"><br>
-                                        <label for="prestigeBuyerOn">on</label>
+                                    <div id="prestigeBuyerSpeedContainer" class="buyerOptionsContainer">
+                                        <label for="prestigeSpeedBut">speed:</label><!-- --><button onclick="updateSingleBuyer(10, 'fast', 'prestigeSpeedBut')" name="prestigeSpeedBut" id="prestigeSpeedBut" class="buyerSpeedBut" disabled>SLOW</button><!-- -->
+                                        <div id="prestigeSpeedLock" class="buyerSpeedLock"></div>
                                     </div>
-                                </div>
-                                <div id="prestigeBuyerSpeedContainter" class="buyerOptionsContainer">
-                                    <div id="prestigeBuyerSpeedOff" class="buyerSpeedOffContainer buyerSpeedContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="prestigeBuyerSlow" name="prestigeBuyerSpeed" value="slow" class="buyerRadio" checked><br>
-                                        <label for="prestigeBuyerSlow">slow (every 15 seconds)</label>
-                                    </div>
-                                    <div id="prestigeBuyerSpeedOn" class="buyerSpeedOnContainer buyerSpeedContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="prestigeBuyerFast" name="prestigeBuyerSpeed" value="fast" class="buyerRadio speedBuyerRadio" disabled><br>
-                                        <label for="prestigeBuyerFast">fast (every<br>tick)</label>
+                                    <div id="prestigeBuyerPriorityContainer" class="buyerOptionsContainer priorityContainer">
+                                        <label for="prestigeBuyerPriorityBut">priority over sacrifice:</label><!-- --><button onclick="updatePrestigePriority()" name="prestigeBuyerPriorityBut" id="prestigeBuyerPriorityBut" class="buyerPriBut">YES</button><!-- -->
                                     </div>
                                 </div>
-                                <div id="prestigeBuyerPriorityContainter" class="buyerOptionsContainer">
-                                    <div id="prestigeBuyerPriorityBox" class="buyerBulkContainerx2">
-                                        <input oninput="updateAutobuyers()" type="checkbox" id="prestigeBuyerPriority" name="prestigeBuyerPriority" value="slow" class="buyerCheckbox"><br>
-                                        <label for="prestigeBuyerPriority">priority over sacrifice</label>
-                                    </div>
-                                </div>
-                                <!--<div id="prestigeBuyerBulkContainter" class="buyerOptionsContainer">
-                                    <div id="prestigeBuyerBulkOff" class="buyerBulkOffContainer buyerBulkContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="prestigeBuyerBulkOff" name="prestigeBuyerBulk" value="off" class="buyerRadio" checked><br>
-                                        <label for="prestigeBuyerBulkOff">buys singles</label>
-                                    </div>
-                                    <div id="prestigeBuyerBulkOn" class="buyerBulkOnContainer buyerBulkContainer">
-                                        <input oninput="updateAutobuyers()" type="radio" id="prestigeBuyerBulkOn" name="prestigeBuyerBulk" value="on" class="buyerRadio bulkBuyerRadio" disabled><br>
-                                        <label for="prestigeBuyerBulkOn">buys max</label>
-                                    </div>
-                                </div>-->
+                                <div id="prestigeLockScreen"></div>
                             </div>
                         </td>
                         <td></td>

@@ -273,33 +273,30 @@ function lockInTime() {
 }
 
 function timePrestigeReset() {
-    var timeUpgUnlocked = hasUpgrade(3, 13) ? true : false
     if (player.astralFlag) { toggleAstral(); }
     clearInterval(mainLoop);
     player.pastRuns.lastRun.crystalGain = calculateCrystalGain();
     player.pastRuns.lastRun.timeSpent = (new Date).getTime()-player.pastRuns.lastRun.timeSacrificed;
     player.pastRuns.lastRun.timeSacrificed = (new Date).getTime();
-    if (player.pastRuns.lastRun.crystalGain.gt(player.allTimeStats.bestCrystalGain)) { player.allTimeStats.bestCrystalGain = new Decimal(player.pastRuns.lastRun.crystalGain) }
-    if (player.pastRuns.lastRun.crystalGain.div(player.pastRuns.lastRun.timeSpent/60000).gt(player.allTimeStats.bestCrystalRate)) { player.allTimeStats.bestCrystalRate = new Decimal(player.pastRuns.lastRun.crystalGain.div(player.pastRuns.lastRun.timeSpent/60000)) }
+    if (player.pastRuns.lastRun.crystalGain.gt(player.thisAscStats.bestCrystalGain)) { player.thisAscStats.bestCrystalGain = new Decimal(player.pastRuns.lastRun.crystalGain) }
+    if (player.thisAscStats.bestCrystalGain.gt(player.allTimeStats.bestCrystalGain)) { player.allTimeStats.bestCrystalGain = new Decimal(player.thisAscStats.bestCrystalGain) }
+    if (player.pastRuns.lastRun.crystalGain.div(player.pastRuns.lastRun.timeSpent/60000).gt(player.thisAscStats.bestCrystalRate)) { player.thisAscStats.bestCrystalRate = new Decimal(player.pastRuns.lastRun.crystalGain.div(player.pastRuns.lastRun.timeSpent/60000)) }
+    if (player.thisAscStats.bestCrystalRate.gt(player.allTimeStats.bestCrystalRate)) { player.allTimeStats.bestCrystalRate = new Decimal(player.thisAscStats.bestCrystalRate) }
     for (var i=9; i>0; i--) { copyData(player.pastRuns.lastTen[i], player.pastRuns.lastTen[i-1]); }
     copyData(player.pastRuns.lastTen[0], player.pastRuns.lastRun);
     player.trueEssence = new Decimal(START_PLAYER.trueEssence);
     player.antiEssence = new Decimal(START_PLAYER.antiEssence);
-    player.corpses = new Decimal(START_PLAYER.corpses)
     resetUnits();
-    if (!hasTUpgrade(24)) { resetBuildings(); }
-    showBuildingSubTab('buildingsSubTab');
     resetBuildingResources(true);
-    resetSpaceCounts();
+    resetBuildings();
+    showBuildingSubTab('buildingsSubTab');
     for (var i=1; i<=NUM_TIMEDIMS; i++) { player.timeDims[i].amount = player.timeDims[i].bought; }
-    lockTab('unitsTab');
-    if (timeUpgUnlocked) { player.buildings[3].upgrades[13] = true; }
     save();
     loadStyles();
     startInterval();
 }
 
-function resetSpaceCounts() {
+/*function resetSpaceCounts() {
     if (hasTUpgrade(14)) {
         player.worlds = new Decimal(4);
         player.spaceResets = new Decimal(4);
@@ -348,7 +345,7 @@ function resetSpaceCounts() {
     copyData(player.thisSacStats, START_PLAYER.thisSacStats);
     player.thisSacStats.totalWorlds = player.worlds;
     player.thisSacStats.bestWorlds = player.worlds;
-}
+}*/
 
 //data
 

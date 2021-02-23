@@ -186,7 +186,7 @@ function updateTimeDisplays() {
     displayData.push(['html', 'antiTimeBuff', formatDefault2(getAntiTimeBuff())]);
     displayData.push(['html', 'trueTimeNerf', formatDefault2(getTrueTimeNerf())]);
     displayData.push(['html', 'antiTimeNerf', formatDefault2(getAntiTimeNerf())]);
-    displayData.push(['html', 'crystalAmt', ' ' + formatWhole(player.crystals) + ' ']);
+    displayData.push(['html', 'crystalAmt', ' ' + formatDefault(player.crystals) + ' ']);
     if (player.allTimeStats.totalCrystals.gte(2000)) {
         displayData.push(['setProp', 'timePresDesc', 'display', 'none']);
         displayData.push(['setProp', 'crystalRateDesc', 'display', 'block']);
@@ -236,7 +236,7 @@ function updateTimePrestigeDisplay() {
         displayData.push(['setProp', 'timePrestigeReq', 'display', '']);
         displayData.push(['setProp', 'timePrestigeGainDesc', 'display', 'none']);
     }
-    displayData.push(['html', 'timePrestigeGain', ` ${formatWhole(calculateCrystalGain())} `]);
+    displayData.push(['html', 'timePrestigeGain', ` ${formatDefault(calculateCrystalGain())} `]);
 }
 
 function updateTierDisplays() {
@@ -288,6 +288,7 @@ function updateTDimTiers() {
 
 function unlockElements(mainTab, subTab) {
     let data = UNLOCKS_DATA[mainTab][subTab];
+    let element;
     player.unlocks[mainTab][subTab] = true;
     if (data.idsToShow.length > 0) {
         for (let i=0; i<data.idsToShow.length; i++) {
@@ -297,21 +298,20 @@ function unlockElements(mainTab, subTab) {
             else { displayData.push(['setProp', element.id, 'display', 'block']); }
         }
     }
-    if (data.idsToHide.length > 0 || data.classNotID) {
-        if (data.classNotID) {
-            displayData.push(['setProp', 'docElement', data.cssVar, 'none']);
-            if (data.classToEnable !== undefined) {
-                let els = document.getElementsByClassName(data.classToEnable);
-                for (let el in els) {
-                    els[el].disabled = false;
-                }
-            }
-        } else {
-            for (let i=0; i<data.idsToHide.length; i++) {
-                displayData.push(['setProp', data.idsToHide[i], 'display', 'none']);
-            }
+    if (data.idsToHide.length > 0) {
+        for (let i=0; i<data.idsToHide.length; i++) {
+            displayData.push(['setProp', data.idsToHide[i], 'display', 'none']);
         }
     }
+    if (data.classToHide !== undefined) {
+        let els = document.getElementsByClassName(data.classToHide);
+        for (let i=0; i<els.length; i++) { displayData.push(['setProp', els[i].id, 'display', 'none']); }
+    }
+    if (data.classToEnable !== undefined) {
+        let els = document.getElementsByClassName(data.classToEnable);
+        for (let i=0; i<els.length; i++) { els[i].disabled = false; }
+    }
+
     if (UNLOCKS_DATA[mainTab][subTab].shouldNotify()) {
         if (data.notifyID !== undefined) { displayData.push(['addClass', data.notifyID, 'tabButNotify']); }
         if (data.parentNotify !== undefined) { displayData.push(['addClass', data.parentNotify, 'tabButIndirectNotify']); }
@@ -320,6 +320,7 @@ function unlockElements(mainTab, subTab) {
 
 function unlockElementsOnLoad(mainTab, subTab) {
     let data = UNLOCKS_DATA[mainTab][subTab];
+    let element;
     player.unlocks[mainTab][subTab] = true;
     if (data.idsToShow.length > 0) {
         for (let i=0; i<data.idsToShow.length; i++) {
@@ -329,52 +330,52 @@ function unlockElementsOnLoad(mainTab, subTab) {
             else { displayData.push(['setProp', element.id, 'display', 'block']); }
         }
     }
-    if (data.idsToHide.length > 0 || data.classNotID) {
-        if (data.classNotID) {
-            displayData.push(['setProp', 'docElement', data.cssVar, 'none']);
-            if (data.classToEnable !== undefined) {
-                let els = document.getElementsByClassName(data.classToEnable);
-                for (let el in els) {
-                    els[el].disabled = false;
-                }
-            }
-        } else {
-            for (let i=0; i<data.idsToHide.length; i++) {
-                displayData.push(['setProp', data.idsToHide[i], 'display', 'none']);
-            }
+    if (data.idsToHide.length > 0) {
+        for (let i=0; i<data.idsToHide.length; i++) {
+            displayData.push(['setProp', data.idsToHide[i], 'display', 'none']);
         }
+    }
+    if (data.classToHide !== undefined) {
+        let els = document.getElementsByClassName(data.classToHide);
+        for (let i=0; i<els.length; i++) { displayData.push(['setProp', els[i].id, 'display', 'none']); }
+    }
+    if (data.classToEnable !== undefined) {
+        let els = document.getElementsByClassName(data.classToEnable);
+        for (let i=0; i<els.length; i++) { els[i].disabled = false; }
     }
 }
 
 function lockElements(mainTab, subTab) {
     let data = UNLOCKS_DATA[mainTab][subTab];
+    let element;
     player.unlocks[mainTab][subTab] = false;
     if (data.idsToShow.length > 0) {
         for (let i=0; i<data.idsToShow.length; i++) {
             displayData.push(['setProp', data.idsToShow[i], 'display', 'none']);
         }
     }
-    if (data.idsToHide.length > 0 || data.classNotID) {
-        if (data.classNotID) {
-            displayData.push(['setProp', 'docElement', data.cssVar, 'block']);
-            if (data.classToEnable !== undefined) {
-                let els = document.getElementsByClassName(data.classToEnable);
-                for (let el in els) {
-                    els[el].disabled = true;
-                }
-            }
-        } else {
-            for (let i=0; i<data.idsToHide.length; i++) {
-                displayData.push(['setProp', data.idsToHide[i], 'display', '']);
-            }
+    if (data.idsToHide.length > 0) {
+        for (let i=0; i<data.idsToHide.length; i++) {
+            element = document.getElementById(data.idsToHide[i]);
+            if (element.tagName == 'TR') { displayData.push(['setProp', element.id, 'display', 'table-row']); } 
+            else if (element.tagName == 'TD') { displayData.push(['setProp', element.id, 'display', 'table-cell']); }
+            else { displayData.push(['setProp', data.idsToHide[i], 'display', 'block']); }
         }
+    }
+    if (data.classToHide !== undefined) {
+        let els = document.getElementsByClassName(data.classToHide);
+        for (let i=0; i<els.length; i++) { displayData.push(['setProp', els[i].id, 'display', '']); }
+    }
+    if (data.classToEnable !== undefined) {
+        let els = document.getElementsByClassName(data.classToEnable);
+        for (let i=0; i<els.length; i++) { els[i].disabled = true; }
     }
 }
 
 function lockTab(mainTab) {
     copyData(player.unlocks[mainTab], START_PLAYER.unlocks[mainTab]);
     for (let subTab in UNLOCKS_DATA[mainTab]) {
-        lockElements(mainTab, subTab); 
+        lockElements(mainTab, subTab);
     }
 }
 
@@ -408,74 +409,56 @@ function toggleTimeLockDisplay() {
     displayData.push(['togClass', 'timeSlider', 'slider']);
 }
 
-function updateAutobuyers() {
-    var elements = document.getElementsByClassName('onBuyerRadio');
-    var tier = 0;
-    var pri = 0;
-    var unitName = '';
-    var firstThree = '';
-    var newPriority = new Array();
-    for (var i=0; i<elements.length; i++) {
-        unitName = '';
-        firstThree = elements[i].id.slice(0, 3);
-        for (var j=1; j<=NUM_UNITS; j++) {
-            if (UNITS_DATA[j].single.startsWith(firstThree)) {
-                tier = UNITS_DATA[j].tier;
-                unitName = UNITS_DATA[j].single.replace(' ', '');
-                pri = parseInt(document.getElementById(unitName + 'Priority').value);
-                break;
-            }
-            tier = 9;
-            unitName = 'sacrifice';
-        }
-        player.autobuyers[tier].on = document.getElementById(unitName + 'BuyerOn').checked;
-        player.autobuyers[tier].fast = document.getElementById(unitName + 'BuyerFast').checked;
-        if (tier == 9) {
-            player.autobuyers[tier].amount = new Decimal(document.getElementById(unitName + 'BuyerAmount').value);
-            player.autobuyers[tier].type = document.getElementById(unitName + 'BuyerOptionsList').value;
-        } else {
-            player.autobuyers[tier].bulk = document.getElementById(unitName + 'BuysBulk').checked;
-            if (newPriority[pri-1] === undefined) { newPriority[pri-1] = parseInt(tier); }
-            else { newPriority.splice(pri-1, 0, tier); }
-        }
+function updateSingleBuyer(id, option, button) {
+    player.autobuyers[id][option] = !player.autobuyers[id][option];
+    if(player.autobuyers[id][option]) {
+        document.getElementById(button).innerHTML = (option == 'on' ? 'ON' : (option == 'fast' ? 'FAST' : 'MAX'));
+    } else {
+        document.getElementById(button).innerHTML = (option == 'on' ? 'OFF' : (option == 'fast' ? 'SLOW' : 'SINGLE'));
     }
-    player.autobuyers[10].on = document.getElementById('prestigeBuyerOn').checked;
-    player.autobuyers[10].fast = document.getElementById('prestigeBuyerFast').checked;
-    player.autobuyers[10].priority = document.getElementById('prestigeBuyerPriority').checked;
-    let sacMethod = document.getElementById('sacrificeBuyerOptionsList');
+}
+
+function updateBuyerOrder(tier, id) {
+    let pri = parseInt(document.getElementById(id).value);
+    let index = newPriority.indexOf(tier);
+    if (newPriority[pri-1] === undefined) { newPriority[pri-1] = parseInt(tier); }
+    else {
+        if (index>=0) { newPriority.splice(index, 1); }
+        newPriority.splice(pri-1, 0, tier);
+    }
+}
+
+function updateSacBuyer() {
+    let sacMethod = document.getElementById('sacrificeBuyerAdvancedList');
     document.getElementById('sacrificeBuyerAmountLabel').innerHTML = sacMethod.options[sacMethod.selectedIndex].text;
-    copyData(player.autobuyers.priority, newPriority);
+    player.autobuyers[9]['amount'] = new Decimal(document.getElementById('sacrificeBuyerAmount').value);
+    player.autobuyers[9]['type'] = document.getElementById('sacrificeBuyerAdvancedList').value;
+}
+
+function updatePrestigePriority() {
+    player.autobuyers[10]['priority'] = !player.autobuyers[10]['priority'];
+    document.getElementById('prestigeBuyerPriorityBut').innerHTML = player.autobuyers[10]['priority'] ? 'YES' : 'NO'
 }
 
 function updateAutobuyersDisplay() {
-    for (var i=1; i<=10; i++) {
-        if (i<9) { 
-            document.getElementById(player.autobuyers.priority[i-1].toString() + (i).toString()).selected = true;
-            var unitName = UNITS_DATA[i].single.replace(' ', '');
-            document.getElementById(unitName + 'BuyerOn').checked = player.autobuyers[i].on;
-            document.getElementById(unitName + 'BuyerFast').checked = player.autobuyers[i].fast;
-            document.getElementById(unitName + 'BuysBulk').checked = player.autobuyers[i].bulk;
-            document.getElementById(unitName + 'BuyerOff').checked = !player.autobuyers[i].on;
-            document.getElementById(unitName + 'BuyerSlow').checked = !player.autobuyers[i].fast;
-            document.getElementById(unitName + 'BuysOne').checked = !player.autobuyers[i].bulk;
-        } else if (i==9) {
-            document.getElementById('sacrificeBuyerOn').checked = player.autobuyers[i].on ;
-            document.getElementById('sacrificeBuyerFast').checked = player.autobuyers[i].fast;
-            document.getElementById('sacrificeBuyerOff').checked = !player.autobuyers[i].on;
-            document.getElementById('sacrificeBuyerSlow').checked = !player.autobuyers[i].fast;
-            document.getElementById('sacrificeBuyerAmount').value = formatWholeNoComma(player.autobuyers[i].amount);
-            document.getElementById('sacrificeBuyerOptionsList').options.namedItem(player.autobuyers[i].type).selected = true;
-            let sacMethod = document.getElementById('sacrificeBuyerOptionsList');
-            document.getElementById('sacrificeBuyerAmountLabel').innerHTML = sacMethod.options[sacMethod.selectedIndex].text;
-            //if (player.autobuyers[i].autolock) { document.getElementById('sacrificeBuyerAutolock').checked = true; }
-        } else {
-            document.getElementById('prestigeBuyerOn').checked = player.autobuyers[i].on;
-            document.getElementById('prestigeBuyerFast').checked = player.autobuyers[i].fast;
-            document.getElementById('prestigeBuyerOff').checked = !player.autobuyers[i].on;
-            document.getElementById('prestigeBuyerSlow').checked = !player.autobuyers[i].fast;
-            document.getElementById('prestigeBuyerPriority').checked = player.autobuyers[i].priority;
-        }
+    for (var i=1; i<9; i++) {
+        document.getElementById(player.autobuyers.priority[i-1].toString() + (i).toString()).selected = true;
+        var unitName = UNITS_DATA[i].single.replace(' ', '');
+        document.getElementById(unitName + 'EnabledBut').innerHTML = player.autobuyers[i]['on'] ? 'ON' : 'OFF'
+        document.getElementById(unitName + 'SpeedBut').innerHTML = player.autobuyers[i]['fast'] ? 'FAST' : 'SLOW'
+        document.getElementById(unitName + 'BulkBut').innerHTML = player.autobuyers[i]['bulk'] ? 'MAX' : 'SINGLE'
     }
+
+    document.getElementById('sacrificeEnabledBut').innerHTML = player.autobuyers[9]['on'] ? 'ON' : 'OFF'
+    document.getElementById('sacrificeSpeedBut').innerHTML = player.autobuyers[9]['fast'] ? 'FAST' : 'SLOW'
+    document.getElementById('sacrificeBuyerAmount').value = formatWholeNoComma(player.autobuyers[9]['amount']);
+    document.getElementById('sacrificeBuyerAdvancedList').options.namedItem(player.autobuyers[9]['type']).selected = true;
+    let sacMethod = document.getElementById('sacrificeBuyerAdvancedList');
+    document.getElementById('sacrificeBuyerAmountLabel').innerHTML = sacMethod.options[sacMethod.selectedIndex].text;
+
+    document.getElementById('prestigeEnabledBut').innerHTML = player.autobuyers[10]['on'] ? 'ON' : 'OFF'
+    document.getElementById('prestigeSpeedBut').innerHTML = player.autobuyers[10]['fast'] ? 'FAST' : 'SLOW'
+    document.getElementById('prestigeBuyerPriorityBut').innerHTML = player.autobuyers[10]['priority'] ? 'YES' : 'NO'
 }
 
 function updateSliderDisplay() {

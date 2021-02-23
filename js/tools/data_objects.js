@@ -134,56 +134,55 @@ const START_PLAYER = {
 
     autobuyers: {
         1: {
-            on: false,
-            fast: false,
-            bulk: false,
+            'on': false,
+            'fast': false,
+            'bulk': false,
         },
         2: {
-            on: false,
-            fast: false,
-            bulk: false,
+            'on': false,
+            'fast': false,
+            'bulk': false,
         },
         3: {
-            on: false,
-            fast: false,
-            bulk: false,
+            'on': false,
+            'fast': false,
+            'bulk': false,
         },
         4: {
-            on: false,
-            fast: false,
-            bulk: false,
+            'on': false,
+            'fast': false,
+            'bulk': false,
         },
         5: {
-            on: false,
-            fast: false,
-            bulk: false,
+            'on': false,
+            'fast': false,
+            'bulk': false,
         },
         6: {
-            on: false,
-            fast: false,
-            bulk: false,
+            'on': false,
+            'fast': false,
+            'bulk': false,
         },
         7: {
-            on: false,
-            fast: false,
-            bulk: false,
+            'on': false,
+            'fast': false,
+            'bulk': false,
         },
         8: {
-            on: false,
-            fast: false,
-            bulk: false,
+            'on': false,
+            'fast': false,
+            'bulk': false,
         },
         9: {
-            on: false,
-            fast: false,
-            amount: new Decimal(0),
-            type: 'atx',
-            autolock: true,
+            'on': false,
+            'fast': false,
+            'amount': new Decimal(0),
+            'type': 'atx',
         },
         10: {
-            on: false,
-            fast: false,
-            priority: false,
+            'on': false,
+            'fast': false,
+            'priority': false,
         },
         
         priority: [1, 2, 3, 4, 5, 6, 7, 8],
@@ -679,7 +678,6 @@ const UNLOCKS_DATA = {
     'unitsTab': {
         'mainTab': {
             unlocked: true,
-            classNotID: false,
             idsToShow: [],
             idsToHide: [],
             shouldNotify: function() {
@@ -691,19 +689,17 @@ const UNLOCKS_DATA = {
         }, 
         'spacePrestige': {
             unlocked: false,
-            classNotID: false,
-            idsToShow: ['spacePresContainer'],
+            idsToShow: ['spacePresContainer', 'worldsBonusDisplay'],
             idsToHide: [],
             shouldNotify: function() {
                 return false;
             },
             condition: function() {
-                return player.units[4].bought.gte(1);
+                return player.units[4].bought.gte(1) || player.ascensions.gt(0);
             }
         },  
         'autobuyers': {
             unlocked: false,
-            classNotID: false,
             notifyID: 'autobuyersSubTabBut',
             parentNotify: 'unitsTabBut',
             idsToShow: ['unitsSubMenu', 'autobuyersSubTabBut'],
@@ -717,11 +713,10 @@ const UNLOCKS_DATA = {
         },
         'fastBuyers': {
             unlocked: false,
-            classNotID: true,
             idsToShow: [],
-            idsToHide: ['buyerSpeedOnContainer'],
-            cssVar: '--speedDisplay',
-            classToEnable: 'speedBuyerRadio',
+            idsToHide: [],
+            classToHide: 'buyerSpeedLock',
+            classToEnable: 'buyerSpeedBut',
             shouldNotify: function() {
                 return false;
             },
@@ -731,11 +726,10 @@ const UNLOCKS_DATA = {
         },
         'bulkBuyers': {
             unlocked: false,
-            classNotID: true,
             idsToShow: [],
-            idsToHide: ['buyerBulkOnContainer'],
-            cssVar: '--bulkDisplay',
-            classToEnable: 'bulkBuyerRadio',
+            idsToHide: [],
+            classToHide: 'buyerBulkLock',
+            classToEnable: 'buyerBulkBut',
             shouldNotify: function() {
                 return false;
             },
@@ -745,10 +739,9 @@ const UNLOCKS_DATA = {
         },
         'prestigeBuyer': {
             unlocked: false,
-            classNotID: true,
             idsToShow: [],
-            idsToHide: [],
-            cssVar: '--prestigeDisplay',
+            idsToHide: ['prestigeLockScreen'],
+            classToEnable: 'buyerPriBut',
             shouldNotify: function() {
                 return false;
             },
@@ -758,10 +751,8 @@ const UNLOCKS_DATA = {
         },
         'advancedBuyer': {
             unlocked: false,
-            classNotID: true,
             idsToShow: [],
-            idsToHide: ['buyerAmountOptionsContainer'],
-            cssVar: '--optionsDisplay',
+            idsToHide: ['advancedSacLock'],
             classToEnable: 'buyerList',
             shouldNotify: function() {
                 return false;
@@ -774,9 +765,8 @@ const UNLOCKS_DATA = {
     'buildingsTab': {
         'mainTab': {
             unlocked: false,
-            classNotID: false,
             notifyID: 'buildingsTabBut',
-            idsToShow: ['buildingsTabCell', 'worldsBonusDisplay', 'totalBonusDisplay'],
+            idsToShow: ['buildingsTabCell'],
             idsToHide: [],
             shouldNotify: function() {
                 return !hasTUpgrade(11);
@@ -787,7 +777,6 @@ const UNLOCKS_DATA = {
         },
         'factory': {
             unlocked: false,
-            classNotID: false,
             idsToShow: ['factoryUpgradesRow1', 'factoryHeaderRow'],
             idsToHide: ['factoryBuildRow'],
             shouldNotify: function() {
@@ -799,7 +788,6 @@ const UNLOCKS_DATA = {
         },
         'factoryRow2': {
             unlocked: false,
-            classNotID: false,
             idsToShow: ['factoryUpgradesRow2'],
             idsToHide: [],
             shouldNotify: function() {
@@ -811,7 +799,6 @@ const UNLOCKS_DATA = {
         },
         'necropolis': {
             unlocked: false,
-            classNotID: false,
             idsToShow: ['necropolisUpgradesRow1', 'necropolisHeaderRow'],
             idsToHide: ['necropolisBuildRow'],
             shouldNotify: function() {
@@ -823,7 +810,6 @@ const UNLOCKS_DATA = {
         },
         'necropolisRow2': {
             unlocked: false,
-            classNotID: false,
             idsToShow: ['necropolisUpgradesRow2'],
             idsToHide: [],
             shouldNotify: function() {
@@ -835,7 +821,6 @@ const UNLOCKS_DATA = {
         },
         'sun': {
             unlocked: false,
-            classNotID: false,
             idsToShow: ['sunUpgradesRow', 'sunHeaderRow'],
             idsToHide: ['sunBuildRow'],
             shouldNotify: function() {
@@ -847,7 +832,6 @@ const UNLOCKS_DATA = {
         },
         'sunRow2': {
             unlocked: false,
-            classNotID: false,
             idsToShow: ['sunUpgradesRow2'],
             idsToHide: [],
             shouldNotify: function() {
@@ -859,7 +843,6 @@ const UNLOCKS_DATA = {
         },
         'construction': {
             unlocked: false,
-            classNotID: false,
             notifyID: 'constructionSubTabBut',
             parentNotify: 'buildingsTabBut',
             idsToShow: ['buildingsSubMenu', 'constructionSubTabBut'],
@@ -875,7 +858,6 @@ const UNLOCKS_DATA = {
     'timeTab': {
         'mainTab': {
             unlocked: false,
-            classNotID: false,
             notifyID: 'timeTabBut',
             idsToShow: ['timeTabCell', 'timeBoostDisplay'],
             idsToHide: [],
@@ -888,7 +870,6 @@ const UNLOCKS_DATA = {
         },
         'timeUpgrades': {
             unlocked: false,
-            classNotID: false,
             notifyID: 'timeUpgSubTabBut',
             parentNotify: 'timeTabBut',
             idsToShow: ['timeSubMenu', 'timeUpgSubTabBut'],
@@ -1166,56 +1147,55 @@ function fixResetBug() {
 
     copyData(START_PLAYER.autobuyers, {
         1: {
-            on: false,
-            fast: false,
-            bulk: false,
+            'on': false,
+            'fast': false,
+            'bulk': false,
         },
         2: {
-            on: false,
-            fast: false,
-            bulk: false,
+            'on': false,
+            'fast': false,
+            'bulk': false,
         },
         3: {
-            on: false,
-            fast: false,
-            bulk: false,
+            'on': false,
+            'fast': false,
+            'bulk': false,
         },
         4: {
-            on: false,
-            fast: false,
-            bulk: false,
+            'on': false,
+            'fast': false,
+            'bulk': false,
         },
         5: {
-            on: false,
-            fast: false,
-            bulk: false,
+            'on': false,
+            'fast': false,
+            'bulk': false,
         },
         6: {
-            on: false,
-            fast: false,
-            bulk: false,
+            'on': false,
+            'fast': false,
+            'bulk': false,
         },
         7: {
-            on: false,
-            fast: false,
-            bulk: false,
+            'on': false,
+            'fast': false,
+            'bulk': false,
         },
         8: {
-            on: false,
-            fast: false,
-            bulk: false,
+            'on': false,
+            'fast': false,
+            'bulk': false,
         },
         9: {
-            on: false,
-            fast: false,
-            amount: new Decimal(0),
-            type: 'atx',
-            autolock: true,
+            'on': false,
+            'fast': false,
+            'amount': new Decimal(0),
+            'type': 'atx',
         },
         10: {
-            on: false,
-            fast: false,
-            priority: false,
+            'on': false,
+            'fast': false,
+            'priority': false,
         },
         priority: [1, 2, 3, 4, 5, 6, 7, 8],
     });
