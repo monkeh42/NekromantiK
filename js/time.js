@@ -289,6 +289,7 @@ function timePrestigeReset() {
     resetBuildings();
     showBuildingSubTab('buildingsSubTab');
     for (var i=1; i<=NUM_TIMEDIMS; i++) { player.timeDims[i].amount = player.timeDims[i].bought; }
+    player.corpses = new Decimal(START_PLAYER.corpses)
     save();
     loadStyles();
     startInterval();
