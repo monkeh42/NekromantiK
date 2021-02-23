@@ -695,7 +695,7 @@ const UNLOCKS_DATA = {
                 return false;
             },
             condition: function() {
-                return player.units[4].bought.gte(1) || player.ascensions.gt(0);
+                return player.units[4].bought.gte(1);
             }
         },  
         'autobuyers': {
