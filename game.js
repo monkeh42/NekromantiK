@@ -171,6 +171,8 @@ function loadStyles() {
     }
 
     if (hasAchievement(15)) { document.getElementById('keptBricks').style.display = 'block'; }
+
+    if ((player.buildings[3].upgrades[13] || player.buildings[3].upgrades[23] || player.unlocks['buildingsTab']['sun']) && !player.buildings[3].built) { player.buildings[3].built = true; }
     
     for (var t in TIME_DATA.upgrades) {
         if (TIME_DATA.upgrades[t].displayTooltip) { document.getElementById(TIME_DATA.upgrades[t].buttonID).setAttribute('data-title', TIME_DATA.upgrades[t].displayFormula) }
