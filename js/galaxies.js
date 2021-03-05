@@ -265,7 +265,7 @@ function calculateNextGalaxy() {
         let newGain = new Decimal(0);
         let g = new Decimal(0);
         let d = new Decimal(0)
-        while (newGain.lte(next)) {
+        while (newGain.lt(next)) {
             nextW = nextW.plus(1);
             g = new Decimal(nextW).div(10);
             d = new Decimal(g.sqrt());
