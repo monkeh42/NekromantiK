@@ -4,6 +4,10 @@ function getResourceEff(b) {
     return BUILDS_DATA[b].resourceEff();
 }
 
+function getUpgResourceName(b) {
+    return BUILDS_DATA[b].upgResource;
+}
+
 function getDisplaySymbol(b, u) {
     return BUILDS_DATA[b].upgrades[u].displayEffect[1];
 }
@@ -42,6 +46,10 @@ function getCUpgCost(c) {
 
 function getCUpgEffect(c) {
     return CONSTR_DATA[c].effect();
+}
+
+function getExtraLevels(c) {
+    return CONSTR_DATA[c].extraLevels();
 }
 
 function isBuilt(b) {
@@ -83,10 +91,13 @@ function getBuildingProdPerSec(b) {
 //production/calculation
 
 function getBricksPerSecond() {
-    var b = getCorpsesPerSecond().pow(player.brickGainExp);
+    var e = hasGUpgrade(1, 21) ? 0.3 : 0.2
+    var b = getCorpsesPerSecond().pow(e);
     if (isBuilt(2)) { b = b.times(getResourceEff(2)) }
     if (hasUpgrade(2, 11)) { b = b.times(getUpgEffect(2, 11)); }
     if (hasUpgrade(2, 21)) { b = b.times(getUpgEffect(2, 21)); }
+    if (hasGUpgrade(3, 41)) { b = b.times(getGUpgEffect(3, 41)); }
+    if (hasTUpgrade(52)) { b = b.times(getTUpgEffect(52)); }
     return b;
 }
 
@@ -116,6 +127,15 @@ function buyCUpg(c) {
         player.construction[c] = player.construction[c].plus(1);
         if (CONSTR_DATA[c].onBuy !== undefined) { CONSTR_DATA[c].onBuy() }
     }
+    document.getElementById('cUpgCost' + c.toString()).innerHTML = formatDefault(getCUpgCost(c));
+    document.getElementById('cUpgLevel' + c.toString()).innerHTML = formatWhole(player.construction[c]) + (getExtraLevels(c)>0 ? ' + ' + formatWhole(getExtraLevels(c)) : '');
+    if (c==5) {
+        for (let i=1; i<=4; i++) {
+            document.getElementById('cUpgLevel' + i.toString()).innerHTML = formatWhole(player.construction[i]) + (getExtraLevels(i)>0 ? ' + ' + formatWhole(getExtraLevels(i)) : '');
+        }
+    }
+    if (c==5) { document.getElementById('cUpgEffect' + c.toString()).innerHTML = `[+${formatWhole(player.construction[5])}/+${formatWhole(player.construction[5].gt(0) ? Decimal.floor(player.construction[5].minus(1).div(2).plus(1)) : '0')}/+${formatWhole(player.construction[5].gt(0) ? Decimal.floor(player.construction[5].minus(1).div(3).plus(1)) : '0')}/+${formatWhole(player.construction[5].gt(0) ? Decimal.floor(player.construction[5].minus(1).div(4).plus(1)) : '0')}]` }
+    else if (isDisplayEffectC(c)) { document.getElementById('cUpgEffect' + c.toString()).innerHTML = CONSTR_DATA[c].isTimes ? formatDefault2(getCUpgEffect(c)) + CONSTR_DATA[c].displaySuffix : '+' + formatDefault2(getCUpgEffect(c)) }
 }
 
 function buyMaxConstr(upg) {
@@ -125,14 +145,28 @@ function buyMaxConstr(upg) {
 }
 
 function buyMaxAllConstr() {
-    for (var i=4; i>0; i--) {
-        buyMaxConstr(i);
+    if (!hasMilestone(1)) {
+        for (var i=4; i>0; i--) {
+            buyMaxConstr(i);
+        }
+    } else {
+        for (var i=6; i>0; i--) {
+            buyMaxConstr(i);
+        }
     }
 }
 
 //prestige related
 
+function getAstralNerf() {
+    if (hasGUpgrade(1, 41)) { return 2; }
+    else if (hasGUpgrade(1, 11)) { return 5; }
+    else { return 10; }
+}
+
 function toggleAstral() {
+    player.thisAscStats.wentAstral = true;
+    player.thisSacStats.wentAstral = true;
     if (player.unlocks['buildingsTab']['mainTab']) {
         player.astralFlag = !player.astralFlag;
         toggleAstralDisplay();
@@ -140,92 +174,107 @@ function toggleAstral() {
     if (player.astralFlag) { player.thisSacStats.hasGoneAstral = true; }
 }
 
-function resetBuildingResources(sacrifice=false) {
+function resetBuildingResources(sacrifice=false, ascension=false) {
     if (player.astralFlag) { toggleAstral(); }
-    if (!hasAchievement(15)) { player.bricks = new Decimal(START_PLAYER.bricks); }
+    if (!hasAchievement(15) || ascension) { player.bricks = new Decimal(START_PLAYER.bricks); }
     else if (sacrifice) { player.bricks = new Decimal(getAchievementEffect(15)); } 
     for (var b in BUILDS_DATA) {
-        player.buildings[b].amount = new Decimal(START_PLAYER.buildings[b].amount);
+        if (b!=4) {
+            if (b!=3 || !hasAchievement(51)) { player.buildings[b].amount = new Decimal(START_PLAYER.buildings[b].amount); }
+        }
     }
 }
 
-function resetBuildings() {
+function resetBuildings(ascension=false) {
     if (player.astralFlag) { toggleAstral(); }
     
-    if (hasTUpgrade(24)) {
+    if ((hasTUpgrade(24) && !ascension) || hasAchievement(53)) {
         player.worlds = new Decimal(4);
         player.spaceResets = new Decimal(4);
         player.nextSpaceReset = [3, 8];
         copyData(player.thisSacStats, START_PLAYER.thisSacStats);
+        if (hasGUpgrade(2, 22)) { player.worlds = player.worlds.plus(1); }
         player.thisSacStats.totalWorlds = player.worlds;
         player.thisSacStats.bestWorlds = player.worlds;
+        if (ascension) {
+            player.thisAscStats.totalWorlds = player.worlds;
+            player.thisAscStats.bestWorlds = player.worlds;
+        }
         return;
     }
 
     let tempSun = {};
+    let tempVortex = {};
+    let sun = player.unlocks['buildingsTab']['sun'];
+    let sunRow2 = player.unlocks['buildingsTab']['sunRow2'];
+    let vortex = player.unlocks['buildingsTab']['vortex'];
+    let vortexT = player.unlocks['buildingsTab']['vortexTable'];
+    copyData(tempVortex, player.buildings[4]);
     copyData(tempSun, player.buildings[3]);
     copyData(player.buildings, START_PLAYER.buildings);
-    copyData(player.construction, START_PLAYER.construction);
+    copyData(player.buildings[4], tempVortex);
+    if (!hasMilestone(1)) { copyData(player.construction, START_PLAYER.construction); }
+    copyData(player.unlocks['buildingsTab'], START_PLAYER.unlocks['buildingsTab']);
+    if (hasMilestone(1)) {
+        player.unlocks['buildingsTab']['construction'] = true;
+        player.unlocks['buildingsTab']['constructionRow2'] = true;
+    }
+    if (hasMilestone(5)) {
+        copyData(player.buildings[4], tempVortex);
+        player.unlocks['buildingsTab']['vortex'] = vortex;
+        player.unlocks['buildingsTab']['vortexTable'] = vortexT;
+    }
 
     if (hasTUpgrade(14)) {
         player.worlds = new Decimal(4);
         player.spaceResets = new Decimal(4);
         player.nextSpaceReset = [3, 8];
-        copyData(player.buildings[3], tempSun);
-        player.buildings[3].amount = new Decimal(0);
-        lockElements('buildingsTab', 'factory');
-        lockElements('buildingsTab', 'factoryRow2');
-        lockElements('buildingsTab', 'necropolis');
-        lockElements('buildingsTab', 'necropolisRow2');
+        if (!ascension) {
+            copyData(player.buildings[3], tempSun);
+            player.unlocks['buildingsTab']['sun'] = sun;
+            player.unlocks['buildingsTab']['sunRow2'] = sunRow2;
+        }
+        if (!hasAchievement(51)) { player.buildings[3].amount = new Decimal(0); }
+        player.unlocks['buildingsTab']['mainTab'] = true;
+        player.unlocks['buildingsTab']['construction'] = true;
     } else if (hasTUpgrade(13)) {
         player.worlds = new Decimal(3);
         player.spaceResets = new Decimal(3);
         player.nextSpaceReset = [1, 8];
-        lockElements('buildingsTab', 'factory');
-        lockElements('buildingsTab', 'factoryRow2');
-        lockElements('buildingsTab', 'necropolis');
-        lockElements('buildingsTab', 'necropolisRow2');
-        lockElements('buildingsTab', 'sun');
-        lockElements('buildingsTab', 'sunRow2');
+        player.unlocks['buildingsTab']['mainTab'] = true;
+        player.unlocks['buildingsTab']['construction'] = true;
     } else if (hasTUpgrade(12)) {
         player.worlds = new Decimal(2);
         player.spaceResets = new Decimal(2);
         player.nextSpaceReset = [1, 7];
-        lockElements('buildingsTab', 'factory');
-        lockElements('buildingsTab', 'factoryRow2');
-        lockElements('buildingsTab', 'necropolis');
-        lockElements('buildingsTab', 'necropolisRow2');
-        lockElements('buildingsTab', 'sun');
-        lockElements('buildingsTab', 'sunRow2');
+        player.unlocks['buildingsTab']['mainTab'] = true;
+        player.unlocks['buildingsTab']['construction'] = true;
     } else if (hasTUpgrade(11)) {
         player.worlds = new Decimal(1);
         player.spaceResets = new Decimal(1);
         player.nextSpaceReset = [1, 6];
-        lockElements('buildingsTab', 'factory');
-        lockElements('buildingsTab', 'factoryRow2');
-        lockElements('buildingsTab', 'necropolis');
-        lockElements('buildingsTab', 'necropolisRow2');
-        lockElements('buildingsTab', 'sun');
-        lockElements('buildingsTab', 'sunRow2');
-        lockElements('buildingsTab', 'construction');
+        player.unlocks['buildingsTab']['mainTab'] = true;
     } else {
         player.spaceResets = new Decimal(START_PLAYER.spaceResets);
         player.worlds = new Decimal(START_PLAYER.worlds);
         player.nextSpaceReset = START_PLAYER.nextSpaceReset.slice();
-        lockTab('buildingsTab');
     }
+
+    for (let key in player.unlocks['buildingsTab']) {
+        if (!player.unlocks['buildingsTab'][key]) { lockElements('buildingsTab', key) }
+    }
+
     copyData(player.thisSacStats, START_PLAYER.thisSacStats);
+    if (hasGUpgrade(2, 22)) { player.worlds = player.worlds.plus(1); }
     player.thisSacStats.totalWorlds = player.worlds;
     player.thisSacStats.bestWorlds = player.worlds;
+    if (ascension) {
+        player.thisAscStats.totalWorlds = player.worlds;
+        player.thisAscStats.bestWorlds = player.worlds;
+    }
 
-    if (!hasTUpgrade(24) && tempSun.upgrades[13]) {
-        player.buildings[3].built = true;
-        player.buildings[3].upgrades[13] = tempSun.upgrades[13];
-    }
-    if (!hasTUpgrade(24) && tempSun.upgrades[23]) {
-        player.buildings[3].built = true;
-        player.buildings[3].upgrades[23] = tempSun.upgrades[23];
-    }
+    if (tempSun.upgrades[13] && (!ascension || hasAchievement(43))) { player.buildings[3].upgrades[13] = tempSun.upgrades[13]; }
+    if (tempSun.upgrades[23]) { player.buildings[3].upgrades[23] = tempSun.upgrades[23]; }
 }
 
 //data
@@ -277,17 +326,21 @@ const BUILDS_DATA = {
                 cost: new Decimal(1000),
                 buttonID: 'factoryUpg11',
                 displayEffect: true,
+                displaySuffix: 'x',
                 displayTooltip: true,
-                displayFormula: function() { return hasUpgrade(3, 21) ? '1 + 2*log(x)' : '1 + 2*sqrt(log(x))'; },
+                displayFormula: function() { return hasUpgrade(4, 13) ? (hasUpgrade(3, 21) ? '1 + 2*ln(x)' : '1 + 2*sqrt(ln(x))') : (hasUpgrade(3, 21) ? '1 + 2*log(x)' : '1 + 2*sqrt(log(x))') },
                 effect: function() {
                     if (hasUpgrade(3, 21)) {
-                        var b = new Decimal(Decimal.max(player.buildings[1].amount, 1).log10());
-                        return b.times(2).plus(1);
+                        var b = hasUpgrade(4, 13) ? new Decimal(Decimal.max(player.buildings[1].amount, 1).ln()) : new Decimal(Decimal.max(player.buildings[1].amount, 1).log10());
+                        b = b.times(2);
                     } else {
-                        var b = Decimal.max(player.buildings[1].amount, 1).log10();
+                        var b = hasUpgrade(4, 13) ? Decimal.max(player.buildings[1].amount, 1).ln() : Decimal.max(player.buildings[1].amount, 1).log10();
                         var e = new Decimal(0.5);
-                        return Decimal.pow(b, e).times(2).plus(1);
+                        b = Decimal.pow(b, e).times(2);
                     }
+                    if (hasGUpgrade(3, 11)) { b = b.pow(getGUpgEffect(3, 11)); }
+                    if (hasTUpgrade(43)) { b = b.times(getGUpgEffect(43)); }
+                    return b.plus(1);
                 }
             },
             12: {
@@ -296,6 +349,7 @@ const BUILDS_DATA = {
                 cost: new Decimal(5000),
                 buttonID: 'factoryUpg12',
                 displayEffect: false,
+                displaySuffix: '',
                 displayTooltip: false,
                 displayFormula: function() { return ''; },
                 effect: function() {
@@ -309,6 +363,7 @@ const BUILDS_DATA = {
                 cost: new Decimal(10000),
                 buttonID: 'factoryUpg13',
                 displayEffect: false,
+                displaySuffix: '',
                 displayTooltip: false,
                 displayFormula: function() { return ''; },
                 effect: function() {
@@ -321,11 +376,12 @@ const BUILDS_DATA = {
                 cost: new Decimal(100000),
                 buttonID: 'factoryUpg21',
                 displayEffect: true,
+                displaySuffix: 'x',
                 displayTooltip: true,
-                displayFormula: function() { return hasUpgrade(3, 21) ? '1 + log(x)' : '1 + sqrt(log(x))'; },
+                displayFormula: function() { return hasUpgrade(4, 13) ? (hasUpgrade(3, 21) ? '1 + ln(x)' : '1 + sqrt(ln(x))') : (hasUpgrade(3, 21) ? '1 + log(x)' : '1 + sqrt(log(x))') },
                 effect: function() {
                     if (hasUpgrade(3, 21)) {
-                        var b = new Decimal(Decimal.max(player.units[2].amount, 1).log10());
+                        var b = hasUpgrade(4, 13) ? new Decimal(Decimal.max(player.units[2].amount, 1).ln()) : new Decimal(Decimal.max(player.units[2].amount, 1).log10());
                         return b.plus(1);
                     } else {
                         var b = Decimal.max(player.units[2].amount, 1).log10();
@@ -340,6 +396,7 @@ const BUILDS_DATA = {
                 cost: new Decimal(250000),
                 buttonID: 'factoryUpg22',
                 displayEffect: false,
+                displaySuffix: '',
                 displayTooltip: false,
                 displayFormula: function() { return ''; },
                 effect: function() {
@@ -352,16 +409,17 @@ const BUILDS_DATA = {
                 cost: new Decimal(500000),
                 buttonID: 'factoryUpg23',
                 displayEffect: true,
+                displaySuffix: 'x',
                 displayTooltip: true,
-                displayFormula: function() { return hasUpgrade(3, 21) ? '1 + log(x)^4' : '1 + log(x)^2'; },
+                displayFormula: function() { return hasUpgrade(4, 13) ? (hasUpgrade(3, 21) ? '1 + ln(x)^4' : '1 + ln(x)^2') : (hasUpgrade(3, 21) ? '1 + log(x)^4' : '1 + log(x)^2') },
                 effect: function() {
                     if (hasUpgrade(3, 21)) {
                         var b = Decimal.max(player.corpses, 1);
-                        b = Decimal.pow(b.log10(), 4);
+                        b = hasUpgrade(4, 13) ? Decimal.pow(b.ln(), 4) : Decimal.pow(b.log10(), 4);
                         return b.plus(1);
                     } else {
                         var b = Decimal.max(player.corpses, 1);
-                        b = Decimal.pow(b.log10(), 2);
+                        b = hasUpgrade(4, 13) ? Decimal.pow(b.ln(), 2) : Decimal.pow(b.log10(), 2);
                         return b.plus(1);
                     }
                 }
@@ -375,7 +433,7 @@ const BUILDS_DATA = {
         cost: new Decimal(1e5),
         upgResource: 'astral bricks',
         pBase: function()  {
-            var b = player.units[8].amount;
+            var b = player.units[8].bought;
             return b;
         },
         pExp: function() {
@@ -385,6 +443,7 @@ const BUILDS_DATA = {
         prod: function() {
             var p = Decimal.pow(this.pBase(), this.pExp());
             if (hasTUpgrade(23)) { p = p.times(getTUpgEffect(23)) }
+            if (hasGUpgrade(3, 31)) { p = p.pow(2); }
             return p;
         },
         resourceEff: function() {
@@ -412,11 +471,14 @@ const BUILDS_DATA = {
                 cost: new Decimal(100000),
                 buttonID: 'necropolisUpg11',
                 displayEffect: true,
+                displaySuffix: 'x',
                 displayTooltip: true,
                 displayFormula: function() { return '1.2^x'; },
                 effect: function() {
                     var e = Decimal.floor(player.bricks.e);
-                    return Decimal.pow(1.2, e);
+                    var b = Decimal.pow(1.2, e);
+                    if (hasGUpgrade(3, 21) && hasUpgrade(2, 21)) { b = b.times(getUpgEffect(2, 21)); }
+                    return b;
                 }
             },
             12: {
@@ -425,16 +487,18 @@ const BUILDS_DATA = {
                 cost: new Decimal(500000),
                 buttonID: 'necropolisUpg12',
                 displayEffect: true,
+                displaySuffix: 'x',
                 displayTooltip: true,
-                displayFormula: function() { return hasUpgrade(3, 21) ? '1 + log(x)' : '1 + sqrt(log(x))'; },
+                displayFormula: function() { return hasUpgrade(4, 13) ? (hasUpgrade(3, 21) ? '1 + ln(x)' : '1 + sqrt(ln(x))') : (hasUpgrade(3, 21) ? '1 + log(x)' : '1 + sqrt(log(x))') },
                 effect: function() {
                     if (hasUpgrade(3, 21)) {
-                        var e = new Decimal(Decimal.max(player.bricks, 1).log10()).plus(1);
-                        return e;
+                        var e = hasUpgrade(4, 13) ? new Decimal(Decimal.max(player.bricks, 1).ln()) : new Decimal(Decimal.max(player.bricks, 1).log10());
                     } else {
-                        var e = Decimal.sqrt(Decimal.max(player.bricks, 1).log10()).plus(1);
-                        return e;
+                        var e = hasUpgrade(4, 13) ? Decimal.sqrt(Decimal.max(player.bricks, 1).ln()) : Decimal.sqrt(Decimal.max(player.bricks, 1).log10());
                     }
+                    if (hasGUpgrade(3, 21) && hasUpgrade(2, 22)) { e = e.times(getUpgEffect(2, 22)); }
+
+                    return e.plus(1);
                 }
             },
             13: {
@@ -443,16 +507,18 @@ const BUILDS_DATA = {
                 cost: new Decimal(1000000),
                 buttonID: 'necropolisUpg13',
                 displayEffect: true,
+                displaySuffix: 'x',
                 displayTooltip: true,
-                displayFormula: function() { return hasUpgrade(3, 21) ? '1 + log(x)' : '1 + sqrt(log(x))'; },
+                displayFormula: function() { return hasUpgrade(4, 13) ? (hasUpgrade(3, 21) ? '1 + ln(x)' : '1 + sqrt(ln(x))') : (hasUpgrade(3, 21) ? '1 + log(x)' : '1 + sqrt(log(x))') },
                 effect: function() {
                     if (hasUpgrade(3, 21)) {
-                        var e = new Decimal(Decimal.max(player.bricks, 1).log10()).plus(1);
-                        return e;
+                        var e = hasUpgrade(4, 13) ? new Decimal(Decimal.max(player.bricks, 1).ln()) : new Decimal(Decimal.max(player.bricks, 1).log10());
                     } else {
-                        var e = Decimal.sqrt(Decimal.max(player.bricks, 1).log10()).plus(1);
-                        return e;
+                        var e = hasUpgrade(4, 13) ? Decimal.sqrt(Decimal.max(player.bricks, 1).ln()) : Decimal.sqrt(Decimal.max(player.bricks, 1).log10());
                     }
+                    if (hasGUpgrade(3, 21) && hasUpgrade(2, 23)) { e = e.times(getUpgEffect(2, 23)); }
+
+                    return e.plus(1);
                 }
             },
             21: {
@@ -461,18 +527,19 @@ const BUILDS_DATA = {
                 cost: new Decimal(1e9),
                 buttonID: 'necropolisUpg21',
                 displayEffect: true,
+                displaySuffix: 'x',
                 displayTooltip: true,
-                displayFormula: function() { return hasUpgrade(3, 21) ? '1 + log(x)^4' : '1 + log(x)^2'; },
+                displayFormula: function() { return hasUpgrade(4, 13) ? (hasUpgrade(3, 21) ? '1 + ln(x)^4' : '1 + ln(x)^2') : (hasUpgrade(3, 21) ? '1 + log(x)^4' : '1 + log(x)^2') },
                 effect: function() {
                     if (hasUpgrade(3, 21)) {
                         var b = Decimal.max(player.bricks, 1);
-                        b = Decimal.pow(b.log10(), 4);
-                        return b.plus(1);
+                        b = hasUpgrade(4, 13) ? Decimal.pow(b.ln(), 4) : Decimal.pow(b.log10(), 4);
                     } else {
                         var b = Decimal.max(player.bricks, 1);
-                        b = Decimal.pow(b.log10(), 2);
-                        return b.plus(1);
+                        b = hasUpgrade ? Decimal.pow(b.ln(), 2) : Decimal.pow(b.log10(), 2);
                     }
+
+                    return b.plus(1);
                 }
             },
             22: {
@@ -481,18 +548,19 @@ const BUILDS_DATA = {
                 cost: new Decimal(1e12),
                 buttonID: 'necropolisUpg22',
                 displayEffect: true,
+                displaySuffix: 'x',
                 displayTooltip: true,
-                displayFormula: function() { return hasUpgrade(3, 21) ? '1 + log(x)^4' : '1 + log(x)^2'; },
+                displayFormula: function() { return hasUpgrade(4, 13) ? (hasUpgrade(3, 21) ? '1 + ln(x)^4' : '1 + ln(x)^2') : (hasUpgrade(3, 21) ? '1 + log(x)^4' : '1 + log(x)^2') },
                 effect: function() {
                     if (hasUpgrade(3, 21)) {
                         var b = Decimal.max(player.bricks, 1);
-                        b = Decimal.pow(b.log10(), 4);
-                        return b.plus(1);
+                        b = hasUpgrade(4, 13) ? Decimal.pow(b.ln(), 4) : Decimal.pow(b.log10(), 4);
                     } else {
                         var b = Decimal.max(player.bricks, 1);
-                        b = Decimal.pow(b.log10(), 2);
-                        return b.plus(1);
+                        b = hasUpgrade(4, 13) ? Decimal.pow(b.ln(), 2) : Decimal.pow(b.log10(), 2);
                     }
+
+                    return b.plus(1);
                 }
             },
             23: {
@@ -501,16 +569,17 @@ const BUILDS_DATA = {
                 cost: new Decimal(1e15),
                 buttonID: 'necropolisUpg23',
                 displayEffect: true,
+                displaySuffix: 'x',
                 displayTooltip: true,
-                displayFormula: function() { return hasUpgrade(3, 21) ? '1 + (log(x)^2)/4' : '1 + log(x)/4'; },
+                displayFormula: function() { return hasUpgrade(4, 13) ? (hasUpgrade(3, 21) ? '1 + (log(x)^2)/4' : '1 + log(x)/4') : (hasUpgrade(3, 21) ? '1 + (log(x)^2)/4' : '1 + log(x)/4') },
                 effect: function() {
                     if (hasUpgrade(3, 21)) {
-                        var e = Decimal.div(Decimal.pow(Decimal.max(player.bricks, 1).log10(), 2), 4).plus(1);
-                        return e;
+                        var e = hasUpgrade(4, 13) ? Decimal.div(Decimal.pow(Decimal.max(player.bricks, 1).ln(), 2), 4) : Decimal.div(Decimal.pow(Decimal.max(player.bricks, 1).log10(), 2), 4)
                     } else {
-                        var e = Decimal.div(Decimal.max(player.bricks, 1).log10(), 4).plus(1);
-                        return e;
+                        var e = hasUpgrade(4, 13) ? Decimal.div(Decimal.max(player.bricks, 1).ln(), 4) : Decimal.div(Decimal.max(player.bricks, 1).log10(), 4)
                     }
+
+                    return e.plus(1);
                 }
             }
         }
@@ -561,6 +630,7 @@ const BUILDS_DATA = {
                 cost: new Decimal(1000),
                 buttonID: 'sunUpg11',
                 displayEffect: false,
+                displaySuffix: '',
                 displayTooltip: false,
                 displayFormula: function() { return ''; },
                 effect: function() {
@@ -573,6 +643,7 @@ const BUILDS_DATA = {
                 cost: new Decimal(1000),
                 buttonID: 'sunUpg12',
                 displayEffect: false,
+                displaySuffix: '',
                 displayTooltip: false,
                 displayFormula: function() { return ''; },
                 effect: function() {
@@ -585,6 +656,7 @@ const BUILDS_DATA = {
                 cost: new Decimal(10000),
                 buttonID: 'sunUpg13',
                 displayEffect: false,
+                displaySuffix: '',
                 displayTooltip: false,
                 displayFormula: function() { return ''; },
                 effect: function() {
@@ -597,6 +669,7 @@ const BUILDS_DATA = {
                 cost: new Decimal(100000),
                 buttonID: 'sunUpg21',
                 displayEffect: false,
+                displaySuffix: '',
                 displayTooltip: false,
                 displayFormula: function() { return ''; },
                 onBuy: function() {
@@ -612,10 +685,11 @@ const BUILDS_DATA = {
             },
             22: {
                 title: 'Menagerie of Worlds',
-                desc: function() { return `Unlock advanced sacrifice autobuyer options, and raise the sun eater base cost multiplier to ^0.67${hasAchievement(35) ? ' (0.333 after Galactic Angst).' : '.'}`; },
+                desc: function() { return `Unlock advanced sacrifice autobuyer options permanently, and raise the sun eater base cost multiplier to ^0.67${hasAchievement(35) ? ' (0.333 after Galactic Angst).' : '.'}`; },
                 cost: new Decimal(2500000),
                 buttonID: 'sunUpg22',
                 displayEffect: false,
+                displaySuffix: '',
                 displayTooltip: true,
                 displayFormula: function() { return hasAchievement(35) ? '(1e15x -> 1e5x)' : '(1e15x -> 1e10x)' },
                 effect: function() {
@@ -625,10 +699,129 @@ const BUILDS_DATA = {
             },
             23: {
                 title: 'Cosmogenesis',
-                desc: function() { return `Unlock <strong>Depleted Galaxies</strong>.<br>(COMING SOON)` },
-                cost: new Decimal("Infinity"),
+                desc: function() { return 'Unlock <strong>Depleted Galaxies</strong>.<br>(This upgrade is never reset.)'; },
+                cost: new Decimal(25000000),
                 buttonID: 'sunUpg23',
                 displayEffect: false,
+                displaySuffix: '',
+                displayTooltip: false,
+                displayFormula: function() { return ''; },
+                effect: function() {
+                    return new Decimal(1);
+                }
+            },
+        }
+    },
+    4: {
+        id: 'galactic vortex',
+        tier: 4,
+        resource: 'black holes',
+        cost: new Decimal(1e60),
+        upgResource: 'black holes',
+        pBase: function()  {
+            var b = new Decimal(.001);
+            return b;
+        },
+        prod: function() {
+            var p = player.allTimeStats.totalGalaxies.minus(player.buildings[this.tier].amount).times(this.pBase());
+            return Decimal.max(p, 0); 
+        },
+        resourceEff: function() {
+            return player.buildings[this.tier].amount.sqrt().div(50);
+        },
+        canAffordUpg: function(upg) {
+            return player.buildings[4].amount.gte(this.upgrades[upg].cost);
+        },
+        buildingButtonID: 'vortexBuild',
+        buildingButtonClass: 'buildBut',
+        buildingButtonUnclick: 'unclickableBuildBut',
+        buildingRowID: 'vortexBuildRow',
+        buildingHeaderID: 'vortexHeaderRow',
+        upgradesRow1ID: 'vortexUpgradesRow',
+        upgradesRow2ID: 'vortexUpgradesRow2',
+        upgradeBtnClass: 'vortexUpg',
+        upgradeBtnUnclick: 'unclickVortexUpg',
+        upgradeBtnBought: 'boughtVortexUpg',
+        upgrades: {
+            11: {
+                title: 'Parallel Universes',
+                desc: function() { return 'You get extra exterminated worlds on prestige equal to your current exterminated worlds divided by 10 (rounded down).'; },
+                cost: new Decimal(5),
+                buttonID: 'vortexUpg11',
+                displayEffect: true,
+                displaySuffix: '',
+                displayTooltip: false,
+                displayFormula: function() {  },
+                effect: function() {
+                    return Decimal.floor(player.worlds.div(10));
+                }
+            },
+            12: {
+                title: 'Trickle-Down Nekronomiks',
+                desc: function() { return 'The first three construction upgrades get sqrt(x) extra levels, where x is the level of the upgrade to the right (rounded down).'; },
+                cost: new Decimal(25),
+                buttonID: 'vortexUpg12',
+                displayEffect: true,
+                displaySuffix: '',
+                displayTooltip: false,
+                displayFormula: function() { return ''; },
+                effect: function() {
+                    return new Decimal(1);
+                }
+            },
+            13: {
+                title: 'Ultra-Solar',
+                desc: function() { return `ALL upgrade formulas based on log(x) are now based on ln(x) (<span style="font-weight: 800;">Solar Flares</span> still appplies to building upgrades).`; },
+                cost: new Decimal(100),
+                buttonID: 'vortexUpg13',
+                displayEffect: false,
+                displaySuffix: '',
+                displayTooltip: false,
+                displayFormula: function() { return ''; },
+                effect: function() {
+                    return new Decimal(1);
+                }
+            },
+            21: {
+                title: '2.1',
+                desc: function() { return 'description'; },
+                cost: new Decimal("Infinity"),
+                buttonID: 'vortexUpg21',
+                displayEffect: false,
+                displaySuffix: '',
+                displayTooltip: false,
+                displayFormula: function() { return ''; },
+                onBuy: function() {
+                    if (player.astralFlag) {
+                        toggleAstral();
+                        loadStyles();
+                        toggleAstral();
+                    } else { loadStyles(); }
+                },
+                effect: function() {
+                    return new Decimal(1);
+                }
+            },
+            22: {
+                title: '2.2',
+                desc: function() { return 'description'; },
+                cost: new Decimal("Infinity"),
+                buttonID: 'vortexUpg22',
+                displayEffect: false,
+                displaySuffix: '',
+                displayTooltip: false,
+                displayFormula: function() { return '' },
+                effect: function() {
+                    return new Decimal(1);
+                }
+            },
+            23: {
+                title: '2.3',
+                desc: function() { return 'description'; },
+                cost: new Decimal("Infinity"),
+                buttonID: 'vortexUpg23',
+                displayEffect: false,
+                displaySuffix: '',
                 displayTooltip: false,
                 displayFormula: function() { return ''; },
                 effect: function() {
@@ -649,15 +842,27 @@ const CONSTR_DATA = {
         cost: function() {
             var c = this.baseCost;
             c = c.times(Decimal.pow(this.baseCostMult, player.construction[this.tier]));
-            if (player.construction[this.tier].gte(25)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.construction[this.tier].minus(24)))); }
+            if (hasGUpgrade(3, 22)) {
+                if (player.construction[this.tier].gte(50)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.construction[this.tier].minus(49)))); }
+            } else {
+                if (player.construction[this.tier].gte(25)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.construction[this.tier].minus(24)))); }
+            }
             return c;
         },
         baseCostMult: 5,
         expCostMult: 10,
         buttonID: 'constrUpg1',
         displayEffect: true,
+        displaySuffix: 'x',
+        extraLevels: function() {
+            let e = parseInt(CONSTR_DATA[5].effect()[this.tier-1]);
+            if (hasUpgrade(4, 12)) { e = Decimal.floor(player.construction[this.tier+1].sqrt().plus(e)) }
+            return e;
+        },
         effect: function() {
-            return Decimal.max(1+(0.05*player.construction[this.tier]), 1);
+            let e = Decimal.max(1+(0.05*(player.construction[this.tier].plus(this.extraLevels()))), 1);
+            if (hasGUpgrade(3, 32)) { e = e.times(getGUpgEffect(3, 32)); }
+            return e;
         }
     },
     2: {
@@ -669,15 +874,27 @@ const CONSTR_DATA = {
         cost: function() {
             var c = this.baseCost;
             c = c.times(Decimal.pow(this.baseCostMult, player.construction[this.tier]));
-            if (player.construction[this.tier].gte(25)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.construction[this.tier].minus(24)))); }
+            if (hasGUpgrade(3, 22)) {
+                if (player.construction[this.tier].gte(50)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.construction[this.tier].minus(49)))); }
+            } else {
+                if (player.construction[this.tier].gte(25)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.construction[this.tier].minus(24)))); }
+            }
             return c;
         },
         baseCostMult: 5,
         expCostMult: 10,
         buttonID: 'constrUpg2',
         displayEffect: true,
+        displaySuffix: '',
+        extraLevels: function() {
+            let e = parseInt(CONSTR_DATA[5].effect()[this.tier-1]);
+            if (hasUpgrade(4, 12)) { e = Decimal.floor(player.construction[this.tier+1].sqrt().plus(e)) }
+            return e;
+        },
         effect: function() {
-            return .02*player.construction[this.tier];
+            let e = .02*(player.construction[this.tier].plus(this.extraLevels()));
+            if (hasGUpgrade(3, 32)) { e = e*getGUpgEffect(3, 32); }
+            return e;
         }
     },
     3: {
@@ -689,15 +906,27 @@ const CONSTR_DATA = {
         cost: function() {
             var c = this.baseCost;
             c = c.times(Decimal.pow(this.baseCostMult, player.construction[this.tier]));
-            if (player.construction[this.tier].gte(25)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.construction[this.tier].minus(24)))); }
+            if (hasGUpgrade(3, 22)) {
+                if (player.construction[this.tier].gte(50)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.construction[this.tier].minus(49)))); }
+            } else {
+                if (player.construction[this.tier].gte(25)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.construction[this.tier].minus(24)))); }
+            }
             return c;
         },
         baseCostMult: 5,
         expCostMult: 10,
         buttonID: 'constrUpg3',
         displayEffect: true,
+        displaySuffix: 'x',
+        extraLevels: function() {
+            let e = parseInt(CONSTR_DATA[5].effect()[this.tier-1]);
+            if (hasUpgrade(4, 12)) { e = Decimal.floor(player.construction[this.tier+1].sqrt().plus(e)) }
+            return e;
+        },
         effect: function() {
-            return Decimal.max(1+(0.1*player.construction[this.tier]), 1);
+            let e = Decimal.max(1+(0.1*(player.construction[this.tier].plus(this.extraLevels()))), 1);
+            if (hasGUpgrade(3, 32)) { e = e.times(getGUpgEffect(3, 32)); }
+            return e;
         }
     },
     4: {
@@ -709,15 +938,75 @@ const CONSTR_DATA = {
         cost: function() {
             var c = this.baseCost;
             c = c.times(Decimal.pow(this.baseCostMult, player.construction[this.tier]));
-            if (player.construction[this.tier].gte(25)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.construction[this.tier].minus(24)))); }
+            if (hasGUpgrade(3, 22)) {
+                if (player.construction[this.tier].gte(50)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.construction[this.tier].minus(49)))); }
+            } else {
+                if (player.construction[this.tier].gte(25)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.construction[this.tier].minus(24)))); }
+            }
             return c;
         },
         baseCostMult: 10,
         expCostMult: 10,
         buttonID: 'constrUpg4',
         displayEffect: true,
+        displaySuffix: '',
+        extraLevels: function() {
+            let e = parseInt(CONSTR_DATA[5].effect()[this.tier-1]);
+            return e;
+        },
         effect: function() {
-            return .02*player.construction[this.tier];
+            let e = .02*(player.construction[this.tier].plus(this.extraLevels()));
+            if (hasGUpgrade(3, 32)) { e = e*getGUpgEffect(3, 32); }
+            return e;
+        }
+    },
+    5: {
+        title: 'Putrid Renovations',
+        desc: 'Starting at level 1, the first four upgrades get one extra level for every [1/2/3/4] levels.',
+        tier: 5,
+        baseCost: new Decimal(1e40),
+        isTimes: true,
+        cost: function() {
+            var c = this.baseCost;
+            c = c.times(Decimal.pow(this.baseCostMult, player.construction[this.tier]));
+            if (player.construction[this.tier].gte(25)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.construction[this.tier].minus(24)))); }
+            return c;
+        },
+        baseCostMult: 1000,
+        expCostMult: 10,
+        buttonID: 'constrUpg5',
+        displayEffect: true,
+        displaySuffix: '',
+        extraLevels: function() { return 0; },
+        effect: function() {
+            let k = player.construction[this.tier];
+            if (k==0) { return [0, 0, 0, 0]; }
+            let e = new Array(4);
+            for (let i=0; i<4; i++) { e[i] = Math.floor((k-1)/(i+1))+1}
+            return e;
+        }
+    },
+    6: {
+        title: 'Siege Nebulas',
+        desc: 'You get sqrt(x) extra galaxies on ascension (rounded down), where x = this upgrade\'s level.',
+        tier: 6,
+        baseCost: new Decimal(1e50),
+        isTimes: false,
+        cost: function() {
+            var c = this.baseCost;
+            c = c.times(Decimal.pow(this.baseCostMult, player.construction[this.tier]));
+            if (player.construction[this.tier].gte(25)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.construction[this.tier].minus(24)))); }
+            return c;
+        },
+        baseCostMult: new Decimal(1e6),
+        expCostMult: 10,
+        buttonID: 'constrUpg6',
+        displayEffect: true,
+        displaySuffix: '',
+        extraLevels: function() { return 0; },
+        effect: function() {
+            let g = Math.floor(player.construction[this.tier].sqrt());
+            return g;
         }
     },
 }
