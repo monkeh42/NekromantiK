@@ -217,7 +217,7 @@ function respecGalaxiesKey() {
 }
 
 function respecGalaxies() {
-    if (getBoughtGUpgs().eq(0) && !hasAchievement(52)) { unlockAchievement(52); }
+    if (getBoughtGUpgs() == 0 && !hasAchievement(52)) { unlockAchievement(52); }
     player.galaxies = player.galaxies.plus(player.spentGalaxies);
     player.spentGalaxies = new Decimal(0);
     //unlockRows();
