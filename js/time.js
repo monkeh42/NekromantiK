@@ -1,7 +1,7 @@
 //misc info functions
 
 function hasPrereqTUpg(t) {
-    if (t==11 || t==21 || t==31 || t==41 || t==51) { return true; }
+    if (t==11 || t==21 || t==31) { return true; }
     else { return player.timeUpgs[TIME_DATA.upgrades[t].preReq]; }
 }
 
@@ -49,8 +49,6 @@ function calculateCrystalGain() {
         var ret = Decimal.floor(Decimal.pow(10, (player.thisSacStats.bestCorpses.e/div) - 0.65));
         if (hasTUpgrade(21)) { ret = ret.times(2); }
         if (hasTUpgrade(33)) { ret = ret.times(getTUpgEffect(33)); }
-        if (hasGUpgrade(4, 21)) { ret = ret.times(getGUpgEffect(4, 21)); }
-        if (hasTUpgrade(53)) { ret = ret.times(getTUpgEffect(53)); }
         return ret;
     } else {
         return new Decimal(0);
@@ -89,14 +87,12 @@ function getTimeDimProdPerSecond(tier) {
 function getEssenceProdPerSecond() {
     var p = player.timeDims[1].amount.times(TIME_DATA[1].mult());
     if (hasUpgrade(2, 22)) { p = p.times(getUpgEffect(2, 22)); }
-    if (hasGUpgrade(4, 11)) { p = p.times(getGUpgEffect(4, 11)); }
     return p;
 }
 
 function getTrueTimeBuff() {
     if (!player.timeLocked) { return new Decimal(1); }
     var b = new Decimal(Decimal.max(player.trueEssence, 1).log10());
-    if (hasGUpgrade(4, 31)) { b = b.pow(getGUpgEffect(4, 31)); }
     b = b.div(getAntiTimeNerf());
     b = Decimal.add(b, 1);
     return b;
@@ -105,21 +101,20 @@ function getTrueTimeBuff() {
 function getAntiTimeBuff() {
     if (!player.timeLocked) { return new Decimal(1); }
     var b = new Decimal(Decimal.max(player.antiEssence, 1).log10());
-    if (hasGUpgrade(4, 31)) { b = b.pow(getGUpgEffect(4, 31)); }
     b = b.div(getTrueTimeNerf()).times(2);
     b = Decimal.add(b, 1);
     return b;
 }
 
 function getTrueTimeNerf() {
-    if (!player.timeLocked || hasGUpgrade(4, 41)) { return new Decimal(1); }
+    if (!player.timeLocked) { return new Decimal(1); }
     var b = new Decimal(Decimal.max(player.trueEssence, 1).log10());
     b = Decimal.pow(b, 0.2);
     return b.max(1);
 }
 
 function getAntiTimeNerf() {
-    if (!player.timeLocked || hasGUpgrade(4, 41)) { return new Decimal(1); }
+    if (!player.timeLocked) { return new Decimal(1); }
     var b = new Decimal(Decimal.max(player.antiEssence, 1).log10());
     b = Decimal.pow(b, 0.2);
     return b.max(1);
@@ -132,7 +127,6 @@ function buySingleTime(tier) {
         player.crystals = player.crystals.minus(TIME_DATA[tier].cost());
         player.timeDims[tier].amount = player.timeDims[tier].amount.plus(1);
         player.timeDims[tier].bought = player.timeDims[tier].bought.plus(1);
-        document.getElementById(TIME_DATA[tier].costID).innerHTML = formatWhole(TIME_DATA[tier].cost());
         //allDisplay();
     }
 }
@@ -143,7 +137,6 @@ function buyMaxTime(tier) {
         player.crystals = player.crystals.minus(calculateMaxTimeCost(tier));
         player.timeDims[tier].amount = player.timeDims[tier].amount.plus(totalBought);
         player.timeDims[tier].bought = player.timeDims[tier].bought.plus(totalBought);
-        document.getElementById(TIME_DATA[tier].costID).innerHTML = formatWhole(TIME_DATA[tier].cost());
         //allDisplay();
     }
 }
@@ -203,7 +196,7 @@ function respecTimeClick() {
 
             player.timeLocked = false;
             toggleTimeLockDisplay();
-            document.getElementById('timeSlider').removeAttribute('disabled')
+            document.getElementById('timeSlider').disabled = false;
             if (canTimePrestige()) { timePrestigeNoConfirm(); }
             else { timePrestigeReset(); }
         }
@@ -219,7 +212,7 @@ function respecTimeKey() {
 
             player.timeLocked = false;
             toggleTimeLockDisplay();
-            document.getElementById('timeSlider').removeAttribute('disabled')
+            document.getElementById('timeSlider').disabled = false;
             if (canTimePrestige()) { timePrestigeNoConfirm(); }
             else { timePrestigeReset(); }
         }
@@ -238,20 +231,16 @@ function timePrestigeKey() {
 
 function timePrestige() {
     if (canTimePrestige()) {
-        if (player.bricks.gt(player.corpses) && !hasAchievement(54)) { unlockAchievement(54) }
         if (!confirm('Are you sure? This will reset ALL of your progress before unlocking Time Warp, and all of your time essense.<br>(These confirmations can be disabled in options)')) return
         player.crystals = player.crystals.plus(calculateCrystalGain());
-        player.thisAscStats.totalCrystals = player.thisAscStats.totalCrystals.plus(calculateCrystalGain());
         player.allTimeStats.totalCrystals = player.allTimeStats.totalCrystals.plus(calculateCrystalGain());
-        if (player.crystals.gt(player.thisAscStats.bestCrystals)) { player.thisAscStats.bestCrystals = new Decimal(player.crystals); }
-        if (player.thisAscStats.bestCrystals.gt(player.allTimeStats.bestCrystals)) { player.allTimeStats.bestCrystals = new Decimal(player.thisAscStats.bestCrystals); }
+        if (player.crystals.gt(player.allTimeStats.bestCrystals)) { player.allTimeStats.bestCrystals = new Decimal(player.crystals); }
         player.timeResets = player.timeResets.plus(1);
-        player.thisAscStats.totalTimeResets = player.thisAscStats.totalTimeResets.plus(1);
         player.allTimeStats.totalTimeResets = player.allTimeStats.totalTimeResets.plus(1);
         if (document.getElementById('respecOnSac').checked) {
             player.timeLocked = false;
             toggleTimeLockDisplay();
-            document.getElementById('timeSlider').removeAttribute('disabled')
+            document.getElementById('timeSlider').disabled = false;
             document.getElementById('respecOnSac').checked = false;
         }
         timePrestigeReset();
@@ -260,19 +249,15 @@ function timePrestige() {
 
 function timePrestigeNoConfirm() {
     if (canTimePrestige()) {
-        if (player.bricks.gt(player.corpses) && !hasAchievement(54)) { unlockAchievement(54) }
         player.crystals = player.crystals.plus(calculateCrystalGain());
-        player.thisAscStats.totalCrystals = player.thisAscStats.totalCrystals.plus(calculateCrystalGain());
         player.allTimeStats.totalCrystals = player.allTimeStats.totalCrystals.plus(calculateCrystalGain());
-        if (player.crystals.gt(player.thisAscStats.bestCrystals)) { player.thisAscStats.bestCrystals = new Decimal(player.crystals); }
-        if (player.thisAscStats.bestCrystals.gt(player.allTimeStats.bestCrystals)) { player.allTimeStats.bestCrystals = new Decimal(player.thisAscStats.bestCrystals); }
+        if (player.crystals.gt(player.allTimeStats.bestCrystals)) { player.allTimeStats.bestCrystals = new Decimal(player.crystals); }
         player.timeResets = player.timeResets.plus(1);
-        player.thisAscStats.totalTimeResets = player.thisAscStats.totalTimeResets.plus(1);
         player.allTimeStats.totalTimeResets = player.allTimeStats.totalTimeResets.plus(1);
         if (document.getElementById('respecOnSac').checked) {
             player.timeLocked = false;
             toggleTimeLockDisplay();
-            document.getElementById('timeSlider').removeAttribute('disabled')
+            document.getElementById('timeSlider').disabled = false;
             document.getElementById('respecOnSac').checked = false;
         }
         timePrestigeReset();
@@ -288,61 +273,78 @@ function lockInTime() {
 }
 
 function timePrestigeReset() {
-    var timeUpgUnlocked = hasUpgrade(3, 13) ? true : false
     if (player.astralFlag) { toggleAstral(); }
     clearInterval(mainLoop);
     player.pastRuns.lastRun.crystalGain = calculateCrystalGain();
     player.pastRuns.lastRun.timeSpent = (new Date).getTime()-player.pastRuns.lastRun.timeSacrificed;
     player.pastRuns.lastRun.timeSacrificed = (new Date).getTime();
-    if (player.pastRuns.lastRun.crystalGain.gt(player.thisAscStats.bestCrystalGain)) { player.thisAscStats.bestCrystalGain = new Decimal(player.pastRuns.lastRun.crystalGain) }
-    if (player.thisAscStats.bestCrystalGain.gt(player.allTimeStats.bestCrystalGain)) { player.allTimeStats.bestCrystalGain = new Decimal(player.thisAscStats.bestCrystalGain) }
-    if (player.pastRuns.lastRun.crystalGain.div(player.pastRuns.lastRun.timeSpent/60000).gt(player.thisAscStats.bestCrystalRate)) { player.thisAscStats.bestCrystalRate = new Decimal(player.pastRuns.lastRun.crystalGain.div(player.pastRuns.lastRun.timeSpent/60000)) }
-    if (player.thisAscStats.bestCrystalRate.gt(player.allTimeStats.bestCrystalRate)) { player.allTimeStats.bestCrystalRate = new Decimal(player.thisAscStats.bestCrystalRate) }
+    if (player.pastRuns.lastRun.crystalGain.gt(player.allTimeStats.bestCrystalGain)) { player.allTimeStats.bestCrystalGain = new Decimal(player.pastRuns.lastRun.crystalGain) }
+    if (player.pastRuns.lastRun.crystalGain.gt(player.allTimeStats.bestCrystalRate)) { player.allTimeStats.bestCrystalRate = new Decimal(player.pastRuns.lastRun.crystalGain) }
     for (var i=9; i>0; i--) { copyData(player.pastRuns.lastTen[i], player.pastRuns.lastTen[i-1]); }
     copyData(player.pastRuns.lastTen[0], player.pastRuns.lastRun);
-    if (!hasTUpgrade(54)) {
-        player.trueEssence = new Decimal(START_PLAYER.trueEssence);
-        player.antiEssence = new Decimal(START_PLAYER.antiEssence);
-    }
-    player.corpses = hasAchievement(41) ? new Decimal(START_PLAYER.corpsesAch41) : new Decimal(START_PLAYER.corpses)
+    player.trueEssence = new Decimal(START_PLAYER.trueEssence);
+    player.antiEssence = new Decimal(START_PLAYER.antiEssence);
     resetUnits();
     resetBuildingResources(true);
     resetBuildings();
     showBuildingSubTab('buildingsSubTab');
     for (var i=1; i<=NUM_TIMEDIMS; i++) { player.timeDims[i].amount = player.timeDims[i].bought; }
-    if (timeUpgUnlocked) { player.buildings[3].upgrades[13] = true; }
+    player.corpses = new Decimal(START_PLAYER.corpses)
     save();
     loadStyles();
-    startInterval()
+    startInterval();
 }
 
-function resetTime() {
-    let firstColumn = new Array(4);
-    let newColumns = {};
-    let rapidFire = player.timeUpgs[24];
-    for (let i=1; i<=4; i++) {
-        firstColumn[i] = player.timeUpgs['1' + i.toString()];
-        newColumns['4' + i.toString()] = player.timeUpgs['4' + i.toString()];
-        newColumns['5' + i.toString()] = player.timeUpgs['5' + i.toString()];
+/*function resetSpaceCounts() {
+    if (hasTUpgrade(14)) {
+        player.worlds = new Decimal(4);
+        player.spaceResets = new Decimal(4);
+        player.nextSpaceReset = [3, 8];
+        lockElements('buildingsTab', 'factory');
+        lockElements('buildingsTab', 'factoryRow2');
+        lockElements('buildingsTab', 'necropolis');
+        lockElements('buildingsTab', 'necropolisRow2');
+    } else if (hasTUpgrade(13)) {
+        player.worlds = new Decimal(3);
+        player.spaceResets = new Decimal(3);
+        player.nextSpaceReset = [1, 8];
+        lockElements('buildingsTab', 'factory');
+        lockElements('buildingsTab', 'factoryRow2');
+        lockElements('buildingsTab', 'necropolis');
+        lockElements('buildingsTab', 'necropolisRow2');
+        lockElements('buildingsTab', 'sun');
+        lockElements('buildingsTab', 'sunRow2');
+    } else if (hasTUpgrade(12)) {
+        player.worlds = new Decimal(2);
+        player.spaceResets = new Decimal(2);
+        player.nextSpaceReset = [1, 7];
+        lockElements('buildingsTab', 'factory');
+        lockElements('buildingsTab', 'factoryRow2');
+        lockElements('buildingsTab', 'necropolis');
+        lockElements('buildingsTab', 'necropolisRow2');
+        lockElements('buildingsTab', 'sun');
+        lockElements('buildingsTab', 'sunRow2');
+    } else if (hasTUpgrade(11)) {
+        player.worlds = new Decimal(1);
+        player.spaceResets = new Decimal(1);
+        player.nextSpaceReset = [1, 6];
+        lockElements('buildingsTab', 'factory');
+        lockElements('buildingsTab', 'factoryRow2');
+        lockElements('buildingsTab', 'necropolis');
+        lockElements('buildingsTab', 'necropolisRow2');
+        lockElements('buildingsTab', 'sun');
+        lockElements('buildingsTab', 'sunRow2');
+        lockElements('buildingsTab', 'construction');
+    } else {
+        player.spaceResets = new Decimal(START_PLAYER.spaceResets);
+        player.worlds = new Decimal(START_PLAYER.worlds);
+        player.nextSpaceReset = START_PLAYER.nextSpaceReset.slice();
+        lockTab('buildingsTab');
     }
-    copyData(player.timeUpgs, START_PLAYER.timeUpgs);
-    if (hasMilestone(2)) {
-        for (let i=1; i<=4; i++) { player.timeUpgs['1' + i.toString()] = firstColumn[i]; }
-    }
-    if (hasMilestone(3)) { player.timeUpgs[24] = rapidFire; }
-    if (hasMilestone(6)) {
-        for (let i=1; i<=4; i++) {
-            player.timeUpgs['4' + i.toString()] = newColumns['4' + i.toString()];
-            player.timeUpgs['5' + i.toString()] = newColumns['5' + i.toString()];
-        }
-    }
-
-    for (var i=NUM_TIMEDIMS; i>=1; i--) {
-        player.timeDims[i].amount = new Decimal(0);
-        player.timeDims[i].bought = new Decimal(0);
-    }
-    copyData(player.timeDims, START_PLAYER.timeDims);
-}
+    copyData(player.thisSacStats, START_PLAYER.thisSacStats);
+    player.thisSacStats.totalWorlds = player.worlds;
+    player.thisSacStats.bestWorlds = player.worlds;
+}*/
 
 //data
 
@@ -359,7 +361,7 @@ const TIME_DATA = {
             return c;
         },
         mult: function() {
-            var m = hasTUpgrade(51) ? new Decimal(2.5) : new Decimal(2)
+            var m = new Decimal(2);
             if (player.timeDims[this.tier].bought.eq(0)) { return new Decimal(1); }
             m = m.pow(player.timeDims[this.tier].bought-1);
             if (hasTUpgrade(31)) { m = m.times(getTUpgEffect(31)); }
@@ -368,8 +370,6 @@ const TIME_DATA = {
         tier: 1,
         buttonID: "timeBut1",
         maxID: "timeMax1",
-        maxAmtID: 'dim1Max',
-        costID: 'dim1Cost',
         amountID: "timeAmount1",
         multID: "timeMult1",
         rowID: "timeRow1",
@@ -395,8 +395,6 @@ const TIME_DATA = {
         tier: 2,
         buttonID: "timeBut2",
         maxID: "timeMax2",
-        maxAmtID: 'dim2Max',
-        costID: 'dim2Cost',
         amountID: "timeAmount2",
         multID: "timeMult2",
         rowID: "timeRow2",
@@ -422,8 +420,6 @@ const TIME_DATA = {
         tier: 3,
         buttonID: "timeBut3",
         maxID: "timeMax3",
-        maxAmtID: 'dim3Max',
-        costID: 'dim3Cost',
         amountID: "timeAmount3",
         multID: "timeMult3",
         rowID: "timeRow3",
@@ -449,8 +445,6 @@ const TIME_DATA = {
         tier: 4,
         buttonID: "timeBut4",
         maxID: "timeMax4",
-        maxAmtID: 'dim4Max',
-        costID: 'dim4Cost',
         amountID: "timeAmount4",
         multID: "timeMult4",
         rowID: "timeRow4",
@@ -464,7 +458,7 @@ const TIME_DATA = {
             buttonID: 'timeUpg11',
             displayEffect: false,
             displayTooltip: false,
-            displayFormula: function() { return '' },
+            displayFormula: '',
             effect: function() {
                 return new Decimal(1);
             }
@@ -477,7 +471,7 @@ const TIME_DATA = {
             buttonID: 'timeUpg12',
             displayEffect: false,
             displayTooltip: false,
-            displayFormula: function() { return '' },
+            displayFormula: '',
             effect: function() {
                 return new Decimal(1);
             }
@@ -490,7 +484,7 @@ const TIME_DATA = {
             buttonID: 'timeUpg13',
             displayEffect: false,
             displayTooltip: false,
-            displayFormula: function() { return '' },
+            displayFormula: '',
             effect: function() {
                 return new Decimal(1);
             }
@@ -503,7 +497,7 @@ const TIME_DATA = {
             buttonID: 'timeUpg14',
             displayEffect: false,
             displayTooltip: false,
-            displayFormula: function() { return '' },
+            displayFormula: '',
             effect: function() {
                 return new Decimal(1);
             }
@@ -516,7 +510,7 @@ const TIME_DATA = {
             buttonID: 'timeUpg21',
             displayEffect: false,
             displayTooltip: false,
-            displayFormula: function() { return '' },
+            displayFormula: '',
             effect: function() {
                 return new Decimal(1);
             }
@@ -529,37 +523,37 @@ const TIME_DATA = {
             buttonID: 'timeUpg22',
             displayEffect: true,
             displayTooltip: true,
-            displayFormula: function() { return hasUpgrade(4, 13) ? '1 + 7.5*ln(x)' : '1 + 7.5*log(x)' },
+            displayFormula: '1 + 7.5*log(x)',
             effect: function() {
                 var e = player.crystals;
-                e = hasUpgrade(4, 13) ? e.ln()*7.5 : e.log10()*7.5;
+                e = e.log10()*7.5;
                 return 1 + e;
             }
         },
         23: {
             title: 'Building Boost',
-            desc: 'The first three building resources get a production boost based on unspent time crystals.',
+            desc: 'All building resources get a production boost based on unspent time crystals.',
             cost: new Decimal(10000),
             preReq: 22,
             buttonID: 'timeUpg23',
             displayEffect: true,
             displayTooltip: true,
-            displayFormula: function() { return hasUpgrade(4, 13) ? '1 + ln(x)' : '1 + log(x)' },
+            displayFormula: '1 + log(x)',
             effect: function() {
                 var e = player.crystals;
-                e = hasUpgrade(4, 13) ? e.ln() : e.log10();
+                e = e.log10();
                 return 1 + e;
             }
         },
         24: {
             title: 'Rapid Fire',
-            desc: 'Unlock fast autobuyers permanently, and the buildings/construction tabs are never reset on sacrifice (except bricks and resources).',
+            desc: 'Unlock fast autobuyers, and the buildings/construction tabs are never reset on sacrifice (except bricks and resources).',
             cost: new Decimal(20000),
             preReq: 23,
             buttonID: 'timeUpg24',
             displayEffect: false,
             displayTooltip: false,
-            displayFormula: function() { return '' },
+            displayFormula: '',
             effect: function() {
                 return new Decimal(1);
             }
@@ -572,10 +566,10 @@ const TIME_DATA = {
             buttonID: 'timeUpg31',
             displayEffect: true,
             displayTooltip: true,
-            displayFormula: function() { return hasUpgrade(4, 13) ? '1 + 10*ln(x)' : '1 + 10*log(x)' },
+            displayFormula: '1 + 10*log(x)',
             effect: function() {
                 var e = player.crystals;
-                e = hasUpgrade(4, 13) ? e.ln()*10 : e.log10()*10
+                e = e.log10()*10
                 return 1 + e;
             }
         },
@@ -587,20 +581,20 @@ const TIME_DATA = {
             buttonID: 'timeUpg32',
             displayEffect: false,
             displayTooltip: false,
-            displayFormula: function() { return '' },
+            displayFormula: '',
             effect: function() {
                 return new Decimal(1.5);
             }
         },
         33: {
             title: 'Lightspeed',
-            desc: 'Unlock bulk autobuyers permanently, and crystal gain is boosted based on your nekro-photons.',
+            desc: 'Unlock bulk autobuyers, and crystal gain is boosted based on your nekro-photons.',
             cost: new Decimal(150000),
             preReq: 32,
             buttonID: 'timeUpg33',
             displayEffect: true,
             displayTooltip: true,
-            displayFormula: function() { return '1 + 2*(x^0.2)' },
+            displayFormula: '1 + 2*(x^0.2)',
             effect: function() {
                 let e = new Decimal(player.buildings[3].amount);
                 e = Decimal.pow(e, 0.2).times(2);
@@ -609,121 +603,13 @@ const TIME_DATA = {
         },
         34: {
             title: 'Supernova',
-            desc: 'Unlock the world prestige autobuyer permanently and the second row of Dead Sun upgrades.',
+            desc: 'Unlock the world prestige autobuyer and the second row of Dead Sun upgrades.',
             cost: new Decimal(1000000),
             preReq: 33,
             buttonID: 'timeUpg34',
             displayEffect: false,
             displayTooltip: false,
-            displayFormula: function() { return '' },
-            effect: function() {
-                return new Decimal(1);
-            }
-        },
-        41: {
-            title: 'Unholy Paradox, Manbat',
-            desc: 'Outside of astral enslavement, the True Time Essence effect applies directly to corpse production.',
-            cost: new Decimal(1e12),
-            preReq: null,
-            buttonID: 'timeUpg41',
-            displayEffect: true,
-            displayTooltip: false,
-            displayFormula: function() { return '' },
-            effect: function() {
-                return player.astralFlag ? new Decimal(1) : getTrueTimeBuff()
-            }
-        },
-        42: {
-            title: 'Corpse Boost',
-            desc: 'Unspent galaxies multiply corpse production.',
-            cost: new Decimal(1e15),
-            preReq: 41,
-            buttonID: 'timeUpg42',
-            displayEffect: true,
-            displayTooltip: true,
-            displayFormula: function() { return '1 + x' },
-            effect: function() {
-                let e = player.galaxies;
-                return 1 + e;
-            }
-        },
-        43: {
-            title: 'Armament Boost',
-            desc: 'Unspent galaxies multiply the Industrialize effect.',
-            cost: new Decimal(1e20),
-            preReq: 42,
-            buttonID: 'timeUpg43',
-            displayEffect: true,
-            displayTooltip: true,
-            displayFormula: function() { return '1 + x' },
-            effect: function() {
-                var e = player.galaxies;
-                return 1 + e;
-            }
-        },
-        44: {
-            title: 'Prestigious',
-            desc: 'World Prestige no longer resets your corpses.',
-            cost: new Decimal(1e30),
-            preReq: 43,
-            buttonID: 'timeUpg44',
-            displayEffect: false,
-            displayTooltip: false,
-            displayFormula: function() { return '' },
-            effect: function() {
-                return new Decimal(1);
-            }
-        },
-        51: {
-            title: 'Buy More',
-            desc: 'Increase the base multiplier per bought time dimension from 2x -> 2.5x.',
-            cost: new Decimal(1e12),
-            preReq: null,
-            buttonID: 'timeUpg51',
-            displayEffect: false,
-            displayTooltip: false,
-            displayFormula: function() { return '' },
-            effect: function() {
-                return new Decimal(1);
-            }
-        },
-        52: {
-            title: 'Brick Boost',
-            desc: 'Unspent galaxies multiply astral brick production.',
-            cost: new Decimal(1e15),
-            preReq: 51,
-            buttonID: 'timeUpg52',
-            displayEffect: true,
-            displayTooltip: true,
-            displayFormula: function() { return '1 + x' },
-            effect: function() {
-                var e = player.galaxies;
-                return 1 + e;
-            }
-        },
-        53: {
-            title: 'Crystal Boost',
-            desc: 'Unspent galaxies multiply time crystal gain.',
-            cost: new Decimal(1e20),
-            preReq: 52,
-            buttonID: 'timeUpg53',
-            displayEffect: true,
-            displayTooltip: true,
-            displayFormula: function() { return '1 + x' },
-            effect: function() {
-                var e = player.galaxies;
-                return 1 + e;
-            }
-        },
-        54: {
-            title: 'Sacrificial',
-            desc: 'Sacrifice no longer resets your time essence.',
-            cost: new Decimal(1e30),
-            preReq: 53,
-            buttonID: 'timeUpg54',
-            displayEffect: false,
-            displayTooltip: false,
-            displayFormula: function() { return '' },
+            displayFormula: '',
             effect: function() {
                 return new Decimal(1);
             }

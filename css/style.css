@@ -1,37 +1,9 @@
-.rNav {
-    position: fixed;
-    right: 50px;
-    top: 225px;
+:root {
+    --speedDisplay: block;
+    --bulkDisplay: block;
+    --optionsDisplay: block;
+    --prestigeDisplay: block;
 }
-
-.rNavHidden {
-    display: none;
-}
-
-.shownOnSmall {
-    display: none;
-}
-
-.shownOnMid {
-    display: none;
-}
-
-@media screen and (max-device-width: 1279px), (max-width: 1279px) { /*and (min-device-width: 600px) {*/
-    .shownOnFull { display: none; }
-    .shownOnMid { display: table; }
-    .shownOnSmall { display: none; }
-    #unitsTable { width: 73% !important; }
-    #unitsTable tr {
-        height: 50px;
-        min-height: 50px;
-    }
-}
-
-/*@media screen and (max-device-width: 600px) {
-    .shownOnFull { display: none; }
-    .shownOnMid { display: none; }
-    .shownOnSmall { display: table; }
-}*/
 
 @font-face {
     font-family: 'Cinzel';
@@ -116,7 +88,7 @@ body {
 }
 
 #game {
-    width: 1280px;
+    width: 1024px;
     margin: auto;
 }
 
@@ -189,37 +161,6 @@ body {
     z-index: 2;
 }
 
-.dPopup {
-    position: absolute;
-    left: 67%;
-	top: 50%;
-    transform: translateX(50%) translateY(-50%);
-    text-align: center;
-    background-color: black;
-    border: 3px solid white;
-    box-shadow: 3px 3px #424242;
-    width: 300px;
-    border-radius: 4px;
-    z-index: 2;
-    display: none;
-}
-
-.milestonePopup {
-    position: fixed;
-    right: 50px;
-	top: 150px;
-    text-align: center;
-    background-color: black;
-    border: 3px solid #661503;
-    box-shadow: 3px 3px #424242;
-    height: 600px;
-    width: 400px;
-    overflow: overlay;
-    border-radius: 4px;
-    z-index: 8;
-    display: none;
-}
-
 h1 {
     font-family: 'Cinzel', serif;
     font-weight: bold;
@@ -246,26 +187,8 @@ h4 {
     font-size: 13pt;
 }
 
-h5 {
-    font-family: 'Cinzel', serif;
-    font-weight: bold;
-    font-size: 24pt;
-}
-
-h6 {
-    font-family: 'Cinzel', serif;
-    font-weight: bold;
-    font-size: 18pt;
-    margin-top: 0.4em;
-    margin-bottom: 0.4em;
-}
-
 button:focus, select:focus {
     outline: none;
-}
-
-button > * {
-    pointer-events: none;
 }
 
 option:active, option.active {
@@ -344,20 +267,7 @@ option:active, option.active {
     color: white;
     background-color: #1f1f1f;
     font-style: bold;
-    width: 178px;
-    height: 60px;
-    border: 1px solid #525252;
-    cursor: pointer;
-    border-radius: 4px;
-    font-family: 'Cinzel', serif;
-    font-size: 15pt;
-}
-
-.tabButSmall {
-    color: white;
-    background-color: #1f1f1f;
-    font-style: bold;
-    width: 200px;
+    width: 180px;
     height: 60px;
     border: 1px solid #525252;
     cursor: pointer;
@@ -380,42 +290,6 @@ option:active, option.active {
 }
 
 .tabBut:hover {
-    background-color: #525252;
-}
-
-.displayBut {
-    color: white;
-    background-color: #1f1f1f;
-    font-style: bold;
-    width: 250px;
-    height: 20px;
-    border: 1px solid #525252;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-top: 0px;
-    font-family: 'Cinzel', serif;
-    font-size: 10pt;
-}
-
-.displayBut:hover {
-    background-color: #525252;
-}
-
-.displayButSkinny {
-    color: white;
-    background-color: #1f1f1f;
-    font-style: bold;
-    width: 200px;
-    height: 20px;
-    border: 1px solid #525252;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-top: 5px;
-    font-family: 'Cinzel', serif;
-    font-size: 10pt;
-}
-
-.displayButSkinny:hover {
     background-color: #525252;
 }
 
@@ -586,10 +460,10 @@ option:active, option.active {
     background-color:  #0b4014;
 }
 
-.buildingUpg, .factoryUpg, .necropolisUpg, .sunUpg, .vortexUpg {
+.buildingUpg, .factoryUpg, .necropolisUpg, .sunUpg {
     color: white;
     background-color: #042e0b;
-    width: 220px;
+    width: 200px;
     height: 120px;
     border: 1px solid #085e16;
     cursor: pointer;
@@ -597,160 +471,32 @@ option:active, option.active {
     margin: 10px;
 }
 
-.unclickableBuildingUpg, .unclickFactoryUpg, .unclickNecropolisUpg, .unclickSunUpg, .unclickVortexUpg {
+.unclickableBuildingUpg, .unclickFactoryUpg, .unclickNecropolisUpg, .unclickSunUpg {
     color: white;
     background-color: #4b4b4b;
-    width: 220px;
+    width: 200px;
     height: 120px;
     border: 1px solid #4b4b4b;
     border-radius: 4px;
     margin: 10px;
 }
 
-.boughtBuildingUpg, .boughtFactoryUpg, .boughtNecropolisUpg, .boughtSunUpg, .boughtVortexUpg {
+.boughtBuildingUpg, .boughtFactoryUpg, .boughtNecropolisUpg, .boughtSunUpg {
     color: white;
     background-color:black;
-    width: 220px;
+    width: 200px;
     height: 120px;
     border: 1px solid #042e0b;
     border-radius: 4px;
     margin: 10px;
 }
 
-.buildingUpg:hover, .factoryUpg:hover, .necropolisUpg:hover, .sunUpg:hover, .vortexUpg:hover {
+.buildingUpg:hover, .factoryUpg:hover, .necropolisUpg:hover, .sunUpg:hover {
     background-color: #085e16;
 } 
 
-.galaxyUpg {
-    color: white;
-    background-color: #661503;
-    width: 175px;
-    height: 175px;
-    border: 1px solid #e32d05;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    margin-top: 10px;
-}
-
-.boughtGalaxyUpg {
-    color: white;
-    background-color:black;
-    width: 175px;
-    height: 175px;
-    border: 1px solid #661503;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    margin-top: 10px;
-}
-
-.unclickGalaxyUpg {
-    color: white;
-    background-color: #4b4b4b;
-    width: 175px;
-    height: 175px;
-    border: 1px solid #4b4b4b;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    margin-top: 10px;
-}
-
-/*.lockedGalaxyRow {
-    color: white;
-    position: relative;
-    background-color: #4b4b4b;
-    width: 175px;
-    height: 175px;
-    border: 1px solid #4b4b4b;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    margin-top: 10px;
-}
-
-.lockedGalaxyRow:after {
-    content: url("../images/xxx.png");
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    width: 175px;
-    height: 175px;
-    z-index: 2;
-    opacity: 0.95;
-}
-
-.lockedGalaxySpan {
-    position: absolute;
-    width: 150px;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-}*/
-
-.lockedGalaxyUpg {
-    color: white;
-    background: #4b4b4b url("../images/skull.png") no-repeat center;
-    width: 175px;
-    height: 175px;
-    border: 3px solid #40ff00;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    margin-top: 10px;
-}
-
-.galaxyUpg:hover {
-    background-color: #e32d05;
-} 
-
-.lockedArkUpg {
-    color: #661503;
-    background: #4b4b4b url("../images/questionmark.png") no-repeat center;
-    font-family: 'Cinzel', serif;
-    font-weight: bold;
-    font-size: 18pt;
-    width: 200px;
-    height: 120px;
-    border: 3px solid #661503;
-    border-radius: 4px;
-}
-
-.lockedArkUpg:after {
-    content: "Complete Challenge " attr(chal-num) " to unlock."
-}
-
-.arkUpg {
-    color: white;
-    background-color: #661503;
-    width: 200px;
-    height: 120px;
-    border: 1px solid #e32d05;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.unclickableArkUpg {
-    color: white;
-    background-color: #4b4b4b;
-    width: 200px;
-    height: 120px;
-    border: 1px solid #4b4b4b;
-    border-radius: 4px;
-}
-
-.boughtArkUpg {
-    color: white;
-    background-color:black;
-    width: 200px;
-    height: 120px;
-    border: 1px solid #661503;
-    border-radius: 4px;
-}
-
-.arkUpg:hover {
-    background-color: #e32d05;
-} 
-
 .buttonTD {
-    text-align: left;
+    text-align: right;
 }
 
 .unclickableUnit {
@@ -822,21 +568,6 @@ option:active, option.active {
 .timePrestigeBut:hover {
     background-color: white;
     color: #006ba0;
-}
-
-.galaxyPrestigeBut {
-    color: white;
-    background-color: #661503;
-    width: 500px;
-    height: 175px;
-    border: 1px solid #e32d05;
-    cursor: pointer;
-    border-radius: 4px;
-    font-family: 'Cinzel', serif;
-}
-
-.galaxyPrestigeBut:hover {
-    background-color: #e32d05;
 }
 
 .unclickablePrestige {
@@ -930,10 +661,6 @@ option:active, option.active {
     border: 1px solid #085e16;
 }
 
-.constrTable {
-    border: 1px solid #7b3f00;
-}
-
 #cUpgHeaderRow {
     border-left: 1px solid #7b3f00;
     border-top: 1px solid #7b3f00;
@@ -941,11 +668,6 @@ option:active, option.active {
 }
 
 #cUpgRow {
-    border-left: 1px solid #7b3f00;
-    border-right: 1px solid #7b3f00;
-}
-
-#cUpgRow2 {
     border-left: 1px solid #7b3f00;
     border-bottom: 1px solid #7b3f00;
     border-right: 1px solid #7b3f00;
@@ -1063,7 +785,7 @@ option:active, option.active {
     color: white;
     background-color: #006ba0;
     font-style: bold;
-    width: 285px;
+    width: 250px;
     height: 35px;
     border: 1px solid white;
     cursor: pointer;
@@ -1090,12 +812,6 @@ option:active, option.active {
     border-right: 1px solid #006ba0;
 }
 
-.timeUpgTDs2 {
-    border-left: 1px solid #006ba0;
-    border-right: 1px solid #006ba0;
-    display: none;
-}
-
 #timeUpgTable {
     border: 1px solid #006ba0;
     border-collapse: collapse;
@@ -1107,7 +823,7 @@ option:active, option.active {
     position: relative;
     font-size: 11pt;
     width: 250px;
-    min-height: 335px;;
+    min-height: 300px;;
     text-align: center;
     border: 1px solid #460573;
     border-radius: 4px;
@@ -1254,20 +970,18 @@ option:active, option.active {
 .buyerAdvancedContainer:after {
     content: "LOCKED";
     position: relative;
-    width: 100%;
-    height: 100%;
-    bottom: 57px;
-    left: 0px;
+    width: 98px;
+    height: 38px;
+    bottom: 70px;
+    left: 12px;
     background-color: #3d3d3d;
     border: 1px solid #a3a3a3;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 11px;
-    padding-bottom: 13px;
+    padding-top: 13px;
     font-size: 14pt;
     font-weight: bold;
     opacity: 0.8;
     z-index: 2;
+    display: var(--optionsDisplay);
 }
 
 .buyerAmountContainer {
@@ -1275,6 +989,7 @@ option:active, option.active {
 }
 
 .buyerOptionsContainerHalf {
+    margin-top: 9px;
     width: 50%;
 }
 
@@ -1298,7 +1013,7 @@ option:active, option.active {
     font-size: 32pt;
     font-weight: bold;
     width: 248px;
-    height: 213px !important;
+    height: 178px !important;
     right: 0px;
     top: 0px;
     border-radius: 4px;
@@ -1319,15 +1034,6 @@ option:active, option.active {
     margin-bottom: 15px;
 }
 
-.buyerTextP {
-    width: 80px;
-    text-align: center;
-    background-color: black;
-    color: white;
-    border: 1px solid #460573;
-    margin-top: 10px;
-}
-
 .buyerList {
     width: 100px;
     background-color: black;
@@ -1343,13 +1049,6 @@ option:active, option.active {
     background-color: black;
     color: white;
     border: 1px solid #460573;
-}
-
-.galDropdown {
-    display: inline-block;
-    background-color: black;
-    color: white;
-    border: 1px solid #e32d05;
 }
 
 .buyerRadio {
@@ -1382,6 +1081,34 @@ option:active, option.active {
     opacity: 0.5;
 }
 
+.buyerCheckbox {
+    height: 17px;
+    width: 17px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    outline: none;
+    background-color: white;
+    cursor: pointer;
+}
+
+.buyerCheckbox:checked {
+    background-color: #170424;
+    border: 3px solid white;
+}
+
+.buyerCheckbox:checked:hover {
+    background-color: #170424;
+    border: 3px solid white;
+    opacity: 0.5;
+}
+
+.buyerCheckbox:hover {
+    background-color: white;
+    opacity: 0.5;
+}
+
 .timeCheckbox {
     height: 17px;
     width: 17px;
@@ -1396,12 +1123,12 @@ option:active, option.active {
 
 .timeCheckbox:checked {
     background-color: #006ba0;
-    border: 1px solid white;
+    border: 3px solid white;
 }
 
 .timeCheckbox:checked:hover {
     background-color: #006ba0;
-    border: 1px solid white;
+    border: 3px solid white;
     opacity: 0.5;
 }
 
@@ -1410,39 +1137,12 @@ option:active, option.active {
     opacity: 0.5;
 }
 
-.galaxyCheckbox {
-    height: 17px;
-    width: 17px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    -o-appearance: none;
-    appearance: none;
-    outline: none;
-    background-color: white;
-    cursor: pointer;
-}
-
-.galaxyCheckbox:checked {
-    background-color: #e32d05;
-    border: 1px solid white;
-}
-
-.galaxyCheckbox:checked:hover {
-    background-color: #e32d05;
-    border: 1px solid white;
-    opacity: 0.5;
-}
-
-.galaxyCheckbox:hover {
-    background-color: white;
-    opacity: 0.5;
-}
-
 .priorityContainer {
     text-align: center;
-    position: relative;
-    bottom: 7px;
-    margin: 5px auto;
+    top: 245px;
+    width: auto;
+    margin: auto;
+    height: 30px;
 }
 
 .confBut {
@@ -1514,388 +1214,9 @@ option:active, option.active {
     position: fixed !important;
     display: block !important;
     top: 15px !important;
-    left: 15px !important;
-    transform: none !important;
+    transform: translateX(-50%) translateY(0%) !important;
     box-shadow: 0px 0px 10px 5px goldenrod;
     opacity: 0;
     -webkit-transition: 2s;
     transition: opacity 2s;
-}
-
-#milesUnlockPopup {
-    position: fixed !important;
-    display: block !important;
-    top: 15px !important;
-    left: 15px !important;
-    transform: none !important;
-    box-shadow: 0px 0px 10px 5px #e32d05;
-    opacity: 0;
-    -webkit-transition: 2s;
-    transition: opacity 2s;
-}
-
-.milestonesNotify {
-    box-shadow: 0px 0px 10px 5px #e32d05;
-}
-
-.galaxyBut {
-    color: white;
-    background-color: #661503;
-    font-style: bold;
-    width: 270px;
-    height: 35px;
-    border: 1px solid #e32d05;
-    margin: 5px;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.galaxyNameBut4 {
-    color: white;
-    background-color: #661503;
-    font-style: bold;
-    width: 130px;
-    height: 35px;
-    border: 1px solid #e32d05;
-    margin: 5px;
-    cursor: pointer;
-    border-radius: 4px;
-    font-family: 'Cinzel', serif;
-}
-
-.galaxyNameBut2 {
-    color: white;
-    background-color: #661503;
-    font-style: bold;
-    width: 270px;
-    height: 35px;
-    border: 1px solid #e32d05;
-    margin: 5px;
-    cursor: pointer;
-    border-radius: 4px;
-    font-family: 'Cinzel', serif;
-}
-
-.galaxyBut:hover, .galaxyNameBut4:hover, .galaxyNameBut2:hover {
-    background-color: #e32d05;
-}
-
-.unclickGalaxyBut {
-    color: white;
-    background-color: #4b4b4b;
-    font-style: bold;
-    width: 270px;
-    height: 35px;
-    border: 1px solid #4b4b4b;
-    border-radius: 4px;
-}
-
-/*.galaxyTable {
-    position: relative;
-    text-align: center;
-    margin: 20px 0px 0;
-    width: 1020px;
-    height: 550px;
-    border: 1px solid #661503;
-    background-color: transparent;
-    border-collapse: collapse;
-    border-spacing: 0px;
-}*/
-
-.galaxyTable {
-    position: relative;
-    text-align: center;
-    margin: 20px 7px 0;
-    width: 385px;
-    border: 1px solid #661503;
-    background-color: transparent;
-    border-collapse: collapse;
-}
-
-/*.leftGalaxyTD {
-    width: 175px;
-    height: 195px;
-    margin: auto;
-    position: relative;
-    border-right: 3px solid #661503;
-}*/
-
-.leftGalaxyTD {
-    margin: auto;
-    position: relative;
-}
-
-/*.rightGalaxyTD {
-    width: 175px;
-    height: 195px;
-    margin: auto;
-    position: relative;
-    border-left: 3px solid #661503;
-}*/
-
-.rightGalaxyTD {
-    margin: auto;
-    position: relative;
-    border-left: 3px solid #661503;
-}
-
-#bottomBorderDiv {
-    width: 175px;
-    height: 195px;
-    margin: auto;
-    position: relative;
-    border-top: 3px solid #661503;
-}
-
-.bottomBorderDiv {
-    margin: auto;
-    position: relative;
-}
-
-.rightBorderDiv {
-    margin: auto;
-    position: relative;
-}
-
-.leftBorderDiv {
-    margin: auto;
-    position: relative;
-}
-
-#topBorderDiv {
-    width: 175px;
-    height: 195px;
-    margin: auto;
-    position: relative;
-    border-bottom: 3px solid #661503;
-}
-
-.topBorderDiv {
-    margin: auto;
-    position: relative;
-}
-
-.arkImg {
-    position: absolute;
-    top: 150px;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
-    display: none;
-}
-
-#arkSubTab {
-    display: none;
-    position: relative;
-    width: 50%;
-    width: 1600px;
-    height: 1024px;
-    top: 0;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
-}
-
-#thrustersBut {
-    position: absolute;
-    bottom: 45px;
-    left: 50%;
-    -webkit-transform: translateX(25%);
-    transform: translateX(25%);
-}
-
-#enginesBut {
-    position: absolute;
-    bottom: 45px;
-    left: 50%;
-    -webkit-transform: translateX(-125%);
-    transform: translateX(-125%);
-}
-
-#navigationBut {
-    position: absolute;
-    top: 50px;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
-}
-
-#torpedosBut {
-    position: absolute;
-    top: 300px;
-    left: 50%;
-    -webkit-transform: translateX(-150%);
-    transform: translateX(-150%);
-}
-
-#railgunsBut {
-    position: absolute;
-    top: 300px;
-    left: 50%;
-    -webkit-transform: translateX(50%);
-    transform: translateX(50%);
-}
-
-#supportBut {
-    position: absolute;
-    bottom: 175px;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
-}
-
-.leftRowCost {
-    position: relative;
-    width: 50px;
-    left: -50px;
-    top: 210px;
-    margin: 0 0 0 0;
-    font-size: 48pt;
-    z-index: 2;
-}
-
-.rightRowCost {
-    position: relative;
-    width: 50px;
-    left: 1620px;
-    top: 125px;
-    margin: 0 0 0 0;
-    font-size: 48pt;
-    z-index: 2;
-}
-
-#galaxiesSubTab {
-    position: relative; 
-    transform: translateX(-18.2%);
-    text-align: center;
-    width: 1614px;
-    height: 1280px;
-}
-
-.cursorContainer {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    background-color: transparent;
-    width: 388px;
-    height: 771px;
-    cursor: move;
-}
-
-.milestoneHeaderContainer {
-    position: fixed;
-    background-color: black;
-    width: 399px;
-    height: 51px;
-    border-radius: 1px;
-}
-
-.milestonePopupHeader {
-    color: #e32d05;
-    background-color: black;
-    font-size: 24pt;
-    font-weight: 800;
-    position: fixed;
-    width: 394px;
-    height: 40px;
-    text-align: center;
-    border: 1px solid #661503;
-    border-radius: 1px;
-    margin: 2px;
-}
-
-.milestonePopupHeaderX {
-    color: white;
-    background-color: transparent;
-    font-size: 24pt;
-    font-weight: 800;
-    position: fixed;
-    width: 384px;
-    height: 40px;
-    text-align: right;
-    border: 1px solid #661503;
-    padding-right: 10px;
-    border-radius: 1px;font-family: 'Roboto', sans-serif;
-    font-weight: 800;
-    margin: 2px;
-    z-index: 9;
-}
-
-.milestonePopupHeaderX a {
-    color: white;
-    text-decoration: none;
-}
-
-.milestonePopupHR {
-    background-color: black;
-    position: fixed;
-    height: 1px;
-    width: 394px;
-    margin-top: 46px;
-    margin-left: 2px;
-    border: 1px solid #661503;
-    border-radius: 1px;
-}
-
-.milestoneTable {
-    width: 100%;
-    height: 876px;
-    width: 400px;
-    border-radius: 4px;
-    border-radius: 1px;
-}
-
-.milestoneTDH {
-    background-color: black;
-    color: #e32d05;
-    width: 394px;
-    height: 43px;
-}
-
-.milestoneTDHR {
-    background-color: black;
-    height: 0px;
-    width: 394px;
-    border: 1px double #661503;
-}
-
-.milestoneTD {
-    padding-bottom: 10px;
-    padding-top: 10px;
-    height: 75px;
-    border: 1px double #661503;
-    background-color: #661503;
-    border-radius: 1px;
-}
-
-.milestoneTDUnlocked {
-    padding-bottom: 10px;
-    padding-top: 10px;
-    height: 75px;
-    border: 1px double #661503;
-    background-color: black;
-    border-radius: 1px;
-}
-
-.milestoneTDButton {
-    height: 94px;
-    border: 1px double #661503;
-    background-color: black;
-    border-radius: 1px;
-}
-
-.milestonePopup::-webkit-scrollbar {
-    width: 10px;
-}
-
-.milestonePopup::-webkit-scrollbar-track {
-    margin-top: 51px;
-    opacity: 0;
-}
-
-.milestonePopup::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.5);
-    border: 1px double rgb(248, 248, 255, 0.3);
-    border-radius: 9px;
-    opacity: 0.5;
 }
