@@ -68,4 +68,15 @@ const HELP_TEXTS = {
                     Here you\'ll buy some very powerful upgrades with Time Crystals. This is the point where you\'ll start needing to sacrifice frequently and repeatedly to make significant progress, so most of these \
                     upgrades focus on making sacrifice runs go faster.',
     },
+    'galaxyTab': {
+        'mainTab': '<h2>DEPLETED GALAXIES</h2>\
+                    You have exterminated countless worlds, and your power begins to reach a point of singularity. You gather your energies and A S C E N D, forming a putrid, macabre Depleted Galaxy from the remains of those empty worlds.<br>\
+                    10 exterminated worlds are required to ascend for one galaxy. The formula for further gain is floor(x^(x/10 - sqrt(x/10))). When you perform an ascension, everything up to the point that you unlocked galaxies is reset. The ONLY things \
+                    other than achievements that you keep after your first ascension are <span style="font-weight: 800;">Cosmogenesis</span> (the upgrade that unlocks galaxies), the prestige autobuyer, and the fast/bulk/advanced autobuyer upgrades (but you still need to buy \
+                    <span style="font-weight: 800;">World Stasis 3</span> again before you can use autobuyers).<br>\
+                    Now that you have your first galaxy, you can spend it on a galaxy upgrade. There are four separate galaxy trees, and each has two branches in the middle. You can only take one brach at a time; buying a 2nd row upgrade in any galaxy \
+                    will immediately lock out the two upgrades in that galaxy\'s other branch. Each upgrade has a base cost of 1 galaxy, but any time you buy an upgrade, the costs of all upgrades in all rows below it are increased by 1, and buying a 4th row \
+                    upgrade increases the first row\'s costs by 1. A galaxy respec will completely reset all galaxy upgrades, costs, and locked upgrades.<br>\
+                    Finally, there are galaxy milestones. These are permanent rewards that you receive the first time you fully complete 1/2/3/4 galaxies at once. NOTE: the milestones window is draggable.' 
+    },
 }

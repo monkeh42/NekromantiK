@@ -9,6 +9,7 @@
     <script type="text/javascript" src="js/units.js"></script>
     <script type="text/javascript" src="js/buildings.js"></script>
     <script type="text/javascript" src="js/time.js"></script>
+    <script type="text/javascript" src="js/galaxies.js"></script>
     <script type="text/javascript" src="js/tools/data_objects.js"></script>
     <script type="text/javascript" src="js/tools/display_updates.js"></script>
     <script type="text/javascript" src="js/tools/helptexts.js"></script>
@@ -16,6 +17,7 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
 <body onload="init()">
@@ -27,25 +29,46 @@
             </div>
         </div>
     </div>
-    <div id="header">
+    <div id="header" style="width: 1280px; margin: auto;">
         <div id="helpDiv" style="display: none;">
             <div id="helpText">
             </div>
             <br>
         </div>
-        <div style="width: 1024px; margin: auto;"><div id="versionNumber" style="text-align: right;">v0.1.2</div></div>
-        <div id="resourceDisplay" style="width: auto; margin: 15px auto 25px; display: block; text-align: center;">
+        <div id="versionNumber" style="float: right; margin-left: -75px;">vERR</div>
+        <div id="resourceDisplay" style="width: 100%; margin: auto; display: block; text-align: center;">
             <span style="font-size: 16pt; font-weight: bold;">You have <span id="corpseAmount" style="font-size: 20pt; white-space: pre; color: #6c00b4; font-variant-numeric: tabular-nums;"> 10 </span> <span id='pluralCorpse'> corpses</span>.</span><br>
-            <span>You are harvesting <span id="corpseGain" style="font-size: 17pt; font-weight: bold; white-space: pre; color: #6c00b4; font-variant-numeric: tabular-nums;"> 0 </span> <span id='pluralCorpseG'> corpses </span>/sec.<span id="devSpeedContainer" style="white-space: pre; display: none;"> (@ <span id="devSpeedDisplay">3</span>x time speed)</span></span><br>
-            <div id="astralNotice" style="color:  #1c8a2e; display: none;"><h2>Corpse production disabled due to Astral Enslavement.</h2></div>
-            <div style="font-size: 10pt; white-space: pre;">Total corpse gain multiplier from units:  <span id="totalMult" style="font-size: 12pt; font-variant-numeric: tabular-nums;">0.0x</span></div>
-            <div id="worldsBonusDisplay" style="font-size: 10pt; white-space: pre; display: none;">You have exterminated <span id="worldsNum" style="font-size: 12pt; font-variant-numeric: tabular-nums;"> 1 </span> <span id="pluralWorld">world</span>, giving a <span id="worldsMult" style="font-size: 12pt"> 0.0x </span> bonus to corpse gain.</div>
-            <div id="totalBonusDisplay" style="font-size: 10pt; white-space: pre; display: none;">Total corpse gain multiplier from all sources:  <span id="totalMultAll" style="font-size: 12pt; font-variant-numeric: tabular-nums;">0.0x</span></div>
-            <div id="timeBoostDisplay" style="font-size: 10pt; white-space: pre; display: none;">Your <span id="normalAstral" style="font-size: 12pt; color: white;"> NORMAL </span> time is going <span id="timeMult" style="font-size: 12pt; font-variant-numeric: tabular-nums;"> 1.0x </span> as fast.</div>
+            <span>You are harvesting <span id="corpseGain" style="font-size: 17pt; font-weight: bold; white-space: pre; color: #6c00b4; font-variant-numeric: tabular-nums;"> 0 </span> <span id='pluralCorpseG'> corpses </span>/<span class="secDisplay">sec</span>.<span id="devSpeedContainer" style="white-space: pre; display: none;"> (@ <span id="devSpeedDisplay">3</span>x time speed)</span></span><br>
+            <div id="astralNoticeDisplay" style="color: #1c8a2e; display: none;"><h2>Corpse production disabled due to Astral Enslavement.</h2></div>
+            <table cellpadding="0px" cellspacing="0px" style="width: 100%; text-align: center;">
+                <tr>
+                    <td width="25%"></td>
+                    <td width="50%"><div id="unitsBoostDisplay" style="font-size: 10pt; white-space: pre;">Total corpse gain multiplier from units:  <span id="totalMult" style="font-size: 12pt; font-variant-numeric: tabular-nums;">0.0x</span></div></td>
+                    <td width="25%"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><div id="worldsBonusDisplay" style="font-size: 10pt; white-space: pre; display: none;">You have exterminated <span id="worldsNum" style="font-size: 12pt; font-variant-numeric: tabular-nums;"> 1 </span> <span id="pluralWorld">world</span>, giving a <span id="worldsMult" style="font-size: 12pt"> 0.0x </span> bonus to corpse gain.</div></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><div id="bricksDisplayHeader" style="font-size: 10pt; white-space: pre;">You have <span id="brickAmountHeader" style="font-size: 12pt; white-space: pre; color: #1c8a2e; font-variant-numeric: tabular-nums;"> 0 </span> astral bricks.</div></td>
+                    <td><div id="galaxiesBonusDisplay" style="font-size: 10pt; white-space: pre; display: none;">You have formed <span id="galaxiesNum" style="font-size: 12pt; font-variant-numeric: tabular-nums;"> 1 </span> depleted <span id="pluralGalaxy">galaxy</span>, giving a <span id="galaxiesMult" style="font-size: 12pt"> 0.0x </span> bonus to corpse gain.</div></td>
+                    <td><div id="crystalsDisplayHeader" style=" font-size: 10pt; white-space: pre; display: none;">You have <span id="crystalAmountHeader" style="font-size: 12pt; white-space: pre; color: #006ba0; font-variant-numeric: tabular-nums;"> 0 </span> time crystals.</div></td>
+                </tr>
+                <tr>
+                    <td><div id="bricksGainDisplayHeader" style="font-size: 10pt; white-space: pre;">You are gaining <span id="brickGainHeader" style="font-size: 12pt; white-space: pre; color: #1c8a2e; font-variant-numeric: tabular-nums;"> 0 </span> astral bricks/<span class="secDisplay">sec</span>.</div></td>
+                    <td><div id="totalBonusDisplay" style="font-size: 10pt; white-space: pre;">Total corpse gain multiplier from all sources:  <span id="totalMultAll" style="font-size: 12pt; font-variant-numeric: tabular-nums;">0.0x</span></div></td>
+                    <td><div id="timeBoostDisplay" style=" font-size: 10pt; white-space: pre; display: none;">Your <span id="normalAstral" style="font-size: 12pt; color: white;"> NORMAL </span> time is going <span id="timeMult" style="font-size: 12pt; font-variant-numeric: tabular-nums;"> 1.0x </span> as fast.</div></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><div id="achBoostDisplay" style="font-size: 10pt; white-space: pre; display: none;">You have <span id="achNum" style="font-size: 12pt; font-variant-numeric: tabular-nums;"> 1 </span> achievements and <span id="achRowsNum" style="font-size: 12pt; font-variant-numeric: tabular-nums;"> 1 </span> completed achievement rows, giving a <span id="achMult" style="font-size: 12pt"> 0.0x </span> bonus to corpse gain.</div></td>
+                </tr>
+            </table>
         </div>
     </div>
-    <div id="tabButtons">
-        <table style="width: auto; margin: auto;">
+    <div id="tabButtons" id="tabButtons" style="width: 1280px; margin: 10px auto 0; display: block;">
+        <table style="width: auto; margin: auto;" class="shownOnFull">
             <tr>
                 <td id="unitsTabCell">
                     <button id="unitsTabBut" class="tabBut" onclick="showTab('unitsTab', 'unitsTabBut')">UNITS</button>
@@ -59,19 +82,48 @@
                 <td id="galaxyTabCell" style="display: none;">
                     <button id="galaxyTabBut" class="tabBut" onclick="showTab('galaxyTab', 'galaxyTabBut')">GALAXIES</button>
                 </td>
-                <td id="statsTabCell">
+                <td id="statsTabCell" class="shownOnFull">
                     <button id="statsTabBut" class="tabBut" onclick="statsTabClick()">STATS &<br>ACHIEVEMENTS</button>
                 </td>
-                <td id="optionsTabCell">
+                <td id="optionsTabCell" class="shownOnFull">
                     <button id="optionsTabBut" class="tabBut" onclick="showTab('optionsTab', 'optionsTabBut')">OPTIONS</button>
                 </td>
-                <td id="helpTabCell">
+                <td id="helpTabCell" class="shownOnFull">
                     <button id="helpTabBut" class="tabBut" onclick="showHelp()" style="cursor: pointer !important;">HELP (THIS TAB)</button>
                 </td>
             </tr>
         </table>
+        <table style="width: auto; margin: auto;" class="shownOnMid">
+            <tr>
+                <td id="unitsTabCellMid">
+                    <button id="unitsTabButMid" class="tabBut" onclick="showTab('unitsTab', 'unitsTabButMid')">UNITS</button>
+                </td>
+                <td id="buildingsTabCellMid" style="display: none;">
+                    <button id="buildingsTabButMid" class="tabBut" onclick="showTab('buildingsTab', 'buildingsTabButMid')">BUILDINGS</button>
+                </td>
+                <td id="timeTabCellMid" style="display: none;">
+                    <button id="timeTabButMid" class="tabBut" onclick="showTab('timeTab', 'timeTabButMid')">TIME WARP</button>
+                </td>
+                <td id="galaxyTabCellMid" style="display: none;">
+                    <button id="galaxyTabButMid" class="tabBut" onclick="showTab('galaxyTab', 'galaxyTabButMid')">GALAXIES</button>
+                </td>
+            </tr>
+        </table>
+        <table style="width: auto; margin: auto;" class="shownOnMid">
+            <tr>
+                <td id="statsTabCellMid">
+                    <button id="statsTabButMid" class="tabBut" onclick="statsTabClick()">STATS &<br>ACHIEVEMENTS</button>
+                </td>
+                <td id="optionsTabCellMid">
+                    <button id="optionsTabButMid" class="tabBut" onclick="showTab('optionsTab', 'optionsTabButMid')">OPTIONS</button>
+                </td>
+                <td id="helpTabCellMid">
+                    <button id="helpTabButMid" class="tabBut" onclick="showHelp()" style="cursor: pointer !important;">HELP (THIS TAB)</button>
+                </td>
+            </tr>
+        </table>
     </div>
-    <div id="game" style="display: none;">
+    <div id="game">
         <div id="unitsTab" class="pageTab">
             <div id="unitsSubMenu" style="width: 100%; margin-top: 20px; display: none;">
                 <table style="width: auto; margin: auto;">
@@ -85,8 +137,8 @@
                     </tr>
                 </table>
             </div>
-            <div id="unitsSubTab" class="unitSubTab">
-                <table style="width: 100%; margin: auto; margin-top: 20px;">
+            <div id="unitsSubTab" class="unitSubTab" style="position: relative; height: 650px;">
+                <table id="unitsTable" style="width: 85%; margin: auto;" cellpadding="1px">
                     <tr>
                         <td width="5%">
                             <h1>Tier</h1>
@@ -94,16 +146,26 @@
                         <td width="15%">
                             <h1>Unit type</h1>
                         </td>
-                        <td width="20%">
-                            <div style="min-width: 45%; float: left;"><h1>Corpse<br>mult</h1></div><div style="min-width: 45%; float: left;"><h1>(Unit<br>mult)</h1></div>
+                        <td width="10%">
+                            <h1>Corpse<br>mult</h1>
                         </td>
-                        <td width="30%">
-                            <div style="min-width: 33%; float: left;"><h1>Owned</h1></div><div style="width: 27%; float: left;"><h1>(Bought)</h1></div><div style="min-width: 35%; float: right; text-align: center;"><h1>Gain</h1></div>
+                        <td width="10%">
+                            <h1>(Unit<br>mult)</h1>
                         </td>
-                        <td colspan="2" width="30%">
-                            <div style="width: 100%; text-align: center;">
-                                <button id="maxAllBut" class="unitMax" onclick="buyMaxAll()" style="margin: auto;">Max all</button>
-                            </div>
+                        <td width="10%">
+                            <h1>Owned</h1>
+                        </td>
+                        <td width="10%">
+                            <h1>(Bought)</h1>
+                        </td>
+                        <td width="15%" class="shownOnFull">
+                            <h1>Gain</h1>
+                        </td>
+                        <td width="15%">
+
+                        </td>
+                        <td width="10%">
+                            <button id="maxAllBut" class="unitMax" onclick="buyMaxAll()" style="transform: translateX(-75%);">Max all</button>
                         </td>
                     </tr>
                     <tr height="10px"></tr>
@@ -115,16 +177,25 @@
                             Zombies
                         </td>
                         <td>
-                            <div id="zombieMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                            <span id="zombieCMult">1</span>x
                         </td>
                         <td>
-                            <div id="zombieAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: left;"></div></div>
+                            (<span id="zombieUMult">1</span>x)
                         </td>
-                        <td class="buttonTD">
-                            <button id="zombieBut" class="unitBut" onclick="buySingleUnit(1)">Cost: 10 corpses</button>
+                        <td>
+                            <span id="zombieAmount">0</span>
                         </td>
-                        <td class="buttonTD">
-                            <button id="zombieMax" class="unitMax" onclick="buyMaxUnits(1)">Max: 1 for &#162;10</button>
+                        <td>
+                            (<span id="zombieBought">0</span>)
+                        </td>
+                        <td class="shownOnFull">
+                            <span id="zombieGain"></span>
+                        </td>
+                        <td>
+                            <button id="zombieBut" class="unitBut" onclick="buySingleUnit(1)">Cost: <span id="zombieCost">10</span> corpses</button>
+                        </td>
+                        <td>
+                            <button id="zombieMax" class="unitMax" onclick="buyMaxUnits(1)">Buy max (<span id="zombieMaxNum">0</span>)</button>
                         </td>
                     </tr>
                     <tr id="abomRow" style="display: none;">
@@ -135,16 +206,25 @@
                             Abominations
                         </td>
                         <td>
-                            <div id="abomMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                            <span id="abomCMult">1</span>x
                         </td>
                         <td>
-                            <div id="abomAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                            (<span id="abomUMult">1</span>x)
                         </td>
-                        <td class="buttonTD">
-                            <button id="abomBut" class="unitBut" onclick="buySingleUnit(2)">Cost: 100 corpses</button>
+                        <td>
+                            <span id="abomAmount">0</span>
                         </td>
-                        <td class="buttonTD">
-                            <button id="abomMax" class="unitMax" onclick="buyMaxUnits(2)">Max: 0</button>
+                        <td>
+                            (<span id="abomBought">0</span>)
+                        </td>
+                        <td class="shownOnFull">
+                            <span id="abomGain"></span>
+                        </td>
+                        <td>
+                            <button id="abomBut" class="unitBut" onclick="buySingleUnit(2)">Cost: <span id="abomCost">10</span> corpses</button>
+                        </td>
+                        <td>
+                            <button id="abomMax" class="unitMax" onclick="buyMaxUnits(2)">Buy max (<span id="abomMaxNum">0</span>)</button>
                         </td>
                     </tr>
                     <tr id="mageRow" style="display: none;">
@@ -155,16 +235,25 @@
                             Skeleton Mages
                         </td>
                         <td>
-                            <div id="mageMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                            <span id="mageCMult">1</span>x
                         </td>
                         <td>
-                            <div id="mageAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                            (<span id="mageUMult">1</span>x)
                         </td>
-                        <td class="buttonTD">
-                            <button id="mageBut" class="unitBut" onclick="buySingleUnit(3)">Cost: 10000 corpses</button>
+                        <td>
+                            <span id="mageAmount">0</span>
                         </td>
-                        <td class="buttonTD">
-                            <button id="mageMax" class="unitMax" onclick="buyMaxUnits(3)">Max: 0</button>
+                        <td>
+                            (<span id="mageBought">0</span>)
+                        </td>
+                        <td class="shownOnFull">
+                            <span id="mageGain"></span>
+                        </td>
+                        <td>
+                            <button id="mageBut" class="unitBut" onclick="buySingleUnit(3)">Cost: <span id="mageCost">10</span> corpses</button>
+                        </td>
+                        <td>
+                            <button id="mageMax" class="unitMax" onclick="buyMaxUnits(3)">Buy max (<span id="mageMaxNum">0</span>)</button>
                         </td>
                     </tr>
                     <tr id="bansheeRow" style="display: none;">
@@ -175,16 +264,25 @@
                             Banshees
                         </td>
                         <td>
-                            <div id="bansheeMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                            <span id="bansheeCMult">1</span>x
                         </td>
                         <td>
-                            <div id="bansheeAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                            (<span id="bansheeUMult">1</span>x)
                         </td>
-                        <td class="buttonTD">
-                            <button id="bansheeBut" class="unitBut" onclick="buySingleUnit(4)">Cost: 1000000 corpses</button>
+                        <td>
+                            <span id="bansheeAmount">0</span>
                         </td>
-                        <td class="buttonTD">
-                            <button id="bansheeMax" class="unitMax" onclick="buyMaxUnits(4)">Max: 0</button>
+                        <td>
+                            (<span id="bansheeBought">0</span>)
+                        </td>
+                        <td class="shownOnFull">
+                            <span id="bansheeGain"></span>
+                        </td>
+                        <td>
+                            <button id="bansheeBut" class="unitBut" onclick="buySingleUnit(4)">Cost: <span id="bansheeCost">10</span> corpses</button>
+                        </td>
+                        <td>
+                            <button id="bansheeMax" class="unitMax" onclick="buyMaxUnits(4)">Buy max (<span id="bansheeMaxNum">0</span>)</button>
                         </td>
                     </tr>
                     <tr id="lichRow" style="display: none;">
@@ -195,16 +293,25 @@
                             Liches
                         </td>
                         <td>
-                            <div id="lichMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                            <span id="lichCMult">1</span>x
                         </td>
                         <td>
-                            <div id="lichAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                            (<span id="lichUMult">1</span>x)
                         </td>
-                        <td class="buttonTD">
-                            <button id="lichBut" class="unitBut" onclick="buySingleUnit(5)">Cost: 1000000 corpses</button>
+                        <td>
+                            <span id="lichAmount">0</span>
                         </td>
-                        <td class="buttonTD">
-                            <button id="lichMax" class="unitMax" onclick="buyMaxUnits(5)">Max: 0</button>
+                        <td>
+                            (<span id="lichBought">0</span>)
+                        </td>
+                        <td class="shownOnFull">
+                            <span id="lichGain"></span>
+                        </td>
+                        <td>
+                            <button id="lichBut" class="unitBut" onclick="buySingleUnit(5)">Cost: <span id="lichCost">10</span> corpses</button>
+                        </td>
+                        <td>
+                            <button id="lichMax" class="unitMax" onclick="buyMaxUnits(5)">Buy max (<span id="lichMaxNum">0</span>)</button>
                         </td>
                     </tr>
                     <tr id="beheRow" style="display: none;">
@@ -215,16 +322,25 @@
                             Behemoths
                         </td>
                         <td>
-                            <div id="beheMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                            <span id="beheCMult">1</span>x
                         </td>
                         <td>
-                            <div id="beheAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                            (<span id="beheUMult">1</span>x)
                         </td>
-                        <td class="buttonTD">
-                            <button id="beheBut" class="unitBut" onclick="buySingleUnit(6)">Cost: 1000000 corpses</button>
+                        <td>
+                            <span id="beheAmount">0</span>
                         </td>
-                        <td class="buttonTD">
-                            <button id="beheMax" class="unitMax" onclick="buyMaxUnits(6)">Max: 0</button>
+                        <td>
+                            (<span id="beheBought">0</span>)
+                        </td>
+                        <td class="shownOnFull">
+                            <span id="beheGain"></span>
+                        </td>
+                        <td>
+                            <button id="beheBut" class="unitBut" onclick="buySingleUnit(6)">Cost: <span id="beheCost">10</span> corpses</button>
+                        </td>
+                        <td>
+                            <button id="beheMax" class="unitMax" onclick="buyMaxUnits(6)">Buy max (<span id="beheMaxNum">0</span>)</button>
                         </td>
                     </tr>
                     <tr id="oneRow" style="display: none;">
@@ -235,16 +351,25 @@
                             Ancient Ones
                         </td>
                         <td>
-                            <div id="oneMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                            <span id="oneCMult">1</span>x
                         </td>
                         <td>
-                            <div id="oneAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                            (<span id="oneUMult">1</span>x)
                         </td>
-                        <td class="buttonTD">
-                            <button id="oneBut" class="unitBut" onclick="buySingleUnit(7)">Cost: 1000000 corpses</button>
+                        <td>
+                            <span id="oneAmount">0</span>
                         </td>
-                        <td class="buttonTD">
-                            <button id="oneMax" class="unitMax" onclick="buyMaxUnits(7)">Max: 0</button>
+                        <td>
+                            (<span id="oneBought">0</span>)
+                        </td>
+                        <td class="shownOnFull">
+                            <span id="oneGain"></span>
+                        </td>
+                        <td>
+                            <button id="oneBut" class="unitBut" onclick="buySingleUnit(7)">Cost: <span id="oneCost">10</span> corpses</button>
+                        </td>
+                        <td>
+                            <button id="oneMax" class="unitMax" onclick="buyMaxUnits(7)">Buy max (<span id="oneMaxNum">0</span>)</button>
                         </td>
                     </tr>
                     <tr id="sunRow" style="display: none;">
@@ -255,24 +380,34 @@
                             Sun Eaters
                         </td>
                         <td>
-                            <div id="sunMult"><div style="min-width: 45%; float: left;">x1</div><div style="min-width: 45%; float: left;">(x1)</div></div>
+                            <span id="sunCMult">1</span>x
                         </td>
                         <td>
-                            <div id="sunAmount"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: right;"></div></div>
+                            (<span id="sunUMult">1</span>x)
                         </td>
-                        <td class="buttonTD">
-                            <button id="sunBut" class="unitBut" onclick="buySingleUnit(8)">Cost: 1000000 corpses</button>
+                        <td>
+                            <span id="sunAmount">0</span>
                         </td>
-                        <td class="buttonTD">
-                            <button id="sunMax" class="unitMax" onclick="buyMaxUnits(8)">Max: 0</button>
+                        <td>
+                            (<span id="sunBought">0</span>)
+                        </td>
+                        <td class="shownOnFull">
+                            <span id="sunGain"></span>
+                        </td>
+                        <td>
+                            <button id="sunBut" class="unitBut" onclick="buySingleUnit(8)">Cost: <span id="sunCost">10</span> corpses</button>
+                        </td>
+                        <td>
+                            <button id="sunMax" class="unitMax" onclick="buyMaxUnits(8)">Buy max (<span id="sunMaxNum">0</span>)</button>
                         </td>
                     </tr>
                 </table>
-                <div id="spacePresContainer" style="text-align: center; margin: 50px; display: none;">
+                <div id="spacePresContainer" style="text-align: center; display: none; margin: 25px auto;">
                     <button id="spacePrestige" class="spacePrestigeBut" onclick="spacePrestigeClick()">
                         <span style="font-size: 15pt;">This world is dead and empty...</span><br>
                         <span id="spacePresDesc">Give up all your units and corpses to exterminate a new world. You gain a boost to corpse gain based on total exterminated worlds.<br>
-                        This World Prestige will unlock <span id="spacePresUnlock">Buildings</span> and a new unit tier.</span><br>
+                        This World Prestige will unlock <span id="spacePresUnlock">Buildings</span> and a new unit tier.</span>
+                        <span id="numWorldsGainDisplay" style="font-size: 13pt; display: none;">Gain <span id="numWorldsGain" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 1 </span> exterminated world<br></span>
                         <span id="prestigeReq" style="font-size: 13pt;">Requires <span style="font-size: 17pt; white-space: pre;"> 1 </span> Liches</span>
                     </button>
                 </div>
@@ -281,7 +416,8 @@
                 <div id="autobuyerInfo" style="text-align: center; margin-top: 20px;">
                     Unit autobuyers attempt to buy in order from priority 1 to priority 8.<br>
                     Slow autobuyers trigger every 15 <span style="font-weight: bold;">real-world</span> seconds, unaffected by astral enslavement or time essence.<br>
-                    Once you unlock the prestige autobuyer and the fast, bulk, and advanced sacrifice upgrades, they are permanently unlocked whenever autobuyers are unlocked.
+                    Once unlocked, the prestige buyer and the fast, bulk, and advanced upgrades are permanently available whenever autobuyers are.<br>
+                    Set the world prestige max to 0 for no limit.
                 </div>
                 <table style="width: auto; margin: auto; text-align: center;">
                     <tr style="height: 25px;">
@@ -315,7 +451,7 @@
                         </td>
                     </tr>
                 </table>
-                <table style="width: auto; margin: auto; text-align: center;">
+                <table style="width: auto; text-align: center; margin: auto;">
                     <tr>
                         <td>
                             <div id="zombieBuyerOptions" class="autobuyerOptions">
@@ -335,7 +471,7 @@
                                     </div>
                                     <div id="zombieBuyerPriorityContainer" class="buyerOptionsContainer priorityContainer">
                                         <label for="zombiePriority">Priority:</label>
-                                        <select oninput="updateBuyerOrder(1, 'zombiePriority')" id="zombiePriority" name="zombiePriority" class="buyerDropdown">
+                                        <select onchange="updateBuyerOrder(1, 'zombiePriority')" id="zombiePriority" name="zombiePriority" class="buyerDropdown">
                                             <option id="11" class="priorityOptions" value="1" selected>1</option>
                                             <option id="12" class="priorityOptions" value="2">2</option>
                                             <option id="13" class="priorityOptions" value="3">3</option>
@@ -368,7 +504,7 @@
                                     </div>
                                     <div id="abominationBuyerPriorityContainer" class="buyerOptionsContainer priorityContainer">
                                         <label for="abominationPriority">Priority:</label>
-                                        <select oninput="updateBuyerOrder(2, 'abominationPriority')" id="abominationPriority" name="abominationPriority" class="buyerDropdown">
+                                        <select onchange="updateBuyerOrder(2, 'abominationPriority')" id="abominationPriority" name="abominationPriority" class="buyerDropdown">
                                             <option id="21" class="priorityOptions" value="1">1</option>
                                             <option id="22" class="priorityOptions" value="2" selected>2</option>
                                             <option id="23" class="priorityOptions" value="3">3</option>
@@ -400,7 +536,7 @@
                                     </div>
                                     <div id="skeletonmageBuyerPriorityContainer" class="buyerOptionsContainer priorityContainer">
                                         <label for="skeletonmagePriority">Priority:</label>
-                                        <select oninput="updateBuyerOrder(3, 'skeletonmagePriority')" id="skeletonmagePriority" name="skeletonmagePriority" class="buyerDropdown">
+                                        <select onchange="updateBuyerOrder(3, 'skeletonmagePriority')" id="skeletonmagePriority" name="skeletonmagePriority" class="buyerDropdown">
                                             <option id="31" class="priorityOptions" value="1">1</option>
                                             <option id="32" class="priorityOptions" value="2">2</option>
                                             <option id="33" class="priorityOptions" value="3" selected>3</option>
@@ -432,7 +568,7 @@
                                     </div>
                                     <div id="bansheeBuyerPriorityContainer" class="buyerOptionsContainer priorityContainer">
                                         <label for="bansheePriority">Priority:</label>
-                                        <select oninput="updateBuyerOrder(4, 'bansheePriority')" id="bansheePriority" name="bansheePriority" class="buyerDropdown">
+                                        <select onchange="updateBuyerOrder(4, 'bansheePriority')" id="bansheePriority" name="bansheePriority" class="buyerDropdown">
                                             <option id="41" class="priorityOptions" value="1">1</option>
                                             <option id="42" class="priorityOptions" value="2">2</option>
                                             <option id="43" class="priorityOptions" value="3">3</option>
@@ -466,7 +602,7 @@
                                     </div>
                                     <div id="lichBuyerPriorityContainer" class="buyerOptionsContainer priorityContainer">
                                         <label for="lichPriority">Priority:</label>
-                                        <select oninput="updateBuyerOrder(5, 'lichPriority')" id="lichPriority" name="lichPriority" class="buyerDropdown">
+                                        <select onchange="updateBuyerOrder(5, 'lichPriority')" id="lichPriority" name="lichPriority" class="buyerDropdown">
                                             <option id="51" class="priorityOptions" value="1">1</option>
                                             <option id="52" class="priorityOptions" value="2">2</option>
                                             <option id="53" class="priorityOptions" value="3">3</option>
@@ -498,7 +634,7 @@
                                     </div>
                                     <div id="behemothBuyerPriorityContainer" class="buyerOptionsContainer priorityContainer">
                                         <label for="behemothPriority">Priority:</label>
-                                        <select oninput="updateBuyerOrder(6, 'behemothPriority')" id="behemothPriority" name="behemothPriority" class="buyerDropdown">
+                                        <select onchange="updateBuyerOrder(6, 'behemothPriority')" id="behemothPriority" name="behemothPriority" class="buyerDropdown">
                                             <option id="61" class="priorityOptions" value="1">1</option>
                                             <option id="62" class="priorityOptions" value="2">2</option>
                                             <option id="63" class="priorityOptions" value="3">3</option>
@@ -530,7 +666,7 @@
                                     </div>
                                     <div id="ancientoneBuyerPriorityContainer" class="buyerOptionsContainer priorityContainer">
                                         <label for="ancientonePriority">Priority:</label>
-                                        <select oninput="updateBuyerOrder(7, ancientonePriority)" id="ancientonePriority" name="ancientonePriority" class="buyerDropdown">
+                                        <select onchange="updateBuyerOrder(7, ancientonePriority)" id="ancientonePriority" name="ancientonePriority" class="buyerDropdown">
                                             <option id="71" class="priorityOptions" value="1">1</option>
                                             <option id="72" class="priorityOptions" value="2">2</option>
                                             <option id="73" class="priorityOptions" value="3">3</option>
@@ -562,7 +698,7 @@
                                     </div>
                                     <div id="suneaterBuyerPriorityContainer" class="buyerOptionsContainer priorityContainer">
                                         <label for="suneaterPriority">Priority:</label>
-                                        <select oninput="updateBuyerOrder(8, 'suneaterPriority')" id="suneaterPriority" name="suneaterPriority" class="buyerDropdown">
+                                        <select onchange="updateBuyerOrder(8, 'suneaterPriority')" id="suneaterPriority" name="suneaterPriority" class="buyerDropdown">
                                             <option id="81" class="priorityOptions" value="1">1</option>
                                             <option id="82" class="priorityOptions" value="2">2</option>
                                             <option id="83" class="priorityOptions" value="3">3</option>
@@ -578,61 +714,109 @@
                         </td>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td>
-                            <div id="sacrificeBuyerOptions" class="autobuyerOptions">
-                                <div class="buyerFrame">
-                                    <h2>Sacrifice</h2>
-                                    <div id="sacrificeBuyerEnabledContainer" class="buyerOptionsContainer">
-                                        <label for="sacrificeEnabledBut">on/off:</label><!-- --><button onclick="updateSingleBuyer(9, 'on', 'sacrificeEnabledBut')" name="sacrificeEnabledBut" id="sacrificeEnabledBut" class="buyerEnabledBut">OFF</button><!-- -->
-                                        <div class="buyerEnabledLock"></div>
+                        <table style="margin: auto;">
+                            <tr>
+                                <td>
+                                    <div id="sacrificeBuyerOptions" class="autobuyerOptions">
+                                        <div class="buyerFrame">
+                                            <h2>Sacrifice</h2>
+                                            <div id="sacrificeBuyerEnabledContainer" class="buyerOptionsContainer">
+                                                <label for="sacrificeEnabledBut">on/off:</label><!-- --><button onclick="updateSingleBuyer(9, 'on', 'sacrificeEnabledBut')" name="sacrificeEnabledBut" id="sacrificeEnabledBut" class="buyerEnabledBut">OFF</button><!-- -->
+                                                <div class="buyerEnabledLock"></div>
+                                            </div>
+                                            <div id="sacrificeBuyerSpeedContainer" class="buyerOptionsContainer">
+                                                <label for="sacrificeSpeedBut">speed:</label><!-- --><button onclick="updateSingleBuyer(9, 'fast', 'sacrificeSpeedBut')" name="sacrificeSpeedBut" id="sacrificeSpeedBut" class="buyerSpeedBut" disabled>SLOW</button><!-- -->
+                                                <div id="sacrificeSpeedLock" class="buyerSpeedLock"></div>
+                                            </div>
+                                            <span style="position: relative; right: 62px;"><label for="sacrificeBuyerAdvancedList">condition:</label></span>
+                                            <div id="sacrificeBuyerAmountsContainer" class="buyerOptionsContainerHalf">
+                                                <div class="buyerOptionsContainer">
+                                                    <div class="buyerAmountTextContainer">
+                                                        <input onchange="updateSacBuyer()" onblur="emptySacrifice()" type="text" size id="sacrificeBuyerAmount" name="sacrificeBuyerConditions" class="buyerText" value="1"><br>
+                                                        <label id="sacrificeBuyerAmountLabel" for="sacrificeBuyerAmount" style="font-size: 10pt;">at x crystals</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="sacrificeBuyerAdvancedContainer" class="buyerOptionsContainerHalf">
+                                                <div class="buyerAmountTextContainer">
+                                                    <select onchange="updateSacBuyer()" id="sacrificeBuyerAdvancedList" name="sacrificeBuyerAdvancedList" class="buyerList" size="3" disabled>
+                                                        <option id="atx" value="atx" selected>at x crystals</option>
+                                                        <option id="xtimes" value="xtimes">at x times last</option>
+                                                        <option id="afterx" value="afterx">after x seconds</option>
+                                                    </select>
+                                                </div>
+                                                <div id="advancedSacLock" class="buyerAdvancedContainer"></div>
+                                            </div>
+                                            <span id="sacrificeErr" style="display: none;">invalid input. value set to last valid input: <span id="sacrificeErrValue"></span></span>
+                                        </div>
                                     </div>
-                                    <div id="sacrificeBuyerSpeedContainer" class="buyerOptionsContainer">
-                                        <label for="sacrificeSpeedBut">speed:</label><!-- --><button onclick="updateSingleBuyer(9, 'fast', 'sacrificeSpeedBut')" name="sacrificeSpeedBut" id="sacrificeSpeedBut" class="buyerSpeedBut" disabled>SLOW</button><!-- -->
-                                        <div id="sacrificeSpeedLock" class="buyerSpeedLock"></div>
+                                </td>
+                                <td>
+                                    <div id="prestigeBuyerOptions" class="autobuyerOptions">
+                                        <div class="buyerFrame">
+                                            <h2>World Prestige</h2>
+                                            <div id="prestigeBuyerEnabledContainer" class="buyerOptionsContainer">
+                                                <label for="prestigeEnabledBut">on/off:</label><!-- --><button onclick="updateSingleBuyer(10, 'on', 'prestigeEnabledBut')" name="prestigeEnabledBut" id="prestigeEnabledBut" class="buyerEnabledBut">OFF</button><!-- -->
+                                                <div class="buyerEnabledLock"></div>
+                                            </div>
+                                            <div id="prestigeBuyerSpeedContainer" class="buyerOptionsContainer">
+                                                <label for="prestigeSpeedBut">speed:</label><!-- --><button onclick="updateSingleBuyer(10, 'fast', 'prestigeSpeedBut')" name="prestigeSpeedBut" id="prestigeSpeedBut" class="buyerSpeedBut" disabled>SLOW</button><!-- -->
+                                                <div id="prestigeSpeedLock" class="buyerSpeedLock"></div>
+                                            </div>
+                                            <div id="prestigeBuyerPriorityContainer" class="buyerOptionsContainer priorityContainer">
+                                                <label for="maxPrestige">max auto prestiges:</label><input onchange="updateMaxPrestige()" onblur="emptyPrestige()" type="text" size id="maxPrestige" name="maxPrestige" class="buyerTextP" value="0">
+                                            </div>
+                                            <span id="prestigeErr" style="display: none;">invalid input. value set to last valid input: <span id="prestigeErrValue"></span></span>
+                                        </div>
+                                        <div id="prestigeLockScreen"></div>
                                     </div>
-                                    <span style="position: relative; right: 62px;"><label for="sacrificeBuyerAdvancedList">condition:</label></span>
-                                    <div id="sacrificeBuyerAmountsContainer" class="buyerOptionsContainerHalf">
-                                        <div class="buyerOptionsContainer">
-                                            <div class="buyerAmountTextContainer">
-                                                <input oninput="updateSacBuyer()" type="text" size id="sacrificeBuyerAmount" name="sacrificeBuyerConditions" class="buyerText" value="1"><br>
-                                                <label id="sacrificeBuyerAmountLabel" for="sacrificeBuyerAmount" style="font-size: 10pt;">at x crystals</label>
+                                </td>
+                                <td id="ascensionBuyerCell" style="display: none;">
+                                    <div id="ascensionBuyerOptions" class="autobuyerOptions">
+                                        <div class="buyerFrame">
+                                            <h2>Ascension</h2>
+                                            <div id="ascensionBuyerEnabledContainer" class="buyerOptionsContainer">
+                                                <label for="ascensionEnabledBut">on/off:</label><!-- --><button onclick="updateSingleBuyer(11, 'on', 'ascensionEnabledBut')" name="ascensionEnabledBut" id="ascensionEnabledBut" class="buyerEnabledBut">OFF</button><!-- -->
+                                            </div>
+                                            <div id="ascensionBuyerSpeedContainer" class="buyerOptionsContainer">
+                                                <label for="ascensionSpeedBut">speed:</label><!-- --><button onclick="updateSingleBuyer(11, 'fast', 'ascensionSpeedBut')" name="ascensionSpeedBut" id="ascensionSpeedBut" class="buyerSpeedBut" disabled>SLOW</button><!-- -->
+                                            </div>
+                                            <div id="ascensionBuyerBulkContainer" class="buyerOptionsContainer">
+                                                <div class="ascBuyerAmountTextContainer">
+                                                    <input onchange="updateAscBuyer()" onblur="emptyAscension()" type="text" size id="ascensionBuyerAmount" name="ascensionBuyerAmount" class="buyerText" value="1"><br>
+                                                    <label id="prestigeBuyerAmountLabel" for="ascensionBuyerAmount" style="font-size: 10pt;">at x galaxies</label>
+                                                </div>
+                                            </div>
+                                            <span id="sacrificeErr" style="display: none;">invalid input. value set to last valid input: <span id="sacrificeErrValue"></span></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td id="timeDimBuyerCell" style="display: none;">
+                                    <div id="timeDimBuyerOptions" class="autobuyerOptions">
+                                        <div class="buyerFrame">
+                                            <h2>Time Dimensions</h2>
+                                            <div id="timeDim1EnabledContainer" class="dimBuyerOptionsContainer">
+                                                <label for="timeDim1But">first:</label><br><!-- --><button onclick="updateDimBuyer(1, 'timeDim1But')" name="timeDim1But" id="timeDim1But" class="buyerEnabledBut" style="margin-bottom: 10px;">OFF</button><!-- -->
+                                            </div>
+                                            <div id="timeDim2EnabledContainer" class="dimBuyerOptionsContainer">
+                                                <label for="timeDim2But">second:</label><br><!-- --><button onclick="updateDimBuyer(2, 'timeDim2But')" name="timeDim2But" id="timeDim2But" class="buyerEnabledBut" style="margin-bottom: 10px;">OFF</button><!-- -->
+                                            </div>
+                                            <div id="timeDim3EnabledContainer" class="dimBuyerOptionsContainer">
+                                                <label for="timeDim3But">third:</label><br><!-- --><button onclick="updateDimBuyer(3, 'timeDim3But')" name="timeDim3But" id="timeDim3But" class="buyerEnabledBut" style="margin-bottom: 10px;">OFF</button><!-- -->
+                                            </div>
+                                            <div id="timeDim4EnabledContainer" class="dimBuyerOptionsContainer">
+                                                <label for="timeDim4But">fourth:</label><br><!-- --><button onclick="updateDimBuyer(4, 'timeDim4But')" name="timeDim4But" id="timeDim4But" class="buyerEnabledBut" style="margin-bottom: 10px;">OFF</button><!-- -->
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="sacrificeBuyerAdvancedContainer" class="buyerOptionsContainerHalf">
-                                        <div class="buyerAmountTextContainer">
-                                            <select oninput="updateSacBuyer()" id="sacrificeBuyerAdvancedList" name="sacrificeBuyerAdvancedList" class="buyerList" size="3" disabled>
-                                                <option id="atx" value="atx" selected>at x crystals</option>
-                                                <option id="xtimes" value="xtimes">at x times last</option>
-                                                <option id="afterx" value="afterx">after x seconds</option>
-                                            </select>
-                                        </div>
-                                        <div id="advancedSacLock" class="buyerAdvancedContainer"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div id="prestigeBuyerOptions" class="autobuyerOptions">
-                                <div class="buyerFrame">
-                                    <h2>World Prestige</h2>
-                                    <div id="prestigeBuyerEnabledContainer" class="buyerOptionsContainer">
-                                        <label for="prestigeEnabledBut">on/off:</label><!-- --><button onclick="updateSingleBuyer(10, 'on', 'prestigeEnabledBut')" name="prestigeEnabledBut" id="prestigeEnabledBut" class="buyerEnabledBut">OFF</button><!-- -->
-                                        <div class="buyerEnabledLock"></div>
-                                    </div>
-                                    <div id="prestigeBuyerSpeedContainer" class="buyerOptionsContainer">
-                                        <label for="prestigeSpeedBut">speed:</label><!-- --><button onclick="updateSingleBuyer(10, 'fast', 'prestigeSpeedBut')" name="prestigeSpeedBut" id="prestigeSpeedBut" class="buyerSpeedBut" disabled>SLOW</button><!-- -->
-                                        <div id="prestigeSpeedLock" class="buyerSpeedLock"></div>
-                                    </div>
-                                    <div id="prestigeBuyerPriorityContainer" class="buyerOptionsContainer priorityContainer">
-                                        <label for="prestigeBuyerPriorityBut">priority over sacrifice:</label><!-- --><button onclick="updatePrestigePriority()" name="prestigeBuyerPriorityBut" id="prestigeBuyerPriorityBut" class="buyerPriBut">YES</button><!-- -->
-                                    </div>
-                                </div>
-                                <div id="prestigeLockScreen"></div>
-                            </div>
-                        </td>
-                        <td></td>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
                     </tr>
                 </table>
             </div>
@@ -645,9 +829,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3" id="brickTooltip" data-title="corpse production rate ^2.0">
+                    <td colspan="3" id="brickTooltip" data-title="corpse production rate ^0.2">
                         <div style="font-size: 18pt; white-space: pre;">Your unholy hordes have forged <span id="brickDisplay" style="font-size: 21pt; font-weight: bold; color: #1c8a2e; font-variant-numeric: tabular-nums;"> 0 </span> <span id="astralTextAmt" class="buildingResourceTexts">astral bricks</span>.</div>
-                        <div id="brickGainDiv" style="font-size: 15pt; white-space: pre; display: none;">You are gaining <span id="brickGainDisplay" style="font-size: 18pt; font-weight: bold; color: #1c8a2e; font-variant-numeric: tabular-nums;"> 0 </span> <span id="bricksTextGain" class="buildingResourceTexts">bricks</span>/sec. (@ 10x slower time speed)</div>
+                        <div id="brickGainDiv" style="font-size: 15pt; white-space: pre; display: none;">You are gaining <span id="brickGainDisplay" style="font-size: 18pt; font-weight: bold; color: #1c8a2e; font-variant-numeric: tabular-nums;"> 0 </span> <span id="bricksTextGain" class="buildingResourceTexts">bricks</span>/<span class="secDisplay">sec</span>. (@ <span id="astralNerf">10</span>x slower time speed)</div>
                         <div id="keptBricks" style="font-size: 15pt; white-space: pre; display: none;">You will keep <span id="brickKeepDisplay" style="font-size: 18pt; font-weight: bold; color: #1c8a2e; font-variant-numeric: tabular-nums;"> 0 </span> <span id="bricksKeepGain" class="buildingResourceTexts">bricks</span> on sacrifice.</div>
                         <span style="font-size: 11pt">You can now force the dead you harvest to work for your rapidly growing empire. While Astral Enslavement is active, time goes 10x slower,
                         and you won't gain any corpses; instead, those tortured, miasmic souls will suffer tirelessly making bricks for your most unholy of foundations.<br></span>
@@ -672,7 +856,7 @@
                 </table>
             </div>
             <div id="buildingsSubTab" class="buildingSubTab">
-                <table style="width: 75%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse;" class="buildingsTable">
+                <table style="width: 65%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse;" class="buildingsTable">
                     <tr id="factoryBuildRow">
                         <td colspan="3">
                             <button id="factoryBuild" class="buildBut" onclick="buyBuilding(1)">Build the<h2><span id="factoryBuildLabel" style="font-size: 18pt;">Death Factory.</span></h2>Cost: <span id="factoryCostLabel">1,000</span> astral bricks</button>
@@ -682,34 +866,64 @@
                         <td colspan="3">
                             <h2 style="font-size: 18pt;">DEATH FACTORY</h2>
                             <div id="factoryTooltip" data-title="log(x)^0.5">you have <span id="factoryAmt" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> <span id="armamentsTextAmt" class="buildingResourceTexts">armaments</span>.<br>
-                            you are producing <span id="factoryProd" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> <span id="armamentsTextGain" class="buildingResourceTexts">armaments</span>/sec, based on your zombies.</div>
+                            you are producing <span id="factoryProd" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> <span id="armamentsTextGain" class="buildingResourceTexts">armaments</span>/<span class="secDisplay">sec</span> (based on your zombies).</div>
                         </td>
                     </tr>
                     <tr id="factoryUpgradesRow1" style="display: none;">
                         <td>
-                            <button id="factoryUpg11" class="factoryUpg" onclick="buyBUpg(1, 11)"></button>
+                            <button id="factoryUpg11" class="factoryUpg" onclick="buyBUpg(1, 11)">
+                                <span id="bUpgName1.11" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc1.11"></span><br>
+                                <span>Cost: <span id="bUpgCost1.11"></span></span><br>
+                                <span id="1.11Effect" style="display: none;">Currently: <span id="bUpgEffect1.11"></span></span>
+                            </button>
                         </td>
                         <td>
-                            <button id="factoryUpg12" class="factoryUpg" onclick="buyBUpg(1, 12)"></button>
+                            <button id="factoryUpg12" class="factoryUpg" onclick="buyBUpg(1, 12)">
+                                <span id="bUpgName1.12" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc1.12"></span><br>
+                                <span>Cost: <span id="bUpgCost1.12"></span></span><br>
+                                <span id="1.12Effect" style="display: none;">Currently: <span id="bUpgEffect1.12"></span></span>
+                            </button>
                         </td>
                         <td>
-                            <button id="factoryUpg13" class="factoryUpg" onclick="buyBUpg(1, 13)"></button>
+                            <button id="factoryUpg13" class="factoryUpg" onclick="buyBUpg(1, 13)">
+                                <span id="bUpgName1.13" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc1.13"></span><br>
+                                <span>Cost: <span id="bUpgCost1.13"></span></span><br>
+                                <span id="1.13Effect" style="display: none;">Currently: <span id="bUpgEffect1.13"></span></span>
+                            </button>
                         </td>
                     </tr>
                     <tr id="factoryUpgradesRow2" style="display: none;">
                         <td>
-                            <button id="factoryUpg21" class="factoryUpg" onclick="buyBUpg(1, 21)"></button>
+                            <button id="factoryUpg21" class="factoryUpg" onclick="buyBUpg(1, 21)">
+                                <span id="bUpgName1.21" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc1.21"></span><br>
+                                <span>Cost: <span id="bUpgCost1.21"></span></span><br>
+                                <span id="1.21Effect" style="display: none;">Currently: <span id="bUpgEffect1.21"></span></span>
+                            </button>
                         </td>
                         <td>
-                            <button id="factoryUpg22" class="factoryUpg" onclick="buyBUpg(1, 22)"></button>
+                            <button id="factoryUpg22" class="factoryUpg" onclick="buyBUpg(1, 22)">
+                                <span id="bUpgName1.22" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc1.22"></span><br>
+                                <span>Cost: <span id="bUpgCost1.22"></span></span><br>
+                                <span id="1.22Effect" style="display: none;">Currently: <span id="bUpgEffect1.22"></span></span>
+                            </button>
                         </td>
                         <td>
-                            <button id="factoryUpg23" class="factoryUpg" onclick="buyBUpg(1, 23)"></button>
+                            <button id="factoryUpg23" class="factoryUpg" onclick="buyBUpg(1, 23)">
+                                <span id="bUpgName1.23" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc1.23"></span><br>
+                                <span>Cost: <span id="bUpgCost1.23"></span></span><br>
+                                <span id="1.23Effect" style="display: none;">Currently: <span id="bUpgEffect1.23"></span></span>
+                            </button>
                         </td>
                     </tr>
                 </table>
                 <div style="min-height: 25px;"></div>
-                <table style="width: 75%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse;" class="buildingsTable">
+                <table style="width: 65%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse;" class="buildingsTable">
                     <tr id="necropolisBuildRow">
                         <td colspan="3">
                             <button id="necropolisBuild" class="buildBut" onclick="buyBuilding(2)">Build the<h2><span id="necropolisBuildLabel" style="font-size: 18pt;">Necropolis.</span></h2>Cost: <span id="necropolisCostLabel">100,000</span> astral bricks</button>
@@ -719,35 +933,65 @@
                         <td colspan="3">
                             <h2 style="font-size: 18pt;">NECROPOLIS</h2>
                             <div id="necropolisTooltip" data-title="gain: x^0.2&#xA;effect: 1 + log(x)">you have <span id="necropolisAmt" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> <span id="acolytesTextAmt" class="buildingResourceTexts">acolytes</span>.<br>
-                            you are producing <span id="necropolisProd" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> <span id="acolytesTextGain" class="buildingResourceTexts">acolytes</span>/sec, based on your bought sun eaters.<br>
+                            you are producing <span id="necropolisProd" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> <span id="acolytesTextGain" class="buildingResourceTexts">acolytes</span>/<span class="secDisplay">sec</span> (based on your bought sun eaters).<br>
                             your acolytes chant into the astral abyss, boosting your astral brick gain by <span id="acolyteEff" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0</span>x.</div>
                         </td>
                     </tr>
                     <tr id="necropolisUpgradesRow1" style="display: none;">
                         <td>
-                            <button id="necropolisUpg11" class="necropolisUpg" onclick="buyBUpg(2, 11)"><strong>Upgrade 1</strong><br>description of upgrade</button>
+                            <button id="necropolisUpg11" class="necropolisUpg" onclick="buyBUpg(2, 11)">
+                                <span id="bUpgName2.11" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc2.11"></span><br>
+                                <span>Cost: <span id="bUpgCost2.11"></span></span><br>
+                                <span id="2.11Effect" style="display: none;">Currently: <span id="bUpgEffect2.11"></span></span>
+                            </button>
                         </td>
                         <td>
-                            <button id="necropolisUpg12" class="necropolisUpg" onclick="buyBUpg(2, 12)"><strong>Upgrade 2</strong><br>description of upgrade</button>
+                            <button id="necropolisUpg12" class="necropolisUpg" onclick="buyBUpg(2, 12)">
+                                <span id="bUpgName2.12" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc2.12"></span><br>
+                                <span>Cost: <span id="bUpgCost2.12"></span></span><br>
+                                <span id="2.12Effect" style="display: none;">Currently: <span id="bUpgEffect2.12"></span></span>
+                            </button>
                         </td>
                         <td>
-                            <button id="necropolisUpg13" class="necropolisUpg" onclick="buyBUpg(2, 13)"><strong>Upgrade 3</strong><br>description of upgrade</button>
+                            <button id="necropolisUpg13" class="necropolisUpg" onclick="buyBUpg(2, 13)">
+                                <span id="bUpgName2.13" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc2.13"></span><br>
+                                <span>Cost: <span id="bUpgCost2.13"></span></span><br>
+                                <span id="2.13Effect" style="display: none;">Currently: <span id="bUpgEffect2.13"></span></span>
+                            </button>
                         </td>
                     </tr>
                     <tr id="necropolisUpgradesRow2" style="display: none;">
                         <td>
-                            <button id="necropolisUpg21" class="necropolisUpg" onclick="buyBUpg(2, 21)"><strong>Upgrade 4</strong><br>description of upgrade</button>
+                            <button id="necropolisUpg21" class="necropolisUpg" onclick="buyBUpg(2, 21)">
+                                <span id="bUpgName2.21" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc2.21"></span><br>
+                                <span>Cost: <span id="bUpgCost2.21"></span></span><br>
+                                <span id="2.21Effect" style="display: none;">Currently: <span id="bUpgEffect2.21"></span></span>
+                            </button>
                         </td>
                         <td>
-                            <button id="necropolisUpg22" class="necropolisUpg" onclick="buyBUpg(2, 22)"><strong>Upgrade 5</strong><br>description of upgrade</button>
+                            <button id="necropolisUpg22" class="necropolisUpg" onclick="buyBUpg(2, 22)">
+                                <span id="bUpgName2.22" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc2.22"></span><br>
+                                <span>Cost: <span id="bUpgCost2.22"></span></span><br>
+                                <span id="2.22Effect" style="display: none;">Currently: <span id="bUpgEffect2.22"></span></span>
+                            </button>
                         </td>
                         <td>
-                            <button id="necropolisUpg23" class="necropolisUpg" onclick="buyBUpg(2, 23)"><strong>Upgrade 6</strong><br>description of upgrade</button>
+                            <button id="necropolisUpg23" class="necropolisUpg" onclick="buyBUpg(2, 23)">
+                                <span id="bUpgName2.23" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc2.23"></span><br>
+                                <span>Cost: <span id="bUpgCost2.23"></span></span><br>
+                                <span id="2.23Effect" style="display: none;">Currently: <span id="bUpgEffect2.23"></span></span>
+                            </button>
                         </td>
                     </tr>
                 </table>
                 <div style="min-height: 25px;"></div>
-                <table style="width: 75%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse;" class="buildingsTable">
+                <table style="width: 65%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse;" class="buildingsTable">
                     <tr id="sunBuildRow">
                         <td colspan="3">
                             <button id="sunBuild" class="buildBut" onclick="buyBuilding(3)">Build the<h2><span id="sunBuildLabel" style="font-size: 18pt;">Dead Sun.</span></h2>Cost: <span id="sunCostLabel">1e8</span> astral bricks</button>
@@ -757,37 +1001,136 @@
                         <td colspan="3">
                             <h2 style="font-size: 18pt;">DEAD SUN</h2>
                             <div id="sunTooltip" data-title="2/sec">you have <span id="sunAmt" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> <span id="photonsTextAmt" class="buildingResourceTexts">nekro-photons</span>.<br>
-                            <span id="sunGainSpan" style="display: none;">you are producing <span id="sunProd" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 5 </span> <span id="photonsTextGain" class="buildingResourceTexts">nekro-photons</span>/sec, but only during astral enslavement.</span><br>
-                            <span id="sunGainNotice">Nekro-photon production is disabled outside of astral enslavement.</span></div>
+                            <span id="sunGainSpan" style="display: none;">you are producing <span id="sunProd" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 5 </span> <span id="photonsTextGain" class="buildingResourceTexts">nekro-photons</span>/<span class="secDisplay">sec</span>, but only during astral enslavement.<br></span>
+                            <div id="sunGainNotice" style="height: 25px; min-height: 25px; margin-top: 5px;">Nekro-photon production is disabled outside of astral enslavement.</div></div>
                         </td>
                     </tr>
                     <tr id="sunUpgradesRow" style="display: none;">
                         <td>
-                            <button id="sunUpg11" class="sunUpg" onclick="buyBUpg(3, 11)"><strong>Upgrade 1</strong><br>description of upgrade</button>
+                            <button id="sunUpg11" class="sunUpg" onclick="buyBUpg(3, 11)">
+                                <span id="bUpgName3.11" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc3.11"></span><br>
+                                <span>Cost: <span id="bUpgCost3.11"></span></span><br>
+                                <span id="3.11Effect" style="display: none;">Currently: <span id="bUpgEffect3.11"></span></span>
+                            </button>
                         </td>
                         <td>
-                            <button id="sunUpg12" class="sunUpg" onclick="buyBUpg(3, 12)"><strong>Upgrade 2</strong><br>description of upgrade</button>
+                            <button id="sunUpg12" class="sunUpg" onclick="buyBUpg(3, 12)">
+                                <span id="bUpgName3.12" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc3.12"></span><br>
+                                <span>Cost: <span id="bUpgCost3.12"></span></span><br>
+                                <span id="3.12Effect" style="display: none;">Currently: <span id="bUpgEffect3.12"></span></span>
+                            </button>
                         </td>
                         <td>
-                            <button id="sunUpg13" class="sunUpg" onclick="buyBUpg(3, 13)"><strong>Upgrade 3</strong><br>description of upgrade</button>
+                            <button id="sunUpg13" class="sunUpg" onclick="buyBUpg(3, 13)">
+                                <span id="bUpgName3.13" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc3.13"></span><br>
+                                <span>Cost: <span id="bUpgCost3.13"></span></span><br>
+                                <span id="3.13Effect" style="display: none;">Currently: <span id="bUpgEffect3.13"></span></span>
+                            </button>
                         </td>
                     </tr>
                     <tr id="sunUpgradesRow2" style="display: none;">
                         <td>
-                            <button id="sunUpg21" class="sunUpg" onclick="buyBUpg(3, 21)"><strong>Upgrade 1</strong><br>description of upgrade</button>
+                            <button id="sunUpg21" class="sunUpg" onclick="buyBUpg(3, 21)">
+                                <span id="bUpgName3.21" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc3.21"></span><br>
+                                <span>Cost: <span id="bUpgCost3.21"></span></span><br>
+                                <span id="3.21Effect" style="display: none;">Currently: <span id="bUpgEffect3.21"></span></span>
+                            </button>
                         </td>
                         <td>
-                            <button id="sunUpg22" class="sunUpg" onclick="buyBUpg(3, 22)"><strong>Upgrade 2</strong><br>description of upgrade</button>
+                            <button id="sunUpg22" class="sunUpg" onclick="buyBUpg(3, 22)">
+                                <span id="bUpgName3.22" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc3.22"></span><br>
+                                <span>Cost: <span id="bUpgCost3.22"></span></span><br>
+                                <span id="3.22Effect" style="display: none;">Currently: <span id="bUpgEffect3.22"></span></span>
+                            </button>
                         </td>
                         <td>
-                            <button id="sunUpg23" class="sunUpg" onclick="buyBUpg(3, 23)"><strong>Upgrade 3</strong><br>description of upgrade</button>
+                            <button id="sunUpg23" class="sunUpg" onclick="buyBUpg(3, 23)">
+                                <span id="bUpgName3.23" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc3.23"></span><br>
+                                <span>Cost: <span id="bUpgCost3.23"></span></span><br>
+                                <span id="3.23Effect" style="display: none;">Currently: <span id="bUpgEffect3.23"></span></span>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+                <div style="min-height: 25px;"></div>
+                <table id="vortexTable" style="width: 65%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse; display: none; empty-cells: hide;" class="buildingsTable">
+                    <tr id="vortexBuildRow" style="display: none;">
+                        <td colspan="3">
+                            <button id="vortexBuild" class="buildBut" onclick="buyBuilding(4)">Build the<h2><span id="vortexBuildLabel" style="font-size: 18pt;">Galactic Vortex.</span></h2>Cost: <span id="vortexCostLabel">1e60</span> astral bricks</button>
+                        </td>
+                    </tr>
+                    <tr id="vortexHeaderRow" style="display: none;">
+                        <td colspan="3">
+                            <h2 style="font-size: 18pt;">GALACTIC VORTEX</h2>
+                            <div id="vortexTooltip" data-title="2/sec">you have <span id="vortexAmt" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> <span id="photonsTextAmt" class="buildingResourceTexts">black holes</span>.<br>
+                            <span id="vortexGainSpan">your next black hole is <span id="vortexProd" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0</span>% complete. Progress is based on your total depleted galaxies minus your black holes.</span><br>
+                            Your black holes add to the depleted galaxy gain exponent. Currently: +<span id="blackholeEff" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;">0</span><br>
+                            <span id="vortexGainNotice">The galactic vortex, black holes, and black hole production progress are never reset.</span></div>
+                        </td>
+                    </tr>
+                    <tr id="vortexUpgradesRow" style="display: none;">
+                        <td>
+                            <button id="vortexUpg11" class="vortexUpg" onclick="buyBUpg(4, 11)">
+                                <span id="bUpgName4.11" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc4.11"></span><br>
+                                <span>Cost: <span id="bUpgCost4.11"></span></span><br>
+                                <span id="4.11Effect" style="display: none;">Currently: +<span id="bUpgEffect4.11"></span></span>
+                            </button>
+                        </td>
+                        <td>
+                            <button id="vortexUpg12" class="vortexUpg" onclick="buyBUpg(4, 12)">
+                                <span id="bUpgName4.12" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc4.12"></span><br>
+                                <span>Cost: <span id="bUpgCost4.12"></span></span><br>
+                                <span id="4.12Effect" style="display: none;">Currently: <span id="bUpgEffect4.12"></span></span>
+                            </button>
+                        </td>
+                        <td>
+                            <button id="vortexUpg13" class="vortexUpg" onclick="buyBUpg(4, 13)">
+                                <span id="bUpgName4.13" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc4.13"></span><br>
+                                <span>Cost: <span id="bUpgCost4.13"></span></span><br>
+                                <span id="4.13Effect" style="display: none;">Currently: <span id="bUpgEffect4.13"></span></span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr id="vortexUpgradesRow2" style="display: none;">
+                        <td>
+                            <button id="vortexUpg21" class="vortexUpg" onclick="buyBUpg(4, 21)">
+                                <span id="bUpgName4.21" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc4.21"></span><br>
+                                <span>Cost: <span id="bUpgCost4.21"></span></span><br>
+                                <span id="4.21Effect">Currently: <span id="bUpgEffect4.21"></span>x</span>
+                            </button>
+                        </td>
+                        <td>
+                            <button id="vortexUpg22" class="vortexUpg" onclick="buyBUpg(4, 22)">
+                                <span id="bUpgName4.22" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc4.22"></span><br>
+                                <span>Cost: <span id="bUpgCost4.22"></span></span><br>
+                                <span id="4.22Effect">Currently: <span id="bUpgEffect4.22"></span>x</span>
+                            </button>
+                        </td>
+                        <td>
+                            <button id="vortexUpg23" class="vortexUpg" onclick="buyBUpg(4, 23)">
+                                <span id="bUpgName4.23" style="font-weight: 900;"></span><br>
+                                <span id="bUpgDesc4.23"></span><br>
+                                <span>Cost: <span id="bUpgCost4.23"></span></span><br>
+                                <span id="4.23Effect">Currently: <span id="bUpgEffect4.23"></span>x</span>
+                            </button>
                         </td>
                     </tr>
                 </table>
                 <div style="min-height: 25px;"></div>
             </div>
             <div id="constructionSubTab" class="buildingSubTab" style="display: none;">
-                <table style="width: 75%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse;">
+                <table style="width: 75%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse;" class="constrTable">
                     <tr id="cUpgHeaderRow">
                         <td colspan="4">
                             <h2 style="font-size: 18pt;">CONSTRUCTION UPGRADES</h2>
@@ -796,21 +1139,69 @@
                     </tr>
                     <tr id="cUpgRow">
                         <td>
-                            <button id="constrUpg1" class="constrUpg" onclick="buyCUpg(1)"><strong>Upgrade 1</strong><br>description of upgrade</button>
+                            <button id="constrUpg1" class="constrUpg" onclick="buyCUpg(1)">
+                                <span id="cUpgName1" style="font-weight: 900;"></span><br>
+                                <span id="cUpgDesc1"></span><br>
+                                <span>Cost: <span id="cUpgCost1"></span></span><br>
+                                <span>Level: <span id="cUpgLevel1">0</span></span><br>
+                                <span id="c1Effect" style="display: none;">Currently: <span id="cUpgEffect1"></span></span>
+                            </button>
                             <button id="maxConstr1" class="constrMax" onclick="buyMaxConstr(1)">Buy max</button>
                         </td>
                         <td>
-                            <button id="constrUpg2" class="constrUpg" onclick="buyCUpg(2)"><strong>Upgrade 2</strong><br>description of upgrade</button>
+                            <button id="constrUpg2" class="constrUpg" onclick="buyCUpg(2)">
+                                <span id="cUpgName2" style="font-weight: 900;"></span><br>
+                                <span id="cUpgDesc2"></span><br>
+                                <span>Cost: <span id="cUpgCost2"></span></span><br>
+                                <span>Level: <span id="cUpgLevel2">0</span></span><br>
+                                <span id="c2Effect" style="display: none;">Currently: <span id="cUpgEffect2"></span></span>
+                            </button>
                             <button id="maxConstr2" class="constrMax" onclick="buyMaxConstr(2)">Buy max</button>
                         </td>
                         <td>
-                            <button id="constrUpg3" class="constrUpg" onclick="buyCUpg(3)"><strong>Upgrade 3</strong><br>description of upgrade</button>
+                            <button id="constrUpg3" class="constrUpg" onclick="buyCUpg(3)">
+                                <span id="cUpgName3" style="font-weight: 900;"></span><br>
+                                <span id="cUpgDesc3"></span><br>
+                                <span>Cost: <span id="cUpgCost3"></span></span><br>
+                                <span>Level: <span id="cUpgLevel3">0</span></span><br>
+                                <span id="c3Effect" style="display: none;">Currently: <span id="cUpgEffect3"></span></span>
+                            </button>
                             <button id="maxConstr3" class="constrMax" onclick="buyMaxConstr(3)">Buy max</button>
                         </td>
                         <td>
-                            <button id="constrUpg4" class="constrUpg" onclick="buyCUpg(4)"><strong>Upgrade 3</strong><br>description of upgrade</button>
+                            <button id="constrUpg4" class="constrUpg" onclick="buyCUpg(4)">
+                                <span id="cUpgName4" style="font-weight: 900;"></span><br>
+                                <span id="cUpgDesc4"></span><br>
+                                <span>Cost: <span id="cUpgCost4"></span></span><br>
+                                <span>Level: <span id="cUpgLevel4">0</span></span><br>
+                                <span id="c4Effect" style="display: none;">Currently: <span id="cUpgEffect4"></span></span>
+                            </button>
                             <button id="maxConstr4" class="constrMax" onclick="buyMaxConstr(4)">Buy max</button>
                         </td>
+                    </tr>
+                    <tr id="cUpgRow2" style="display: none;">
+                        <td></td>
+                        <td>
+                            <button id="constrUpg5" class="constrUpg" onclick="buyCUpg(5)">
+                                <span id="cUpgName5" style="font-weight: 900;"></span><br>
+                                <span id="cUpgDesc5"></span><br>
+                                <span>Cost: <span id="cUpgCost5"></span></span><br>
+                                <span>Level: <span id="cUpgLevel5">0</span></span><br>
+                                <span id="c5Effect" style="display: none;">Currently: <span id="cUpgEffect5"></span></span>
+                            </button>
+                            <button id="maxConstr5" class="constrMax" onclick="buyMaxConstr(5)">Buy max</button>
+                        </td>
+                        <td>
+                            <button id="constrUpg6" class="constrUpg" onclick="buyCUpg(6)">
+                                <span id="cUpgName6" style="font-weight: 900;"></span><br>
+                                <span id="cUpgDesc6"></span><br>
+                                <span>Cost: <span id="cUpgCost6"></span></span><br>
+                                <span>Level: <span id="cUpgLevel6">0</span></span><br>
+                                <span id="c6Effect" style="display: none;">Currently: <span id="cUpgEffect6"></span></span>
+                            </button>
+                            <button id="maxConstr6" class="constrMax" onclick="buyMaxConstr(6)">Buy max</button>
+                        </td>
+                        <td></td>
                     </tr>
                 </table>
             </div>
@@ -832,7 +1223,7 @@
                 <tr>
                     <td width="100px;">
                         <div class="timeLabelLeft">TRUE<br>TIME</div>
-                        <div><span id="trueTimeAmt" style="color: #006ba0; font-weight: bold; font-variant-numeric: tabular-nums;">0</span><br>essence</span><br>+<span id="trueTimeGain" style="color: #006ba0; font-weight: bold; font-variant-numeric: tabular-nums;">0</span><br>per sec</div>
+                        <div><span id="trueTimeAmt" style="color: #006ba0; font-weight: bold; font-variant-numeric: tabular-nums;">0</span><br>essence</span><br>+<span id="trueTimeGain" style="color: #006ba0; font-weight: bold; font-variant-numeric: tabular-nums;">0</span><br>per <span class="secDisplay">sec</span></div>
                     </td>
                     <td><div style="width: 100%;">You have <span id="crystalAmt" style="font-size: 17pt; white-space: pre; color: #006ba0; font-weight: bold; font-variant-numeric: tabular-nums;"> 0 </span> <span id="crystalsTextAmt" class="timeResourceTexts">time crystals</span></div>
                         <div style="min-width: 100%; min-height: 30px;"></div>
@@ -841,7 +1232,7 @@
                     </td>
                     <td width="100px;">
                         <div class="timeLabelRight">ANTI<br>TIME</div>
-                        <div><span id="antiTimeAmt" style="color: #006ba0; font-weight: bold; font-variant-numeric: tabular-nums;">0</span><br>essence</span><br>+<span id="antiTimeGain" style="color: #006ba0; font-weight: bold; font-variant-numeric: tabular-nums;">0</span><br>per sec</div>
+                        <div><span id="antiTimeAmt" style="color: #006ba0; font-weight: bold; font-variant-numeric: tabular-nums;">0</span><br>essence</span><br>+<span id="antiTimeGain" style="color: #006ba0; font-weight: bold; font-variant-numeric: tabular-nums;">0</span><br>per <span class="secDisplay">sec</span></div>
                     </td>
                 </tr>
                 <tr>
@@ -887,7 +1278,7 @@
                         <div style="height: 100%;"></div>
                     </tr>
                 </table>
-                <table style="width: 100%; margin: auto;">
+                <table style="width: 75%; margin: auto;">
                     <tr>
                         <td width="20%">
                             <h1>Dimension</h1>
@@ -896,7 +1287,7 @@
                             <div><h1>Multiplier</h1></div>
                         </td>
                         <td width="35%">
-                            <div style="min-width: 30%; float: left;"><h1>Owned</h1></div><div style="width: 30%; float: left;"><h1>(Bought)</h1></div><div style="min-width: 40%; float: right; text-align: center;"><h1>Gain</h1></div>
+                            <div style="min-width: 30%; float: left;"><h1>Owned</h1></div><div style="min-width: 40%; float: left;"><h1>(Bought)</h1></div><div style="min-width: 30%; float: left;"><h1>Gain</h1></div>
                         </td>
                         <td colspan="2" width="30%">
                             <div style="width: 100%; text-align: center;">
@@ -913,13 +1304,13 @@
                             <div id="timeMult1">x1</div>
                         </td>
                         <td>
-                            <div id="timeAmount1"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: left;"></div></div>
+                            <div id="timeAmount1"><div style="min-width: 30%; float: left;">0</div><div style="min-width: 50%; float: left;">(0)</div><div style="min-width: 20%; float: right; text-align: center;"></div></div>
                         </td>
                         <td class="buttonTD">
-                            <button id="timeBut1" class="unitButT" onclick="buySingleTime(1)">Cost: 10 crystals</button>
+                            <button id="timeBut1" class="unitButT" onclick="buySingleTime(1)">Cost: <span id="dim1Cost">10</span> crystals</button>
                         </td>
                         <td class="buttonTD">
-                            <button id="timeMax1" class="unitMaxT" onclick="buyMaxTime(1)">Max: 1 for &#162;10</button>
+                            <button id="timeMax1" class="unitMaxT" onclick="buyMaxTime(1)">Buy max (<span id="dim1Max">0</span>)</button>
                         </td>
                     </tr>
                     <tr id="timeRow2" style="display: none;">
@@ -930,13 +1321,13 @@
                             <div id="timeMult2">x1</div>
                         </td>
                         <td>
-                            <div id="timeAmount2"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: left;"></div></div>
+                            <div id="timeAmount2"><div style="min-width: 30%; float: left;">0</div><div style="min-width: 50%; float: left;">(0)</div><div style="min-width: 20%; float: right; text-align: center;"></div></div>
                         </td>
                         <td class="buttonTD">
-                            <button id="timeBut2" class="unitButT" onclick="buySingleTime(2)">Cost: 100 crystals</button>
+                            <button id="timeBut2" class="unitButT" onclick="buySingleTime(2)">Cost: <span id="dim2Cost">100</span> crystals</button>
                         </td>
                         <td class="buttonTD">
-                            <button id="timeMax2" class="unitMaxT" onclick="buyMaxTime(2)">Max: 1 for &#162;10</button>
+                            <button id="timeMax2" class="unitMaxT" onclick="buyMaxTime(2)">Buy max (<span id="dim2Max">0</span>)</button>
                         </td>
                     </tr>
                     <tr id="timeRow3" style="display: none;">
@@ -947,13 +1338,13 @@
                             <div id="timeMult3">x1</div>
                         </td>
                         <td>
-                            <div id="timeAmount3"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: left;"></div></div>
+                            <div id="timeAmount3"><div style="min-width: 30%; float: left;">0</div><div style="min-width: 50%; float: left;">(0)</div><div style="min-width: 20%; float: right; text-align: center;"></div></div>
                         </td>
                         <td class="buttonTD">
-                            <button id="timeBut3" class="unitButT" onclick="buySingleTime(3)">Cost: 1e6 crystals</button>
+                            <button id="timeBut3" class="unitButT" onclick="buySingleTime(3)">Cost: <span id="dim3Cost">1e6</span> crystals</button>
                         </td>
                         <td class="buttonTD">
-                            <button id="timeMax3" class="unitMaxT" onclick="buyMaxTime(3)">Max: 1 for &#162;10</button>
+                            <button id="timeMax3" class="unitMaxT" onclick="buyMaxTime(3)">Buy max (<span id="dim3Max">0</span>)</button>
                         </td>
                     </tr>
                     <tr id="timeRow4" style="display: none;">
@@ -964,61 +1355,202 @@
                             <div id="timeMult4">x1</div>
                         </td>
                         <td>
-                            <div id="timeAmount4"><div style="min-width: 30%; float: left;">0</div><div style="width: 30%; float: left;">(0)</div><div style="width: 40%; float: left;"></div></div>
+                            <div id="timeAmount4"><div style="min-width: 30%; float: left;">0</div><div style="min-width: 50%; float: left;">(0)</div><div style="min-width: 20%; float: right; text-align: center;"></div></div>
                         </td>
                         <td class="buttonTD">
-                            <button id="timeBut4" class="unitButT" onclick="buySingleTime(4)">Cost: 1e9 crystals</button>
+                            <button id="timeBut4" class="unitButT" onclick="buySingleTime(4)">Cost: <span id="dim4Cost">1e9</span> crystals</button>
                         </td>
                         <td class="buttonTD">
-                            <button id="timeMax4" class="unitMaxT" onclick="buyMaxTime(4)">Max: 1 for &#162;10</button>
+                            <button id="timeMax4" class="unitMaxT" onclick="buyMaxTime(4)">Buy max (<span id="dim4Max">0</span>)</button>
                         </td>
                     </tr>
                 </table>
             </div>
             <div id="timeUpgSubTab" class="timeSubTab" style="display: none;">
-                <table id="timeUpgTable" style="width: 75%; margin: auto; margin-top: 20px; text-align: center;">
+                <div id="extraColsNotice" style="text-align: center; margin: 10px auto; display: none;">The two additional columns of upgrades from milestone 6 are never reset.</div>
+                <div id="timeUpgBuyerDiv" style="text-align: center; margin: auto; display: none;"><button id="timeUpgBuyerBut" class="timeSliderBut" style="font-family: Cinzel;" onclick="toggleTimeUpgBuyer()">Time Upgrade Cols 1-3 Autobuyer: OFF</button></div>
+                <table id="timeUpgTable" style="width: 60%; margin: auto; margin-top: 20px; text-align: center;">
                     <tr>
-                        <td class="timeUpgTDs">
-                            <button id="timeUpg11" class="timeUpg" onclick="buyTUpg(11)"><strong>Upgrade 1.1</strong><br>description of upgrade</button>
+                        <td id="tUpg41" class="timeUpgTDs2">
+                            <button id="timeUpg41" class="timeUpg" onclick="buyTUpg(41)">
+                                <span id="tUpgName41" style="font-weight: 900;"></span><br>
+                                <span id="tUpgDesc41"></span><br>
+                                <span>Cost: <span id="tUpgCost41"></span></span><br>
+                                <span id="41TEffect" style="display: none;">Currently: <span id="tUpgEffect41"></span>x</span>
+                            </button>
                         </td>
                         <td class="timeUpgTDs">
-                            <button id="timeUpg21" class="timeUpg" onclick="buyTUpg(21)"><strong>Upgrade 2.1</strong><br>description of upgrade</button>
+                            <button id="timeUpg11" class="timeUpg" onclick="buyTUpg(11)">
+                                <span id="tUpgName11" style="font-weight: 900;"></span><br>
+                                <span id="tUpgDesc11"></span><br>
+                                <span>Cost: <span id="tUpgCost11"></span></span><br>
+                                <span id="11TEffect" style="display: none;">Currently: <span id="tUpgEffect11"></span>x</span>
+                            </button>
                         </td>
                         <td class="timeUpgTDs">
-                            <button id="timeUpg31" class="timeUpg" onclick="buyTUpg(31)"><strong>Upgrade 3.1</strong><br>description of upgrade</button>
+                            <button id="timeUpg21" class="timeUpg" onclick="buyTUpg(21)">
+                                <span id="tUpgName21" style="font-weight: 900;"></span><br>
+                                <span id="tUpgDesc21"></span><br>
+                                <span>Cost: <span id="tUpgCost21"></span></span><br>
+                                <span id="21TEffect" style="display: none;">Currently: <span id="tUpgEffect21"></span>x</span>
+                            </button>
+                        </td>
+                        <td class="timeUpgTDs">
+                            <button id="timeUpg31" class="timeUpg" onclick="buyTUpg(31)">
+                                <span id="tUpgName31" style="font-weight: 900;"></span><br>
+                                <span id="tUpgDesc31"></span><br>
+                                <span>Cost: <span id="tUpgCost31"></span></span><br>
+                                <span id="31TEffect" style="display: none;">Currently: <span id="tUpgEffect31"></span>x</span>
+                            </button>
+                        </td>
+                        <td id="tUpg51" class="timeUpgTDs2">
+                            <button id="timeUpg51" class="timeUpg" onclick="buyTUpg(51)">
+                                <span id="tUpgName51" style="font-weight: 900;"></span><br>
+                                <span id="tUpgDesc51"></span><br>
+                                <span>Cost: <span id="tUpgCost51"></span></span><br>
+                                <span id="51TEffect" style="display: none;">Currently: <span id="tUpgEffect51"></span>x</span>
+                            </button>
                         </td>
                     </tr>
                     <tr>
-                        <td class="timeUpgTDs">
-                            <button id="timeUpg12" class="timeUpg" onclick="buyTUpg(12)"><strong>Upgrade 1.2</strong><br>description of upgrade</button>
+                        <td id="tUpg42" class="timeUpgTDs2">
+                            <button id="timeUpg42" class="timeUpg" onclick="buyTUpg(42)">
+                                <span id="tUpgName42" style="font-weight: 900;"></span><br>
+                                <span id="tUpgDesc42"></span><br>
+                                <span>Requires: <span id="tUpgRequires42" style="font-weight: 900;"></span></span><br>
+                                <span>Cost: <span id="tUpgCost42"></span></span><br>
+                                <span id="42TEffect" style="display: none;">Currently: <span id="tUpgEffect42"></span>x</span>
+                            </button>
                         </td>
                         <td class="timeUpgTDs">
-                            <button id="timeUpg22" class="timeUpg" onclick="buyTUpg(22)"><strong>Upgrade 2.2</strong><br>description of upgrade</button>
+                            <button id="timeUpg12" class="timeUpg" onclick="buyTUpg(12)">
+                                <span id="tUpgName12" style="font-weight: 900;"></span><br>
+                                <span id="tUpgDesc12"></span><br>
+                                <span>Requires: <span id="tUpgRequires12" style="font-weight: 900;"></span></span><br>
+                                <span>Cost: <span id="tUpgCost12"></span></span><br>
+                                <span id="12TEffect" style="display: none;">Currently: <span id="tUpgEffect12"></span>x</span>
+                            </button>
                         </td>
                         <td class="timeUpgTDs">
-                            <button id="timeUpg32" class="timeUpg" onclick="buyTUpg(32)"><strong>Upgrade 3.2</strong><br>description of upgrade</button>
+                            <button id="timeUpg22" class="timeUpg" onclick="buyTUpg(22)">
+                                <span id="tUpgName22" style="font-weight: 900;"></span><br>
+                                <span id="tUpgDesc22"></span><br>
+                                <span>Requires: <span id="tUpgRequires22" style="font-weight: 900;"></span></span><br>
+                                <span>Cost: <span id="tUpgCost22"></span></span><br>
+                                <span id="22TEffect" style="display: none;">Currently: <span id="tUpgEffect22"></span>x</span>
+                            </button>
+                        </td>
+                        <td class="timeUpgTDs">
+                            <button id="timeUpg32" class="timeUpg" onclick="buyTUpg(32)">
+                                <span id="tUpgName32" style="font-weight: 900;"></span><br>
+                                <span id="tUpgDesc32"></span><br>
+                                <span>Requires: <span id="tUpgRequires32" style="font-weight: 900;"></span></span><br>
+                                <span>Cost: <span id="tUpgCost32"></span></span><br>
+                                <span id="32TEffect" style="display: none;">Currently: <span id="tUpgEffect32"></span>x</span>
+                            </button>
+                        </td>
+                        <td id="tUpg52" class="timeUpgTDs2">
+                            <button id="timeUpg52" class="timeUpg" onclick="buyTUpg(52)">
+                                <span id="tUpgName52" style="font-weight: 900;"></span><br>
+                                <span id="tUpgDesc52"></span><br>
+                                <span>Requires: <span id="tUpgRequires52" style="font-weight: 900;"></span></span><br>
+                                <span>Cost: <span id="tUpgCost52"></span></span><br>
+                                <span id="52TEffect" style="display: none;">Currently: <span id="tUpgEffect52"></span>x</span>
+                            </button>
                         </td>
                     </tr>
                     <tr>
-                        <td class="timeUpgTDs">
-                            <button id="timeUpg13" class="timeUpg" onclick="buyTUpg(13)"><strong>Upgrade 1.3</strong><br>description of upgrade</button>
+                        <td id="tUpg43" class="timeUpgTDs2">
+                            <button id="timeUpg43" class="timeUpg" onclick="buyTUpg(43)">
+                                <span id="tUpgName43" style="font-weight: 900;"></span><br>
+                                <span id="tUpgDesc43"></span><br>
+                                <span>Requires: <span id="tUpgRequires43" style="font-weight: 900;"></span></span><br>
+                                <span>Cost: <span id="tUpgCost43"></span></span><br>
+                                <span id="43TEffect" style="display: none;">Currently: <span id="tUpgEffect43"></span>x</span>
+                            </button>
                         </td>
                         <td class="timeUpgTDs">
-                            <button id="timeUpg23" class="timeUpg" onclick="buyTUpg(23)"><strong>Upgrade 2.3</strong><br>description of upgrade</button>
+                            <button id="timeUpg13" class="timeUpg" onclick="buyTUpg(13)">
+                                <span id="tUpgName13" style="font-weight: 900;"></span><br>
+                                <span id="tUpgDesc13"></span><br>
+                                <span>Requires: <span id="tUpgRequires13" style="font-weight: 900;"></span></span><br>
+                                <span>Cost: <span id="tUpgCost13"></span></span><br>
+                                <span id="13TEffect" style="display: none;">Currently: <span id="tUpgEffect13"></span>x</span>
+                            </button>
                         </td>
                         <td class="timeUpgTDs">
-                            <button id="timeUpg33" class="timeUpg" onclick="buyTUpg(33)"><strong>Upgrade 3.3</strong><br>description of upgrade</button>
+                            <button id="timeUpg23" class="timeUpg" onclick="buyTUpg(23)">
+                                <span id="tUpgName23" style="font-weight: 900;"></span><br>
+                                <span id="tUpgDesc23"></span><br>
+                                <span>Requires: <span id="tUpgRequires23" style="font-weight: 900;"></span></span><br>
+                                <span>Cost: <span id="tUpgCost23"></span></span><br>
+                                <span id="23TEffect" style="display: none;">Currently: <span id="tUpgEffect23"></span>x</span>
+                            </button>
+                        </td>
+                        <td class="timeUpgTDs">
+                            <button id="timeUpg33" class="timeUpg" onclick="buyTUpg(33)">
+                                <span id="tUpgName33" style="font-weight: 900;"></span><br>
+                                <span id="tUpgDesc33"></span><br>
+                                <span>Requires: <span id="tUpgRequires33" style="font-weight: 900;"></span></span><br>
+                                <span>Cost: <span id="tUpgCost33"></span></span><br>
+                                <span id="33TEffect" style="display: none;">Currently: <span id="tUpgEffect33"></span>x</span>
+                            </button>
+                        </td>
+                        <td id="tUpg53" class="timeUpgTDs2">
+                            <button id="timeUpg53" class="timeUpg" onclick="buyTUpg(53)">
+                                <span id="tUpgName53" style="font-weight: 900;"></span><br>
+                                <span id="tUpgDesc53"></span><br>
+                                <span>Requires: <span id="tUpgRequires53" style="font-weight: 900;"></span></span><br>
+                                <span>Cost: <span id="tUpgCost53"></span></span><br>
+                                <span id="53TEffect" style="display: none;">Currently: <span id="tUpgEffect53"></span>x</span>
+                            </button>
                         </td>
                     </tr>
                     <tr>
-                        <td class="timeUpgTDs">
-                            <button id="timeUpg14" class="timeUpg" onclick="buyTUpg(14)"><strong>Upgrade 1.4</strong><br>description of upgrade</button>
+                        <td id="tUpg44" class="timeUpgTDs2">
+                            <button id="timeUpg44" class="timeUpg" onclick="buyTUpg(44)">
+                                <span id="tUpgName44" style="font-weight: 900;"></span><br>
+                                <span id="tUpgDesc44"></span><br>
+                                <span>Requires: <span id="tUpgRequires44" style="font-weight: 900;"></span></span><br>
+                                <span>Cost: <span id="tUpgCost44"></span></span><br>
+                                <span id="44TEffect" style="display: none;">Currently: <span id="tUpgEffect44"></span>x</span>
+                            </button>
                         </td>
                         <td class="timeUpgTDs">
-                            <button id="timeUpg24" class="timeUpg" onclick="buyTUpg(24)"><strong>Upgrade 2.4</strong><br>description of upgrade</button>
+                            <button id="timeUpg14" class="timeUpg" onclick="buyTUpg(14)">
+                                <span id="tUpgName14" style="font-weight: 900;"></span><br>
+                                <span id="tUpgDesc14"></span><br>
+                                <span>Requires: <span id="tUpgRequires14" style="font-weight: 900;"></span></span><br>
+                                <span>Cost: <span id="tUpgCost14"></span></span><br>
+                                <span id="14TEffect" style="display: none;">Currently: <span id="tUpgEffect14"></span>x</span>
+                            </button>
                         </td>
                         <td class="timeUpgTDs">
-                            <button id="timeUpg34" class="timeUpg" onclick="buyTUpg(34)"><strong>Upgrade 3.4</strong><br>description of upgrade</button>
+                            <button id="timeUpg24" class="timeUpg" onclick="buyTUpg(24)">
+                                <span id="tUpgName24" style="font-weight: 900;"></span><br>
+                                <span id="tUpgDesc24"></span><br>
+                                <span>Requires: <span id="tUpgRequires24" style="font-weight: 900;"></span></span><br>
+                                <span>Cost: <span id="tUpgCost24"></span></span><br>
+                                <span id="24TEffect" style="display: none;">Currently: <span id="tUpgEffect24"></span>x</span>
+                            </button>
+                        </td>
+                        <td class="timeUpgTDs">
+                            <button id="timeUpg34" class="timeUpg" onclick="buyTUpg(34)">
+                                <span id="tUpgName34" style="font-weight: 900;"></span><br>
+                                <span id="tUpgDesc34"></span><br>
+                                <span>Requires: <span id="tUpgRequires34" style="font-weight: 900;"></span></span><br>
+                                <span>Cost: <span id="tUpgCost34"></span></span><br>
+                                <span id="34TEffect" style="display: none;">Currently: <span id="tUpgEffect34"></span>x</span>
+                            </button>
+                        </td>
+                        <td id="tUpg54" class="timeUpgTDs2">
+                            <button id="timeUpg54" class="timeUpg" onclick="buyTUpg(54)">
+                                <span id="tUpgName54" style="font-weight: 900;"></span><br>
+                                <span id="tUpgDesc54"></span><br>
+                                <span>Requires: <span id="tUpgRequires54" style="font-weight: 900;"></span></span><br>
+                                <span>Cost: <span id="tUpgCost54"></span></span><br>
+                                <span id="54TEffect" style="display: none;">Currently: <span id="tUpgEffect54"></span>x</span>
+                            </button>
                         </td>
                     </tr>
                 </table>
@@ -1028,13 +1560,16 @@
             <table style="width: 75%; margin: auto auto; text-align: center;">
                 <tr>
                     <div id="galaxyPresContainer" style="text-align: center; margin: 25px;">
-                        <button id="galaxyPrestige" class="galaxyPrestigeBut" data-title="floor(10^(corpses_exponent/20 - 0.65))" onclick="galaxyPrestige()">
+                        <button id="galaxyPrestige" class="galaxyPrestigeBut" data-title="floor(worlds^(worlds/10 - sqrt(worlds/10)))" onclick="galaxyPrestigeClick()">
                             <span style="font-size: 21pt; font-weight: bold;">ASCENSION</span><br>
                             <span id="galaxyPresDesc">Ascend your mortal form and gain true infernal might - gather your exterminated worlds and form a Depleted Galaxy to rule.<br>
-                            This resets everything that sacrifice does.</span><br>
-                            <span id="galaxyPrestigeReq" style="font-size: 13pt;">Requires at least <span style="font-size: 17pt; white-space: pre;"> ? </span> exterminated worlds</span>
-                            <span id="galaxyPrestigeGainDesc" style="font-size: 13pt; display: none;">Gain <span id="galaxyPrestigeGain" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 1 </span> depleted<span id="galaxyTextGain" class="galaxyResourceTexts">galaxy</span></span>
-                        </button>
+                            This resets everything that sacrifice does, plus Time Dimensions and Time Upgrades.</span><br>
+                            <span id="galaxyPrestigeReq" style="font-size: 13pt;">Requires at least <span style="font-size: 17pt; white-space: pre;"> 10 </span> exterminated worlds</span>
+                            <span id="galaxyPrestigeGainDesc" style="font-size: 15pt; display: none;">Gain <span id="galaxyPrestigeGain" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 1 </span> <span id="galaxyTextGain" class="galaxyResourceTexts">depleted galaxy</span></span>
+                            <span id="galaxyPrestigeNextDesc" style="font-size: 11pt; display: none;">Next at <span id="galaxyPrestigeNext" style="font-size: 13pt; white-space: pre; font-variant-numeric: tabular-nums;"> 1 </span> exterminated worlds</span>
+                        </button><br>
+                        <input type="checkbox" id="respecOnAsc" class="galaxyCheckbox" style="margin-top: 10px;"> Respec galaxies on next ascension<br>
+                        <input type="checkbox" id="dontResetSliderBox" class="galaxyCheckbox" style="margin-top: 10px;" onchange="updateDontResetSlider()"> Don't respec time slider on ascension
                     </div>
                 </tr>
                 <tr>
@@ -1056,21 +1591,21 @@
                     </tr>
                 </table>
             </div>
-            <div id="galaxiesSubTab" class="galaxySubTab">
-                <table style="width: 100%; text-align: center;">
+            <div id="galaxiesSubTab" class="galaxySubTab" style="width: 100%; position: relative; left: 50%; transform: translateX(-50%); text-align: center;">
+                <div style="text-align: center; width: 100%; margin: auto;">
+                    <span style="font-size: 17pt; font-weight: bold; color: #e32d05;">There must be loss in exchange for true power.</span><br>
+                    All galaxy upgrades have a base cost of <span style="font-size: 17pt; white-space: pre;"> 1 </span> depleted galaxy, but when you buy one, all others on rows below it increase in cost by 1.<br>
+                    You can't take both branches in the same tree; buying an upgrade in the 2nd row will lock out the two in the other branch.<br>
+                    Buying a 4th row upgrade will increase the cost of the 1st row upgrades by 1.<br>
+                    A galaxy respec resets all costs to 1, and unlocks all locked upgrades.<br><br>
+                </div>
+                <div id="galSelect" style="text-align: center; white-space: pre; width: 100%; margin: auto;">Display  <select oninput="updateGalaxiesDisplayed()" id="galDisplaySelect" name="galDisplaySelect" class="galDropdown"><option id="1gal" class="galOptions" value="1">1</option><option id="2gal" class="galOptions" value="2">2</option><option id="4gal" class="galOptions" value="4">4</option></select>  at a time</div>
+                <div id="galButs2" style="text-align: center; width: 100%; margin: auto;"><button id="galaxyNameBut1" class="galaxyNameBut2" onclick="showGalaxies('gal1', 'gal2')">Andromeda/Circinus</button><button id="galaxyNameBut2" class="galaxyNameBut2" onclick="showGalaxies('gal3', 'gal4')">Sculptor Dwarf/Triangulum</button></div>
+                <div id="galButs4" style="text-align: center; width: 100%; margin: auto;"><button id="galaxyNameBut1" class="galaxyNameBut4" onclick="showGalaxy('gal1')">Andromeda</button><button id="galaxyNameBut2" class="galaxyNameBut4" onclick="showGalaxy('gal2')">Circinus</button><button id="galaxyNameBut3" class="galaxyNameBut4" onclick="showGalaxy('gal3')">Sculptor Dwarf</button><button id="galaxyNameBut4" class="galaxyNameBut4" onclick="showGalaxy('gal4')">Triangulum</button></div>
+                <div style="text-align: center; width: 100%; margin: auto;"><button id="galaxyRespecBut" class="galaxyBut" onclick="respecGalaxiesClick()">Respec galaxies - forces ascension</button><button id="milestonesBut" class="galaxyBut" onclick="showMilestones()">Galaxy Milestones</button></div>
+                <table id="allGalaxiesTable" style="text-align: center; position: relative; left: -167;">
                     <tr>
-                        <td>
-
-                        </td>
-                        <td colspan="2">
-                            
-                        </td>
-                        <td>
-                            
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        <td id="gal1" class="gal">
                             <table id="andromeda" class="galaxyTable">
                                 <tr>
                                     <td colspan="2">
@@ -1079,34 +1614,85 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                        <div id="topBorderDiv"><button id="galaxyUpg1.11" class="galaxyUpg" onclick="buyGUpg(1, 11)"><span id="text1.11"></span></button></div>
+                                        <div id="topBorderDiv">
+                                            <button id="galaxyUpg1.11" class="galaxyUpg" onclick="buyGUpg(1, 11)">
+                                                <span id="text1.11">
+                                                    <span id="gUpgName1.11" style="font-weight: 900;"></span><br>
+                                                    <span id="gUpgDesc1.11"></span><br>
+                                                    <span style="display: none;">Requires: <span id="gUpgRequires1.11"></span></span>
+                                                    <span>Cost: <span id="gUpgCost1.11"></span></span><br>
+                                                    <span id="1.11GEffect" style="display: none;">Currently: <span id="gUpgEffect1.11"></span></span>
+                                                </span>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="leftGalaxyTD">
-                                        <button id="galaxyUpg1.21" class="galaxyUpg" onclick="buyGUpg(1, 21)"><span id="text1.21"></span></button>
+                                        <button id="galaxyUpg1.21" class="galaxyUpg" onclick="buyGUpg(1, 21)">
+                                            <span id="text1.21">
+                                                <span id="gUpgName1.21" style="font-weight: 900;"></span><br>
+                                                <span id="gUpgDesc1.21"></span><br>
+                                                <span class="gUpgRequires">Requires: <span id="gUpgRequires1.21"></span></span><br>
+                                                <span>Cost: <span id="gUpgCost1.21"></span> </span><br>
+                                                <span id="1.21GEffect" style="display: none;">Currently: <span id="gUpgEffect1.21"></span></span>
+                                            </span>
+                                        </button>
                                     </td>
                                     <td class="rightGalaxyTD">
-                                        <button id="galaxyUpg1.22" class="galaxyUpg" onclick="buyGUpg(1, 22)"><span id="text1.22"></span></button>
+                                        <button id="galaxyUpg1.22" class="galaxyUpg" onclick="buyGUpg(1, 22)">
+                                            <span id="text1.22">
+                                                <span id="gUpgName1.22" style="font-weight: 900;"></span><br>
+                                                <span id="gUpgDesc1.22"></span><br>
+                                                <span class="gUpgRequires">Requires: <span id="gUpgRequires1.22"></span></span><br>
+                                                <span>Cost: <span id="gUpgCost1.22"></span></span><br>
+                                                <span id="1.22GEffect" style="display: none;">Currently: <span id="gUpgEffect1.22"></span></span>
+                                            </span>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="leftGalaxyTD">
-                                        <button id="galaxyUpg1.31" class="galaxyUpg" onclick="buyGUpg(1, 31)"><span id="text1.31"></span></button>
+                                        <button id="galaxyUpg1.31" class="galaxyUpg" onclick="buyGUpg(1, 31)">
+                                            <span id="text1.31">
+                                                <span id="gUpgName1.31" style="font-weight: 900;"></span><br>
+                                                <span id="gUpgDesc1.31"></span><br>
+                                                <span class="gUpgRequires">Requires: <span id="gUpgRequires1.31"></span></span><br>
+                                                <span>Cost: <span id="gUpgCost1.31"></span></span><br>
+                                                <span id="1.31GEffect" style="display: none;">Currently: <span id="gUpgEffect1.31"></span></span>
+                                            </span>
+                                        </button>
                                     </td>
                                     <td class="rightGalaxyTD">
-                                        <button id="galaxyUpg1.32" class="galaxyUpg" onclick="buyGUpg(1, 32)"><span id="text1.32"></span></button>
+                                        <button id="galaxyUpg1.32" class="galaxyUpg" onclick="buyGUpg(1, 32)">
+                                            <span id="text1.32">
+                                                <span id="gUpgName1.32" style="font-weight: 900;"></span><br>
+                                                <span id="gUpgDesc1.32"></span><br>
+                                                <span class="gUpgRequires">Requires: <span id="gUpgRequires1.32"></span></span><br>
+                                                <span>Cost: <span id="gUpgCost1.32"></span></span><br>
+                                                <span id="1.32GEffect" style="display: none;">Currently: <span id="gUpgEffect1.32"></span></span>
+                                            </span>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                        <div id="bottomBorderDiv"><button id="galaxyUpg1.41" class="galaxyUpg" onclick="buyGUpg(1, 41)"><span id="text1.41"></span></button></div>
+                                        <div id="bottomBorderDiv">
+                                            <button id="galaxyUpg1.41" class="galaxyUpg" onclick="buyGUpg(1, 41)">
+                                                <span id="text1.41">
+                                                    <span id="gUpgName1.41" style="font-weight: 900;"></span><br>
+                                                    <span id="gUpgDesc1.41"></span><br>
+                                                    <span class="gUpgRequires">Requires: <span id="gUpgRequires1.41"></span></span><br>
+                                                    <span>Cost: <span id="gUpgCost1.41"></span></span><br>
+                                                    <span id="1.41GEffect" style="display: none;">Currently: <span id="gUpgEffect1.41"></span></span>
+                                                </span>
+                                            </button>   
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
-                            
                         </td>
-                        <td>
+                        <td id="gal2" class="gal">
                             <table id="circinus" class="galaxyTable">
                                 <tr>
                                     <td colspan="2">
@@ -1115,33 +1701,85 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                        <div id="topBorderDiv"><button id="galaxyUpg2.11" class="galaxyUpg" onclick="buyGUpg(2, 11)"><span id="text2.11"></span></button></div>
+                                        <div id="topBorderDiv">
+                                            <button id="galaxyUpg2.11" class="galaxyUpg" onclick="buyGUpg(2, 11)">
+                                                <span id="text2.11">
+                                                    <span id="gUpgName2.11" style="font-weight: 900;"></span><br>
+                                                    <span id="gUpgDesc2.11"></span><br>
+                                                    <span style="display: none;">Requires: <span id="gUpgRequires2.11"></span></span>
+                                                    <span>Cost: <span id="gUpgCost2.11"></span></span><br>
+                                                    <span id="2.11GEffect" style="display: none;">Currently: <span id="gUpgEffect2.11"></span></span>
+                                                </span>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="leftGalaxyTD">
-                                        <button id="galaxyUpg2.21" class="galaxyUpg" onclick="buyGUpg(2, 21)"><span id="text2.21"></span></button>
+                                        <button id="galaxyUpg2.21" class="galaxyUpg" onclick="buyGUpg(2, 21)">
+                                            <span id="text2.21">
+                                                <span id="gUpgName2.21" style="font-weight: 900;"></span><br>
+                                                <span id="gUpgDesc2.21"></span><br>
+                                                <span class="gUpgRequires">Requires: <span id="gUpgRequires2.21"></span></span><br>
+                                                <span>Cost: <span id="gUpgCost2.21"></span></span><br>
+                                                <span id="2.21GEffect" style="display: none;">Currently: <span id="gUpgEffect2.21"></span></span>
+                                            </span>
+                                        </button>
                                     </td>
                                     <td class="rightGalaxyTD">
-                                        <button id="galaxyUpg2.22" class="galaxyUpg" onclick="buyGUpg(2, 22)"><span id="text2.22"></span></button>
+                                        <button id="galaxyUpg2.22" class="galaxyUpg" onclick="buyGUpg(2, 22)">
+                                            <span id="text2.22">
+                                                <span id="gUpgName2.22" style="font-weight: 900;"></span><br>
+                                                <span id="gUpgDesc2.22"></span><br>
+                                                <span class="gUpgRequires">Requires: <span id="gUpgRequires2.22"></span></span><br>
+                                                <span>Cost: <span id="gUpgCost2.22"></span></span><br>
+                                                <span id="2.22GEffect" style="display: none;">Currently: <span id="gUpgEffect2.22"></span></span>
+                                            </span>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="leftGalaxyTD">
-                                        <button id="galaxyUpg2.31" class="galaxyUpg" onclick="buyGUpg(2, 31)"><span id="text2.31"></span></button>
+                                        <button id="galaxyUpg2.31" class="galaxyUpg" onclick="buyGUpg(2, 31)">
+                                            <span id="text2.31">
+                                                <span id="gUpgName2.31" style="font-weight: 900;"></span><br>
+                                                <span id="gUpgDesc2.31"></span><br>
+                                                <span class="gUpgRequires">Requires: <span id="gUpgRequires2.31"></span></span><br>
+                                                <span>Cost: <span id="gUpgCost2.31"></span></span><br>
+                                                <span id="2.31GEffect" style="display: none;">Currently: <span id="gUpgEffect2.31"></span></span>
+                                            </span>
+                                        </button>
                                     </td>
                                     <td class="rightGalaxyTD">
-                                        <button id="galaxyUpg2.32" class="galaxyUpg" onclick="buyGUpg(2, 32)"><span id="text2.32"></span></button>
+                                        <button id="galaxyUpg2.32" class="galaxyUpg" onclick="buyGUpg(2, 32)">
+                                            <span id="text2.32">
+                                                <span id="gUpgName2.32" style="font-weight: 900;"></span><br>
+                                                <span id="gUpgDesc2.32"></span><br>
+                                                <span class="gUpgRequires">Requires: <span id="gUpgRequires2.32"></span></span><br>
+                                                <span>Cost: <span id="gUpgCost2.32"></span></span><br>
+                                                <span id="2.32GEffect" style="display: none;">Currently: <span id="gUpgEffect2.32"></span></span>
+                                            </span>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                        <div id="bottomBorderDiv"><button id="galaxyUpg2.41" class="galaxyUpg" onclick="buyGUpg(2, 41)"><span id="text2.41"></span></button></div>
+                                        <div id="bottomBorderDiv">
+                                            <button id="galaxyUpg2.41" class="galaxyUpg" onclick="buyGUpg(2, 41)">
+                                                <span id="text2.41">
+                                                    <span id="gUpgName2.41" style="font-weight: 900;"></span><br>
+                                                    <span id="gUpgDesc2.41"></span><br>
+                                                    <span class="gUpgRequires">Requires: <span id="gUpgRequires2.41"></span></span><br>
+                                                    <span>Cost: <span id="gUpgCost2.41"></span></span><br>
+                                                    <span id="2.41GEffect" style="display: none;">Currently: <span id="gUpgEffect2.41"></span></span>
+                                                </span>
+                                            </button>   
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
                         </td>
-                        <td>
+                        <td id="gal3" class="gal">
                             <table id="sculptorDwarf" class="galaxyTable">
                                 <tr>
                                     <td colspan="2">
@@ -1150,33 +1788,85 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                        <div id="topBorderDiv"><button id="galaxyUpg3.11" class="galaxyUpg" onclick="buyGUpg(3, 11)"><span id="text3.11"></span></button></div>
+                                        <div id="topBorderDiv">
+                                            <button id="galaxyUpg3.11" class="galaxyUpg" onclick="buyGUpg(3, 11)">
+                                                <span id="text3.11">
+                                                    <span id="gUpgName3.11" style="font-weight: 900;"></span><br>
+                                                    <span id="gUpgDesc3.11"></span><br>
+                                                    <span style="display: none;">Requires: <span id="gUpgRequires3.11"></span></span>
+                                                    <span>Cost: <span id="gUpgCost3.11"></span></span><br>
+                                                    <span id="3.11GEffect" style="display: none;">Currently: <span id="gUpgEffect3.11"></span></span>
+                                                </span>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="leftGalaxyTD">
-                                        <button id="galaxyUpg3.21" class="galaxyUpg" onclick="buyGUpg(3, 21)"><span id="text3.21"></span></button>
+                                        <button id="galaxyUpg3.21" class="galaxyUpg" onclick="buyGUpg(3, 21)">
+                                            <span id="text3.21">
+                                                <span id="gUpgName3.21" style="font-weight: 900;"></span><br>
+                                                <span id="gUpgDesc3.21"></span><br>
+                                                <span class="gUpgRequires">Requires: <span id="gUpgRequires3.21"></span></span><br>
+                                                <span>Cost: <span id="gUpgCost3.21"></span></span><br>
+                                                <span id="3.21GEffect" style="display: none;">Currently: <span id="gUpgEffect3.21"></span></span>
+                                            </span>
+                                        </button>
                                     </td>
                                     <td class="rightGalaxyTD">
-                                        <button id="galaxyUpg3.22" class="galaxyUpg" onclick="buyGUpg(3, 22)"><span id="text3.22"></span></button>
+                                        <button id="galaxyUpg3.22" class="galaxyUpg" onclick="buyGUpg(3, 22)">
+                                            <span id="text3.22">
+                                                <span id="gUpgName3.22" style="font-weight: 900;"></span><br>
+                                                <span id="gUpgDesc3.22"></span><br>
+                                                <span class="gUpgRequires">Requires: <span id="gUpgRequires3.22"></span></span><br>
+                                                <span>Cost: <span id="gUpgCost3.22"></span></span><br>
+                                                <span id="3.22GEffect" style="display: none;">Currently: <span id="gUpgEffect3.22"></span></span>
+                                            </span>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="leftGalaxyTD">
-                                        <button id="galaxyUpg3.31" class="galaxyUpg" onclick="buyGUpg(3, 31)"><span id="text3.31"></span></button>
+                                        <button id="galaxyUpg3.31" class="galaxyUpg" onclick="buyGUpg(3, 31)">
+                                            <span id="text3.31">
+                                                <span id="gUpgName3.31" style="font-weight: 900;"></span><br>
+                                                <span id="gUpgDesc3.31"></span><br>
+                                                <span class="gUpgRequires">Requires: <span id="gUpgRequires3.31"></span></span><br>
+                                                <span>Cost: <span id="gUpgCost3.31"></span></span><br>
+                                                <span id="3.31GEffect" style="display: none;">Currently: <span id="gUpgEffect3.31"></span></span>
+                                            </span>
+                                        </button>
                                     </td>
                                     <td class="rightGalaxyTD">
-                                        <button id="galaxyUpg3.32" class="galaxyUpg" onclick="buyGUpg(3, 32)"><span id="text3.32"></span></button>
+                                        <button id="galaxyUpg3.32" class="galaxyUpg" onclick="buyGUpg(3, 32)">
+                                            <span id="text3.32">
+                                                <span id="gUpgName3.32" style="font-weight: 900;"></span><br>
+                                                <span id="gUpgDesc3.32"></span><br>
+                                                <span class="gUpgRequires">Requires: <span id="gUpgRequires3.32"></span></span><br>
+                                                <span>Cost: <span id="gUpgCost3.32"></span></span><br>
+                                                <span id="3.32GEffect" style="display: none;">Currently: <span id="gUpgEffect3.32"></span></span>
+                                            </span>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                        <div id="bottomBorderDiv"><button id="galaxyUpg3.41" class="galaxyUpg" onclick="buyGUpg(3, 41)"><span id="text3.41"></span></button></div>
+                                        <div id="bottomBorderDiv">
+                                            <button id="galaxyUpg3.41" class="galaxyUpg" onclick="buyGUpg(3, 41)">
+                                                <span id="text3.41">
+                                                    <span id="gUpgName3.41" style="font-weight: 900;"></span><br>
+                                                    <span id="gUpgDesc3.41"></span><br>
+                                                    <span class="gUpgRequires">Requires: <span id="gUpgRequires3.41"></span></span><br>
+                                                    <span>Cost: <span id="gUpgCost3.41"></span></span><br>
+                                                    <span id="3.41GEffect" style="display: none;">Currently: <span id="gUpgEffect3.41"></span></span>
+                                                </span>
+                                            </button>   
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
                         </td>
-                        <td>
+                        <td id="gal4" class="gal">
                             <table id="triangulum" class="galaxyTable">
                                 <tr>
                                     <td colspan="2">
@@ -1185,34 +1875,100 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                        <div id="topBorderDiv"><button id="galaxyUpg4.11" class="galaxyUpg" onclick="buyGUpg(4, 11)"><span id="text4.11"></span></button></div>
+                                        <div id="topBorderDiv">
+                                            <button id="galaxyUpg4.11" class="galaxyUpg" onclick="buyGUpg(4, 11)">
+                                                <span id="text4.11">
+                                                    <span id="gUpgName4.11" style="font-weight: 900;"></span><br>
+                                                    <span id="gUpgDesc4.11"></span><br>
+                                                    <span style="display: none;">Requires: <span id="gUpgRequires4.11"></span></span>
+                                                    <span>Cost: <span id="gUpgCost4.11"></span></span><br>
+                                                    <span id="4.11GEffect" style="display: none;">Currently: <span id="gUpgEffect4.11"></span></span>
+                                                </span>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="leftGalaxyTD">
-                                        <button id="galaxyUpg4.21" class="galaxyUpg" onclick="buyGUpg(4, 21)"><span id="text4.21"></span></button>
+                                        <button id="galaxyUpg4.21" class="galaxyUpg" onclick="buyGUpg(4, 21)">
+                                            <span id="text4.21">
+                                                <span id="gUpgName4.21" style="font-weight: 900;"></span><br>
+                                                <span id="gUpgDesc4.21"></span><br>
+                                                <span class="gUpgRequires">Requires: <span id="gUpgRequires4.21"></span></span><br>
+                                                <span>Cost: <span id="gUpgCost4.21"></span></span><br>
+                                                <span id="4.21GEffect" style="display: none;">Currently: <span id="gUpgEffect4.21"></span></span>
+                                            </span>
+                                        </button>
                                     </td>
                                     <td class="rightGalaxyTD">
-                                        <button id="galaxyUpg4.22" class="galaxyUpg" onclick="buyGUpg(4, 22)"><span id="text4.22"></span></button>
+                                        <button id="galaxyUpg4.22" class="galaxyUpg" onclick="buyGUpg(4, 22)">
+                                            <span id="text4.22">
+                                                <span id="gUpgName4.22" style="font-weight: 900;"></span><br>
+                                                <span id="gUpgDesc4.22"></span><br>
+                                                <span class="gUpgRequires">Requires: <span id="gUpgRequires4.22"></span></span><br>
+                                                <span>Cost: <span id="gUpgCost4.22"></span></span><br>
+                                                <span id="4.22GEffect" style="display: none;">Currently: <span id="gUpgEffect4.22"></span></span>
+                                            </span>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="leftGalaxyTD">
-                                        <button id="galaxyUpg4.31" class="galaxyUpg" onclick="buyGUpg(4, 31)"><span id="text4.31"></span></button>
+                                        <button id="galaxyUpg4.31" class="galaxyUpg" onclick="buyGUpg(4, 31)">
+                                            <span id="text4.31">
+                                                <span id="gUpgName4.31" style="font-weight: 900;"></span><br>
+                                                <span id="gUpgDesc4.31"></span><br>
+                                                <span class="gUpgRequires">Requires: <span id="gUpgRequires4.31"></span></span><br>
+                                                <span>Cost: <span id="gUpgCost4.31"></span></span><br>
+                                                <span id="4.31GEffect" style="display: none;">Currently: <span id="gUpgEffect4.31"></span></span>
+                                            </span>
+                                        </button>
                                     </td>
                                     <td class="rightGalaxyTD">
-                                        <button id="galaxyUpg4.32" class="galaxyUpg" onclick="buyGUpg(4, 32)"><span id="text4.32"></span></button>
+                                        <button id="galaxyUpg4.32" class="galaxyUpg" onclick="buyGUpg(4, 32)">
+                                            <span id="text4.32">
+                                                <span id="gUpgName4.32" style="font-weight: 900;"></span><br>
+                                                <span id="gUpgDesc4.32"></span><br>
+                                                <span class="gUpgRequires">Requires: <span id="gUpgRequires4.32"></span></span><br>
+                                                <span>Cost: <span id="gUpgCost4.32"></span></span><br>
+                                                <span id="4.32GEffect" style="display: none;">Currently: <span id="gUpgEffect4.32"></span></span>
+                                            </span>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                        <div id="bottomBorderDiv"><button id="galaxyUpg4.41" class="galaxyUpg" onclick="buyGUpg(4, 41)"><span id="text4.41"></span></button></div>
+                                        <div id="bottomBorderDiv">
+                                            <button id="galaxyUpg4.41" class="galaxyUpg" onclick="buyGUpg(4, 41)">
+                                                <span id="text4.41">
+                                                    <span id="gUpgName4.41" style="font-weight: 900;"></span><br>
+                                                    <span id="gUpgDesc4.41"></span><br>
+                                                    <span class="gUpgRequires">Requires: <span id="gUpgRequires4.41"></span></span><br>
+                                                    <span>Cost: <span id="gUpgCost4.41"></span></span><br>
+                                                    <span id="4.41GEffect" style="display: none;">Currently: <span id="gUpgEffect4.41"></span></span>
+                                                </span>
+                                            </button>   
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
                         </td>
                     </tr>
                 </table>
+            </div>
+            <div id="arkSubTab" class="galaxySubTab" style="display: none;">
+                <!--<img id="thrusters" class="arkImg" src="../images/thrusters.png">
+                <img id="engines" class="arkImg" src="../images/engines.png">
+                <img id="navigation" class="arkImg" src="../images/navigation.png">
+                <img id="torpedos" class="arkImg" src="../images/torpedos.png">
+                <img id="railguns" class="arkImg" src="../images/railguns.png">
+                <img id="support" class="arkImg" src="../images/support.png">
+                <button id="thrustersBut" class="arkUpg" onclick="buyArkUpgrade('thrusters')" chal-num="1"><span id="thrustersText" style="display: none;">thrusters</span></button>
+                <button id="enginesBut" class="arkUpg" onclick="buyArkUpgrade('engines')" chal-num="2"><span id="enginesText" style="display: none;">engines</span></button>
+                <button id="navigationBut" class="arkUpg" onclick="buyArkUpgrade('navigation')" chal-num="3"><span id="navigationText" style="display: none;">navigation</span></button>
+                <button id="torpedosBut" class="arkUpg" onclick="buyArkUpgrade('torpedos')" chal-num="4"><span id="torpedosText" style="display: none;">torpedos</span></button>
+                <button id="railgunsBut" class="arkUpg" onclick="buyArkUpgrade('railguns')" chal-num="5"><span id="railgunsText" style="display: none;">railguns</span></button>
+                <button id="supportBut" class="arkUpg" onclick="buyArkUpgrade('support')" chal-num="6"><span id="supportText" style="display: none;">death support</span></button>-->
             </div>
         </div>
         <div id="statsTab" class="pageTab">
@@ -1223,7 +1979,10 @@
                             <button id="statSubTabBut" class="subTabBut" onclick="statsSubTabClick('statSubTab', 'statSubTabBut')">STATS</button>
                         </td>
                         <td>
-                            <button id="last10SubTabBut" class="subTabBut" onclick="statsSubTabClick('last10SubTab', 'last10SubTabBut')">LAST 10 RUNS</button>
+                            <button id="last10SubTabBut" class="subTabBut" onclick="statsSubTabClick('last10SubTab', 'last10SubTabBut')">LAST 10 SAC.</button>
+                        </td>
+                        <td>
+                            <button id="last10AscSubTabBut" class="subTabBut" onclick="statsSubTabClick('last10AscSubTab', 'last10AscSubTabBut')">LAST 10 ASC.</button>
                         </td>
                         <td>
                             <button id="achSubTabBut" class="subTabBut" onclick="showStatsSubTab('achSubTab', 'achSubTabBut')">ACHIEVEMENTS</button>
@@ -1232,7 +1991,7 @@
                 </table>
             </div>
             <div id="statSubTab" class="statSubTab">
-                <table style="width: 600px; margin: auto; text-align: center; border-collapse: collapse;">
+                <table style="width: 50%; margin: auto; text-align: center; border-collapse: collapse;">
                     <tr style="height: 25px;">
                         <div style="height: 100%;"></div>
                     </tr>
@@ -1298,6 +2057,82 @@
                     </tr>
                     <tr>
                         <td colspan="3">
+                            <h3>This Ascension</h3>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid white; font-weight: bold;">
+                        <td width="40%" style="border-right: 1px solid white; font-weight: bold;">
+                            resource
+                        </td>
+                        <td width="30%">
+                            total
+                        </td>
+                        <td width="30%">
+                            best
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border-right: 1px solid white; font-weight: bold;">
+                            corpses
+                        </td>
+                        <td>
+                            <span id="totCorpsesRunAsc"></span>
+                        </td>
+                        <td>
+                            <span id="bestCorpsesRunAsc"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border-right: 1px solid white; font-weight: bold;">
+                            astral bricks
+                        </td>
+                        <td>
+                            <span id="totBricksRunAsc"></span>
+                        </td>
+                        <td>
+                            <span id="bestBricksRunAsc"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border-right: 1px solid white; font-weight: bold;">
+                            time crystals
+                        </td>
+                        <td>
+                            <span id="totCrystalsAsc"></span>
+                        </td>
+                        <td>
+                            <span id="bestCrystalsAsc"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border-right: 1px solid white; font-weight: bold;">
+                            exterminated worlds
+                        </td>
+                        <td>
+                            <span id="totWorldsRunAsc"></span>
+                        </td>
+                        <td>
+                            <span id="bestWorldsRunAsc"></span>
+                        </td>
+                    </tr>
+                    <tr style="height: 25px;">
+                        <div style="height: 100%;"></div>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            you have world prestiged <span id="totPrestigeAsc"></span> times and sacrificed <span id="totSacrificeAsc"></span> times.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            your best crystal gain was <span id="bestGainAsc"></span> and your best crystal gain rate was <span id="bestRateAsc"></span>/min.
+                        </td>
+                    </tr>
+                    <tr style="height: 25px;">
+                        <div style="height: 100%;"></div>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
                             <h3>All Time</h3>
                         </td>
                     </tr>
@@ -1356,12 +2191,23 @@
                             <span id="bestWorlds"></span>
                         </td>
                     </tr>
+                    <tr>
+                        <td style="border-right: 1px solid white; font-weight: bold;">
+                            depleted galaxies
+                        </td>
+                        <td>
+                            <span id="totGalaxies"></span>
+                        </td>
+                        <td>
+                            <span id="bestGalaxies"></span>
+                        </td>
+                    </tr>
                     <tr style="height: 25px;">
                         <div style="height: 100%;"></div>
                     </tr>
                     <tr>
                         <td colspan="3">
-                            you have world prestiged <span id="totPrestige"></span> times and sacrificed <span id="totSacrifice"></span> times.
+                            you have world prestiged <span id="totPrestige"></span> times, sacrificed <span id="totSacrifice"></span> times, and ascended <span id="totAscensions"></span> times.
                         </td>
                     </tr>
                     <tr>
@@ -1369,10 +2215,15 @@
                             your best crystal gain was <span id="bestGain"></span> and your best crystal gain rate was <span id="bestRate"></span>/min.
                         </td>
                     </tr>
+                    <tr>
+                        <td colspan="3">
+                            you have spent a total of <span id="totalSpent"></span> galaxies.
+                        </td>
+                    </tr>
                 </table>
             </div>
             <div id="last10SubTab" class="statSubTab">
-                <table style="width: 75%; margin: auto; text-align: center;">
+                <table style="width: 60%; margin: auto; text-align: center;">
                     <tr style="height: 25px;">
                         <div style="height: 100%;"></div>
                     </tr>
@@ -1441,13 +2292,83 @@
                     </tr>
                 </table>
             </div>
+            <div id="last10AscSubTab" class="statSubTab">
+                <table style="width: 75%; margin: auto; text-align: center;">
+                    <tr style="height: 25px;">
+                        <div style="height: 100%;"></div>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3>Last 10 Ascension Runs</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Avg. of past 10 runs: <span id="statAvgsAsc"></span>
+                        </td>
+                    </tr>
+                    <tr style="height: 10px;">
+                        <div style="height: 100%;"></div>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span id="lastAsc1" class="last10AscRuns"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span id="lastAsc2" class="last10AscRuns"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span id="lastAsc3" class="last10AscRuns"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span id="lastAsc4" class="last10AscRuns"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span id="lastAsc5" class="last10AscRuns"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span id="lastAsc6" class="last10AscRuns"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span id="lastAsc7" class="last10AscRuns"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span id="lastAsc8" class="last10AscRuns"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span id="lastAsc9" class="last10AscRuns"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span id="lastAsc10" class="last10AscRuns"></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
             <div id="achSubTab" class="statSubTab" style="display: none;">
                 <div id="achievementsInfo" style="text-align: center; margin-top: 20px;">
                     Your achievements and achievement rewards are permanent. They persist through <span style="font-size: 14pt;">ALL</span> resets.<br>
                     Achievements with a '+' have an additional reward; hover to view requirements and rewards.<br>
-                    <span id="achBoostTooltip" data-title="(1.1x per achievement) * (1.2x per completed row) [both multiplicative]">You have <span id="numAch" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> achievements, boosting all units' corpse multipliers by <span id="achBoost" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0</span>x.</span>
+                    <span id="achBoostTooltip" data-title="(1.1x per achievement) * (1.2x per completed row) [both multiplicative]">You have <span id="numAch" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> achievements and <span id="numAchRows" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> completed rows, boosting all units' corpse multipliers by <span id="achBoost" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0</span>x.</span>
                 </div>
-                <table style="width: 75%; margin: auto; text-align: center;">
+                <table style="width: 60%; margin: auto; text-align: center;">
                     <tr style="height: 25px;">
                         <div style="height: 100%;"></div>
                     </tr>
@@ -1508,12 +2429,53 @@
                             <div id="ach35" class="achievement achTooltip" onmouseover="mouseoverAchievement(35)"><p>Galactic Angst<br>+</p></div>
                         </td>
                     </tr>
+                    <tr style="height: 10px;">
+                        <div style="height: 100%;"></div>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="ach41" class="achievement achTooltip" onmouseover="mouseoverAchievement(41)"><p>Interstellar<br>+</p></div>
+                        </td>
+                        <td>
+                            <div id="ach42" class="achievement achTooltip" onmouseover="mouseoverAchievement(42)"><p>Tedium Is Joy<br>+</p></div>
+                        </td>
+                        <td>
+                            <div id="ach43" class="achievement achTooltip" onmouseover="mouseoverAchievement(43)"><p>The Slog Of Slogs<br>+</p></div>
+                        </td>
+                        <td>
+                            <div id="ach44" class="achievement achTooltip" onmouseover="mouseoverAchievement(44)"><p>That's Pretty Darn Fast</p></div>
+                        </td>
+                        <td>
+                            <div id="ach45" class="achievement achTooltip" onmouseover="mouseoverAchievement(45)"><p>Why?</p></div>
+                        </td>
+                    </tr>
+                    <tr style="height: 10px;">
+                        <div style="height: 100%;"></div>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="ach51" class="achievement achTooltip" onmouseover="mouseoverAchievement(51)"><p>Multi-Galactic<br>+</p></div>
+                        </td>
+                        <td>
+                            <div id="ach52" class="achievement achTooltip" onmouseover="mouseoverAchievement(52)"><p>We've All Been There</p></div>
+                        </td>
+                        <td>
+                            <div id="ach53" class="achievement achTooltip" onmouseover="mouseoverAchievement(53)"><p>Black Hole, Shmlack Hole<br>+</p></div>
+                        </td>
+                        <td>
+                            <div id="ach54" class="achievement achTooltip" onmouseover="mouseoverAchievement(54)"><p>Astral Fiend</p></div>
+                        </td>
+                        <td>
+                            <div id="ach55" class="achievement achTooltip" onmouseover="mouseoverAchievement(55)"><p>Dear God, Why?</p></div>
+                        </td>
+                    </tr>
                 </table>
             </div>
         </div>
         <div id="optionsTab" class="pageTab">
-            <table id="optionsTable" style="width: 75%; margin: auto; text-align: center;">
-                <tr style="height: 25px;">
+            <div id="customizeDisplayButDiv" style="width: 20%; margin: 10px auto 0; font-size: 10pt; text-align: center; display: none;"><button id="customizeDisplayBut" class="displayBut" onclick="openDisplayPopup()">customize header display</button></div>
+            <table id="optionsTable" style="width: 60%; margin: auto; text-align: center;">
+                <tr style="height: 10px;">
                     <div style="height: 100%;"></div>
                 </tr>
                 <tr>
@@ -1564,9 +2526,13 @@
                         <a href="docs/changelog.html" target="_blank"><button id="helpBut" class="optBut">CHANGELOG</button></a>
                     </td>
                 </tr>
-                <tr style="height: 25px;">
+                <tr style="height: 10px;">
                     <div style="height: 100%;"></div>
                 </tr>
+                <tr>
+                    <td colspan="4">
+                        <button id="realTimeDisplayBut" class="displayBut" onclick="toggleRealTimeDisplays()">toggle time displays: GAME TIME</button>
+                    </td>
                 <tr>
                     <td colspan="4">
                         <label id="exportTextLabel" for="exportText" style="display: none;">Paste your save here...</label>
@@ -1603,7 +2569,6 @@
                 </tr>
                 <tr>
                     <td colspan="4">
-                        <div width="100%" style="text-align: center;">IF BUILDINGS DON'T RESET ON TIME RESETS, CLICK "FIX RESET BUG".<br>this should also act as a catch-all save fix for any weird issues.</div>
                         <div style="font-size: 10pt; text-align: center;">This game was made by monkeh42, and is very heavily influenced by hevipelle's <a href="https://ivark.github.io/" target="_blank">Antimatter Dimensions</a>, jacorb's <a href="https://jacorb90.github.io/Prestige-Tree/" target="_blank">The Prestige Tree</a>, and similar games.<br>
                         Thanks to hevipelle and jacorb for making their games (and making their code open) and thanks to patashu for <a href="https://github.com/Patashu/break_infinity.js" target="_blank">break_infinity.js</a>.<br>
                         Thanks toughtoffee for the awesome logo/favicon.</div>
@@ -1674,12 +2639,184 @@
                             <button id="timeRespecKeyBut" class="confBut" onclick="toggleConfirmations('timeRespec', 'key', 'timeRespecKeyBut')">ON</button>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            Ascension
+                        </td>
+                        <td>
+                            <button id="galaxyPrestigeClickBut" class="confBut" onclick="toggleConfirmations('galaxyPrestige', 'click', 'galaxyPrestigeClickBut')">ON</button>
+                        </td>
+                        <td>
+                            <button id="galaxyPrestigeKeyBut" class="confBut" onclick="toggleConfirmations('galaxyPrestige', 'key', 'galaxyPrestigeKeyBut')">ON</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Respec Galaxies
+                        </td>
+                        <td>
+                            <button id="galaxyRespecClickBut" class="confBut" onclick="toggleConfirmations('galaxyRespec', 'click', 'galaxyRespecClickBut')">ON</button>
+                        </td>
+                        <td>
+                            <button id="galaxyRespecKeyBut" class="confBut" onclick="toggleConfirmations('galaxyRespec', 'key', 'galaxyRespecKeyBut')">ON</button>
+                        </td>
+                    </tr>
                 </table>
             </div>
+            <button class="displayButSkinny" id="confDefaults" style="margin: 10px;" onclick="setConfDefaults()">defaults</button>
             <button class="optBut" id="closeConfPopup" style="margin: 10px;" onclick="closeConfirmationsPopup()">CLOSE</button>
+        </div>
+        <div class="dPopup" id="displayPopup">
+            <div>
+                <h2>Header Display</h2>
+                <table>
+                    <tr>
+                        <td>
+                            Boost from units
+                        </td>
+                        <td width="10%">
+                            <button id="unitsBoostDisplayBut" class="confBut" onclick="toggleDisplay('unitsBoostDisplay', 'unitsBoostDisplayBut')">ON</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Boost from achievements
+                        </td>
+                        <td width="10%">
+                            <button id="achBoostDisplayBut" class="confBut" onclick="toggleDisplay('achBoostDisplay', 'achBoostDisplayBut')">OFF</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Boost from worlds
+                        </td>
+                        <td width="10%">
+                            <button id="worldsBonusDisplayBut" class="confBut" onclick="toggleDisplay('worldsBonusDisplay', 'worldsBonusDisplayBut')">ON</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Boost from galaxies
+                        </td>
+                        <td width="10%">
+                            <button id="galaxiesBonusDisplayBut" class="confBut" onclick="toggleDisplay('galaxiesBonusDisplay', 'galaxiesBonusDisplayBut')">ON</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Total corpse boost
+                        </td>
+                        <td width="10%">
+                            <button id="totalBonusDisplayBut" class="confBut" onclick="toggleDisplay('totalBonusDisplay', 'totalBonusDisplayBut')">ON</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Astral brick amount
+                        </td>
+                        <td width="10%">
+                            <button id="bricksDisplayHeaderBut" class="confBut" onclick="toggleDisplay('bricksDisplayHeader', 'bricksDisplayHeaderBut')">OFF</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Astral brick gain
+                        </td>
+                        <td width="10%">
+                            <button id="bricksGainDisplayHeaderBut" class="confBut" onclick="toggleDisplay('bricksGainDisplayHeader', 'bricksGainDisplayHeaderBut')">OFF</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Astral enslavement notice
+                        </td>
+                        <td width="10%">
+                            <button id="astralNoticeDisplayBut" class="confBut" onclick="toggleDisplay('astralNoticeDisplay', 'astralNoticeDisplayBut')">ON</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Time crystal amount
+                        </td>
+                        <td width="10%">
+                            <button id="crystalsDisplayHeaderBut" class="confBut" onclick="toggleDisplay('crystalsDisplayHeader', 'crystalsDisplayHeaderBut')">OFF</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Time speed boost
+                        </td>
+                        <td width="10%">
+                            <button id="timeBoostDisplayBut" class="confBut" onclick="toggleDisplay('timeBoostDisplay', 'timeBoostDisplayBut')">ON</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <button class="displayButSkinny" id="displayDefaults" style="margin: 10px;" onclick="setDisplayDefaults()">defaults</button>
+            <button class="optBut" id="closeDisplayPopup" style="margin: 10px;" onclick="closeDisplayPopup()">CLOSE</button>
         </div>
         <div class="popup" id="achUnlockPopup">
             Achievement Unlocked!
+        </div>
+        <div class="popup" id="milesUnlockPopup">
+            Milestone Unlocked!
+        </div>
+        <div class="milestonePopup" id="milestonesPopup">
+            <div class="cursorContainer"></div>
+            <div class="milestoneHeaderContainer">
+                <div class="milestonePopupHeader">MILESTONES</div>
+                <div class="milestonePopupHeaderX"><a href="javascript:hideMilestones();">X</a></div>
+                <div class="milestonePopupHR"></div>
+            </div>
+            <table class="milestoneTable"style="width: 100%; margin-top: 49px;">
+                <tr>
+                    <td class="milestoneTD" id="milestone1">
+                        <span id="milestoneReq1" style="font-size: 16pt; font-weight: 900;">Own four 1st row upgrades.</span><br>
+                        <span id="milestoneRew1" style="font-size: 11pt;">Unlock two more construction upgrades, and construction is never reset.</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="milestoneTD" id="milestone2">
+                        <span id="milestoneReq2" style="font-size: 16pt; font-weight: 900;">Complete one upgrade tree.</span><br>
+                        <span id="milestoneRew2" style="font-size: 11pt;">Unlock the ascension autobuyer, and you keep <span style="font-weight: 800;">World Stasis 1-3</span> and <span style="font-weight: 800;">Star Stasis</span> permanently.</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="milestoneTD" id="milestone3">
+                        <span id="milestoneReq3" style="font-size: 16pt; font-weight: 900;">Own four 2nd row upgrades.</span><br>
+                        <span id="milestoneRew3" style="font-size: 11pt;">The corpse boost from galaxies is 1.5x stronger, and you keep <span style="font-weight: 800;">Rapid Fire</span> permanently.<br></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="milestoneTD" id="milestone4">
+                        <span id="milestoneReq4" style="font-size: 16pt; font-weight: 900;">Complete two trees at once.</span><br>
+                        <span id="milestoneRew4" style="font-size: 11pt;">Start every ascension with 11,111 time crystals.</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="milestoneTD" id="milestone5">
+                        <span id="milestoneReq5" style="font-size: 16pt; font-weight: 900;">Own four 3rd row upgrades.</span><br>
+                        <span id="milestoneRew5" style="font-size: 11pt;">Unlock a fourth building and the time dimension autobuyer.</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="milestoneTD" id="milestone6">
+                        <span id="milestoneReq6" style="font-size: 16pt; font-weight: 900;">Complete three trees at once.</span><br>
+                        <span id="milestoneRew6" style="font-size: 11pt;">Unlock two more columns of time upgrades and the time upgrade (cols 1-3) autobuyer.</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="milestoneTD" id="milestone7">
+                        <span id="milestoneReq7" style="font-size: 16pt; font-weight: 900;">Own four 4th row upgrades.</span><br>
+                        <span id="milestoneRew7" style="font-size: 11pt;">Unlock <span style="font-weight: 800;">Void Research</span> and <span style="font-weight: 800;">The Ark</span>.<br>(COMING SOON!)</span>
+                    </td>
+                </tr>
+                <!--<tr>
+                    <td class="milestoneTDButton">
+                        <button class="optBut" id="closeMilestonesPopup" style="margin: 22px;" onclick="hideMilestones()">CLOSE</button>
+                    </td>
+                </tr>-->
+            </table>
         </div>
     </div>
 </body>

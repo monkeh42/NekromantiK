@@ -11,12 +11,18 @@ function canUnlock(tier) {
 //production/calculation
 
 function getCorpsesPerSecond() {
-    return player.units[1].amount.gt(0) ? player.units[1].amount.times(getTotalCorpseMult()) : new Decimal(0);
+    let c = player.units[1].amount.gt(0) ? player.units[1].amount.times(getTotalCorpseMult()) : new Decimal(0);
+    if (hasTUpgrade(41)) { c = c.times(getTUpgEffect(41)); }
+    
+    if (hasTUpgrade(42)) { c = c.times(getTUpgEffect(42)); }
+    return c;
 }
 
 function getUnitProdPerSecond(tier) {
-    if (tier == NUM_UNITS) { return new Decimal(0); }
-    return player.units[tier+1].amount.div(tier+1).times(UNITS_DATA[tier+1].prodMult());
+    if (tier == NUM_UNITS) { return (hasGUpgrade(2, 41)) ? new Decimal(Decimal.max(getEssenceProdPerSecond(), 1).log10()) : new Decimal(0); }
+    let p = player.units[tier+1].amount;
+    if (!hasGUpgrade(2, 21)) { p = p.div(tier+1); }
+    return p.times(UNITS_DATA[tier+1].prodMult());
 }
 
 function getCorpseMultFromUnits() {
@@ -31,8 +37,10 @@ function getCorpseMultFromUnits() {
 function getTotalCorpseMult() {
     var mult = getCorpseMultFromUnits();
     mult = mult.times(getWorldsBonus());
+    if (player.allTimeStats.totalGalaxies.gt(0)) { mult = mult.times(getGalaxiesBonus()); }
     if (hasUpgrade(2, 13)) { mult = mult.times(getUpgEffect(2, 13)); }
     if (hasUpgrade(1, 23)) { mult = mult.times(getUpgEffect(1, 23)); }
+    if (hasGUpgrade(3, 41)) { mult = mult.times(getGUpgEffect(3, 41)); }
     return Decimal.max(mult, 1);
 }
 
@@ -51,6 +59,7 @@ function buySingleUnit(tier) {
         player.corpses = player.corpses.minus(UNITS_DATA[tier].cost());
         player.units[tier].amount = player.units[tier].amount.plus(1);
         player.units[tier].bought = player.units[tier].bought.plus(1);
+        document.getElementById(UNITS_DATA[tier].costID).innerHTML = formatWhole(UNITS_DATA[tier].cost())
         //allDisplay();
     }
 }
@@ -61,6 +70,7 @@ function buyMaxUnits(tier) {
         player.corpses = player.corpses.minus(calculateMaxUnitsCost(tier));
         player.units[tier].amount = player.units[tier].amount.plus(totalBought);
         player.units[tier].bought = player.units[tier].bought.plus(totalBought);
+        document.getElementById(UNITS_DATA[tier].costID).innerHTML = formatWhole(UNITS_DATA[tier].cost())
         //allDisplay();
     }
 }
@@ -100,6 +110,11 @@ function buyMaxAll() {
 
 //prestige related
 
+function calculateWorldsGain() {
+    if (canSpacePrestige) { return hasUpgrade(4, 11) ? getUpgEffect(4, 11).plus(1) : new Decimal(1) }
+    else { return new Decimal(0) }
+}
+
 function canSpacePrestige() {
     return player.units[player.nextSpaceReset[1]].bought.gte(player.nextSpaceReset[0]);
 }
@@ -119,28 +134,36 @@ function spacePrestige() {
         if (player.confirmations['worldPrestige']) {
             if (!confirm('Are you sure? This will reset ALL of your corpses, units, and astral bricks.<br>(These confirmations can be disabled in options)')) return
         }
-        player.spaceResets = player.spaceResets.plus(1);
-        player.worlds = player.worlds.plus(1);
+        let worldsGain = calculateWorldsGain();
+        player.spaceResets = player.spaceResets.plus(worldsGain);
+        player.worlds = player.worlds.plus(worldsGain);
         if (player.worlds.gt(player.thisSacStats.bestWorlds)) { player.thisSacStats.bestWorlds = new Decimal(player.worlds); }
+        if (player.worlds.gt(player.thisAscStats.bestWorlds)) { player.thisAscStats.bestWorlds = new Decimal(player.worlds); }
         if (player.worlds.gt(player.allTimeStats.bestWorlds)) { player.allTimeStats.bestWorlds = new Decimal(player.worlds); }
-        player.thisSacStats.totalSpaceResets = player.thisSacStats.totalSpaceResets.plus(1);
-        player.thisSacStats.totalWorlds = player.thisSacStats.totalWorlds.plus(1);
-        player.allTimeStats.totalSpaceResets = player.allTimeStats.totalSpaceResets.plus(1);
-        player.allTimeStats.totalWorlds = player.allTimeStats.totalWorlds.plus(1);
+        player.thisSacStats.totalSpaceResets = player.thisSacStats.totalSpaceResets.plus(worldsGain);
+        player.thisSacStats.totalWorlds = player.thisSacStats.totalWorlds.plus(worldsGain);
+        player.thisAscStats.totalSpaceResets = player.thisAscStats.totalSpaceResets.plus(worldsGain);
+        player.thisAscStats.totalWorlds = player.thisAscStats.totalWorlds.plus(worldsGain);
+        player.allTimeStats.totalSpaceResets = player.allTimeStats.totalSpaceResets.plus(worldsGain);
+        player.allTimeStats.totalWorlds = player.allTimeStats.totalWorlds.plus(worldsGain);
         spacePrestigeReset();
     }
 }
 
 function spacePrestigeNoConfirm() {
     if (canSpacePrestige()) {
-        player.spaceResets = player.spaceResets.plus(1);
-        player.worlds = player.worlds.plus(1);
+        let worldsGain = calculateWorldsGain();
+        player.spaceResets = player.spaceResets.plus(worldsGain);
+        player.worlds = player.worlds.plus(worldsGain);
         if (player.worlds.gt(player.thisSacStats.bestWorlds)) { player.thisSacStats.bestWorlds = new Decimal(player.worlds); }
+        if (player.worlds.gt(player.thisAscStats.bestWorlds)) { player.thisAscStats.bestWorlds = new Decimal(player.worlds); }
         if (player.worlds.gt(player.allTimeStats.bestWorlds)) { player.allTimeStats.bestWorlds = new Decimal(player.worlds); }
-        player.thisSacStats.totalSpaceResets = player.thisSacStats.totalSpaceResets.plus(1);
-        player.thisSacStats.totalWorlds = player.thisSacStats.totalWorlds.plus(1);
-        player.allTimeStats.totalSpaceResets = player.allTimeStats.totalSpaceResets.plus(1);
-        player.allTimeStats.totalWorlds = player.allTimeStats.totalWorlds.plus(1);
+        player.thisSacStats.totalSpaceResets = player.thisSacStats.totalSpaceResets.plus(worldsGain);
+        player.thisSacStats.totalWorlds = player.thisSacStats.totalWorlds.plus(worldsGain);
+        player.thisAscStats.totalSpaceResets = player.thisAscStats.totalSpaceResets.plus(worldsGain);
+        player.thisAscStats.totalWorlds = player.thisAscStats.totalWorlds.plus(worldsGain);
+        player.allTimeStats.totalSpaceResets = player.allTimeStats.totalSpaceResets.plus(worldsGain);
+        player.allTimeStats.totalWorlds = player.allTimeStats.totalWorlds.plus(worldsGain);
         spacePrestigeReset();
     }
 }
@@ -153,10 +176,11 @@ function spacePrestigeReset() {
     resetUnits();
     resetBuildingResources();
     //unitSetup(START_PLAYER);
-    player.corpses = new Decimal(START_PLAYER.corpses)
+    if (!hasTUpgrade(44)) { player.corpses = hasAchievement(41) ? new Decimal(START_PLAYER.corpsesAch41) : new Decimal(START_PLAYER.corpses) }
     //allDisplay();
     
     save();
+    loadStyles();
     startInterval();
 }
 
@@ -177,19 +201,23 @@ const UNITS_DATA = {
         single: "zombie",
         plural: "zombies",
         baseCost: new Decimal(10),
-        baseMultPer: new Decimal(1.75),
+        baseMultPer: function() {
+            if (hasGUpgrade(2, 11)) { return new Decimal(2.5); }
+            else { return new Decimal(1.75); }
+        },
         baseCostMult: new Decimal(100),
         expCostMult: 10,
         expCostStart: 10,
         expCostStartCost: new Decimal(1e21),
         cost: function() {
             var c = this.baseCost;
+            var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
-            if (c.gte(this.expCostStartCost)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(this.expCostStart)))); }
+            if (player.units[this.tier].bought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(e)))); }
             return c;
         },
         corpseMult: function() {
-            var m = this.baseMultPer;
+            var m = this.baseMultPer();
             m = m.times(getCUpgEffect(1));
             if (player.units[this.tier].bought.eq(0)) { return new Decimal(0); }
             m = m.pow(player.units[this.tier].bought-1);
@@ -201,12 +229,20 @@ const UNITS_DATA = {
         prodMult: function() {
             var m = this.corpseMult();
             if (!hasUpgrade(1, 13)) { m = m.sqrt(); }
+            if (hasGUpgrade(2, 31)) { m = m.times(getGUpgEffect(2, 31)); }
             return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 1,
         buttonID: "zombieBut",
         maxID: "zombieMax",
+        costID: "zombieCost",
+        maxCostID: "zombieMaxCost",
+        maxNumID: "zombieMaxNum",
         amountID: "zombieAmount",
+        boughtID: "zombieBought",
+        CMultID: "zombieCMult",
+        UMultID: "zombieUMult",
+        gainID: "zombieGain",
         multID: "zombieMult",
         rowID: "zombieRow",
     },
@@ -221,8 +257,9 @@ const UNITS_DATA = {
         expCostStartCost: new Decimal(1e30),
         cost: function() {
             var c = this.baseCost;
+            var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
-            if (c.gte(this.expCostStartCost)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(this.expCostStart)))); }
+            if (player.units[this.tier].bought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(e)))); }
             return c;
         },
         corpseMult: function() {
@@ -238,12 +275,20 @@ const UNITS_DATA = {
             var m = this.corpseMult();
             if (!hasUpgrade(1, 13)) { m = m.sqrt(); }
             m = m.times(getCUpgEffect(3));
+            if (hasGUpgrade(2, 31)) { m = m.times(getGUpgEffect(2, 31)); }
             return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 2,
         buttonID: "abomBut",
         maxID: "abomMax",
+        costID: "abomCost",
+        maxCostID: "abomMaxCost",
+        maxNumID: "abomMaxNum",
         amountID: "abomAmount",
+        boughtID: "abomBought",
+        CMultID: "abomCMult",
+        UMultID: "abomUMult",
+        gainID: "abomGain",
         multID: "abomMult",
         rowID: "abomRow",
     },
@@ -258,8 +303,9 @@ const UNITS_DATA = {
         expCostStartCost: new Decimal(1e32),
         cost: function() {
             var c = this.baseCost;
+            var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
-            if (c.gte(this.expCostStartCost)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(this.expCostStart)))); }
+            if (player.units[this.tier].bought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(e)))); }
             return c;
         },
         corpseMult: function() {
@@ -274,12 +320,20 @@ const UNITS_DATA = {
         prodMult: function() {
             var m = this.corpseMult();
             if (!hasUpgrade(1, 13)) { m = m.sqrt(); }
+            if (hasGUpgrade(2, 31)) { m = m.times(getGUpgEffect(2, 31)); }
             return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 3,
         buttonID: "mageBut",
         maxID: "mageMax",
+        costID: "mageCost",
+        maxCostID: "mageMaxCost",
+        maxNumID: "mageMaxNum",
         amountID: "mageAmount",
+        boughtID: "mageBought",
+        CMultID: "mageCMult",
+        UMultID: "mageUMult",
+        gainID: "mageGain",
         multID: "mageMult",
         rowID: "mageRow",
     },
@@ -294,8 +348,9 @@ const UNITS_DATA = {
         expCostStartCost: new Decimal(1e36),
         cost: function() {
             var c = this.baseCost;
+            var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
-            if (c.gte(this.expCostStartCost)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(this.expCostStart)))); }
+            if (player.units[this.tier].bought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(e)))); }
             return c;
         },
         corpseMult: function() {
@@ -310,12 +365,20 @@ const UNITS_DATA = {
         prodMult: function() {
             var m = this.corpseMult();
             if (!hasUpgrade(1, 13)) { m = m.sqrt(); }
+            if (hasGUpgrade(2, 31)) { m = m.times(getGUpgEffect(2, 31)); }
             return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 4,
         buttonID: "bansheeBut",
         maxID: "bansheeMax",
+        costID: "bansheeCost",
+        maxCostID: "bansheeMaxCost",
+        maxNumID: "bansheeMaxNum",
         amountID: "bansheeAmount",
+        boughtID: "bansheeBought",
+        CMultID: "bansheeCMult",
+        UMultID: "bansheeUMult",
+        gainID: "bansheeGain",
         multID: "bansheeMult",
         rowID: "bansheeRow",
     },
@@ -330,8 +393,9 @@ const UNITS_DATA = {
         expCostStartCost: new Decimal(1e49),
         cost: function() {
             var c = this.baseCost;
+            var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
-            if (c.gte(this.expCostStartCost)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(this.expCostStart)))); }
+            if (player.units[this.tier].bought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(e)))); }
             return c;
         },
         corpseMult: function() {
@@ -346,12 +410,20 @@ const UNITS_DATA = {
         prodMult: function() {
             var m = this.corpseMult();
             if (!hasUpgrade(1, 13)) { m = m.sqrt(); }
+            if (hasGUpgrade(2, 31)) { m = m.times(getGUpgEffect(2, 31)); }
             return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 5,
         buttonID: "lichBut",
         maxID: "lichMax",
+        costID: "lichCost",
+        maxCostID: "lichMaxCost",
+        maxNumID: "lichMaxNum",
         amountID: "lichAmount",
+        boughtID: "lichBought",
+        CMultID: "lichCMult",
+        UMultID: "lichUMult",
+        gainID: "lichGain",
         multID: "lichMult",
         rowID: "lichRow",
     },
@@ -366,8 +438,9 @@ const UNITS_DATA = {
         expCostStartCost: new Decimal(1e58),
         cost: function() {
             var c = this.baseCost;
+            var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
-            if (c.gte(this.expCostStartCost)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(this.expCostStart)))); }
+            if (player.units[this.tier].bought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(e)))); }
             return c;
         },
         corpseMult: function() {
@@ -382,12 +455,20 @@ const UNITS_DATA = {
         prodMult: function() {
             var m = this.corpseMult();
             if (!hasUpgrade(1, 13)) { m = m.sqrt(); }
+            if (hasGUpgrade(2, 31)) { m = m.times(getGUpgEffect(2, 31)); }
             return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 6,
         buttonID: "beheBut",
         maxID: "beheMax",
+        costID: "beheCost",
+        maxCostID: "beheMaxCost",
+        maxNumID: "beheMaxNum",
         amountID: "beheAmount",
+        boughtID: "beheBought",
+        CMultID: "beheCMult",
+        UMultID: "beheUMult",
+        gainID: "beheGain",
         multID: "beheMult",
         rowID: "beheRow",
     },
@@ -402,8 +483,9 @@ const UNITS_DATA = {
         expCostStartCost: new Decimal(1e55),
         cost: function() {
             var c = this.baseCost;
+            var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
-            if (c.gte(this.expCostStartCost)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(this.expCostStart)))); }
+            if (player.units[this.tier].bought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(e)))); }
             return c;
         },
         corpseMult: function() {
@@ -418,12 +500,20 @@ const UNITS_DATA = {
         prodMult: function() {
             var m = this.corpseMult();
             if (!hasUpgrade(1, 13)) { m = m.sqrt(); }
+            if (hasGUpgrade(2, 31)) { m = m.times(getGUpgEffect(2, 31)); }
             return m.plus(UNITS_DATA[this.tier+1].prodMult());
         },
         tier: 7,
         buttonID: "oneBut",
         maxID: "oneMax",
+        costID: "oneCost",
+        maxCostID: "oneMaxCost",
+        maxNumID: "oneMaxNum",
         amountID: "oneAmount",
+        boughtID: "oneBought",
+        CMultID: "oneCMult",
+        UMultID: "oneUMult",
+        gainID: "oneGain",
         multID: "oneMult",
         rowID: "oneRow",
     },
@@ -439,9 +529,10 @@ const UNITS_DATA = {
         cost: function() {
             var c = this.baseCost;
             var m = this.baseCostMult;
+            var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
             if (hasUpgrade(3, 22)) { m = Decimal.pow(m, getUpgEffect(3, 22)); }
             c = c.times(m.pow(player.units[this.tier].bought));
-            if (c.gte(this.expCostStartCost)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(this.expCostStart)))); }
+            if (player.units[this.tier].bought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(e)))); }
             return c;
         },
         corpseMult: function() {
@@ -456,12 +547,20 @@ const UNITS_DATA = {
         prodMult: function() {
             var m = this.corpseMult();
             if (!hasUpgrade(1, 13)) { m = m.sqrt(); }
+            if (hasGUpgrade(2, 31)) { m = m.times(getGUpgEffect(2, 31)); }
             return m;
         },
         tier: 8,
         buttonID: "sunBut",
         maxID: "sunMax",
+        costID: "sunCost",
+        maxCostID: "sunMaxCost",
+        maxNumID: "sunMaxNum",
         amountID: "sunAmount",
+        boughtID: "sunBought",
+        CMultID: "sunCMult",
+        UMultID: "sunUMult",
+        gainID: "sunGain",
         multID: "sunMult",
         rowID: "sunRow",
     },
