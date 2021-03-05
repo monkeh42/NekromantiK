@@ -592,8 +592,8 @@ function importSave() {
         }
     }
     
-    if (player.version == GAME_DATA.version) { fixData(player, START_PLAYER); }
-    else { updateVersion(); }
+    fixData(player, START_PLAYER); 
+    if (player.version != GAME_DATA.version) { updateVersion(); }
     save();
     window.location.reload();
 }
