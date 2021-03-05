@@ -277,7 +277,7 @@ function calculateNextGalaxy() {
 
 function galaxyPrestige(respec=false) {
     if (canGalaxyPrestige()) {
-        if (getBoughtGUpgs().eq(0) && player.ascensions.gt(0) && !hasAchievement(55)) { unlockAchievement(55); }
+        if (getBoughtGUpgs()==0 && player.ascensions.gt(0) && !hasAchievement(55)) { unlockAchievement(55); }
         if (!confirm('Are you sure? This will reset ALL of your progress up to unlocking Galaxies.<br>(These confirmations can be disabled in options)')) return
         player.galaxies = player.galaxies.plus(calculateGalaxyGain());
         player.allTimeStats.totalGalaxies = player.allTimeStats.totalGalaxies.plus(calculateGalaxyGain());
@@ -290,7 +290,7 @@ function galaxyPrestige(respec=false) {
 
 function galaxyPrestigeNoConfirm(respec=false) {
     if (canGalaxyPrestige()) {
-        if (getBoughtGUpgs().eq(0) && player.ascensions.gt(0) && !hasAchievement(55)) { unlockAchievement(55); }
+        if (getBoughtGUpgs()==0 && player.ascensions.gt(0) && !hasAchievement(55)) { unlockAchievement(55); }
         player.galaxies = player.galaxies.plus(calculateGalaxyGain());
         player.allTimeStats.totalGalaxies = player.allTimeStats.totalGalaxies.plus(calculateGalaxyGain());
         if (player.galaxies.gt(player.allTimeStats.bestGalaxies)) { player.allTimeStats.bestGalaxies = new Decimal(player.galaxies); }
