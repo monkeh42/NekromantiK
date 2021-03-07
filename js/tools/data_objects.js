@@ -1071,7 +1071,7 @@ const ACH_DATA = {
         secret: false,
         hint: '',
         hasReward: true,
-        showEffect: true,
+        showEffect: false,
         divID: 'ach41',
         canUnlock: function() {
             return player.spentGalaxies.gt(0);
