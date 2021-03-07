@@ -290,7 +290,7 @@ function loadStyles() {
     }
 
     for (let id in ACH_DATA) {
-        document.getElementById(ACH_DATA[id].divID).setAttribute('data-title', ACH_DATA[id].desc + (ACH_DATA[id].hasReward ? ' Reward: ' + ACH_DATA[id].reward : '' ) + (ACH_DATA[id].showEffect ? ' Currently: ' + formatDefault2(ACH_DATA[id].effect()) + 'x' : '' ));
+        document.getElementById(ACH_DATA[id].divID).setAttribute('data-title', ((ACH_DATA[id].secret && !player.achievements[id]) ? ACH_DATA[id].hint : ACH_DATA[id].desc) + (ACH_DATA[id].hasReward ? ' Reward: ' + ACH_DATA[id].reward : '' ) + (ACH_DATA[id].showEffect ? ' Currently: ' + formatDefault2(ACH_DATA[id].effect()) + 'x' : '' ));
         if (player.achievements[id]) {
             document.getElementById(ACH_DATA[id].divID).classList.add('achievementUnlocked');
             document.getElementById(ACH_DATA[id].divID).classList.remove('achievement');
