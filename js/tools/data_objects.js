@@ -974,7 +974,7 @@ const ACH_DATA = {
         showEffect: true,
         divID: 'ach31',
         canUnlock: function() {
-            return player.timeResets.gte(15);
+            return player.allTimeStats.totalTimeResets.gte(15);
         },
         effect: function() {
             let e = new Decimal(player.allTimeStats.totalTimeResets);
