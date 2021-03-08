@@ -727,7 +727,7 @@ const BUILDS_DATA = {
             return Decimal.max(p, 0); 
         },
         resourceEff: function() {
-            return player.buildings[this.tier].amount.sqrt().div(50);
+            return player.buildings[this.tier].amount.gt(0) ? Decimal.max(player.buildings[this.tier].amount.log10()/10, .02) : new Decimal(0);
         },
         canAffordUpg: function(upg) {
             return player.buildings[4].amount.gte(this.upgrades[upg].cost);

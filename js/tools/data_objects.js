@@ -771,6 +771,8 @@ const ACH_DATA = {
     11: {
         title: 'The Astral Brick Road',
         desc: 'Unlock Buildings.',
+        secret: false,
+        hint: '',
         reward: '',
         hasReward: false,
         showEffect: false,
@@ -788,6 +790,8 @@ const ACH_DATA = {
     12: {
         title: 'Nekro-Carpentry',
         desc: 'Unlock Construction.',
+        secret: false,
+        hint: '',
         reward: '',
         hasReward: false,
         showEffect: false,
@@ -805,6 +809,8 @@ const ACH_DATA = {
     13: {
         title: 'Wait, This Sounds Familiar...',
         desc: 'Unlock Time Warp.',
+        secret: false,
+        hint: '',
         reward: '',
         showEffect: false,
         hasReward: false,
@@ -822,6 +828,8 @@ const ACH_DATA = {
     14: {
         title: 'Master Of The Dead',
         desc: 'Own at least one of each unit.',
+        secret: false,
+        hint: '',
         reward: '',
         showEffect: false,
         hasReward: false,
@@ -842,6 +850,10 @@ const ACH_DATA = {
     15: {
         title: 'One Sun, Two Sun, Dead Sun, Blue Sun',
         desc: 'Build the Dead Sun.',
+        secret: false,
+        hint: '',
+        secret: false,
+        hint: '',
         reward: 'Keep all your bricks on prestige, and keep your best bricks this sacrifice raised ^0.2 on sacrifice.',
         showEffect: false,
         hasReward: true,
@@ -860,6 +872,8 @@ const ACH_DATA = {
     21: {
         title: 'Killing Time',
         desc: 'Unlock Time Upgrades.',
+        secret: false,
+        hint: '',
         reward: '',
         hasReward: false,
         showEffect: false,
@@ -877,6 +891,8 @@ const ACH_DATA = {
     22: {
         title: 'Inter-Dimensional Nekro-Cable',
         desc: 'Buy one 4th Time Dimension.',
+        secret: false,
+        hint: '',
         reward: '',
         hasReward: false,
         showEffect: false,
@@ -894,6 +910,8 @@ const ACH_DATA = {
     23: {
         title: 'Full Stasis',
         desc: 'Buy the entire first column of Time Upgrades.',
+        secret: false,
+        hint: '',
         reward: '',
         hasReward: false,
         showEffect: false,
@@ -911,6 +929,8 @@ const ACH_DATA = {
     24: {
         title: 'It\'s About Time',
         desc: 'Buy the entire second column of Time Upgrades.',
+        secret: false,
+        hint: '',
         reward: '',
         showEffect: false,
         hasReward: false,
@@ -928,6 +948,8 @@ const ACH_DATA = {
     25: {
         title: 'Thyme Lord',
         desc: 'Buy the entire third column of Time Upgrades.',
+        secret: false,
+        hint: '',
         reward: 'Double base nekro-photon production (2/sec -> 4/sec).',
         showEffect: false,
         hasReward: true,
@@ -946,6 +968,8 @@ const ACH_DATA = {
         title: 'The Grind',
         desc: 'Sacrifice fifteen times.',
         reward: 'Your unit corpse multipliers get a boost based on number of sacrifices.',
+        secret: false,
+        hint: '',
         hasReward: true,
         showEffect: true,
         divID: 'ach31',
@@ -964,6 +988,8 @@ const ACH_DATA = {
     32: {
         title: 'Master Nekro-Carpenter',
         desc: 'Get the first four construction upgrades all to at least level 25.',
+        secret: false,
+        hint: '',
         reward: '',
         hasReward: false,
         showEffect: false,
@@ -984,6 +1010,8 @@ const ACH_DATA = {
     33: {
         title: 'Frugality',
         desc: 'Reach 1e100 corpses without enabling Astral Enslavement this sacrifice.',
+        secret: false,
+        hint: '',
         reward: '',
         hasReward: false,
         showEffect: false,
@@ -1001,6 +1029,8 @@ const ACH_DATA = {
     34: {
         title: 'I Need To Go Faster',
         desc: 'Get your normal time multiplier to at least 30x.',
+        secret: false,
+        hint: '',
         reward: '',
         showEffect: false,
         hasReward: false,
@@ -1018,6 +1048,8 @@ const ACH_DATA = {
     35: {
         title: 'Galactic Angst',
         desc: 'Unlock Depleted Galaxies.',
+        secret: false,
+        hint: '',
         reward: 'Menagerie Of Worlds\'s effect is stronger (^0.67 -> ^0.333).',
         showEffect: false,
         hasReward: true,
@@ -1036,8 +1068,10 @@ const ACH_DATA = {
         title: 'Interstellar',
         desc: 'Buy a galaxy upgrade.',
         reward: 'You start all resets with 25,000 corpses.',
+        secret: false,
+        hint: '',
         hasReward: true,
-        showEffect: true,
+        showEffect: false,
         divID: 'ach41',
         canUnlock: function() {
             return player.spentGalaxies.gt(0);
@@ -1052,6 +1086,8 @@ const ACH_DATA = {
     42: {
         title: 'Tedium Is Joy',
         desc: 'Buy World Stasis 3 for the second time.',
+        secret: false,
+        hint: '',
         reward: 'Autobuyers are unlocked permanently.',
         hasReward: true,
         showEffect: false,
@@ -1069,6 +1105,8 @@ const ACH_DATA = {
     43: {
         title: 'The Slog Of Slogs',
         desc: 'Buy Nekro-Time for the second time.',
+        secret: false,
+        hint: '',
         reward: 'Nekro-Time is never reset.',
         hasReward: true,
         showEffect: false,
@@ -1086,6 +1124,8 @@ const ACH_DATA = {
     44: {
         title: 'That\'s Pretty Darn Fast',
         desc: 'Have your zombie corpse multiplier over 10,000 before unlocking Time Warp in this ascension.',
+        secret: false,
+        hint: '',
         reward: '',
         showEffect: false,
         hasReward: false,
@@ -1103,6 +1143,8 @@ const ACH_DATA = {
     45: {
         title: 'Why?',
         desc: 'Sacrifice without enabling astral enslavement this ascension.',
+        secret: false,
+        hint: '',
         reward: '',
         showEffect: false,
         hasReward: false,
@@ -1120,6 +1162,8 @@ const ACH_DATA = {
     51: {
         title: 'Multi-Galactic',
         desc: 'Ascend for more than one galaxy.',
+        secret: false,
+        hint: '',
         reward: 'Nekro-photons are only reset if the Dead Sun is reset.',
         hasReward: true,
         showEffect: false,
@@ -1136,7 +1180,9 @@ const ACH_DATA = {
     },
     52: {
         title: 'We\'ve All Been There',
-        desc: 'Hint: do something utterly pointless.',
+        desc: 'Respec galaxies without any galaxy upgrades.',
+        secret: true,
+        hint: 'Hint: do something utterly pointless.',
         reward: '',
         hasReward: false,
         showEffect: false,
@@ -1154,6 +1200,8 @@ const ACH_DATA = {
     53: {
         title: 'Black Hole, Shmlack Hole',
         desc: 'Build the Galactic Vortex.',
+        secret: false,
+        hint: '',
         reward: 'Buildings don\'t reset on ascension (except bricks and resources).',
         hasReward: true,
         showEffect: false,
@@ -1170,6 +1218,8 @@ const ACH_DATA = {
     },
     54: {
         title: 'Astral Fiend',
+        secret: false,
+        hint: '',
         desc: 'Sacrifice with more astral bricks than corpses.',
         reward: '',
         hasReward: false,
@@ -1187,6 +1237,8 @@ const ACH_DATA = {
     },
     55: {
         title: 'Dear God, Why?',
+        secret: false,
+        hint: '',
         desc: 'Ascend without any galaxy upgrades (your first ascension doesn\'t count).',
         reward: '',
         hasReward: false,

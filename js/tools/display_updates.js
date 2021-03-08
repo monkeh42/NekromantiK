@@ -1115,6 +1115,7 @@ function unlockAchievement(a) {
     displayData.push(['addClass', 'achSubTabBut', 'tabButNotify']);
     displayData.push(['addClass', 'statsTabBut', 'tabButIndirectNotify']);
     displayData.push(['setProp', 'achUnlockPopup', 'opacity', '1']);
+    if (ACH_DATA[a].secret) { displayData.push(['setAttr', ACH_DATA[a].divID, 'data-title', ACH_DATA[a].desc + (ACH_DATA[a].hasReward ? ' Reward: ' + ACH_DATA[a].reward : '' ) + (ACH_DATA[a].showEffect ? ' Currently: ' + formatDefault2(ACH_DATA[a].effect()) + 'x' : '' )]); }
     popupShownTime = (new Date).getTime();
     ACH_DATA[a].onUnlock();
 }

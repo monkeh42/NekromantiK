@@ -644,7 +644,7 @@ const TIME_DATA = {
             displayFormula: function() { return '1 + x' },
             effect: function() {
                 let e = player.galaxies;
-                return 1 + e;
+                return e.plus(1);
             }
         },
         43: {
@@ -658,7 +658,7 @@ const TIME_DATA = {
             displayFormula: function() { return '1 + x' },
             effect: function() {
                 var e = player.galaxies;
-                return 1 + e;
+                return e.plus(1);
             }
         },
         44: {
@@ -698,7 +698,7 @@ const TIME_DATA = {
             displayFormula: function() { return '1 + x' },
             effect: function() {
                 var e = player.galaxies;
-                return 1 + e;
+                return e.plus(1);
             }
         },
         53: {
@@ -712,7 +712,7 @@ const TIME_DATA = {
             displayFormula: function() { return '1 + x' },
             effect: function() {
                 var e = player.galaxies;
-                return 1 + e;
+                return e.plus(1);
             }
         },
         54: {
