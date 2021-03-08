@@ -339,7 +339,7 @@ const BUILDS_DATA = {
                         b = Decimal.pow(b, e).times(2);
                     }
                     if (hasGUpgrade(3, 11)) { b = b.pow(getGUpgEffect(3, 11)); }
-                    if (hasTUpgrade(43)) { b = b.times(getGUpgEffect(43)); }
+                    if (hasTUpgrade(43)) { b = b.times(getTUpgEffect(43)); }
                     return b.plus(1);
                 }
             },
