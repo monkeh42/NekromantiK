@@ -414,6 +414,7 @@ function unlockElementsOnLoad(mainTab, subTab) {
             if (element.tagName == 'TR') { displayData.push(['setProp', element.id, 'display', 'table-row']); } 
             else if (element.tagName == 'TD') { displayData.push(['setProp', element.id, 'display', 'table-cell']); }
             else if (element.tagName == 'TABLE') { displayData.push(['setProp', element.id, 'display', 'table']); }
+            else if (element.tagName == 'SPAN') { displayData.push(['setProp', element.id, 'display', 'inline']); }
             else { displayData.push(['setProp', element.id, 'display', 'block']); }
         }
     }
