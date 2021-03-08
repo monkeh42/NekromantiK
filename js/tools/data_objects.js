@@ -977,7 +977,7 @@ const ACH_DATA = {
             return player.timeResets.gte(15);
         },
         effect: function() {
-            let e = new Decimal(player.timeResets);
+            let e = new Decimal(player.allTimeStats.totalTimeResets);
             e = e.div(5);
             return e.plus(1);
         },

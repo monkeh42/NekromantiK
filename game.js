@@ -687,6 +687,12 @@ function updateVersion() {
     copyData(player, START_PLAYER);
     updateVersionData(player, tempPlayer);
     player.version = GAME_DATA.version;
+    if (player.unlocks['galaxyTab']['mainTab']) {
+        player.achievements[22] = true;
+        player.achievements[23] = true;
+        player.achievements[24] = true;
+        player.achievements[25] = true;
+    }
     tempPlayer = {};
 }
 
