@@ -2,7 +2,7 @@
 
 const GAME_DATA = {
     author: 'monkeh42',
-    version: 'v0.3.1',
+    version: 'v0.3.2',
 }
 
 const NUM_UNITS = 8;
@@ -686,6 +686,7 @@ function updateVersion() {
     fixResetBug();
     copyData(player, START_PLAYER);
     updateVersionData(player, tempPlayer);
+    player.version = GAME_DATA.version;
     tempPlayer = {};
 }
 
@@ -712,7 +713,7 @@ function updateVersionData(newP, oldP) {
             }
         } else {
             if (oldP[item] !== undefined && item != 'version') {
-                newP[item] = oldP[item];
+                if (typeof newP[item] === typeof oldP[item]) { newP[item] = oldP[item]; }
             }
         }
     }

@@ -308,7 +308,7 @@ function timePrestigeReset() {
     resetUnits();
     resetBuildingResources(true);
     resetBuildings();
-    showBuildingSubTab('buildingsSubTab');
+    if (!hasTUpgrade(12)) { showBuildingSubTab('buildingsSubTab'); }
     for (var i=1; i<=NUM_TIMEDIMS; i++) { player.timeDims[i].amount = player.timeDims[i].bought; }
     if (timeUpgUnlocked) { player.buildings[3].upgrades[13] = true; }
     save();

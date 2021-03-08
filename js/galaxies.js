@@ -341,9 +341,9 @@ function galaxyPrestigeReset(respec=false) {
     document.getElementById('respecOnAsc').checked = false;
 
     player.corpses = hasAchievement(41) ? new Decimal(START_PLAYER.corpsesAch41) : new Decimal(START_PLAYER.corpses)
-    showUnitSubTab('unitsSubTab');
-    showBuildingSubTab('buildingsSubTab');
-    showTimeSubTab('timeDimSubTab');
+    if (!hasAchievement(42)) { showUnitSubTab('unitsSubTab'); }
+    if (!hasMilestone(1)) { showBuildingSubTab('buildingsSubTab'); }
+    if (!hasAchievement(43)) { showTimeSubTab('timeDimSubTab'); }
     save();
     loadStyles();
     startInterval();

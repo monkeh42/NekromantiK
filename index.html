@@ -18,6 +18,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CFKRG117J3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-CFKRG117J3');
+    </script>
 </head>
 
 <body onload="init()">
@@ -1981,7 +1991,7 @@
                         <td>
                             <button id="last10SubTabBut" class="subTabBut" onclick="statsSubTabClick('last10SubTab', 'last10SubTabBut')">LAST 10 SAC.</button>
                         </td>
-                        <td>
+                        <td id="last10AscCell" style="display: none;">
                             <button id="last10AscSubTabBut" class="subTabBut" onclick="statsSubTabClick('last10AscSubTab', 'last10AscSubTabBut')">LAST 10 ASC.</button>
                         </td>
                         <td>
@@ -2055,6 +2065,8 @@
                     <tr style="height: 25px;">
                         <div style="height: 100%;"></div>
                     </tr>
+                </table>
+                <table id="ascensionStats" style="width: 50%; margin: auto; text-align: center; border-collapse: collapse; display: none;">
                     <tr>
                         <td colspan="3">
                             <h3>This Ascension</h3>
@@ -2131,6 +2143,8 @@
                     <tr style="height: 25px;">
                         <div style="height: 100%;"></div>
                     </tr>
+                </table>
+                <table style="width: 50%; margin: auto; text-align: center; border-collapse: collapse;">
                     <tr>
                         <td colspan="3">
                             <h3>All Time</h3>
@@ -2191,7 +2205,7 @@
                             <span id="bestWorlds"></span>
                         </td>
                     </tr>
-                    <tr>
+                    <tr id="allTimeGalaxies" style="display: none;">
                         <td style="border-right: 1px solid white; font-weight: bold;">
                             depleted galaxies
                         </td>
@@ -2207,7 +2221,7 @@
                     </tr>
                     <tr>
                         <td colspan="3">
-                            you have world prestiged <span id="totPrestige"></span> times, sacrificed <span id="totSacrifice"></span> times, and ascended <span id="totAscensions"></span> times.
+                            you have world prestiged <span id="totPrestige"></span> times, <span id="statsAnd">and </span>sacrificed <span id="totSacrifice"></span> times<span id="totalAscensionsStats" style="display:none;">, and ascended <span id="totAscensions"></span> times</span>.
                         </td>
                     </tr>
                     <tr>
@@ -2215,7 +2229,7 @@
                             your best crystal gain was <span id="bestGain"></span> and your best crystal gain rate was <span id="bestRate"></span>/min.
                         </td>
                     </tr>
-                    <tr>
+                    <tr id="spentGalaxiesStats">
                         <td colspan="3">
                             you have spent a total of <span id="totalSpent"></span> galaxies.
                         </td>
@@ -2292,7 +2306,7 @@
                     </tr>
                 </table>
             </div>
-            <div id="last10AscSubTab" class="statSubTab">
+            <div id="last10AscSubTab" class="statSubTab" style="display: none;">
                 <table style="width: 75%; margin: auto; text-align: center;">
                     <tr style="height: 25px;">
                         <div style="height: 100%;"></div>

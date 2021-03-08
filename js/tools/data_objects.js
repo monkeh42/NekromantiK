@@ -1549,8 +1549,8 @@ const UNLOCKS_DATA = {
         'mainTab': {
             unlocked: false,
             notifyID: 'galaxyTabBut',
-            idsToShow: ['galaxyTabCell', 'galaxyTabCellMid', 'galaxiesBonusDisplay'],
-            idsToHide: [],
+            idsToShow: ['galaxyTabCell', 'galaxyTabCellMid', 'galaxiesBonusDisplay', 'last10AscCell', 'ascensionStats', 'totalAscensionsStats', 'spentGalaxiesStats', 'allTimeGalaxies'],
+            idsToHide: ['statsAnd'],
             shouldNotify: function() {
                 return true;
             },
