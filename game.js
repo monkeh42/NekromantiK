@@ -107,7 +107,7 @@ function loadGame() {
         }
     }
     element.innerHTML = element.innerHTML.slice(0, -2);
-    element.innerHTML += '<br>hotkeys do not trigger if ctrl is pressed.'
+    element.innerHTML += '<br>hotkeys do not trigger if ctrl or command (Mac) is pressed.'
 }
 
 function loadStyles() {
@@ -813,7 +813,8 @@ document.onkeydown = function(e) {
     var key = e.key;
     var ctrlDown = e.ctrlKey;
     var shiftDown = e.shiftKey;
-    if (HOTKEYS[key] !== undefined && !ctrlDown) { HOTKEYS[key].onPress(shiftDown); }
+    var metaDown = e.metaKey;
+    if (HOTKEYS[key] !== undefined && !ctrlDown && !metaDown) { HOTKEYS[key].onPress(shiftDown); }
 }
 
 function toggleHotkeys() {
