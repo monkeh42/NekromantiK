@@ -693,7 +693,7 @@ function updateVersion() {
     copyData(player, START_PLAYER);
     updateVersionData(player, tempPlayer);
     player.version = GAME_DATA.version;
-    if (player.version == 'v0.3.2') {
+    if (player.version == 'v0.3.2' || player.version == 'v0.3.3') {
         if ((!!tempPlayer.achievements[11]) && (typeof tempPlayer.achievements[11] === "object") && player.unlocks['galaxyTab']['mainTab']) {
             for (let i=1; i<=3; i++) {
                 for (let j=1; j<=5; j++) {
