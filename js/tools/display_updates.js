@@ -797,6 +797,7 @@ function showTab(tabName, reset=false, buttonName) {
         document.getElementById('helpTabCellMid').classList.remove('tabButSelected');
     }
     player.activeTabs[0] = tabName;
+    if (tabName == 'galaxyTab' && isActiveTab('galaxiesSubTab'))
     if (buttonName !== undefined) { document.getElementById(buttonName).classList.remove('tabButNotify'); }
 }
 
@@ -897,7 +898,7 @@ function showGalaxySubTab(subTabName, buttonName, parentButton) {
 }
 
 function isActiveTab(tabName) {
-    return (document.getElementById(tabName).style.display == 'block');
+    return (document.getElementById(tabName).style.display != 'none');
 }
 
 function getActiveTab() {
