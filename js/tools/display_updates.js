@@ -1119,7 +1119,7 @@ function unlockAchievement(a) {
     displayData.push(['addClass', 'statsTabBut', 'tabButIndirectNotify']);
     displayData.push(['setProp', 'achUnlockPopup', 'opacity', '1']);
     if (ACH_DATA[a].secret) { displayData.push(['setAttr', ACH_DATA[a].divID, 'data-title', ACH_DATA[a].desc + (ACH_DATA[a].hasReward ? ' Reward: ' + ACH_DATA[a].reward : '' ) + (ACH_DATA[a].showEffect ? ' Currently: ' + formatDefault2(ACH_DATA[a].effect()) + 'x' : '' )]); }
-    popupShownTime = (new Date).getTime();
+    popupShownTime = new Date();
     ACH_DATA[a].onUnlock();
 }
 
@@ -1149,7 +1149,7 @@ function unlockMilestone(m) {
     displayData.push(['addClass', 'galaxyTabBut', 'tabButIndirectNotify']);
     displayData.push(['setProp', 'milesUnlockPopup', 'opacity', '1']);
     displayData.push(['setProp', 'milestoneReq' + m.toString(), 'text-decoration', 'line-through']);
-    mPopupShownTime = (new Date).getTime();
+    mPopupShownTime = new Date();
     MILES_DATA[m].onUnlock();
 }
 
