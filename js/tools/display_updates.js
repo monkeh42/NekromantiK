@@ -797,7 +797,7 @@ function showTab(tabName, reset=false, buttonName) {
         document.getElementById('helpTabCellMid').classList.remove('tabButSelected');
     }
     player.activeTabs[0] = tabName;
-    if (tabName == 'galaxyTab' && isActiveTab('galaxiesSubTab'))
+    if (tabName == 'galaxyTab' && isActiveTab('galaxiesSubTab')) { player.activeTabs[4] = 'galaxiesSubTab'; }
     if (buttonName !== undefined) { document.getElementById(buttonName).classList.remove('tabButNotify'); }
 }
 
