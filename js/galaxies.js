@@ -318,8 +318,8 @@ function galaxyPrestigeReset(respec=false) {
     }
 
     player.pastAscRuns.lastRun.galaxyGain = calculateGalaxyGain();
-    player.pastAscRuns.lastRun.timeSpent = new Date()-player.pastAscRuns.lastRun.timeAscended;
-    player.pastAscRuns.lastRun.timeAscended = new Date();
+    player.pastAscRuns.lastRun.timeSpent = (new Date).getTime()-player.pastAscRuns.lastRun.timeAscended;
+    player.pastAscRuns.lastRun.timeAscended = (new Date).getTime();
     if (player.pastAscRuns.lastRun.galaxyGain.gt(player.allTimeStats.bestGalaxyGain)) { player.allTimeStats.bestGalaxyGain = new Decimal(player.pastAscRuns.lastRun.galaxyGain) }
     for (var i=9; i>=0; i--) { copyData(player.pastAscRuns.lastTen[i], player.pastAscRuns.lastTen[i-1]); }
     copyData(player.pastAscRuns.lastTen[0], player.pastAscRuns.lastRun);

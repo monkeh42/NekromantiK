@@ -319,19 +319,19 @@ function save() {
 //main loop and related
 
 function startGame() {
-    var diff = new Date() - player.lastUpdate;
+    var diff = (new Date).getTime() - player.lastUpdate;
     if ((diff)>(1000*1000)) {
         calculateOfflineTime(new Decimal(diff/1000));
     }
     else {
-        player.lastUpdate = new Date();
-        player.lastAutoSave = new Date();
-        player.lastAutobuy = new Date();
-        player.lastWindowUpdate = new Date();
+        player.lastUpdate = (new Date).getTime();
+        player.lastAutoSave = (new Date).getTime();
+        player.lastAutobuy = (new Date).getTime();
+        player.lastWindowUpdate = (new Date).getTime();
         save();
     }
 
-    if (player.pastRuns.lastRun.timeSacrificed == 0) { player.pastRuns.lastRun.timeSacrificed = new Date(); }
+    if (player.pastRuns.lastRun.timeSacrificed == 0) { player.pastRuns.lastRun.timeSacrificed = (new Date).getTime(); }
     document.getElementById('calcPopupContainer').style.display = 'none';
     document.getElementById('game').style.display = 'block';
 
@@ -419,7 +419,7 @@ function gameLoop(diff=new Decimal(0), offline=false) {
     if (!offline && player.unlocks['unitsTab']['autobuyers']) {
         var slowAutoBuy = (currentUpdate - player.lastAutobuy)>=(15000/DEV_SPEED);
         autobuyerTick(slowAutoBuy);
-        if (slowAutoBuy) { player.lastAutobuy = new Date(); }
+        if (slowAutoBuy) { player.lastAutobuy = (new Date).getTime(); }
     }
     if (!offline) {
         //allDisplay();
@@ -505,9 +505,9 @@ function calculateOfflineTime(seconds) {
             autobuyerTick(true);
         } else { autobuyerTick(false); }
     }
-    player.lastUpdate = new Date();
-    player.lastAutoSave = new Date();
-    player.lastAutobuy = new Date();
+    player.lastUpdate = (new Date).getTime();
+    player.lastAutoSave = (new Date).getTime();
+    player.lastAutobuy = (new Date).getTime();
     save();
 
     var allZero = true;
@@ -639,8 +639,6 @@ function copyData(data, start) {
             copyData(data[item], start[item]);
         } else if (start[item] instanceof Decimal) {
             data[item] = new Decimal(start[item]);
-        } else if (start[item] instanceof Date) {
-            data[item] = new Date(start[item]);
         } else if ((!!start[item]) && (typeof start[item] === "object")) {
             data[item] = {};
             copyData(data[item], start[item]);
@@ -667,10 +665,6 @@ function fixData(data, start) {
                 data[item] = new Decimal(start[item]);
             } else {
                 data[item] = new Decimal(data[item]);
-            }
-        } else if (start[item] instanceof Date) {
-            if (data[item] === undefined || (Object.keys(data[item]).length==0 && typeof data[item] === "object")) {
-                data[item] = new Date(start[item]);
             }
         } else if ((!!start[item]) && (typeof start[item] === "object")) {
             if (data[item] === undefined) {
@@ -725,10 +719,6 @@ function updateVersionData(newP, oldP) {
         } else if ((!!newP[item]) && (typeof newP[item] === "object")) {
             if (oldP[item] !== undefined) {
                 updateVersionData(newP[item], oldP[item]);
-            }
-        } else if (newP[item] instanceof Date) {
-            if (oldP[item] !== undefined && oldP[item] instanceof Date) {
-                newP[item] = new Date(oldP[item]);
             }
         } else {
             if (oldP[item] !== undefined && item != 'version') {

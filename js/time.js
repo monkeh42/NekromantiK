@@ -59,7 +59,7 @@ function calculateCrystalGain() {
 
 function calculateCrystalsPerMin() {
     let gain = calculateCrystalGain();
-    let time = (new Date() - player.pastRuns.lastRun.timeSacrificed)/60000;
+    let time = ((new Date).getTime() - player.pastRuns.lastRun.timeSacrificed)/60000;
 
     return gain.div(time);
 }
@@ -74,7 +74,7 @@ function isAutoSacTriggered() {
             return calculateCrystalGain().gte(player.pastRuns.lastRun.crystalGain.times(player.autobuyers[9].amount));
 
         case 'afterx':
-            return player.autobuyers[9].amount.lt((new Date()-player.pastRuns.lastRun.timeSacrificed)/1000);
+            return player.autobuyers[9].amount.lt(((new Date).getTime()-player.pastRuns.lastRun.timeSacrificed)/1000);
 
         default: return false;
     }
@@ -292,8 +292,8 @@ function timePrestigeReset() {
     if (player.astralFlag) { toggleAstral(); }
     clearInterval(mainLoop);
     player.pastRuns.lastRun.crystalGain = calculateCrystalGain();
-    player.pastRuns.lastRun.timeSpent = new Date()-player.pastRuns.lastRun.timeSacrificed;
-    player.pastRuns.lastRun.timeSacrificed = new Date();
+    player.pastRuns.lastRun.timeSpent = (new Date).getTime()-player.pastRuns.lastRun.timeSacrificed;
+    player.pastRuns.lastRun.timeSacrificed = (new Date).getTime();
     if (player.pastRuns.lastRun.crystalGain.gt(player.thisAscStats.bestCrystalGain)) { player.thisAscStats.bestCrystalGain = new Decimal(player.pastRuns.lastRun.crystalGain) }
     if (player.thisAscStats.bestCrystalGain.gt(player.allTimeStats.bestCrystalGain)) { player.allTimeStats.bestCrystalGain = new Decimal(player.thisAscStats.bestCrystalGain) }
     if (player.pastRuns.lastRun.crystalGain.div(player.pastRuns.lastRun.timeSpent/60000).gt(player.thisAscStats.bestCrystalRate)) { player.thisAscStats.bestCrystalRate = new Decimal(player.pastRuns.lastRun.crystalGain.div(player.pastRuns.lastRun.timeSpent/60000)) }
