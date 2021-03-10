@@ -97,7 +97,7 @@ function canAffordGUpg(g, u) {
 }
 
 function buyGUpg(g, u) {
-    if (canAffordGUpg(g, u)) {
+    if (canAffordGUpg(g, u) && !player.galaxyUpgs[g][u].locked) {
         let thisRow = GALAXIES_DATA[g].upgrades[u].row;
         player.galaxies = player.galaxies.minus(GALAXIES_DATA[g].upgrades[u].cost());
         player.spentGalaxies = player.spentGalaxies.plus(GALAXIES_DATA[g].upgrades[u].cost());
