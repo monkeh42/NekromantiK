@@ -108,6 +108,8 @@ function loadGame() {
     }
     element.innerHTML = element.innerHTML.slice(0, -2);
     element.innerHTML += '<br>hotkeys do not trigger if ctrl or command (Mac) is pressed.'
+
+    updateAutobuyersDisplay();
 }
 
 function loadStyles() {

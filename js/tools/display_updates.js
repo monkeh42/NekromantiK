@@ -575,7 +575,6 @@ function updateAscBuyer() {
             document.getElementById('ascensionErrValue').innerHTML = formatWholeNoComma(player.autobuyers[11]['amount']);
         }
     }
-    player.autobuyers[11]['amount'] = new Decimal(document.getElementById('ascensionBuyerAmount').value);
 }
 
 function updateMaxPrestige() {
@@ -613,7 +612,7 @@ function updateAutobuyersDisplay() {
 
     document.getElementById('ascensionEnabledBut').innerHTML = player.autobuyers[11]['on'] ? 'ON' : 'OFF'
     document.getElementById('ascensionSpeedBut').innerHTML = player.autobuyers[11]['fast'] ? 'FAST' : 'SLOW'
-    document.getElementById('ascensionBuyerAmount').value = formatWholeNoComma(player.autobuyers[11]['max']);
+    document.getElementById('ascensionBuyerAmount').value = formatWholeNoComma(player.autobuyers[11]['amount']);
 
     for (let j=1; j<=NUM_TIMEDIMS; j++) {
         document.getElementById('timeDim' + j.toString() + 'But').innerHTML = player.autobuyers[12][j] ? 'ON' : 'OFF'
@@ -766,8 +765,6 @@ function updateHeaderDisplay() {
 
 function updatePopupsEtc() {
     updateSliderDisplay();
-
-    updateAutobuyersDisplay();
 
     updateConfirmationPopupDisplay();
 
