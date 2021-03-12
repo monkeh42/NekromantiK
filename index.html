@@ -30,7 +30,7 @@
     </script>
 </head>
 
-<body onload="init()">
+<body onload="init()" class="scrollbar">
     <div id="calcPopupContainer" width="100%" height="100%" style="background-color: black; display: block;">
         <div class="bpopup" id="offlineCalcPopup">
             <div>
@@ -76,6 +76,18 @@
                 </tr>
             </table>
         </div>
+    </div>
+    <div class="offPopup" id="achUnlockPopup">
+        Achievement Unlocked!
+    </div>
+    <div class="offPopup" id="milesUnlockPopup">
+        Milestone Unlocked!
+    </div>
+    <div class="offPopup" id="savePopup">
+        Game Saved!
+    </div>
+    <div class="offPopup" id="autosavePopup">
+        Game Autosaved!
     </div>
     <div id="tabButtons" id="tabButtons" style="width: 1280px; margin: 10px auto 0; display: block;">
         <table style="width: auto; margin: auto;" class="shownOnFull">
@@ -1613,6 +1625,7 @@
                 <div id="galButs2" style="text-align: center; width: 100%; margin: auto;"><button id="galaxyNameBut1" class="galaxyNameBut2" onclick="showGalaxies('gal1', 'gal2')">Andromeda/Circinus</button><button id="galaxyNameBut2" class="galaxyNameBut2" onclick="showGalaxies('gal3', 'gal4')">Sculptor Dwarf/Triangulum</button></div>
                 <div id="galButs4" style="text-align: center; width: 100%; margin: auto;"><button id="galaxyNameBut1" class="galaxyNameBut4" onclick="showGalaxy('gal1')">Andromeda</button><button id="galaxyNameBut2" class="galaxyNameBut4" onclick="showGalaxy('gal2')">Circinus</button><button id="galaxyNameBut3" class="galaxyNameBut4" onclick="showGalaxy('gal3')">Sculptor Dwarf</button><button id="galaxyNameBut4" class="galaxyNameBut4" onclick="showGalaxy('gal4')">Triangulum</button></div>
                 <div style="text-align: center; width: 100%; margin: auto;"><button id="galaxyRespecBut" class="galaxyBut" onclick="respecGalaxiesClick()">Respec galaxies - forces ascension</button><button id="milestonesBut" class="galaxyBut" onclick="showMilestones()">Galaxy Milestones</button></div>
+                <div id="galaxyImpExp" style="text-align: center; width: 100%; margin: auto;"><button id="impGalBut" class="galImpExpBut" onclick="showImportGalaxies()">Import Galaxies</button><button id="expGalBut" class="galImpExpBut" onclick="exportGalaxies()">Export Galaxies</button><button id="loadFav" class="galImpExpBut" onclick="importGalaxies(true)">Load Favorite<div id="favLoadNotice">SUCCESS!</div></button><button id="saveFav" class="galImpExpBut" onclick="saveFavorite()">Save Favorite<div id="favSavedNotice">SAVED!</div></button></div>
                 <table id="allGalaxiesTable" style="text-align: center; position: relative; left: -167;">
                     <tr>
                         <td id="gal1" class="gal">
@@ -2487,7 +2500,7 @@
             </div>
         </div>
         <div id="optionsTab" class="pageTab">
-            <div id="customizeDisplayButDiv" style="width: 20%; margin: 10px auto 0; font-size: 10pt; text-align: center; display: none;"><button id="customizeDisplayBut" class="displayBut" onclick="openDisplayPopup()">customize header display</button></div>
+            <div id="customizeDisplayButDiv" style="width: 20%; margin: 10px auto 0; font-size: 10pt; text-align: center;"><button id="customizeDisplayBut" class="displayBut" onclick="openDisplayPopup()">customize header display</button></div>
             <table id="optionsTable" style="width: 60%; margin: auto; text-align: center;">
                 <tr style="height: 10px;">
                     <div style="height: 100%;"></div>
@@ -2497,7 +2510,7 @@
                         <button id="hardReset" class="optBut" onclick="hardReset()">HARD RESET</button>
                     </td>
                     <td>
-                        <button id="manSave" class="optBut" onclick="save()">MANUAL SAVE</button>
+                        <button id="manSave" class="optBut" onclick="manualSave()">MANUAL SAVE</button>
                     </td>
                     <td>
                         <button id="manLoad" class="optBut" onclick="loadGame()">MANUAL LOAD</button>
@@ -2565,7 +2578,7 @@
                 </tr>
                 <tr>
                     <td colspan="4">
-                        <div style="text-align: center; width: 80%; margin: auto;">
+                        <div style="text-align: center; width: 100%; margin: auto;">
                             <span style="font-weight: bold;">HOTKEYS: </span><span id="hotkeysList" style="font-size: 11pt;"></span>
                         </div>
                     </td>
@@ -2604,6 +2617,23 @@
                 <span id="offlineEssence" style="display: none;"><span id="offlineTrueGain" style="font-size: 15pt; font-weight: bold; white-space: pre; color: #006ba0;"> 0 </span> true time essence and <span id="offlineAntiGain" style="font-size: 15pt; font-weight: bold; white-space: pre; color: #006ba0;"> 0 </span> anti time essence.<br></span>
             </div>
             <button class="optBut" id="closeOfflinePopup" style="margin: 10px;" onclick="closeOfflinePopup()">CLOSE</button>
+        </div>
+        <div class="gPopup" id="gImportPopup" style="display: none; width: 330px; min-width: 330px; height: 260px; min-height: 260px;">
+            <label id="gImportTextLabel" for="gImportText"><h2>Paste your galaxy code:</h2></label>
+            <textarea id="gImportText" name="gImportText" style="display: block;"></textarea>
+            <div id="gImpErr" style="height: 20px; min-height: 20px;"></div>
+            <div style="margin: 10px;"><button id ="impGalaxyBut" class="optBut" onclick="importGalaxies()" style="float: left;">IMPORT</button></div><div style="margin: 10px;"><button id ="closeImpGalaxyPopup" class="optBut" onclick="closeImpGalaxies()" style="float: right;">CLOSE</button></div>
+        </div>
+        <div class="gPopup" id="gExportPopup" style="display: none; width: 330px; min-width: 330px; height: 235px; min-height: 235px;">
+            <label id="gExportTextLabel" for="gExportText"><h2>Your galaxy code:</h2></label>
+            <textarea id="gExportText" name="gExportText" style="display: block;"></textarea>
+            <div style="margin: auto;"><button id ="closeExpGalaxyPopup" class="optBut" onclick="closeExpGalaxies()">CLOSE</button></div>
+        </div>
+        <div class="gPopup" id="favErrPopup" style="display: none; width: 330px; min-width: 330px; height: 260px; min-height: 260px;">
+            <label id="favErrTextLabel" for="favErrText"><h2>Your saved favorites:</h2></label>
+            <textarea id="favErrExportText" name="favErrExportText" style="display: block;"></textarea>
+            <div id="favErr" style="height: 20px; min-height: 20px;"></div>
+            <div style="margin: auto;"><button id ="closefavErrPopup" class="optBut" onclick="closefavErrPopup()">CLOSE</button></div>
         </div>
         <div class="popup" id="confirmationsPopup">
             <div>
@@ -2681,99 +2711,109 @@
             <button class="optBut" id="closeConfPopup" style="margin: 10px;" onclick="closeConfirmationsPopup()">CLOSE</button>
         </div>
         <div class="dPopup" id="displayPopup">
-            <div>
-                <h2>Header Display</h2>
-                <table>
-                    <tr>
-                        <td>
-                            Boost from units
-                        </td>
-                        <td width="10%">
-                            <button id="unitsBoostDisplayBut" class="confBut" onclick="toggleDisplay('unitsBoostDisplay', 'unitsBoostDisplayBut')">ON</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Boost from achievements
-                        </td>
-                        <td width="10%">
-                            <button id="achBoostDisplayBut" class="confBut" onclick="toggleDisplay('achBoostDisplay', 'achBoostDisplayBut')">OFF</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Boost from worlds
-                        </td>
-                        <td width="10%">
-                            <button id="worldsBonusDisplayBut" class="confBut" onclick="toggleDisplay('worldsBonusDisplay', 'worldsBonusDisplayBut')">ON</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Boost from galaxies
-                        </td>
-                        <td width="10%">
-                            <button id="galaxiesBonusDisplayBut" class="confBut" onclick="toggleDisplay('galaxiesBonusDisplay', 'galaxiesBonusDisplayBut')">ON</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Total corpse boost
-                        </td>
-                        <td width="10%">
-                            <button id="totalBonusDisplayBut" class="confBut" onclick="toggleDisplay('totalBonusDisplay', 'totalBonusDisplayBut')">ON</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Astral brick amount
-                        </td>
-                        <td width="10%">
-                            <button id="bricksDisplayHeaderBut" class="confBut" onclick="toggleDisplay('bricksDisplayHeader', 'bricksDisplayHeaderBut')">OFF</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Astral brick gain
-                        </td>
-                        <td width="10%">
-                            <button id="bricksGainDisplayHeaderBut" class="confBut" onclick="toggleDisplay('bricksGainDisplayHeader', 'bricksGainDisplayHeaderBut')">OFF</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Astral enslavement notice
-                        </td>
-                        <td width="10%">
-                            <button id="astralNoticeDisplayBut" class="confBut" onclick="toggleDisplay('astralNoticeDisplay', 'astralNoticeDisplayBut')">ON</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Time crystal amount
-                        </td>
-                        <td width="10%">
-                            <button id="crystalsDisplayHeaderBut" class="confBut" onclick="toggleDisplay('crystalsDisplayHeader', 'crystalsDisplayHeaderBut')">OFF</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Time speed boost
-                        </td>
-                        <td width="10%">
-                            <button id="timeBoostDisplayBut" class="confBut" onclick="toggleDisplay('timeBoostDisplay', 'timeBoostDisplayBut')">ON</button>
-                        </td>
-                    </tr>
-                </table>
+            <div class="headerHeaderContainer">
+                <div class="headerPopupHeader">Header Display</div>
+                <div class="headerPopupHeaderX"><a href="javascript:closeDisplayPopup();">X</a></div>
             </div>
+            <table class="displayButtonsTable">
+                <tr>
+                    <td>
+                        Autosave notification
+                    </td>
+                    <td width="10%">
+                        <button id="autosavePopupBut" class="confBut" onclick="toggleDisplay('autosavePopup', 'autosavePopupBut')">ON</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Boost from units
+                    </td>
+                    <td width="10%">
+                        <button id="unitsBoostDisplayBut" class="confBut" onclick="toggleDisplay('unitsBoostDisplay', 'unitsBoostDisplayBut')">ON</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Boost from achievements
+                    </td>
+                    <td width="10%">
+                        <button id="achBoostDisplayBut" class="confBut" onclick="toggleDisplay('achBoostDisplay', 'achBoostDisplayBut')">OFF</button>
+                    </td>
+                </tr>
+                <tr id="worldsToggleRow" style="display: none;">
+                    <td>
+                        Boost from worlds
+                    </td>
+                    <td width="10%">
+                        <button id="worldsBonusDisplayBut" class="confBut" onclick="toggleDisplay('worldsBonusDisplay', 'worldsBonusDisplayBut')">ON</button>
+                    </td>
+                </tr>
+                <tr id="galaxiesToggleRow" style="display: none;">
+                    <td>
+                        Boost from galaxies
+                    </td>
+                    <td width="10%">
+                        <button id="galaxiesBonusDisplayBut" class="confBut" onclick="toggleDisplay('galaxiesBonusDisplay', 'galaxiesBonusDisplayBut')">ON</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Total corpse boost
+                    </td>
+                    <td width="10%">
+                        <button id="totalBonusDisplayBut" class="confBut" onclick="toggleDisplay('totalBonusDisplay', 'totalBonusDisplayBut')">ON</button>
+                    </td>
+                </tr>
+                <tr id="brickToggleRow" style="display: none;">
+                    <td>
+                        Astral brick amount
+                    </td>
+                    <td width="10%">
+                        <button id="bricksDisplayHeaderBut" class="confBut" onclick="toggleDisplay('bricksDisplayHeader', 'bricksDisplayHeaderBut')">OFF</button>
+                    </td>
+                </tr>
+                <tr id="brickGainToggleRow" style="display: none;">
+                    <td>
+                        Astral brick gain
+                    </td>
+                    <td width="10%">
+                        <button id="bricksGainDisplayHeaderBut" class="confBut" onclick="toggleDisplay('bricksGainDisplayHeader', 'bricksGainDisplayHeaderBut')">OFF</button>
+                    </td>
+                </tr>
+                <tr id="astralNoticeToggleRow" style="display: none;">
+                    <td>
+                        Astral enslavement notice
+                    </td>
+                    <td width="10%">
+                        <button id="astralNoticeDisplayBut" class="confBut" onclick="toggleDisplay('astralNoticeDisplay', 'astralNoticeDisplayBut')">ON</button>
+                    </td>
+                </tr>
+                <tr id="crystalsToggleRow" style="display: none;">
+                    <td>
+                        Time crystal amount
+                    </td>
+                    <td width="10%">
+                        <button id="crystalsDisplayHeaderBut" class="confBut" onclick="toggleDisplay('crystalsDisplayHeader', 'crystalsDisplayHeaderBut')">OFF</button>
+                    </td>
+                </tr>
+                <tr id="timeBoostToggleRow" style="display: none;">
+                    <td>
+                        Time speed boost
+                    </td>
+                    <td width="10%">
+                        <button id="timeBoostDisplayBut" class="confBut" onclick="toggleDisplay('timeBoostDisplay', 'timeBoostDisplayBut')">ON</button>
+                    </td>
+                </tr>
+                <tr id="unspentToggleRow" style="display: none;">
+                    <td>
+                        Unspent galaxies
+                    </td>
+                    <td width="10%">
+                        <button id="unspentGalaxiesHeaderDisplayBut" class="confBut" onclick="toggleDisplay('unspentGalaxiesHeaderDisplay', 'unspentGalaxiesHeaderDisplayBut')">OFF</button>
+                    </td>
+                </tr>
+            </table>
             <button class="displayButSkinny" id="displayDefaults" style="margin: 10px;" onclick="setDisplayDefaults()">defaults</button>
-            <button class="optBut" id="closeDisplayPopup" style="margin: 10px;" onclick="closeDisplayPopup()">CLOSE</button>
-        </div>
-        <div class="popup" id="achUnlockPopup">
-            Achievement Unlocked!
-        </div>
-        <div class="popup" id="milesUnlockPopup">
-            Milestone Unlocked!
         </div>
         <div class="milestonePopup" id="milestonesPopup">
             <div class="cursorContainer"></div>

@@ -115,6 +115,22 @@ body {
     margin-bottom: 200px;
 }
 
+.scrollbar::-webkit-scrollbar {
+    width: 12px;
+    opacity: 0;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+    opacity: 0;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px double rgb(255, 255, 255, 0.4);
+    border-radius: 9px;
+    opacity: 0.5;
+}
+
 #game {
     width: 1280px;
     margin: auto;
@@ -175,6 +191,32 @@ body {
     display: none;
 }
 
+.gPopup {
+    position: fixed;
+    left: 50%;
+	top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center;
+    background-color: black;
+    border: 3px solid white;
+    box-shadow: 3px 3px #424242;
+    width: 320px;
+    border-radius: 4px;
+    z-index: 9;
+    display: none;
+}
+
+.offPopup {
+    position: absolute;
+    text-align: center;
+    background-color: black;
+    border: 3px solid white;
+    width: 300px;
+    border-radius: 4px;
+    z-index: 2;
+    display: none;
+}
+
 .bpopup {
     position: absolute;
     left: 50%;
@@ -190,18 +232,37 @@ body {
 }
 
 .dPopup {
-    position: absolute;
-    left: 67%;
-	top: 50%;
-    transform: translateX(50%) translateY(-50%);
+    position: fixed;
+    top: 150px;
+    right: 50px;
     text-align: center;
     background-color: black;
     border: 3px solid white;
     box-shadow: 3px 3px #424242;
-    width: 300px;
+    width: 350px;
     border-radius: 4px;
-    z-index: 2;
+    z-index: 8;
     display: none;
+    height: 600px;
+    max-height: 600px;
+    overflow: overlay;
+}
+
+.dPopup::-webkit-scrollbar {
+    width: 10px;
+    opacity: 0;
+}
+
+.dPopup::-webkit-scrollbar-track {
+    margin-top: 46px;
+    opacity: 0;
+}
+
+.dPopup::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px double rgb(255, 255, 255, 0.4);
+    border-radius: 9px;
+    opacity: 0.5;
 }
 
 .milestonePopup {
@@ -688,13 +749,28 @@ option:active, option.active {
 
 .lockedGalaxyUpg {
     color: white;
-    background: #4b4b4b url("../images/skull.png") no-repeat center;
+    background-color: transparent;
     width: 175px;
     height: 175px;
     border: 3px solid #40ff00;
     border-radius: 4px;
     margin-bottom: 10px;
     margin-top: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.lockedGalaxyUpg::after {
+    content: "";
+    position: absolute;
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%;  
+    border-radius: 4px;
+    opacity: 0.6; 
+    z-index: -1;
+    background: #4b4b4b url("../images/skull.png") no-repeat center;
 }
 
 .galaxyUpg:hover {
@@ -962,6 +1038,49 @@ option:active, option.active {
     width: 80%;
     height: 300px;
     margin: auto;
+    background-color: #525252;
+    overflow: auto;
+    display: none;
+}#exportText {
+    width: 80%;
+    height: 300px;
+    margin: auto;
+    background-color: #525252;
+    overflow: auto;
+    display: none;
+}
+
+#gImportText {
+    min-width: 305px;
+    width: 305px;
+    height: 100px;
+    min-height: 100px;
+    margin: auto;
+    margin-bottom: 20px;
+    background-color: #525252;
+    overflow: auto;
+    display: none;
+}
+
+#gExportText {
+    min-width: 305px;
+    width: 305px;
+    height: 100px;
+    min-height: 100px;
+    margin: auto;
+    margin-bottom: 20px;
+    background-color: #525252;
+    overflow: auto;
+    display: none;
+}
+
+#favErrExportText {
+    min-width: 305px;
+    width: 305px;
+    height: 100px;
+    min-height: 100px;
+    margin: auto;
+    margin-bottom: 20px;
     background-color: #525252;
     overflow: auto;
     display: none;
@@ -1506,6 +1625,10 @@ option:active, option.active {
     box-shadow: 0px 0px 10px 5px goldenrod;
 }
 
+.timeUnlockedNotify {
+    box-shadow: 0px 0px 5px 5px #006ba0;
+}
+
 .achievement p, .achievementUnlocked p {
     vertical-align: middle;
 }
@@ -1513,9 +1636,9 @@ option:active, option.active {
 #achUnlockPopup {
     position: fixed !important;
     display: block !important;
-    top: 15px !important;
-    left: 15px !important;
-    transform: none !important;
+    top: 55px !important;
+    right: 50% !important;
+    transform: translateX(-100%) !important;
     box-shadow: 0px 0px 10px 5px goldenrod;
     opacity: 0;
     -webkit-transition: 2s;
@@ -1525,10 +1648,34 @@ option:active, option.active {
 #milesUnlockPopup {
     position: fixed !important;
     display: block !important;
-    top: 15px !important;
-    left: 15px !important;
-    transform: none !important;
+    top: 55px !important;
+    right: 50% !important;
+    transform: translateX(-100%) !important;
     box-shadow: 0px 0px 10px 5px #e32d05;
+    opacity: 0;
+    -webkit-transition: 2s;
+    transition: opacity 2s;
+}
+
+#savePopup {
+    position: fixed !important;
+    display: block !important;
+    top: 55px !important;
+    right: 50% !important;
+    transform: translateX(200%) !important;
+    box-shadow: 0px 0px 5px 2px white;
+    opacity: 0;
+    -webkit-transition: 2s;
+    transition: opacity 2s;
+}
+
+#autosavePopup {
+    position: fixed !important;
+    display: block !important;
+    top: 55px !important;
+    right: 50% !important;
+    transform: translateX(200%) !important;
+    box-shadow: 0px 0px 5px 2px white;
     opacity: 0;
     -webkit-transition: 2s;
     transition: opacity 2s;
@@ -1561,6 +1708,56 @@ option:active, option.active {
     cursor: pointer;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
+}
+
+.galImpExpBut {
+    color: white;
+    background-color: #661503;
+    font-style: bold;
+    width: 130px;
+    height: 35px;
+    border: 1px solid #e32d05;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    position: relative;
+}
+
+#favSavedNotice {
+    color: white;
+    background-color: #661503;
+    font-style: bold;
+    font-size: 18px;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    position: absolute;
+    left: 0px;
+	top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    transition: opacity 2s;
+    opacity: 0;
+}
+
+#favLoadNotice {
+    color: white;
+    background-color: #661503;
+    font-style: bold;
+    font-size: 18px;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    position: absolute;
+    left: 0px;
+	top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    transition: opacity 2s;
+    opacity: 0;
 }
 
 .galaxyNameBut2 {
@@ -1826,6 +2023,50 @@ option:active, option.active {
     text-decoration: none;
 }
 
+.headerHeaderContainer {
+    position: fixed;
+    background-color: black;
+    width: 350px;
+    height: 51px;
+    border-radius: 1px;
+}
+
+.headerPopupHeader {
+    color: white;
+    background-color: black;
+    font-size: 20pt;
+    font-weight: 800;
+    position: fixed;
+    width: 294px;
+    height: 40px;
+    padding-right: 50px;
+    text-align: center;
+    border: 1px solid white;
+    border-radius: 1px;
+    margin: 2px;
+}
+
+.headerPopupHeaderX {
+    color: white;
+    background-color: transparent;
+    font-size: 24pt;
+    font-weight: 800;
+    position: fixed;
+    width: 330px;
+    height: 40px;
+    text-align: right;
+    padding-right: 10px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 800;
+    margin: 2px;
+    z-index: 9;
+}
+
+.headerPopupHeaderX a {
+    color: white;
+    text-decoration: none;
+}
+
 .milestonePopupHR {
     background-color: black;
     position: fixed;
@@ -1834,6 +2075,16 @@ option:active, option.active {
     margin-top: 46px;
     margin-left: 2px;
     border: 1px solid #661503;
+    border-radius: 1px;
+}
+
+.displayButtonsTable{
+    width: 100%;
+    height: 549px;
+    width: 340px;
+    margin-top: 49px;
+    margin-right: 10px;
+    border-radius: 4px;
     border-radius: 1px;
 }
 

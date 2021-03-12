@@ -653,11 +653,26 @@ const START_PLAYER = {
     },
 
     headerDisplay: {
+        'autosavePopup': true,
         'astralNoticeDisplay': true,
         'unitsBoostDisplay': true,
         'achBoostDisplay': false,
         'worldsBonusDisplay': true,
         'galaxiesBonusDisplay': true,
+        'totalBonusDisplay': true,
+        'bricksDisplayHeader': false,
+        'bricksGainDisplayHeader': false,
+        'crystalsDisplayHeader': false,
+        'timeBoostDisplay': true,
+    },
+
+    headerDisplayUnlocked: {
+        'autosavePopup': true,
+        'astralNoticeDisplay': false,
+        'unitsBoostDisplay': true,
+        'achBoostDisplay': true,
+        'worldsBonusDisplay': false,
+        'galaxiesBonusDisplay': false,
         'totalBonusDisplay': true,
         'bricksDisplayHeader': false,
         'bricksGainDisplayHeader': false,
@@ -671,6 +686,7 @@ const START_PLAYER = {
     activeGalaxies: [4, 'gal1', 'gal2'],
     hotkeysOn: true,
     dontResetSlider: false,
+    favGalaxies: [],
     version: 'v0.3.1_d.5',
 }
 
@@ -1267,18 +1283,24 @@ const UNLOCKS_DATA = {
             },
             condition: function() {
                 return true;
-            }
+            },
+            onUnlock: function() {
+                return;
+            },
         }, 
         'spacePrestige': {
             unlocked: false,
-            idsToShow: ['spacePresContainer', 'worldsBonusDisplay'],
+            idsToShow: ['spacePresContainer', 'worldsBonusDisplay', 'worldsToggleRow'],
             idsToHide: [],
             shouldNotify: function() {
                 return false;
             },
             condition: function() {
                 return player.units[4].bought.gte(1) || player.ascensions.gt(0);
-            }
+            },
+            onUnlock: function() {
+                player.headerDisplayUnlocked['worldsBonusDisplay'] = true;
+            },
         },  
         'autobuyers': {
             unlocked: false,
@@ -1291,7 +1313,10 @@ const UNLOCKS_DATA = {
             },
             condition: function() {
                 return hasTUpgrade(13);
-            }
+            },
+            onUnlock: function() {
+                return;
+            },
         },
         'fastBuyers': {
             unlocked: false,
@@ -1304,7 +1329,10 @@ const UNLOCKS_DATA = {
             },
             condition: function() {
                 return hasTUpgrade(24);
-            }
+            },
+            onUnlock: function() {
+                return;
+            },
         },
         'bulkBuyers': {
             unlocked: false,
@@ -1317,7 +1345,10 @@ const UNLOCKS_DATA = {
             },
             condition: function() {
                 return hasTUpgrade(33);
-            }
+            },
+            onUnlock: function() {
+                return;
+            },
         },
         'prestigeBuyer': {
             unlocked: false,
@@ -1331,7 +1362,10 @@ const UNLOCKS_DATA = {
             },
             condition: function() {
                 return hasTUpgrade(34);
-            }
+            },
+            onUnlock: function() {
+                return;
+            },
         },
         'advancedBuyer': {
             unlocked: false,
@@ -1343,7 +1377,10 @@ const UNLOCKS_DATA = {
             },
             condition: function() {
                 return hasUpgrade(3, 22);
-            }
+            },
+            onUnlock: function() {
+                return;
+            },
         },
         'ascensionBuyer': {
             unlocked: false,
@@ -1357,7 +1394,10 @@ const UNLOCKS_DATA = {
             },
             condition: function() {
                 return hasMilestone(2);
-            }
+            },
+            onUnlock: function() {
+                return;
+            },
         },
         'timeDimBuyer': {
             unlocked: false,
@@ -1371,21 +1411,29 @@ const UNLOCKS_DATA = {
             },
             condition: function() {
                 return hasMilestone(5);
-            }
+            },
+            onUnlock: function() {
+                return;
+            },
         },
     },
     'buildingsTab': {
         'mainTab': {
             unlocked: false,
             notifyID: 'buildingsTabBut',
-            idsToShow: ['buildingsTabCell', 'buildingsTabCellMid'],
+            idsToShow: ['buildingsTabCell', 'buildingsTabCellMid', 'brickToggleRow', 'brickGainToggleRow', 'astralNoticeToggleRow'],
             idsToHide: [],
             shouldNotify: function() {
                 return !hasTUpgrade(11);
             },
             condition: function() {
                 return player.spaceResets.gte(1);
-            }
+            },
+            onUnlock: function() {
+                player.headerDisplayUnlocked['bricksDisplayHeader'] = true;
+                player.headerDisplayUnlocked['bricksGainDisplayHeader'] = true;
+                player.headerDisplayUnlocked['astralNoticeDisplay'] = true;
+            },
         },
         'factory': {
             unlocked: false,
@@ -1396,7 +1444,10 @@ const UNLOCKS_DATA = {
             },
             condition: function() {
                 return isBuilt(1);
-            }
+            },
+            onUnlock: function() {
+                return;
+            },
         },
         'factoryRow2': {
             unlocked: false,
@@ -1407,7 +1458,10 @@ const UNLOCKS_DATA = {
             },
             condition: function() {
                 return hasUpgrade(3, 11) && isBuilt(1);
-            }
+            },
+            onUnlock: function() {
+                return;
+            },
         },
         'necropolis': {
             unlocked: false,
@@ -1418,7 +1472,10 @@ const UNLOCKS_DATA = {
             },
             condition: function() {
                 return isBuilt(2);
-            }
+            },
+            onUnlock: function() {
+                return;
+            },
         },
         'necropolisRow2': {
             unlocked: false,
@@ -1429,7 +1486,10 @@ const UNLOCKS_DATA = {
             },
             condition: function() {
                 return hasUpgrade(3, 12) && isBuilt(2);
-            }
+            },
+            onUnlock: function() {
+                return;
+            },
         },
         'sun': {
             unlocked: false,
@@ -1440,7 +1500,10 @@ const UNLOCKS_DATA = {
             },
             condition: function() {
                 return isBuilt(3);
-            }
+            },
+            onUnlock: function() {
+                return;
+            },
         },
         'sunRow2': {
             unlocked: false,
@@ -1451,7 +1514,10 @@ const UNLOCKS_DATA = {
             },
             condition: function() {
                 return hasTUpgrade(34) && isBuilt(3);
-            }
+            },
+            onUnlock: function() {
+                return;
+            },
         },
         'construction': {
             unlocked: false,
@@ -1464,7 +1530,10 @@ const UNLOCKS_DATA = {
             },
             condition: function() {
                 return player.spaceResets.gte(2);
-            }
+            },
+            onUnlock: function() {
+                return;
+            },
         },
         'constructionRow2': {
             unlocked: false,
@@ -1477,7 +1546,10 @@ const UNLOCKS_DATA = {
             },
             condition: function() {
                 return hasMilestone(1);
-            }
+            },
+            onUnlock: function() {
+                return;
+            },
         },
         'vortexTable': {
             unlocked: false,
@@ -1490,7 +1562,10 @@ const UNLOCKS_DATA = {
             },
             condition: function() {
                 return hasMilestone(5);
-            }
+            },
+            onUnlock: function() {
+                return;
+            },
         },
         'vortex': {
             unlocked: false,
@@ -1501,21 +1576,28 @@ const UNLOCKS_DATA = {
             },
             condition: function() {
                 return isBuilt(4);
-            }
+            },
+            onUnlock: function() {
+                return;
+            },
         },
     },
     'timeTab': {
         'mainTab': {
             unlocked: false,
             notifyID: 'timeTabBut',
-            idsToShow: ['timeTabCell', 'timeTabCellMid', 'timeBoostDisplay'],
+            idsToShow: ['timeTabCell', 'timeTabCellMid', 'timeBoostDisplay', 'crystalsToggleRow', 'timeBoostToggleRow'],
             idsToHide: [],
             shouldNotify: function() {
                 return !hasAchievement(13);
             },
             condition: function() {
                 return player.spaceResets.gte(3);
-            }
+            },
+            onUnlock: function() {
+                player.headerDisplayUnlocked['crystalsDisplayHeader'] = true;
+                player.headerDisplayUnlocked['timeBoostDisplay'] = true;
+            },
         },
         'timeUpgrades': {
             unlocked: false,
@@ -1528,7 +1610,10 @@ const UNLOCKS_DATA = {
             },
             condition: function() {
                 return hasUpgrade(3, 13);
-            }
+            },
+            onUnlock: function() {
+                return;
+            },
         },
         'timeUpgrades2': {
             unlocked: false,
@@ -1542,34 +1627,28 @@ const UNLOCKS_DATA = {
             },
             condition: function() {
                 return hasMilestone(6);
-            }
+            },
+            onUnlock: function() {
+                return;
+            },
         },
     },
     'galaxyTab': {
         'mainTab': {
             unlocked: false,
             notifyID: 'galaxyTabBut',
-            idsToShow: ['galaxyTabCell', 'galaxyTabCellMid', 'galaxiesBonusDisplay', 'last10AscCell', 'ascensionStats', 'totalAscensionsStats', 'spentGalaxiesStats', 'allTimeGalaxies'],
+            idsToShow: ['galaxyTabCell', 'galaxyTabCellMid', 'galaxiesBonusDisplay', 'last10AscCell', 'ascensionStats', 'totalAscensionsStats', 'spentGalaxiesStats', 'allTimeGalaxies', 'galaxiesToggleRow'],
             idsToHide: ['statsAnd'],
             shouldNotify: function() {
                 return true;
             },
             condition: function() {
                 return hasUpgrade(3, 23);
-            }
-        },
-        'customizeDisplay': {
-            unlocked: false,
-            notifyID: 'customizeDisplayBut',
-            parentNotify: 'optionsTabBut',
-            idsToShow: ['customizeDisplayButDiv'],
-            idsToHide: [],
-            shouldNotify: function() {
-                return true;
             },
-            condition: function() {
-                return player.ascensions.gt(0);
-            }
+            onUnlock: function() {
+                player.headerDisplayUnlocked['galaxiesBonusDisplay'] = true;
+                player.headerDisplayUnlocked['unspentGalaxiesHeaderDisplay'] = true;
+            },
         },
         'arkTab': {
             unlocked: false,
@@ -1580,7 +1659,10 @@ const UNLOCKS_DATA = {
             },
             condition: function() {
                 return false;
-            }
+            },
+            onUnlock: function() {
+                return;
+            },
         },
     },
 }
@@ -1598,7 +1680,7 @@ const HOTKEYS = {
             toggleAstral();
         }
     },
-    'w': {
+    'p': {
         desc: 'World Prestige',
         onPress: function() {
             spacePrestigeKey();
@@ -1610,7 +1692,7 @@ const HOTKEYS = {
             timePrestigeKey();
         }
     },
-    'r': {
+    't': {
         desc: 'Respec Time Production',
         onPress: function() {
             respecTimeKey();
@@ -1626,6 +1708,36 @@ const HOTKEYS = {
         desc: 'Respec Galaxies',
         onPress: function() {
             respecGalaxiesKey();
+        }
+    },
+    'q': {
+        desc: 'Units Tab',
+        onPress: function() {
+            showTab('unitsTab', false, 'unitsTabBut');
+        }
+    },
+    'w': {
+        desc: 'Buildings Tab',
+        onPress: function() {
+            if (player.unlocks['buildingsTab']['mainTab']) { showTab('buildingsTab', false, 'buildingsTabBut'); }
+        }
+    },
+    'e': {
+        desc: 'Time Tab',
+        onPress: function() {
+            if (player.unlocks['timeTab']['mainTab']) { showTab('timeTab', false, 'timeTabBut'); }
+        }
+    },
+    'r': {
+        desc: 'Galaxies Tab',
+        onPress: function() {
+            if (player.unlocks['galaxyTab']['mainTab']) { showTab('galaxyTab', false, 'galaxyTabBut'); }
+        }
+    },
+    'f': {
+        desc: 'Cycle Subtabs',
+        onPress: function() {
+            cycleSubtabs();
         }
     },
     '1': {
@@ -2351,6 +2463,7 @@ function fixResetBug() {
     });
 
     copyData(START_PLAYER.headerDisplay, {
+        'autosavePopup': true,
         'astralNoticeDisplay': true,
         'unitsBoostDisplay': true,
         'achBoostDisplay': false,
@@ -2360,7 +2473,27 @@ function fixResetBug() {
         'bricksDisplayHeader': false,
         'bricksGainDisplayHeader': false,
         'crystalsDisplayHeader': false,
+        'timeBoostDisplay': true,
+        'unspentGalaxiesHeaderDisplay': false,
+        'researchDisplayHeader': false,
+        'researchGainDisplayHeader': false,
+    });
+
+    copyData(START_PLAYER.headerDisplayUnlocked, {
+        'autosavePopup': true,
+        'astralNoticeDisplay': false,
+        'unitsBoostDisplay': true,
+        'achBoostDisplay': true,
+        'worldsBonusDisplay': false,
+        'galaxiesBonusDisplay': false,
+        'totalBonusDisplay': true,
+        'bricksDisplayHeader': false,
+        'bricksGainDisplayHeader': false,
+        'crystalsDisplayHeader': false,
         'timeBoostDisplay': false,
+        'unspentGalaxiesHeaderDisplay': false,
+        'researchDisplayHeader': false,
+        'researchGainDisplayHeader': false,
     });
 
     START_PLAYER.tooltipsEnabled = false;
@@ -2369,6 +2502,7 @@ function fixResetBug() {
     START_PLAYER.activeGalaxies = new Array(4, 'gal1', 'gal2');
     START_PLAYER.hotkeysOn = true;
     START_PLAYER.dontResetSlider = false;
+    START_PLAYER.favGalaxies = [];
     START_PLAYER.version = 'v0.3.1_d.5';
 
     fixData(player, START_PLAYER);

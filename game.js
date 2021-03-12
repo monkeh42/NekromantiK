@@ -2,7 +2,7 @@
 
 const GAME_DATA = {
     author: 'monkeh42',
-    version: 'v0.3.3',
+    version: 'v0.3.4',
 }
 
 const NUM_UNITS = 8;
@@ -31,6 +31,10 @@ var mainLoop;
 var popupShownTime;
 
 var mPopupShownTime;
+
+var sPopupShownTime;
+
+var asPopupShownTime;
 
 var hidden, visibilityChange, isHidden;
 
@@ -97,7 +101,7 @@ function loadGame() {
     var count = 0;
     element.innerHTML = 'Number Keys 1-8: Buy Single Unit; shift+(1-8): Buy Max Units;<br>';
     for (var k in HOTKEYS) {
-        if (count == 3) {
+        if ((count == 4 || k=='q') && k!='f') {
             count = 0;
             element.innerHTML += '<br>';
         }
@@ -130,6 +134,8 @@ function loadStyles() {
         updateGalaxiesDisplayed(player.activeGalaxies[0], player.activeGalaxies[1], player.activeGalaxies[2]);
         document.getElementById(player.activeGalaxies[0].toString() + 'gal').selected = true;
     }
+
+    document.documentElement.style.boxShadow = player.astralFlag ? 'inset 0px 0px 30px 20px #1c8a2e' : '';
 
     document.getElementById('realTimeDisplayBut').innerHTML = player.displayRealTime ? 'toggle time displays: REAL TIME' : 'toggle time displays: GAME TIME'
     let elements = document.getElementsByClassName('secDisplay');
@@ -246,10 +252,8 @@ function loadStyles() {
             if (player.galaxyUpgs[g][u].locked) {
                 document.getElementById(GALAXIES_DATA[g].upgrades[u].buttonID).classList.add('lockedGalaxyUpg'); 
                 document.getElementById(GALAXIES_DATA[g].upgrades[u].buttonID).classList.remove('galaxyUpg');
-                document.getElementById(GALAXIES_DATA[g].upgrades[u].textID).style.display = 'none';
             } else {
                 document.getElementById(GALAXIES_DATA[g].upgrades[u].buttonID).classList.remove('lockedGalaxyUpg');
-                document.getElementById(GALAXIES_DATA[g].upgrades[u].textID).style.display = '';
                 if (hasGUpgrade(g, u)) { 
                     document.getElementById(GALAXIES_DATA[g].upgrades[u].buttonID).classList.add('boughtGalaxyUpg'); 
                     document.getElementById(GALAXIES_DATA[g].upgrades[u].buttonID).classList.remove('galaxyUpg');//+ ((player.tooltipsEnabled && isDisplayTooltipG(g, u)) ? ' tooltip' : '') }
@@ -283,6 +287,12 @@ function loadStyles() {
         document.getElementById('timeSlider').classList.add('sliderLocked');
         document.getElementById('timeSlider').classList.remove('slider');
         document.getElementById('timeSlider').disabled = true;
+    } else {
+        if (player.unlocks['timeTab']['mainTab']) {
+            document.getElementById('timeTabBut').classList.add('timeUnlockedNotify')
+            document.getElementById('timeTabButMid').classList.add('timeUnlockedNotify')
+            document.getElementById('timeDimSubTabBut').classList.add('timeUnlockedNotify')
+        }
     }
     
     updatePopupsEtc();
@@ -313,6 +323,11 @@ function loadStyles() {
 }
 
 //save stuff
+
+function manualSave() {
+    save();
+    showSavePopup();
+}
 
 function save() {
     localStorage.setItem('nekrosave', window.btoa(JSON.stringify(player)));
@@ -425,9 +440,12 @@ function gameLoop(diff=new Decimal(0), offline=false) {
     }
     if (!offline) {
         //allDisplay();
-        if ((currentUpdate-player.lastAutoSave)>5000) { 
+        if ((currentUpdate-player.lastAutoSave)>10000) { 
             player.lastAutoSave = currentUpdate;
             save();
+            if (player.headerDisplay['autosavePopup']) {
+                showAutosavePopup();
+            }
         }
         player.lastUpdate = currentUpdate;
     }
@@ -441,6 +459,18 @@ function gameLoop(diff=new Decimal(0), offline=false) {
         if (currentUpdate-mPopupShownTime >= 2000) {
             displayData.push(['setProp', 'milesUnlockPopup', 'opacity', '0']);
             mPopupShownTime = null;
+        }
+    }
+    if (!offline && sPopupShownTime !== undefined && sPopupShownTime !== null) {
+        if (currentUpdate-sPopupShownTime >= 2000) {
+            displayData.push(['setProp', 'savePopup', 'opacity', '0']);
+            sPopupShownTime = null;
+        }
+    }
+    if (!offline && asPopupShownTime !== undefined && asPopupShownTime !== null) {
+        if (currentUpdate-asPopupShownTime >= 2000) {
+            displayData.push(['setProp', 'autosavePopup', 'opacity', '0']);
+            asPopupShownTime = null;
         }
     }
     if (!offline && !isHidden) { window.requestAnimationFrame(updateDisplay); }

@@ -402,6 +402,8 @@ function unlockElements(mainTab, subTab) {
         if (data.notifyID !== undefined) { displayData.push(['addClass', data.notifyID, 'tabButNotify']); }
         if (data.parentNotify !== undefined) { displayData.push(['addClass', data.parentNotify, 'tabButIndirectNotify']); }
     } 
+
+    data.onUnlock();
 }
 
 function unlockElementsOnLoad(mainTab, subTab) {
@@ -441,6 +443,8 @@ function unlockElementsOnLoad(mainTab, subTab) {
         let els = document.getElementsByClassName(data.classToEnable);
         for (let i=0; i<els.length; i++) { els[i].disabled = false; }
     }
+
+    data.onUnlock();
 }
 
 function lockElements(mainTab, subTab) {
@@ -494,12 +498,13 @@ function toggleAstralDisplay() {
     displayData.push(['togClass', 'astralToggle', 'astralBut']);
     displayData.push(['togClass', 'astralToggle', 'astralOn']);
     displayData.push(['html', 'astralText', player.astralFlag ? 'disable' : 'enable']);
-    if (player.headerDisplay['astralNoticeDisplay']) { displayData.push(['togDisplay', 'astralNoticeDisplay']); }
+    if (player.headerDisplay['astralNoticeDisplay'] && player.headerDisplayUnlocked['astralNoticeDisplay']) { displayData.push(['togDisplay', 'astralNoticeDisplay']); }
     displayData.push(['html', 'normalAstral', player.astralFlag ? 'ASTRAL' : 'NORMAL']);
     displayData.push(['setProp', 'normalAstral', 'color', player.astralFlag ? '#42d35a' : 'white']);
     displayData.push(['setProp', 'normalAstral', 'color', player.astralFlag ? '#42d35a' : 'white']);
     displayData.push(['togDisplay', 'sunGainSpan']);
     displayData.push(['togDisplay', 'sunGainNotice']);
+    document.documentElement.style.boxShadow = player.astralFlag ? 'inset 0px 0px 30px 20px #1c8a2e' : '';
 }
 
 function toggleTimeLockDisplay() {
@@ -697,13 +702,9 @@ function toggleConfirmations(action, method, id) {
 
 function toggleDisplay(id, button) {
     player.headerDisplay[id] = !player.headerDisplay[id];
-    if (player.headerDisplay[id]) {
-        document.getElementById(button).innerHTML = "ON";
-    } else {
-        document.getElementById(button).innerHTML = "OFF";
-    }
-    if (id == 'astralNoticeDisplay') { document.getElementById(id).style.display = (document.getElementById(id).style.display == 'none') && player.astralFlag ? '' : 'none' }
-    else { document.getElementById(id).style.display = (document.getElementById(id).style.display == 'none') ? '' : 'none' }
+    document.getElementById(button).innerHTML = player.headerDisplay[id] ? "ON" : "OFF"
+    if (id == 'astralNoticeDisplay' && player.headerDisplayUnlocked['astralNoticeDisplay']) { document.getElementById(id).style.display = (player.headerDisplay[id] && player.astralFlag) ? '' : 'none' }
+    else if (id != 'autosavePopup') { document.getElementById(id).style.display = (player.headerDisplay[id] && player.headerDisplayUnlocked[id]) ? '' : 'none' }
 }
 
 function openConfirmationsPopup() {
@@ -752,14 +753,28 @@ function setConfDefaults() {
     updatePopupsEtc();
 }
 
+function showSavePopup() {
+    displayData.push(['setProp', 'savePopup', 'opacity', '1']);
+    sPopupShownTime = new Date();
+}
+
+function showAutosavePopup() {
+    displayData.push(['setProp', 'autosavePopup', 'opacity', '.2']);
+    asPopupShownTime = new Date();
+}
+
 function updateHeaderDisplay() {
     for (let dKey in player.headerDisplay) {
-        if (dKey == 'astralNoticeDisplay') { document.getElementById(dKey).style.display = (player.headerDisplay[dKey] && player.astralFlag) ? '' : 'none' }
+        if (dKey == 'astralNoticeDisplay') { document.getElementById(dKey).style.display = (player.headerDisplayUnlocked[dKey] && player.headerDisplay[dKey] && player.astralFlag) ? '' : 'none' }
+        else if (dKey != 'autosavePopup') {
+            if (player.headerDisplayUnlocked[dKey] && player.headerDisplay[dKey]) { document.getElementById(dKey).style.display = player.headerDisplay[dKey] ? '' : 'none' }
+        }
+        /*if (dKey == 'astralNoticeDisplay') { document.getElementById(dKey).style.display = (player.headerDisplay[dKey] && player.astralFlag) ? '' : 'none' }
         //else if (dKey == 'bricksGainDisplayHeader') { document.getElementById(dKey).style.display = (player.headerDisplay[dKey] && player.astralFlag) ? '' : 'none' }
         else if (dKey == 'worldsBonusDisplay') { document.getElementById(dKey).style.display = (player.headerDisplay[dKey] && player.unlocks['unitsTab']['spacePrestige']) ? '' : 'none' }
         else if (dKey == 'galaxiesBonusDisplay') { document.getElementById(dKey).style.display = (player.headerDisplay[dKey] && player.unlocks['galaxyTab']['mainTab']) ? '' : 'none' }
         //else if (dKey == 'achBoostDisplay' || dKey == 'achNum' || dKey == 'achNumRows' || dKey == 'achMult'){}
-        else { document.getElementById(dKey).style.display = player.headerDisplay[dKey] ? '' : 'none' }
+        else { document.getElementById(dKey).style.display = player.headerDisplay[dKey] ? '' : 'none' }*/
     }
 }
 
@@ -891,6 +906,33 @@ function showGalaxySubTab(subTabName, buttonName, parentButton) {
     if (buttonName !== undefined && subTabName != 'researchSubTab') {
         document.getElementById(buttonName).classList.remove('tabButNotify');
         document.getElementById(parentButton).classList.remove('tabButIndirectNotify');
+    }
+}
+
+function cycleSubtabs() {
+    let tabName = getActiveTab();
+    if (tabName === null) {return}
+    switch (tabName) {
+        case 'unitsTab':
+            if (player.unlocks['unitsTab']['autobuyers']) {
+                if (isActiveTab('autobuyersSubTab')) { showUnitSubTab('unitsSubTab', 'unitsSubTabBut', 'unitsTabBut') }
+                else { showUnitSubTab('autobuyersSubTab', 'autobuyersSubTabBut', 'unitsTabBut') }
+            }
+            break;
+        case 'buildingsTab':
+            if (player.unlocks['buildingsTab']['construction']) {
+                if (isActiveTab('constructionSubTab')) { showBuildingSubTab('buildingsSubTab', 'buildingsSubTabBut', 'buildingsTabBut') }
+                else { showBuildingSubTab('constructionSubTab', 'constructionSubTabBut', 'buildingsTabBut') }
+            }
+            break;
+        case 'timeTab':
+            if (player.unlocks['timeTab']['timeUpgrades']) {
+                if (isActiveTab('timeUpgSubTab')) { showTimeSubTab('timeDimSubTab', 'timeDimSubTabBut', 'timeTabBut') }
+                else { showTimeSubTab('timeUpgSubTab', 'timeUpgSubTabBut', 'timeTabBut') }
+            }
+            break;
+        case 'galaxyTab':
+            break;
     }
 }
 
