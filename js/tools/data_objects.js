@@ -2474,9 +2474,6 @@ function fixResetBug() {
         'bricksGainDisplayHeader': false,
         'crystalsDisplayHeader': false,
         'timeBoostDisplay': true,
-        'unspentGalaxiesHeaderDisplay': false,
-        'researchDisplayHeader': false,
-        'researchGainDisplayHeader': false,
     });
 
     copyData(START_PLAYER.headerDisplayUnlocked, {
@@ -2491,9 +2488,6 @@ function fixResetBug() {
         'bricksGainDisplayHeader': false,
         'crystalsDisplayHeader': false,
         'timeBoostDisplay': false,
-        'unspentGalaxiesHeaderDisplay': false,
-        'researchDisplayHeader': false,
-        'researchGainDisplayHeader': false,
     });
 
     START_PLAYER.tooltipsEnabled = false;
