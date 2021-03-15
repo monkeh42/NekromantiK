@@ -131,6 +131,26 @@ const START_PLAYER = {
             amount: new Decimal(0),
             bought: new Decimal(0)
         },
+        5: {
+            unlocked: true,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        6: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        7: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        8: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
     },
 
     timeUpgs: {
@@ -218,6 +238,10 @@ const START_PLAYER = {
             2: false,
             3: false,
             4: false,
+            5: false,
+            6: false,
+            7: false,
+            8: false,
         },
         'time': {
             'on': false,
@@ -333,6 +357,37 @@ const START_PLAYER = {
         },
     },
 
+    researchProjects: {
+        1: {
+            active: false,
+            completed: false,
+        },
+        2: {
+            active: false,
+            completed: false,
+        },
+        3: {
+            active: false,
+            completed: false,
+        },
+        4: {
+            active: false,
+            completed: false,
+        },
+        5: {
+            active: false,
+            completed: false,
+        },
+        6: {
+            active: false,
+            completed: false,
+        },
+        7: {
+            active: false,
+            completed: false,
+        },
+    },
+
     ark: {
         'engines': {
             unlocked: false,
@@ -360,6 +415,13 @@ const START_PLAYER = {
         },
     },
 
+    ethUpgs: {
+        11: false,
+        12: false,
+        13: false,
+        14: false,
+    },
+
     bricks: new Decimal(0),
     brickGainExp: 0.2,
     astralFlag: false,
@@ -377,6 +439,13 @@ const START_PLAYER = {
     spentGalaxies: new Decimal(0),
     ascensions: new Decimal(0),
     
+    research: new Decimal(0),
+    isInResearch: false,
+    theorems: new Decimal(0),
+    infCompletions: new Decimal(0),
+
+    win: false,
+    continue: false,
 
     allTimeStats: {
         totalCorpses: new Decimal(0),
@@ -583,11 +652,13 @@ const START_PLAYER = {
             'mainTab': false,
             'timeUpgrades': false,
             'timeUpgrades2': false,
+            'timeDims2': false,
         },
         'galaxyTab': {
             'mainTab': false,
             'customizeDisplay': false,
             'arkTab': false,
+            'researchTab': false,
         },
     },
 
@@ -617,6 +688,16 @@ const START_PLAYER = {
         53: false,
         54: false,
         55: false,
+        61: false,
+        62: false,
+        63: false,
+        64: false,
+        65: false,
+        71: false,
+        72: false,
+        73: false,
+        74: false,
+        75: false,
     },
 
     milestones: {
@@ -664,6 +745,9 @@ const START_PLAYER = {
         'bricksGainDisplayHeader': false,
         'crystalsDisplayHeader': false,
         'timeBoostDisplay': true,
+        'unspentGalaxiesHeaderDisplay': false,
+        'researchDisplayHeader': false,
+        'researchGainDisplayHeader': false,
     },
 
     headerDisplayUnlocked: {
@@ -678,6 +762,9 @@ const START_PLAYER = {
         'bricksGainDisplayHeader': false,
         'crystalsDisplayHeader': false,
         'timeBoostDisplay': false,
+        'unspentGalaxiesHeaderDisplay': false,
+        'researchDisplayHeader': false,
+        'researchGainDisplayHeader': false,
     },
 
     tooltipsEnabled: false,
@@ -686,7 +773,8 @@ const START_PLAYER = {
     activeGalaxies: [4, 'gal1', 'gal2'],
     hotkeysOn: true,
     dontResetSlider: false,
-    favGalaxies: [],
+    favGalaxies: [[], [], []],
+    favGalNames: ['Slot 1', 'Slot 2', 'Slot 3'],
     version: 'v0.3.1_d.5',
 }
 
@@ -765,19 +853,13 @@ const MILES_DATA = {
     },
     7: {
         canUnlock: function() {
-            return false; //getBoughtGUpgsByRow(4) == 4;
+            return getBoughtGUpgsByRow(4) == 4;
         },
         effect: function() {
             return new Decimal(1);
         },
         onUnlock: function() {
-            for (let g in GALAXIES_DATA) {
-                for (let u in GALAXIES_DATA[g].upgrades) {
-                    player.galaxyUpgs[g][u].locked = false;
-                    document.getElementById(GALAXIES_DATA[g].upgrades[u].buttonID).classList.remove('lockedGalaxyUpg');
-                    document.getElementById(GALAXIES_DATA[g].upgrades[u].buttonID).classList.add(canAffordGUpg(g, u) ? 'galaxyUpg' : 'unclickGalaxyUpg');
-                }
-            }
+            return;
         },
         isImplemented: true,
     },
@@ -1270,6 +1352,198 @@ const ACH_DATA = {
             return;
         }
     },
+    61: {
+        title: 'They Came From Beyond',
+        desc: 'Unlock The Ark.',
+        reward: '',
+        secret: false,
+        hint: '',
+        hasReward: false,
+        showEffect: false,
+        divID: 'ach61',
+        canUnlock: function() {
+            return hasMilestone(7);
+        },
+        effect: function() {
+            return new Decimal(1);
+        },
+        onUnlock: function() {
+            return;
+        }
+    },
+    62: {
+        title: 'What Have I Done?',
+        desc: 'Trigger the galaxy effect softcap.',
+        secret: false,
+        hint: '',
+        reward: '',
+        hasReward: false,
+        showEffect: false,
+        divID: 'ach62',
+        canUnlock: function() {
+            return player.galaxies.gt(1000*(2**getNumCompletedProj()));
+        },
+        effect: function() {
+            return new Decimal(1);
+        },
+        onUnlock: function() {
+            return;
+        }
+    },
+    63: {
+        title: 'I\'m Something Of A Scientist',
+        desc: 'Complete a research project.',
+        secret: false,
+        hint: '',
+        reward: '',
+        showEffect: false,
+        hasReward: false,
+        divID: 'ach63',
+        canUnlock: function() {
+            return (getNumCompletedProj()>0);
+        },
+        effect: function() {
+            return new Decimal(1);
+        },
+        onUnlock: function() {
+            return;
+        }
+    },
+    64: {
+        title: 'Infinite Knowledge',
+        desc: 'Unlock Infinite Research.',
+        secret: false,
+        hint: '',
+        reward: 'Completely remove all galaxy effect softcaps.',
+        hasReward: true,
+        showEffect: false,
+        divID: 'ach64',
+        canUnlock: function() {
+            return isResearchCompleted(6);
+        },
+        effect: function() {
+            return new Decimal(1);
+        },
+        onUnlock: function() {
+            return;
+        }
+    },
+    65: {
+        title: 'Covenant Established',
+        desc: 'Construct an Ark component.',
+        secret: false,
+        hint: '',
+        reward: '',
+        showEffect: false,
+        hasReward: false,
+        divID: 'ach65',
+        canUnlock: function() {
+            return (getNumArkUpgs()>0);
+        },
+        effect: function() {
+            return new Decimal(1);
+        },
+        onUnlock: function() {
+            return;
+        }
+    },
+    71: {
+        title: 'How The Turntables',
+        desc: 'Have your true time essence effect be more than double the anti time essence effect, while they\'re both at least 1,000x.',
+        secret: false,
+        hint: '',
+        reward: 'Double the true time essence effect.',
+        hasReward: true,
+        showEffect: false,
+        divID: 'ach71',
+        canUnlock: function() {
+            return (getTrueTimeBuff().gt(getAntiTimeBuff().times(2)) && getAntiTimeBuff().gte(1000));
+        },
+        effect: function() {
+            return new Decimal(2);
+        },
+        onUnlock: function() {
+            return;
+        }
+    },
+    72: {
+        title: 'Unpossible',
+        desc: 'Complete Infinite Research once.',
+        secret: false,
+        hint: '',
+        reward: '',
+        hasReward: false,
+        showEffect: false,
+        divID: 'ach72',
+        canUnlock: function() {
+            return player.infCompletions.gt(0);
+        },
+        effect: function() {
+            return new Decimal(1);
+        },
+        onUnlock: function() {
+            return;
+        }
+    },
+    73: {
+        title: 'True Annihilation',
+        desc: 'Ascend for at least 100 galaxies in under 10 seconds.',
+        secret: false,
+        hint: '',
+        reward: 'Your unit corpse multipliers get a boost based on number of ascensions.',
+        hasReward: true,
+        showEffect: true,
+        divID: 'ach73',
+        canUnlock: function() {
+            return (player.pastAscRuns.lastRun.galaxyGain.gte(100) && (player.pastAscRuns.lastRun.timeSpent<10000));
+        },
+        effect: function() {
+            let e = new Decimal(player.allTimeStats.totalAscensions);
+            e = e.div(50);
+            return e.plus(1);
+        },
+        onUnlock: function() {
+            return;
+        }
+    },
+    74: {
+        title: 'Ethereal Fiend',
+        secret: false,
+        hint: '',
+        desc: 'Buy all four Ethereal Upgrades at once.',
+        reward: '',
+        hasReward: false,
+        showEffect: false,
+        divID: 'ach74',
+        canUnlock: function() {
+            return (hasEUpgrade(11) && hasEUpgrade(12) && hasEUpgrade(13) && hasEUpgrade(14));
+        },
+        effect: function() {
+            return new Decimal(1);
+        },
+        onUnlock: function() {
+            return;
+        }
+    },
+    75: {
+        title: 'Grains Of Sand',
+        secret: false,
+        hint: '',
+        desc: 'Have at least 1e400 corpses.',
+        reward: '',
+        hasReward: false,
+        showEffect: false,
+        divID: 'ach75',
+        canUnlock: function() {
+            return player.corpses.gte("1e400");
+        },
+        effect: function() {
+            return new Decimal(1);
+        },
+        onUnlock: function() {
+            return;
+        }
+    },
 }
 
 const UNLOCKS_DATA = {
@@ -1581,6 +1855,20 @@ const UNLOCKS_DATA = {
                 return;
             },
         },
+        'vortexRow2': {
+            unlocked: false,
+            idsToShow: ['vortexUpgradesRow2'],
+            idsToHide: [],
+            shouldNotify: function() {
+                return false;
+            },
+            condition: function() {
+                return isResearchCompleted(6);
+            },
+            onUnlock: function() {
+                return;
+            },
+        },
     },
     'timeTab': {
         'mainTab': {
@@ -1632,12 +1920,26 @@ const UNLOCKS_DATA = {
                 return;
             },
         },
+        'timeDims2': {
+            unlocked: false,
+            idsToShow: ['timeRow5', 'timeRow6', 'timeRow7', 'timeRow8', 'dimBuyer5Cell', 'dimBuyer6Cell', 'dimBuyer7Cell', 'dimBuyer8Cell', 'spacer1', 'spacer2', 'spacer3', 'spacer4'],
+            idsToHide: [],
+            shouldNotify: function() {
+                return false;
+            },
+            condition: function() {
+                return hasUpgrade(4, 23);
+            },
+            onUnlock: function() {
+                return;
+            },
+        },
     },
     'galaxyTab': {
         'mainTab': {
             unlocked: false,
             notifyID: 'galaxyTabBut',
-            idsToShow: ['galaxyTabCell', 'galaxyTabCellMid', 'galaxiesBonusDisplay', 'last10AscCell', 'ascensionStats', 'totalAscensionsStats', 'spentGalaxiesStats', 'allTimeGalaxies', 'galaxiesToggleRow'],
+            idsToShow: ['galaxyTabCell', 'galaxyTabCellMid', 'galaxiesBonusDisplay', 'last10AscCell', 'ascensionStats', 'totalAscensionsStats', 'spentGalaxiesStats', 'allTimeGalaxies', 'galaxiesToggleRow', 'unspentToggleRow'],
             idsToHide: ['statsAnd'],
             shouldNotify: function() {
                 return true;
@@ -1652,13 +1954,46 @@ const UNLOCKS_DATA = {
         },
         'arkTab': {
             unlocked: false,
-            idsToShow: ['galaxiesSubMenu', 'arkSubTabBut'],
+            notifyID: 'arkSubTabBut',
+            parentNotify: 'galaxyTabBut',
+            idsToShow: ['galaxiesSubMenu', 'researchToggleRow', 'researchGainToggleRow'],
+            idsToHide: [],
+            shouldNotify: function() {
+                return true;
+            },
+            condition: function() {
+                return hasMilestone(7);
+            },
+            onUnlock: function() {
+                player.headerDisplayUnlocked['researchDisplayHeader'] = true;
+                player.headerDisplayUnlocked['researchGainDisplayHeader'] = true;
+            },
+        },
+        'researchTab': {
+            unlocked: false,
+            notifyID: 'researchSubTabBut',
+            parentNotify: 'galaxyTabBut',
+            idsToShow: [],
+            idsToHide: [],
+            shouldNotify: function() {
+                return true;
+            },
+            condition: function() {
+                return hasMilestone(7);
+            },
+            onUnlock: function() {
+                return;
+            },
+        },
+        'infiniteResearch': {
+            unlocked: false,
+            idsToShow: ['infResearchTabCell'],
             idsToHide: [],
             shouldNotify: function() {
                 return false;
             },
             condition: function() {
-                return false;
+                return isResearchCompleted(6);
             },
             onUnlock: function() {
                 return;
@@ -1943,6 +2278,26 @@ function fixResetBug() {
             amount: new Decimal(0),
             bought: new Decimal(0)
         },
+        5: {
+            unlocked: true,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        6: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        7: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
+        8: {
+            unlocked: false,
+            amount: new Decimal(0),
+            bought: new Decimal(0)
+        },
     });
 
     copyData(START_PLAYER.timeUpgs, {
@@ -2030,6 +2385,10 @@ function fixResetBug() {
             2: false,
             3: false,
             4: false,
+            5: false,
+            6: false,
+            7: false,
+            8: false,
         },
         'time': {
             'on': false,
@@ -2291,6 +2650,47 @@ function fixResetBug() {
         },
     });
 
+    copyData(START_PLAYER.ethUpgs, {
+        11: false,
+        12: false,
+        13: false,
+        14: false,
+    });
+
+    copyData(START_PLAYER.researchProjects, {
+        1: {
+            active: false,
+            completed: false,
+        },
+        2: {
+            active: false,
+            completed: false,
+        },
+        3: {
+            active: false,
+            completed: false,
+        },
+        4: {
+            active: false,
+            completed: false,
+        },
+        5: {
+            active: false,
+            completed: false,
+        },
+        6: {
+            active: false,
+            completed: false,
+        },
+        7: {
+            active: false,
+            completed: false,
+        },
+    });
+
+    START_PLAYER.isInResearch = false;
+    START_PLAYER.research = new Decimal(0),
+
     START_PLAYER.bricks = new Decimal(0);
     START_PLAYER.brickGainExp = 0.2;
     START_PLAYER.astralFlag = false;
@@ -2307,6 +2707,14 @@ function fixResetBug() {
     START_PLAYER.galaxies = new Decimal(0);
     START_PLAYER.spentGalaxies = new Decimal(0);
     START_PLAYER.ascensions = new Decimal(0);
+
+    START_PLAYER.research = new Decimal(0);
+    START_PLAYER.isInResearch = false;
+    START_PLAYER.theorems = new Decimal(0);
+    START_PLAYER.infCompletions = new Decimal(0);
+
+    START_PLAYER.win = false;
+    START_PLAYER.continue = false;
     
     copyData(START_PLAYER.allTimeStats, {
         totalCorpses: new Decimal(0),
@@ -2393,11 +2801,13 @@ function fixResetBug() {
             'mainTab': false,
             'timeUpgrades': false,
             'timeUpgrades2': false,
+            'timeDims2': false,
         },
         'galaxyTab': {
             'mainTab': false,
             'customizeDisplay': false,
             'arkTab': false,
+            'researchTab': false,
         },
     });
 
@@ -2427,6 +2837,16 @@ function fixResetBug() {
         53: false,
         54: false,
         55: false,
+        61: false,
+        62: false,
+        63: false,
+        64: false,
+        65: false,
+        71: false,
+        72: false,
+        73: false,
+        74: false,
+        75: false,
     });
 
     copyData(START_PLAYER.milestones, {
@@ -2474,6 +2894,9 @@ function fixResetBug() {
         'bricksGainDisplayHeader': false,
         'crystalsDisplayHeader': false,
         'timeBoostDisplay': true,
+        'unspentGalaxiesHeaderDisplay': false,
+        'researchDisplayHeader': false,
+        'researchGainDisplayHeader': false,
     });
 
     copyData(START_PLAYER.headerDisplayUnlocked, {
@@ -2488,6 +2911,9 @@ function fixResetBug() {
         'bricksGainDisplayHeader': false,
         'crystalsDisplayHeader': false,
         'timeBoostDisplay': false,
+        'unspentGalaxiesHeaderDisplay': false,
+        'researchDisplayHeader': false,
+        'researchGainDisplayHeader': false,
     });
 
     START_PLAYER.tooltipsEnabled = false;
@@ -2496,7 +2922,8 @@ function fixResetBug() {
     START_PLAYER.activeGalaxies = new Array(4, 'gal1', 'gal2');
     START_PLAYER.hotkeysOn = true;
     START_PLAYER.dontResetSlider = false;
-    START_PLAYER.favGalaxies = [];
+    START_PLAYER.favGalaxies = [[], [], []];
+    START_PLAYER.favGalNames = ['Slot 1', 'Slot 2', 'Slot 3'];
     START_PLAYER.version = 'v0.3.1_d.5';
 
     fixData(player, START_PLAYER);

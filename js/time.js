@@ -45,12 +45,14 @@ function canAffordTime(tier) {
 
 function calculateCrystalGain() {
     if (canTimePrestige()) {
-        var div = 20;
+        var div = isResearchCompleted(5) ? 15 : 20
         var ret = Decimal.floor(Decimal.pow(10, (player.thisSacStats.bestCorpses.e/div) - 0.65));
         if (hasTUpgrade(21)) { ret = ret.times(2); }
         if (hasTUpgrade(33)) { ret = ret.times(getTUpgEffect(33)); }
         if (hasGUpgrade(4, 21)) { ret = ret.times(getGUpgEffect(4, 21)); }
         if (hasTUpgrade(53)) { ret = ret.times(getTUpgEffect(53)); }
+        if (hasUpgrade(4, 23) && !player.isInResearch && player.corpses.gt("2.5e309")) { ret = ret.pow(1.2); }
+        if (isResearchCompleted(6)) { ret = ret.pow(getTheoremBoostC()); }
         return ret;
     } else {
         return new Decimal(0);
@@ -83,6 +85,7 @@ function isAutoSacTriggered() {
 function getTimeDimProdPerSecond(tier) {
     if (tier > NUM_TIMEDIMS) { return new Decimal(0); }
     var p = player.timeDims[tier].amount.times(TIME_DATA[tier].mult());
+    if (player.isInResearch) { p = p.pow(0.9); }
     return p;
 }
 
@@ -90,6 +93,7 @@ function getEssenceProdPerSecond() {
     var p = player.timeDims[1].amount.times(TIME_DATA[1].mult());
     if (hasUpgrade(2, 22)) { p = p.times(getUpgEffect(2, 22)); }
     if (hasGUpgrade(4, 11)) { p = p.times(getGUpgEffect(4, 11)); }
+    if (player.isInResearch) { p = p.pow(0.9); }
     return p;
 }
 
@@ -97,29 +101,32 @@ function getTrueTimeBuff() {
     if (!player.timeLocked) { return new Decimal(1); }
     var b = new Decimal(Decimal.max(player.trueEssence, 1).log10());
     if (hasGUpgrade(4, 31)) { b = b.pow(getGUpgEffect(4, 31)); }
-    b = b.div(getAntiTimeNerf());
+    if (hasGUpgrade(4, 41) && hasUpgrade(4, 22) && !player.isInResearch) { b = b.times(getAntiTimeNerf()).times(hasAchievement(71) ? 2 : 1); }
+    else { b = b.div(getAntiTimeNerf()).times(hasAchievement(71) ? 2 : 1); }
     b = Decimal.add(b, 1);
     return b;
 }
 
 function getAntiTimeBuff() {
-    if (!player.timeLocked) { return new Decimal(1); }
+    if (!player.timeLocked || isResearchActive(4)) { return new Decimal(1); }
     var b = new Decimal(Decimal.max(player.antiEssence, 1).log10());
     if (hasGUpgrade(4, 31)) { b = b.pow(getGUpgEffect(4, 31)); }
-    b = b.div(getTrueTimeNerf()).times(2);
+    if (hasGUpgrade(4, 41) && hasUpgrade(4, 22) && !player.isInResearch) { b = b.times(getTrueTimeNerf()).times(2); }
+    else { b = b.div(getTrueTimeNerf()).times(2); }
     b = Decimal.add(b, 1);
+    if (isResearchCompleted(4) && b.eq(1)) { b = getTrueTimeBuff(); }
     return b;
 }
 
 function getTrueTimeNerf() {
-    if (!player.timeLocked || hasGUpgrade(4, 41)) { return new Decimal(1); }
+    if (!player.timeLocked || (hasGUpgrade(4, 41) && (!hasUpgrade(4, 22) || player.isInResearch))) { return new Decimal(1); }
     var b = new Decimal(Decimal.max(player.trueEssence, 1).log10());
     b = Decimal.pow(b, 0.2);
     return b.max(1);
 }
 
 function getAntiTimeNerf() {
-    if (!player.timeLocked || hasGUpgrade(4, 41)) { return new Decimal(1); }
+    if (!player.timeLocked || (hasGUpgrade(4, 41) && (!hasUpgrade(4, 22) || player.isInResearch))) { return new Decimal(1); }
     var b = new Decimal(Decimal.max(player.antiEssence, 1).log10());
     b = Decimal.pow(b, 0.2);
     return b.max(1);
@@ -174,8 +181,14 @@ function calculateMaxTimeCost(tier) {
 }
 
 function buyMaxAllTime() {
-    for (var i=NUM_TIMEDIMS; i>0; i--) {
-        buyMaxTime(i);
+    if (hasUpgrade(4, 23)) {
+        for (var i=NUM_TIMEDIMS; i>0; i--) {
+            buyMaxTime(i);
+        }
+    } else {
+        for (var i=4; i>0; i--) {
+            buyMaxTime(i);
+        }
     }
 }
 
@@ -191,44 +204,40 @@ function buyTUpg(t) {
 //prestige related
 
 function canTimePrestige() {
-    return player.corpses.gte(new Decimal(1e20));
+    return isResearchCompleted(5) ? player.corpses.gte(new Decimal(1e15)) : player.corpses.gte(new Decimal(1e20))
 }
 
 function respecTimeClick() {
-    if (player.timeResets.gte(1)) {
-        if (player.timeLocked) {
-            if (player.confirmations['timeRespec']['click']) {
-                if (!confirm('Are you sure? This will reset ALL of your progress before unlocking Time Warp, and all of your time essense.<br>(These confirmations can be disabled in options)')) return
-            }
-
-            player.timeLocked = false;
-            toggleTimeLockDisplay();
-            document.getElementById('timeSlider').removeAttribute('disabled')
-            document.getElementById('timeTabBut').classList.add('timeUnlockedNotify')
-            document.getElementById('timeTabButMid').classList.add('timeUnlockedNotify')
-            document.getElementById('timeDimSubTabBut').classList.add('timeUnlockedNotify')
-            if (canTimePrestige()) { timePrestigeNoConfirm(); }
-            else { timePrestigeReset(); }
+    if (player.timeLocked) {
+        if (player.confirmations['timeRespec']['click']) {
+            if (!confirm('Are you sure? This will reset ALL of your progress before unlocking Time Warp, and all of your time essense.<br>(These confirmations can be disabled in options)')) return
         }
+
+        player.timeLocked = false;
+        toggleTimeLockDisplay();
+        document.getElementById('timeSlider').removeAttribute('disabled')
+        document.getElementById('timeTabBut').classList.add('timeUnlockedNotify')
+        document.getElementById('timeTabButMid').classList.add('timeUnlockedNotify')
+        document.getElementById('timeDimSubTabBut').classList.add('timeUnlockedNotify')
+        if (canTimePrestige()) { timePrestigeNoConfirm(); }
+        else { timePrestigeReset(); }
     }
 }
 
 function respecTimeKey() {
-    if (player.timeResets.gte(1)) {
-        if (player.timeLocked) {
-            if (player.confirmations['timeRespec']['key']) {
-                if (!confirm('Are you sure? This will reset ALL of your progress before unlocking Time Warp, and all of your time essense.<br>(These confirmations can be disabled in options)')) return
-            }
-
-            player.timeLocked = false;
-            toggleTimeLockDisplay();
-            document.getElementById('timeSlider').removeAttribute('disabled')
-            document.getElementById('timeTabBut').classList.add('timeUnlockedNotify')
-            document.getElementById('timeTabButMid').classList.add('timeUnlockedNotify')
-            document.getElementById('timeDimSubTabBut').classList.add('timeUnlockedNotify')
-            if (canTimePrestige()) { timePrestigeNoConfirm(); }
-            else { timePrestigeReset(); }
+    if (player.timeLocked) {
+        if (player.confirmations['timeRespec']['key']) {
+            if (!confirm('Are you sure? This will reset ALL of your progress before unlocking Time Warp, and all of your time essense.<br>(These confirmations can be disabled in options)')) return
         }
+
+        player.timeLocked = false;
+        toggleTimeLockDisplay();
+        document.getElementById('timeSlider').removeAttribute('disabled')
+        document.getElementById('timeTabBut').classList.add('timeUnlockedNotify')
+        document.getElementById('timeTabButMid').classList.add('timeUnlockedNotify')
+        document.getElementById('timeDimSubTabBut').classList.add('timeUnlockedNotify')
+        if (canTimePrestige()) { timePrestigeNoConfirm(); }
+        else { timePrestigeReset(); }
     }
 }
 
@@ -315,7 +324,7 @@ function timePrestigeReset() {
     if (player.thisAscStats.bestCrystalRate.gt(player.allTimeStats.bestCrystalRate)) { player.allTimeStats.bestCrystalRate = new Decimal(player.thisAscStats.bestCrystalRate) }
     for (var i=9; i>0; i--) { copyData(player.pastRuns.lastTen[i], player.pastRuns.lastTen[i-1]); }
     copyData(player.pastRuns.lastTen[0], player.pastRuns.lastRun);
-    if (!hasTUpgrade(54)) {
+    if (!hasTUpgrade(54) || player.isInResearch) {
         player.trueEssence = new Decimal(START_PLAYER.trueEssence);
         player.antiEssence = new Decimal(START_PLAYER.antiEssence);
     }
@@ -355,6 +364,7 @@ function resetTime() {
     for (var i=NUM_TIMEDIMS; i>=1; i--) {
         player.timeDims[i].amount = new Decimal(0);
         player.timeDims[i].bought = new Decimal(0);
+        player.timeDims[i].unlocked = false;
     }
     copyData(player.timeDims, START_PLAYER.timeDims);
 }
@@ -374,7 +384,7 @@ const TIME_DATA = {
             return c;
         },
         mult: function() {
-            var m = hasTUpgrade(51) ? new Decimal(2.5) : new Decimal(2)
+            var m = (hasTUpgrade(51) && (!player.isInResearch || hasEUpgrade(11))) ? new Decimal(2.5) : new Decimal(2)
             if (player.timeDims[this.tier].bought.eq(0)) { return new Decimal(1); }
             m = m.pow(player.timeDims[this.tier].bought-1);
             if (hasTUpgrade(31)) { m = m.times(getTUpgEffect(31)); }
@@ -401,7 +411,7 @@ const TIME_DATA = {
             return c;
         },
         mult: function() {
-            var m = new Decimal(2);
+            var m = (hasTUpgrade(51) && (!player.isInResearch || hasEUpgrade(11))) ? new Decimal(2.5) : new Decimal(2)
             if (player.timeDims[this.tier].bought.eq(0)) { return new Decimal(1); }
             m = m.pow(player.timeDims[this.tier].bought-1);
             if (hasTUpgrade(31)) { m = m.times(getTUpgEffect(31)); }
@@ -428,7 +438,7 @@ const TIME_DATA = {
             return c;
         },
         mult: function() {
-            var m = new Decimal(2);
+            var m = (hasTUpgrade(51) && (!player.isInResearch || hasEUpgrade(11))) ? new Decimal(2.5) : new Decimal(2)
             if (player.timeDims[this.tier].bought.eq(0)) { return new Decimal(1); }
             m = m.pow(player.timeDims[this.tier].bought-1);
             if (hasTUpgrade(31)) { m = m.times(getTUpgEffect(31)); }
@@ -455,7 +465,7 @@ const TIME_DATA = {
             return c;
         },
         mult: function() {
-            var m = new Decimal(2);
+            var m = (hasTUpgrade(51) && (!player.isInResearch || hasEUpgrade(11))) ? new Decimal(2.5) : new Decimal(2)
             if (player.timeDims[this.tier].bought.eq(0)) { return new Decimal(1); }
             m = m.pow(player.timeDims[this.tier].bought-1);
             if (hasTUpgrade(31)) { m = m.times(getTUpgEffect(31)); }
@@ -469,6 +479,114 @@ const TIME_DATA = {
         amountID: "timeAmount4",
         multID: "timeMult4",
         rowID: "timeRow4",
+    },
+    5: {
+        single: "fifth time dimension",
+        plural: "fifth time dimensions",
+        baseCost: new Decimal(1e20),
+        baseCostMult: new Decimal(1000),
+        baseMult: new Decimal(0),
+        cost: function() {
+            var c = this.baseCost;
+            c = c.times(this.baseCostMult.pow(player.timeDims[this.tier].bought));
+            return c;
+        },
+        mult: function() {
+            var m = (hasTUpgrade(51) && (!player.isInResearch || hasEUpgrade(11))) ? new Decimal(2.5) : new Decimal(2)
+            if (player.timeDims[this.tier].bought.eq(0)) { return new Decimal(1); }
+            m = m.pow(player.timeDims[this.tier].bought-1);
+            if (hasTUpgrade(31)) { m = m.times(getTUpgEffect(31)); }
+            return m;
+        },
+        tier: 5,
+        buttonID: "timeBut5",
+        maxID: "timeMax5",
+        maxAmtID: 'dim5Max',
+        costID: 'dim5Cost',
+        amountID: "timeAmount5",
+        multID: "timeMult5",
+        rowID: "timeRow5",
+    },
+    6: {
+        single: "sixth time dimension",
+        plural: "sixth time dimensions",
+        baseCost: new Decimal(1e25),
+        baseCostMult: new Decimal(10000),
+        baseMult: new Decimal(0),
+        cost: function() {
+            var c = this.baseCost;
+            c = c.times(this.baseCostMult.pow(player.timeDims[this.tier].bought));
+            return c;
+        },
+        mult: function() {
+            var m = (hasTUpgrade(51) && (!player.isInResearch || hasEUpgrade(11))) ? new Decimal(2.5) : new Decimal(2)
+            if (player.timeDims[this.tier].bought.eq(0)) { return new Decimal(1); }
+            m = m.pow(player.timeDims[this.tier].bought-1);
+            if (hasTUpgrade(31)) { m = m.times(getTUpgEffect(31)); }
+            return m;
+        },
+        tier: 6,
+        buttonID: "timeBut6",
+        maxID: "timeMax6",
+        maxAmtID: 'dim6Max',
+        costID: 'dim6Cost',
+        amountID: "timeAmount6",
+        multID: "timeMult6",
+        rowID: "timeRow6",
+    },
+    7: {
+        single: "seventh time dimension",
+        plural: "seventh time dimensions",
+        baseCost: new Decimal(1e30),
+        baseCostMult: new Decimal(100000),
+        baseMult: new Decimal(0),
+        cost: function() {
+            var c = this.baseCost;
+            c = c.times(this.baseCostMult.pow(player.timeDims[this.tier].bought));
+            return c;
+        },
+        mult: function() {
+            var m = (hasTUpgrade(51) && (!player.isInResearch || hasEUpgrade(11))) ? new Decimal(2.5) : new Decimal(2)
+            if (player.timeDims[this.tier].bought.eq(0)) { return new Decimal(1); }
+            m = m.pow(player.timeDims[this.tier].bought-1);
+            if (hasTUpgrade(31)) { m = m.times(getTUpgEffect(31)); }
+            return m;
+        },
+        tier: 7,
+        buttonID: "timeBut7",
+        maxID: "timeMax7",
+        maxAmtID: 'dim7Max',
+        costID: 'dim7Cost',
+        amountID: "timeAmount7",
+        multID: "timeMult7",
+        rowID: "timeRow7",
+    },
+    8: {
+        single: "eighth time dimension",
+        plural: "eighth time dimensions",
+        baseCost: new Decimal(1e40),
+        baseCostMult: new Decimal(100000),
+        baseMult: new Decimal(0),
+        cost: function() {
+            var c = this.baseCost;
+            c = c.times(this.baseCostMult.pow(player.timeDims[this.tier].bought));
+            return c;
+        },
+        mult: function() {
+            var m = (hasTUpgrade(51) && (!player.isInResearch || hasEUpgrade(11))) ? new Decimal(2.5) : new Decimal(2)
+            if (player.timeDims[this.tier].bought.eq(0)) { return new Decimal(1); }
+            m = m.pow(player.timeDims[this.tier].bought-1);
+            if (hasTUpgrade(31)) { m = m.times(getTUpgEffect(31)); }
+            return m;
+        },
+        tier: 8,
+        buttonID: "timeBut8",
+        maxID: "timeMax8",
+        maxAmtID: 'dim8Max',
+        costID: 'dim8Cost',
+        amountID: "timeAmount8",
+        multID: "timeMult8",
+        rowID: "timeRow8",
     },
     upgrades: {
         11: {
@@ -547,7 +665,7 @@ const TIME_DATA = {
             displayFormula: function() { return hasUpgrade(4, 13) ? '1 + 7.5*ln(x)' : '1 + 7.5*log(x)' },
             effect: function() {
                 var e = player.crystals;
-                e = hasUpgrade(4, 13) ? e.ln()*7.5 : e.log10()*7.5;
+                e = (hasUpgrade(4, 13) && (!player.isInResearch || hasEUpgrade(13))) ? e.ln()*7.5 : e.log10()*7.5;
                 return 1 + e;
             }
         },
@@ -562,7 +680,7 @@ const TIME_DATA = {
             displayFormula: function() { return hasUpgrade(4, 13) ? '1 + ln(x)' : '1 + log(x)' },
             effect: function() {
                 var e = player.crystals;
-                e = hasUpgrade(4, 13) ? e.ln() : e.log10();
+                e = (hasUpgrade(4, 13) && (!player.isInResearch || hasEUpgrade(13))) ? e.ln() : e.log10();
                 return 1 + e;
             }
         },
@@ -590,7 +708,7 @@ const TIME_DATA = {
             displayFormula: function() { return hasUpgrade(4, 13) ? '1 + 10*ln(x)' : '1 + 10*log(x)' },
             effect: function() {
                 var e = player.crystals;
-                e = hasUpgrade(4, 13) ? e.ln()*10 : e.log10()*10
+                e = (hasUpgrade(4, 13) && (!player.isInResearch || hasEUpgrade(13))) ? e.ln()*10 : e.log10()*10
                 return 1 + e;
             }
         },
@@ -637,7 +755,7 @@ const TIME_DATA = {
         },
         41: {
             title: 'Unholy Paradox, Manbat',
-            desc: 'Outside of astral enslavement, the True Time Essence effect applies directly to corpse production.',
+            desc: 'The True Time Essence effect applies directly to corpse production.',
             cost: new Decimal(1e12),
             preReq: null,
             buttonID: 'timeUpg41',
@@ -645,7 +763,8 @@ const TIME_DATA = {
             displayTooltip: false,
             displayFormula: function() { return '' },
             effect: function() {
-                return player.astralFlag ? new Decimal(1) : getTrueTimeBuff()
+                if (player.isInResearch && !hasEUpgrade(11)) { return new Decimal(1); }
+                else { return getTrueTimeBuff() }
             }
         },
         42: {
@@ -658,8 +777,11 @@ const TIME_DATA = {
             displayTooltip: true,
             displayFormula: function() { return '1 + x' },
             effect: function() {
-                let e = player.galaxies;
-                return e.plus(1);
+                if (player.isInResearch) { return new Decimal(1); }
+                else { 
+                    let e = player.galaxies;
+                    return e.plus(1);
+                }
             }
         },
         43: {
@@ -672,8 +794,11 @@ const TIME_DATA = {
             displayTooltip: true,
             displayFormula: function() { return '1 + x' },
             effect: function() {
-                var e = player.galaxies;
-                return e.plus(1);
+                if (player.isInResearch) { return new Decimal(1); }
+                else { 
+                    let e = player.galaxies;
+                    return e.plus(1);
+                }
             }
         },
         44: {
@@ -712,8 +837,11 @@ const TIME_DATA = {
             displayTooltip: true,
             displayFormula: function() { return '1 + x' },
             effect: function() {
-                var e = player.galaxies;
-                return e.plus(1);
+                if (player.isInResearch) { return new Decimal(1); }
+                else { 
+                    let e = player.galaxies;
+                    return e.plus(1);
+                }
             }
         },
         53: {
@@ -726,8 +854,11 @@ const TIME_DATA = {
             displayTooltip: true,
             displayFormula: function() { return '1 + x' },
             effect: function() {
-                var e = player.galaxies;
-                return e.plus(1);
+                if (player.isInResearch) { return new Decimal(1); }
+                else { 
+                    let e = player.galaxies;
+                    return e.plus(1);
+                }
             }
         },
         54: {

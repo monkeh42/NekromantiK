@@ -13,8 +13,12 @@ function canUnlock(tier) {
 function getCorpsesPerSecond() {
     let c = player.units[1].amount.gt(0) ? player.units[1].amount.times(getTotalCorpseMult()) : new Decimal(0);
     if (hasTUpgrade(41)) { c = c.times(getTUpgEffect(41)); }
-    
     if (hasTUpgrade(42)) { c = c.times(getTUpgEffect(42)); }
+    if (hasEUpgrade(12)) { c = c.times(getEUpgEffect(12)); }
+    if (player.isInResearch) {
+        c = c.pow(0.9);
+        if (isResearchActive(7)) { c = c.pow(0.9); }
+    }
     return c;
 }
 
@@ -22,7 +26,9 @@ function getUnitProdPerSecond(tier) {
     if (tier == NUM_UNITS) { return (hasGUpgrade(2, 41)) ? new Decimal(Decimal.max(getEssenceProdPerSecond(), 1).log10()) : new Decimal(0); }
     let p = player.units[tier+1].amount;
     if (!hasGUpgrade(2, 21)) { p = p.div(tier+1); }
-    return p.times(UNITS_DATA[tier+1].prodMult());
+    p = p.times(UNITS_DATA[tier+1].prodMult());
+    if (player.isInResearch) { p = p.pow(0.9); }
+    return p;
 }
 
 function getCorpseMultFromUnits() {
@@ -49,6 +55,7 @@ function getWorldsBonus() {
     var e = 1.5 + getCUpgEffect(4);
     var boost = Decimal.max(b.div(1.5).pow(e).plus(1), 1);
     if (hasTUpgrade(32)) { boost = boost.times(getTUpgEffect(32)); }
+    if (isResearchCompleted(6)) { boost = boost.pow(getTheoremBoostW()); }
     return boost;
 }
 
@@ -66,8 +73,8 @@ function buySingleUnit(tier) {
 
 function buyMaxUnits(tier) {
     if (canAffordUnit(tier)) {
-        var totalBought = calculateMaxUnits(tier);
-        player.corpses = player.corpses.minus(calculateMaxUnitsCost(tier));
+        var totalBought = calculateMaxUnits(tier)[0];
+        player.corpses = player.corpses.minus(calculateMaxUnits(tier)[1]);
         player.units[tier].amount = player.units[tier].amount.plus(totalBought);
         player.units[tier].bought = player.units[tier].bought.plus(totalBought);
         document.getElementById(UNITS_DATA[tier].costID).innerHTML = formatWhole(UNITS_DATA[tier].cost())
@@ -77,16 +84,16 @@ function buyMaxUnits(tier) {
 
 function calculateMaxUnits(tier) {
     var count = 0;
+    var totalCost = new Decimal(0);
+    var newCost = UNITS_DATA[tier].cost();
     if (canAffordUnit(tier)) {    
-        var leftoverCorpses = player.corpses;
-        var newCost = UNITS_DATA[tier].cost();
-        while (leftoverCorpses.gte(newCost)) {
-            leftoverCorpses = leftoverCorpses.minus(newCost);
-            newCost = newCost.times(UNITS_DATA[tier].baseCostMult);
+        while (player.corpses.gte(totalCost.plus(newCost))) {
+            totalCost = totalCost.plus(newCost);
             count++;
+            newCost = UNITS_DATA[tier].costFuture(player.units[tier].bought.plus(count));
         }
     }
-    return count;
+    return new Array(new Decimal(count), totalCost);
 }
 
 function calculateMaxUnitsCost(tier) {
@@ -95,6 +102,8 @@ function calculateMaxUnitsCost(tier) {
     if (count > 0) {
         for (var i=0; i<count; i++) {
             total = total.plus(UNITS_DATA[tier].cost().times(UNITS_DATA[tier].baseCostMult.pow(i)));
+            if (player.units[tier].bought.plus(count).gte(UNITS_DATA[tier].expCostStart)) { total = total.times(Decimal.pow(UNITS_DATA[tier].expCostMult, addFactorial(player.units[tier].bought.minus(UNITS_DATA[tier].expCostStart)))); }
+            if (player.units[tier].bought.plus(count).gte(UNITS_DATA[tier].superExpCostStart)) { total = total.times(Decimal.pow(UNITS_DATA[tier].superExpCostMult, addFactorial(player.units[tier].bought.minus(UNITS_DATA[tier].superExpCostStart)))); }
         }
     }
     return total;
@@ -176,7 +185,7 @@ function spacePrestigeReset() {
     resetUnits();
     resetBuildingResources();
     //unitSetup(START_PLAYER);
-    if (!hasTUpgrade(44)) { player.corpses = hasAchievement(41) ? new Decimal(START_PLAYER.corpsesAch41) : new Decimal(START_PLAYER.corpses) }
+    if (!hasTUpgrade(44) || player.isInResearch) { player.corpses = hasAchievement(41) ? new Decimal(START_PLAYER.corpsesAch41) : new Decimal(START_PLAYER.corpses) }
     //allDisplay();
     
     save();
@@ -208,12 +217,21 @@ const UNITS_DATA = {
         baseCostMult: new Decimal(100),
         expCostMult: 10,
         expCostStart: 10,
+        superExpCostMult: 100000000000,
+        superExpCostStart: 40,
         expCostStartCost: new Decimal(1e21),
         cost: function() {
             var c = this.baseCost;
             var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
             if (player.units[this.tier].bought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(e)))); }
+            return c;
+        },
+        costFuture: function(numBought) {
+            var c = this.baseCost;
+            var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
+            c = c.times(this.baseCostMult.pow(numBought));
+            if (numBought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(numBought.minus(e)))); }
             return c;
         },
         corpseMult: function() {
@@ -224,7 +242,11 @@ const UNITS_DATA = {
             if (hasUpgrade(1, 11)) m = m.times(getUpgEffect(1, 11));
             if (hasTUpgrade(22)) { m = m.times(getTUpgEffect(22)); }
             if (hasAchievement(31)) { m = m.times(getAchievementEffect(31)); }
-            return m.times(getAchievementBoost());
+            if (hasAchievement(73)) { m = m.times(getAchievementEffect(73)); }
+            m = m.times(getAchievementBoost());
+            if (isResearchActive(1)) { m = m.pow(0.9); }
+            else if (isResearchCompleted(1)) { m = m.pow(1.1); }
+            return m;
         },
         prodMult: function() {
             var m = this.corpseMult();
@@ -254,12 +276,21 @@ const UNITS_DATA = {
         baseCostMult: new Decimal(10000),
         expCostMult: 10,
         expCostStart: 7,
+        superExpCostMult: 100000000000,
+        superExpCostStart: 37,
         expCostStartCost: new Decimal(1e30),
         cost: function() {
             var c = this.baseCost;
             var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
             if (player.units[this.tier].bought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(e)))); }
+            return c;
+        },
+        costFuture: function(numBought) {
+            var c = this.baseCost;
+            var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
+            c = c.times(this.baseCostMult.pow(numBought));
+            if (numBought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(numBought.minus(e)))); }
             return c;
         },
         corpseMult: function() {
@@ -269,7 +300,11 @@ const UNITS_DATA = {
             m = m.pow(player.units[this.tier].bought-1);
             if (hasTUpgrade(22)) { m = m.times(getTUpgEffect(22)); }
             if (hasAchievement(31)) { m = m.times(getAchievementEffect(31)); }
-            return m.times(getAchievementBoost());
+            if (hasAchievement(73)) { m = m.times(getAchievementEffect(73)); }
+            m = m.times(getAchievementBoost());
+            if (isResearchActive(1)) { m = m.pow(0.9); }
+            else if (isResearchCompleted(1)) { m = m.pow(1.1); }
+            return m;
         },
         prodMult: function() {
             var m = this.corpseMult();
@@ -300,12 +335,21 @@ const UNITS_DATA = {
         baseCostMult: new Decimal(10000),
         expCostMult: 10,
         expCostStart: 7,
+        superExpCostMult: 100000000000,
+        superExpCostStart: 37,
         expCostStartCost: new Decimal(1e32),
         cost: function() {
             var c = this.baseCost;
             var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
             if (player.units[this.tier].bought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(e)))); }
+            return c;
+        },
+        costFuture: function(numBought) {
+            var c = this.baseCost;
+            var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
+            c = c.times(this.baseCostMult.pow(numBought));
+            if (numBought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(numBought.minus(e)))); }
             return c;
         },
         corpseMult: function() {
@@ -315,7 +359,11 @@ const UNITS_DATA = {
             m = m.pow(player.units[this.tier].bought-1);
             if (hasTUpgrade(22)) { m = m.times(getTUpgEffect(22)); }
             if (hasAchievement(31)) { m = m.times(getAchievementEffect(31)); }
-            return m.times(getAchievementBoost());
+            if (hasAchievement(73)) { m = m.times(getAchievementEffect(73)); }
+            m = m.times(getAchievementBoost());
+            if (isResearchActive(1)) { m = m.pow(0.9); }
+            else if (isResearchCompleted(1)) { m = m.pow(1.1); }
+            return m;
         },
         prodMult: function() {
             var m = this.corpseMult();
@@ -345,12 +393,21 @@ const UNITS_DATA = {
         baseCostMult: new Decimal(1000000),
         expCostMult: 10,
         expCostStart: 5,
+        superExpCostMult: 100000000000,
+        superExpCostStart: 35,
         expCostStartCost: new Decimal(1e36),
         cost: function() {
             var c = this.baseCost;
             var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
             if (player.units[this.tier].bought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(e)))); }
+            return c;
+        },
+        costFuture: function(numBought) {
+            var c = this.baseCost;
+            var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
+            c = c.times(this.baseCostMult.pow(numBought));
+            if (numBought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(numBought.minus(e)))); }
             return c;
         },
         corpseMult: function() {
@@ -360,7 +417,11 @@ const UNITS_DATA = {
             m = m.pow(player.units[this.tier].bought-1);
             if (hasTUpgrade(22)) { m = m.times(getTUpgEffect(22)); }
             if (hasAchievement(31)) { m = m.times(getAchievementEffect(31)); }
-            return m.times(getAchievementBoost());
+            if (hasAchievement(73)) { m = m.times(getAchievementEffect(73)); }
+            m = m.times(getAchievementBoost());
+            if (isResearchActive(1)) { m = m.pow(0.9); }
+            else if (isResearchCompleted(1)) { m = m.pow(1.1); }
+            return m;
         },
         prodMult: function() {
             var m = this.corpseMult();
@@ -390,12 +451,21 @@ const UNITS_DATA = {
         baseCostMult: new Decimal(1e10),
         expCostMult: 10,
         expCostStart: 4,
+        superExpCostMult: 100000000000,
+        superExpCostStart: 34,
         expCostStartCost: new Decimal(1e49),
         cost: function() {
             var c = this.baseCost;
             var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
             if (player.units[this.tier].bought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(e)))); }
+            return c;
+        },
+        costFuture: function(numBought) {
+            var c = this.baseCost;
+            var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
+            c = c.times(this.baseCostMult.pow(numBought));
+            if (numBought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(numBought.minus(e)))); }
             return c;
         },
         corpseMult: function() {
@@ -405,7 +475,11 @@ const UNITS_DATA = {
             m = m.pow(player.units[this.tier].bought-1);
             if (hasTUpgrade(22)) { m = m.times(getTUpgEffect(22)); }
             if (hasAchievement(31)) { m = m.times(getAchievementEffect(31)); }
-            return m.times(getAchievementBoost());
+            if (hasAchievement(73)) { m = m.times(getAchievementEffect(73)); }
+            m = m.times(getAchievementBoost());
+            if (isResearchActive(1)) { m = m.pow(0.9); }
+            else if (isResearchCompleted(1)) { m = m.pow(1.1); }
+            return m;
         },
         prodMult: function() {
             var m = this.corpseMult();
@@ -435,12 +509,21 @@ const UNITS_DATA = {
         baseCostMult: new Decimal(1e11),
         expCostMult: 10,
         expCostStart: 4,
+        superExpCostMult: 100000000000,
+        superExpCostStart: 34,
         expCostStartCost: new Decimal(1e58),
         cost: function() {
             var c = this.baseCost;
             var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
             if (player.units[this.tier].bought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(e)))); }
+            return c;
+        },
+        costFuture: function(numBought) {
+            var c = this.baseCost;
+            var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
+            c = c.times(this.baseCostMult.pow(numBought));
+            if (numBought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(numBought.minus(e)))); }
             return c;
         },
         corpseMult: function() {
@@ -450,7 +533,11 @@ const UNITS_DATA = {
             m = m.pow(player.units[this.tier].bought-1);
             if (hasTUpgrade(22)) { m = m.times(getTUpgEffect(22)); }
             if (hasAchievement(31)) { m = m.times(getAchievementEffect(31)); }
-            return m.times(getAchievementBoost());
+            if (hasAchievement(73)) { m = m.times(getAchievementEffect(73)); }
+            m = m.times(getAchievementBoost());
+            if (isResearchActive(1)) { m = m.pow(0.9); }
+            else if (isResearchCompleted(1)) { m = m.pow(1.1); }
+            return m;
         },
         prodMult: function() {
             var m = this.corpseMult();
@@ -480,12 +567,21 @@ const UNITS_DATA = {
         baseCostMult: new Decimal(1e12),
         expCostMult: 10,
         expCostStart: 3,
+        superExpCostMult: 100000000000,
+        superExpCostStart: 33,
         expCostStartCost: new Decimal(1e55),
         cost: function() {
             var c = this.baseCost;
             var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
             c = c.times(this.baseCostMult.pow(player.units[this.tier].bought));
             if (player.units[this.tier].bought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(e)))); }
+            return c;
+        },
+        costFuture: function(numBought) {
+            var c = this.baseCost;
+            var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
+            c = c.times(this.baseCostMult.pow(numBought));
+            if (numBought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(numBought.minus(e)))); }
             return c;
         },
         corpseMult: function() {
@@ -495,7 +591,11 @@ const UNITS_DATA = {
             m = m.pow(player.units[this.tier].bought-1);
             if (hasTUpgrade(22)) { m = m.times(getTUpgEffect(22)); }
             if (hasAchievement(31)) { m = m.times(getAchievementEffect(31)); }
-            return m.times(getAchievementBoost());
+            if (hasAchievement(73)) { m = m.times(getAchievementEffect(73)); }
+            m = m.times(getAchievementBoost());
+            if (isResearchActive(1)) { m = m.pow(0.9); }
+            else if (isResearchCompleted(1)) { m = m.pow(1.1); }
+            return m;
         },
         prodMult: function() {
             var m = this.corpseMult();
@@ -525,6 +625,8 @@ const UNITS_DATA = {
         baseCostMult: new Decimal(1e15),
         expCostMult: 10,
         expCostStart: 3,
+        superExpCostMult: 100000000000,
+        superExpCostStart: 33,
         expCostStartCost: new Decimal(1e70),
         cost: function() {
             var c = this.baseCost;
@@ -535,6 +637,15 @@ const UNITS_DATA = {
             if (player.units[this.tier].bought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(player.units[this.tier].bought.minus(e)))); }
             return c;
         },
+        costFuture: function(numBought) {
+            var c = this.baseCost;
+            var m = this.baseCostMult;
+            var e = hasGUpgrade(2, 32) ? this.expCostStart*2 : this.expCostStart
+            if (hasUpgrade(3, 22)) { m = Decimal.pow(m, getUpgEffect(3, 22)); }
+            c = c.times(m.pow(numBought));
+            if (numBought.gte(e)) { c = c.times(Decimal.pow(this.expCostMult, addFactorial(numBought.minus(e)))); }
+            return c;
+        },
         corpseMult: function() {
             var m = this.baseMultPer;
             if (hasUpgrade(1, 12)) { m = m.times(getUpgEffect(1, 12)); }
@@ -542,7 +653,11 @@ const UNITS_DATA = {
             m = m.pow(player.units[this.tier].bought-1);
             if (hasTUpgrade(22)) { m = m.times(getTUpgEffect(22)); }
             if (hasAchievement(31)) { m = m.times(getAchievementEffect(31)); }
-            return m.times(getAchievementBoost());
+            if (hasAchievement(73)) { m = m.times(getAchievementEffect(73)); }
+            m = m.times(getAchievementBoost());
+            if (isResearchActive(1)) { m = m.pow(0.9); }
+            else if (isResearchCompleted(1)) { m = m.pow(1.1); }
+            return m;
         },
         prodMult: function() {
             var m = this.corpseMult();

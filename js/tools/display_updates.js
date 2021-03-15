@@ -5,48 +5,16 @@ function updateDisplay(timestamp) {
     updateResourceDisplays();
     updateTierDisplays();
     updatePrestigeDisplays();
+    if (player.isInResearch) { checkProjectProgress(); }
     
     for (let z=0; z<displayData.length; z++) {
         updateElement(displayData[z]);
+        //console.log(z.toString() + ': ' + displayData[z].toString());
     }
 
     displayData = new Array(0);
-    /*document.getElementById('testBox').innerHTML = `<h2>log(x) -> sqrt(x)</h2>
-                                                    <br>Industrialize: ${formatDefault2(Decimal.pow(player.buildings[1].amount.sqrt(), 0.5).times(2).plus(1))}x boost,<br>
-                                                    ${formatDefault2(Decimal.pow(player.buildings[1].amount.sqrt(), 0.5).times(2).plus(1).div(getUpgEffect(1, 11)))}x stronger<br>
-                                                    Part Time Jobs: ${formatDefault2(Decimal.pow(player.units[2].amount.sqrt(), 0.5).plus(1))}x boost,<br>
-                                                    ${formatDefault2(Decimal.pow(player.units[2].amount.sqrt(), 0.5).plus(1).div(getUpgEffect(1, 21)))}x stronger<br>
-                                                    Arm the Dead: ${formatDefault2(player.corpses.plus(1))}x boost,<br>
-                                                    ${formatDefault2(player.corpses.plus(1).div(getUpgEffect(1, 23)))}x stronger<br>
-                                                    Astral Forges: ${formatDefault2(Decimal.sqrt(player.bricks.sqrt().plus(1)))}x boost,<br>
-                                                    ${formatDefault2(Decimal.sqrt(player.bricks.sqrt().plus(1)).div(getUpgEffect(2, 12)))}x stronger<br>
-                                                    Astral Siege Engines: ${formatDefault2(Decimal.sqrt(player.bricks.sqrt().plus(1)))}x boost,<br>
-                                                    ${formatDefault2(Decimal.sqrt(player.bricks.sqrt().plus(1)).div(getUpgEffect(2, 13)))}x stronger<br>
-                                                    Astral Kiln Kilns: ${formatDefault2(player.bricks.plus(1))}x boost,<br>
-                                                    ${formatDefault2(player.bricks.plus(1).div(getUpgEffect(2, 21)))}x stronger<br>
-                                                    Astral Time Machine: ${formatDefault2(player.bricks.plus(1))}x boost,<br>
-                                                    ${formatDefault2(player.bricks.plus(1).div(getUpgEffect(2, 22)))}x stronger<br>
-                                                    Astral Magnifying: ${formatDefault2(player.bricks.sqrt().div(4).plus(1))}x boost,<br>
-                                                    ${formatDefault2(player.bricks.sqrt().div(4).plus(1).div(getUpgEffect(2, 23)))}x stronger<br>`
-
-    document.getElementById('testBoxL').innerHTML = `<h2>log(x) -> log(x)^2</h2>
-                                                    <br>Industrialize: ${formatDefault2(Decimal.pow(Decimal.pow(player.buildings[1].amount.log10(), 2), 0.5).times(2).plus(1))}x boost,<br>
-                                                    ${formatDefault2(Decimal.pow(Decimal.pow(player.buildings[1].amount.log10(), 2), 0.5).times(2).plus(1).div(getUpgEffect(1, 11)))}x stronger<br>
-                                                    Part Time Jobs: ${formatDefault2(Decimal.pow(Decimal.pow(player.units[2].amount.log10(), 2), 0.5).plus(1))}x boost,<br>
-                                                    ${formatDefault2(Decimal.pow(Decimal.pow(player.units[2].amount.log10(), 2), 0.5).plus(1).div(getUpgEffect(1, 21)))}x stronger<br>
-                                                    Arm the Dead: ${formatDefault2(Decimal.pow(player.corpses.log10(), 2).pow(2).plus(1))}x boost,<br>
-                                                    ${formatDefault2(Decimal.pow(player.corpses.log10(), 4).plus(1).div(getUpgEffect(1, 23)))}x stronger<br>
-                                                    Astral Forges: ${formatDefault2(Decimal.sqrt(Decimal.pow(player.bricks.log10(), 2).plus(1)))}x boost,<br>
-                                                    ${formatDefault2(Decimal.sqrt(Decimal.pow(player.bricks.log10(), 2).plus(1)).div(getUpgEffect(2, 12)))}x stronger<br>
-                                                    Astral Siege Engines: ${formatDefault2(Decimal.sqrt(Decimal.pow(player.bricks.log10(), 2).plus(1)))}x boost,<br>
-                                                    ${formatDefault2(Decimal.sqrt(Decimal.pow(player.bricks.log10(), 2).plus(1)).div(getUpgEffect(2, 13)))}x stronger<br>
-                                                    Astral Kiln Kilns: ${formatDefault2(Decimal.pow(player.bricks.log10(), 4).plus(1))}x boost,<br>
-                                                    ${formatDefault2(Decimal.pow(player.bricks.log10(), 4).plus(1).div(getUpgEffect(2, 21)))}x stronger<br>
-                                                    Astral Time Machine: ${formatDefault2(Decimal.pow(player.bricks.log10(), 4).plus(1))}x boost,<br>
-                                                    ${formatDefault2(Decimal.pow(player.bricks.log10(), 4).plus(1).div(getUpgEffect(2, 22)))}x stronger<br>
-                                                    Astral Magnifying: ${formatDefault2(Decimal.pow(player.bricks.log10(), 2).div(4).plus(1))}x boost,<br>
-                                                    ${formatDefault2(Decimal.pow(player.bricks.log10(), 2).div(4).plus(1).div(getUpgEffect(2, 23)))}x stronger<br>`*/
 }
+
 
 function updateElement(data) {
     if (data[0] == 'addClass') {
@@ -73,6 +41,8 @@ function updateBuyables() {
     updateConstrUpgs();
     updateTimeUpgs();
     updateGalaxyUpgs();
+    updateArkUpgs();
+    updateEthUpgs();
 }
 
 function updateBuildingUpgs() {
@@ -96,7 +66,7 @@ function updateBuildingUpgs() {
                     remBUpgClass(b, u, BUILDS_DATA[b].upgradeBtnClass);
                 }
             }
-            if (b==4 && u==12) { displayData.push(['html', 'bUpgEffect4.12', `[+${Decimal.floor(player.construction[1].sqrt())}/+${Decimal.floor(player.construction[2].sqrt())}/+${Decimal.floor(player.construction[3].sqrt())}]`]); }
+            if (b==4 && u==12) { displayData.push(['html', 'bUpgEffect4.12', (player.isInResearch ? '[+0/+0/+0]' : `[+${Decimal.floor(player.construction[1].sqrt())}/+${Decimal.floor(player.construction[2].sqrt())}/+${Decimal.floor(player.construction[3].sqrt())}]`)]); }
             else { displayData.push(['html', 'bUpgEffect' + b.toString() + '.' + u.toString(), `${isDisplayEffect(b, u) ? formatDefault2(getUpgEffect(b, u)) + BUILDS_DATA[b].upgrades[u].displaySuffix : ""}`]); }
         }
     }
@@ -142,9 +112,40 @@ function updateGalaxyUpgs() {
                         remGUpgClass(g, u, 'galaxyUpg');
                     }
                 } 
-                if (isDisplayEffectG(g, u)) { document.getElementById('gUpgEffect' + g.toString() + '.' + u.toString()).innerHTML = formatDefault2(getGUpgEffect(g, u)) + GALAXIES_DATA[g].upgrades[u].displaySuffix; }
+            }
+            if (isDisplayEffectG(g, u)) { document.getElementById('gUpgEffect' + g.toString() + '.' + u.toString()).innerHTML = formatUnitRow(getGUpgEffect(g, u)) + GALAXIES_DATA[g].upgrades[u].displaySuffix; }
+        }
+    }
+}
+
+function updateArkUpgs() {
+    for (let a in ARK_DATA) {
+        if (player.ark[a].unlocked) {
+            if (!hasAUpgrade(a)) {
+                if (canAffordAUpg(a) && !document.getElementById(ARK_DATA[a].buttonID).classList.contains('arkUpg')) {
+                    addAUpgClass(a, 'arkUpg');
+                    remAUpgClass(a, 'unclickableArkUpg');
+                } else if (!canAffordAUpg(a) && document.getElementById(ARK_DATA[a].buttonID).classList.contains('arkUpg')) {
+                    remAUpgClass(a, 'arkUpg');
+                    addAUpgClass(a, 'unclickableArkUpg');
+                }
             }
         }
+    }
+}
+
+function updateEthUpgs() {
+    for (let e in ETH_DATA) {
+        if (!hasEUpgrade(e)) {
+            if (canAffordEUpg(e) && !document.getElementById(ETH_DATA[e].buttonID).classList.contains('ethUpg')) {
+                addEUpgClass(e, 'ethUpg');
+                remEUpgClass(e, 'unclickableEthUpg');
+            } else if (!canAffordEUpg(e) && document.getElementById(ETH_DATA[e].buttonID).classList.contains('ethUpg')) {
+                remEUpgClass(e, 'ethUpg');
+                addEUpgClass(e, 'unclickableEthUpg');
+            }
+        }
+        if (isDisplayEffectE(e)) { document.getElementById('eUpgEffect' + e.toString()).innerHTML = formatDefault2(getEUpgEffect(e)) + ETH_DATA[e].displaySuffix; }
     }
 }
 
@@ -162,7 +163,7 @@ function updateCorpseDisplays() {
     displayData.push(['html', 'corpseAmount', formatDefault(player.corpses)]);
     displayData.push(['html', 'pluralCorpse', corpseSingulizer(false)]);
     displayData.push(['html', 'pluralCorpseG', corpseSingulizer(true)]);
-    displayData.push(['html', 'corpseGain', player.astralFlag ? (hasGUpgrade(1, 22) ? formatDefault(getCorpsesPerSecond().times(.01)) : formatWhole(0)) : formatDefault(player.displayRealTime ? getCorpsesPerSecond().times(getRealTimeMultiplier()) : getCorpsesPerSecond())]);
+    displayData.push(['html', 'corpseGain', player.astralFlag ? (hasGUpgrade(1, 22) ? formatDefault(player.displayRealTime ? getCorpsesPerSecond().times(.01).times(getRealTimeMultiplier()) : getCorpsesPerSecond().times(.01)) : formatWhole(0)) : formatDefault(player.displayRealTime ? getCorpsesPerSecond().times(getRealTimeMultiplier()) : getCorpsesPerSecond())]);
     displayData.push(['html', 'achNum', `${formatWhole(getNumAchievements())}`]);
     displayData.push(['html', 'achRowsNum', `${formatWhole(getNumAchRows())}`]);
     displayData.push(['html', 'achMult', `${formatDefault2(getAchievementBoost())}x`]);
@@ -172,7 +173,9 @@ function updateCorpseDisplays() {
     displayData.push(['html', 'pluralWorld', worldSingulizer()]);
     displayData.push(['html', 'galaxiesMult', `${formatDefault2(getGalaxiesBonus())}x`]);
     displayData.push(['html', 'galaxiesNum', `${formatWhole(player.allTimeStats.totalGalaxies)}`]);
+    displayData.push(['html', 'unspentGalaxiesNum', `${formatWhole(player.galaxies)}`]);
     displayData.push(['html', 'pluralGalaxy', galaxyTextSingulizer(player.allTimeStats.totalGalaxies)]);
+    displayData.push(['html', 'pluralGalaxyUnspent', galaxyTextSingulizer(player.galaxies)]);
     displayData.push(['html', 'totalMultAll', `${formatDefault2(getTotalCorpseMult())}x`]);
     displayData.push(['html', 'normalAstral', player.astralFlag ? 'ASTRAL' : 'NORMAL']);
     //displayData.push(['setProp', 'normalAstral', 'color', player.astralFlag ? '#42d35a' : 'white']);
@@ -239,7 +242,9 @@ function updateTimeDisplays() {
 function updateGalaxyDisplays() {
     displayData.push(['html', 'galaxyAmount', formatWhole(player.galaxies)]);
     displayData.push(['html', 'totalGalaxyAmount', formatWhole(player.allTimeStats.totalGalaxies)]);
-    displayData.push(['html', 'ascensionAmount', formatWhole(player.ascensions)]);
+    displayData.push(['html', 'ascensionAmount', formatWhole(player.allTimeStats.totalAscensions)]);
+    displayData.push(['html', 'researchAmountHeader', formatUnitRow(player.research)]);
+    displayData.push(['html', 'researchGainHeader', ` ${(formatUnitRow(player.astralFlag ? (player.displayRealTime ? getResearchPerSecond().times(getRealTimeMultiplier()) : getResearchPerSecond()) : formatWhole(0)))} `]);
 }
 
 function updatePrestigeDisplays() {
@@ -327,14 +332,14 @@ function updateUnitTiers() {
         displayData.push(['html', UNITS_DATA[i].CMultID, formatUnitRow(UNITS_DATA[i].corpseMult())]);
         if (getUnitProdPerSecond(i).gt(0)) {
             if (i==NUM_UNITS) {
-                if (Decimal.times(getUnitProdPerSecond(i).div(player.units[i].amount.max(1)), 100).gte(0.1)) { displayData.push(['html', UNITS_DATA[i].gainID, '(+' + formatUnitRow(Decimal.times(((player.displayRealTime && ((hasGUpgrade(1, 32) && player.astralFlag) || (hasGUpgrade(4, 22) && !player.astralFlag))) ? getUnitProdPerSecond(i).div(player.units[i].amount.max(1)).times(player.astralFlag ? getRealTimeMultiplier().sqrt().div(getAstralNerf().sqrt()) : getRealTimeMultiplier()) : getUnitProdPerSecond(i).div(player.units[i].amount.max(1))), 100)) + '%/s)']); }
+                if (Decimal.times(getUnitProdPerSecond(i).div(player.units[i].amount.max(1)), 100).gte(0.1)) { displayData.push(['html', UNITS_DATA[i].gainID, '(+' + formatUnitRow(Decimal.times(((player.displayRealTime && ((hasGUpgrade(1, 32) && player.astralFlag) || (hasGUpgrade(4, 22) && !player.astralFlag))) ? getUnitProdPerSecond(i).div(player.units[i].amount.max(1)).times(player.astralFlag ? getRealTimeMultiplier().sqrt().div(Decimal.sqrt(getAstralNerf())) : getRealTimeMultiplier()) : getUnitProdPerSecond(i).div(player.units[i].amount.max(1))), 100)) + '%/s)']); }
                 else if (document.getElementById(UNITS_DATA[i].gainID).innerHTML != '(<0.1%/s)') { displayData.push(['html', UNITS_DATA[i].gainID, '(<0.1%/s)']); }
             } else {
                 if (Decimal.times(getUnitProdPerSecond(i).div(player.units[i].amount.max(1)), 100).gte(0.1)) { displayData.push(['html', UNITS_DATA[i].gainID, '(+' + formatUnitRow(Decimal.times((player.displayRealTime ? getUnitProdPerSecond(i).div(player.units[i].amount.max(1)).times(getRealTimeMultiplier()) : getUnitProdPerSecond(i).div(player.units[i].amount.max(1))), 100)) + '%/s)']); }
                 else if (document.getElementById(UNITS_DATA[i].gainID).innerHTML != '(<0.1%/s)') { displayData.push(['html', UNITS_DATA[i].gainID, '(<0.1%/s)']); }
             }
         } else if (document.getElementById(UNITS_DATA[i].gainID).innerHTML != '') { displayData.push(['html', UNITS_DATA[i].gainID, '']) }
-        if (canAffordUnit(i)) { displayData.push(['html', UNITS_DATA[i].maxNumID, calculateMaxUnits(i)]); }
+        if (canAffordUnit(i)) { displayData.push(['html', UNITS_DATA[i].maxNumID, calculateMaxUnits(i)[0]]); }
         else { displayData.push(['html', UNITS_DATA[i].maxNumID, '0']); }
     }
 }
@@ -355,6 +360,38 @@ function updateTDimTiers() {
         displayData.push(['html', TIME_DATA[i].amountID, `<div style="min-width: 30%; float: left;">${formatUnitRow(player.timeDims[i].amount)}</div><div style="min-width: 40%; float: left;">(${formatWholeUnitRow(player.timeDims[i].bought)})</div><div style="min-width: 30%; float: left;">${getTimeDimProdPerSecond(i + 1).gt(0) ? "(+" + formatUnitRow(Decimal.times((player.displayRealTime ? getTimeDimProdPerSecond(i + 1).div(player.timeDims[i].amount.max(1)).times(getRealTimeMultiplier()) : getTimeDimProdPerSecond(i + 1).div(player.timeDims[i].amount.max(1))), 100), 2) + "%/s)</div>" : ""}`]);
         displayData.push(['html', TIME_DATA[i].multID, `<div>${formatUnitRow(TIME_DATA[i].mult())}x</div>`]);
         displayData.push(['html', TIME_DATA[i].maxAmtID, canAffordTime(i) ? formatWhole(calculateMaxTime(i)) : '0']);
+    }
+}
+
+function checkProjectProgress() {
+    let proj = getActiveResearch();
+    if (canCompleteResearch()) {
+        if (proj==7) {
+            if (!document.getElementById(RESEARCH_DATA[proj].buttonID).classList.contains('infResearchButton')) { 
+                document.getElementById(RESEARCH_DATA[proj].buttonID).classList.remove('progressInfResearchButton');
+                document.getElementById(RESEARCH_DATA[proj].buttonID).classList.add('infResearchButton');
+                document.getElementById(RESEARCH_DATA[proj].buttonID).innerHTML = `COMPLETE<br>PROJECT`;
+                displayData.push(['addClass', 'infResearchSubTabBut', 'tabButNotify']);
+                displayData.push(['addClass', 'galaxyTabBut', 'tabButIndirectNotify']);
+                displayData.push(['addClass', document.getElementById(RESEARCH_DATA[proj].buttonID).id, 'projectNotify']);
+            }
+        } else {
+            if (!document.getElementById(RESEARCH_DATA[proj].buttonID).classList.contains('researchButton')) { 
+                document.getElementById(RESEARCH_DATA[proj].buttonID).classList.remove('progressResearchButton');
+                document.getElementById(RESEARCH_DATA[proj].buttonID).classList.add('researchButton');
+                document.getElementById(RESEARCH_DATA[proj].buttonID).innerHTML = `COMPLETE<br>PROJECT`;
+                displayData.push(['addClass', 'researchSubTabBut', 'tabButNotify']);
+                displayData.push(['addClass', 'galaxyTabBut', 'tabButIndirectNotify']);
+                displayData.push(['addClass', document.getElementById(RESEARCH_DATA[proj].buttonID).id, 'projectNotify']);
+            }
+        }
+    }
+    if (proj==7) {
+        displayData.push(['html', 'infResearchDisplay', ` ${formatUnitRow(player.research)} `]);
+        displayData.push(['html', 'infResearchGainDisplay', ` ${(formatUnitRow(player.astralFlag ? (player.displayRealTime ? getResearchPerSecond().times(getRealTimeMultiplier()) : getResearchPerSecond()) : formatWhole(0)))} `]);
+    } else {
+        displayData.push(['html', 'researchDisplay', ` ${formatUnitRow(player.research)} `]);
+        displayData.push(['html', 'researchGainDisplay', ` ${(formatUnitRow(player.astralFlag ? (player.displayRealTime ? getResearchPerSecond().times(getRealTimeMultiplier()) : getResearchPerSecond()) : formatWhole(0)))} `]);
     }
 }
 
@@ -470,7 +507,7 @@ function lockElements(mainTab, subTab) {
         for (let i=0; i<els.length; i++) { displayData.push(['setProp', els[i].id, 'display', '']); }
     }
     if (data.classToShow !== undefined) {
-        let els = document.getElementsByClassName(data.classToHide);
+        let els = document.getElementsByClassName(data.classToShow);
         for (let i=0; i<els.length; i++) { displayData.push(['setProp', els[i].id, 'display', 'none']); }
     }
     if (data.classToEnable !== undefined) {
@@ -499,12 +536,14 @@ function toggleAstralDisplay() {
     displayData.push(['togClass', 'astralToggle', 'astralOn']);
     displayData.push(['html', 'astralText', player.astralFlag ? 'disable' : 'enable']);
     if (player.headerDisplay['astralNoticeDisplay'] && player.headerDisplayUnlocked['astralNoticeDisplay']) { displayData.push(['togDisplay', 'astralNoticeDisplay']); }
+    displayData.push(['togDisplay', 'researchAstralNotice']);
+    displayData.push(['togDisplay', 'infResearchAstralNotice']);
     displayData.push(['html', 'normalAstral', player.astralFlag ? 'ASTRAL' : 'NORMAL']);
     displayData.push(['setProp', 'normalAstral', 'color', player.astralFlag ? '#42d35a' : 'white']);
     displayData.push(['setProp', 'normalAstral', 'color', player.astralFlag ? '#42d35a' : 'white']);
     displayData.push(['togDisplay', 'sunGainSpan']);
     displayData.push(['togDisplay', 'sunGainNotice']);
-    document.documentElement.style.boxShadow = player.astralFlag ? 'inset 0px 0px 30px 20px #1c8a2e' : '';
+    document.documentElement.style.boxShadow = (player.isInResearch ? (getActiveResearch()==7 ? 'inset 0px 0px 20px 10px #613227' : 'inset 0px 0px 20px 10px #e34805') : '') + (player.isInResearch && player.astralFlag ? ', ' : '') + (player.astralFlag ? 'inset 0px 0px 30px 20px #1c8a2e' : '');
 }
 
 function toggleTimeLockDisplay() {
@@ -514,11 +553,6 @@ function toggleTimeLockDisplay() {
     displayData.push(['togClass', 'respecTimeBut', 'unclickSliderBut']);
     displayData.push(['togClass', 'timeSlider', 'sliderLocked']);
     displayData.push(['togClass', 'timeSlider', 'slider']);
-}
-
-function updateDimBuyer(tier, button) {
-    player.autobuyers[12][tier] = !player.autobuyers[12][tier];
-    document.getElementById(button).innerHTML = player.autobuyers[12][tier] ? 'ON' : 'OFF'
 }
 
 function updateSingleBuyer(id, option, button) {
@@ -620,13 +654,24 @@ function updateAutobuyersDisplay() {
     document.getElementById('ascensionBuyerAmount').value = formatWholeNoComma(player.autobuyers[11]['amount']);
 
     for (let j=1; j<=NUM_TIMEDIMS; j++) {
-        document.getElementById('timeDim' + j.toString() + 'But').innerHTML = player.autobuyers[12][j] ? 'ON' : 'OFF'
+        if (j<=4 || hasUpgrade(4, 23)) { document.getElementById('timeDim' + j.toString() + 'But').innerHTML = player.autobuyers[12][j] ? 'ON' : 'OFF' }
     }
 }
 
 function toggleTimeUpgBuyer() {
     player.autobuyers['time']['on'] = !player.autobuyers['time']['on'];
     document.getElementById('timeUpgBuyerBut').innerHTML = player.autobuyers['time']['on'] ? 'Time Upgrade Cols 1-3 Autobuyer: ON' : 'Time Upgrade Cols 1-3 Autobuyer: OFF'
+}
+
+function updateDimBuyer(tier, button) {
+    player.autobuyers[12][tier] = !player.autobuyers[12][tier];
+    document.getElementById(button).innerHTML = player.autobuyers[12][tier] ? 'ON' : 'OFF'
+}
+
+function toggleAllTimeBuyers() {
+    for (let i=1; i<=NUM_TIMEDIMS; i++) {
+        if (i<=4 || player.unlocks['timeTab']['timeDims2']) { updateDimBuyer(i, 'timeDim' + i.toString() + 'But'); }
+    }
 }
 
 function updateSliderDisplay() {
@@ -651,7 +696,7 @@ function toggleRealTimeDisplays() {
 
 function toggleTooltips() {
     player.tooltipsEnabled = !player.tooltipsEnabled;
-    if (player.tooltipsEnabled) { document.getElementById('toggleTooltips').innerHTML = player.tooltipsEnabled ? 'TOGGLE FORMULA TOOLTIPS: ON' : 'TOGGLE FORMULA TOOLTIPS: OFF' }
+    document.getElementById('toggleTooltips').innerHTML = player.tooltipsEnabled ? 'TOGGLE FORMULA TOOLTIPS: ON' : 'TOGGLE FORMULA TOOLTIPS: OFF' 
 
     document.getElementById('brickTooltip').classList.toggle('tooltip');
     document.getElementById('trueTooltip').classList.toggle('tooltip');
@@ -662,6 +707,7 @@ function toggleTooltips() {
     document.getElementById('timePrestige').classList.toggle('tooltip');
     document.getElementById('achBoostTooltip').classList.toggle('tooltip');
     document.getElementById('galaxyPrestige').classList.toggle('tooltip');
+    document.getElementById('softcapMainDisplay').classList.toggle('tooltip');
     
     for (let b in BUILDS_DATA) {
         for (let u in BUILDS_DATA[b].upgrades) {
@@ -691,6 +737,24 @@ function showChangelog(divID) {
     }
 }
 
+function showChangelogSection(divID) {
+    var allDivs = document.getElementsByClassName('changelogSection');
+    var tab;
+    var log;
+    for (var i=0; i<allDivs.length; i++) {
+        tab = allDivs.item(i);
+        if (tab.id === divID) {
+            (tab.style.display != 'none') ? tab.style.display = 'none': tab.style.display = 'table-cell'
+        } else {
+            tab.style.display = 'none';
+            let allLogs = document.getElementsByClassName('changelogPageDiv');
+            for (let j=0; j<allLogs.length; j++) {
+                allLogs.item(j).style.display = 'none'; 
+            }
+        }
+    }
+}
+
 function toggleConfirmations(action, method, id) {
     player.confirmations[action][method] = !player.confirmations[action][method];
     if (player.confirmations[action][method]) {
@@ -715,10 +779,9 @@ function closeConfirmationsPopup() {
     document.getElementById('confirmationsPopup').style.display = 'none';
 }
 
-function openDisplayPopup() {
-    document.getElementById('customizeDisplayBut').classList.remove('tabButNotify');
-    document.getElementById('optionsTabBut').classList.remove('tabButIndirectNotify');    
+function openDisplayPopup() {   
     document.getElementById('displayPopup').style.display = 'block';
+    dragElement(document.getElementById('displayPopup'));
 }
 
 function closeDisplayPopup() {
@@ -764,6 +827,7 @@ function showAutosavePopup() {
 }
 
 function updateHeaderDisplay() {
+
     for (let dKey in player.headerDisplay) {
         if (dKey == 'astralNoticeDisplay') { document.getElementById(dKey).style.display = (player.headerDisplayUnlocked[dKey] && player.headerDisplay[dKey] && player.astralFlag) ? '' : 'none' }
         else if (dKey != 'autosavePopup') {
@@ -779,6 +843,10 @@ function updateHeaderDisplay() {
 }
 
 function updatePopupsEtc() {
+    for (let i=1; i<4; i++) {
+        document.getElementById('slot' + i.toString() + 'Name').innerHTML = player.favGalNames[i-1];
+    }
+
     updateSliderDisplay();
 
     updateConfirmationPopupDisplay();
@@ -903,7 +971,7 @@ function showGalaxySubTab(subTabName, buttonName, parentButton) {
         }
     }
     player.activeTabs[4] = subTabName;
-    if (buttonName !== undefined && subTabName != 'researchSubTab') {
+    if (buttonName !== undefined) {
         document.getElementById(buttonName).classList.remove('tabButNotify');
         document.getElementById(parentButton).classList.remove('tabButIndirectNotify');
     }
@@ -932,12 +1000,22 @@ function cycleSubtabs() {
             }
             break;
         case 'galaxyTab':
+            if (player.unlocks['galaxyTab']['arkTab']) {
+                if (isActiveTab('galaxiesSubTab')) { showGalaxySubTab('researchSubTab', 'researchSubTabBut', 'galaxyTabBut') }
+                else if (isActiveTab('researchSubTab')) {
+                    if (player.unlocks['galaxyTab']['infiniteResearch']) {
+                        showGalaxySubTab('infResearchSubTab', 'infResearchSubTabBut', 'galaxyTabBut')
+                    } else { showGalaxySubTab('arkSubTab', 'arkSubTabBut', 'galaxyTabBut') }
+                }
+                else if (isActiveTab('infResearchSubTab')) { showGalaxySubTab('arkSubTab', 'arkSubTabBut', 'galaxyTabBut') }
+                else { showGalaxySubTab('galaxiesSubTab', 'galaxiesSubTabBut', 'galaxyTabBut') }
+            }
             break;
     }
 }
 
 function isActiveTab(tabName) {
-    return (document.getElementById(tabName).style.display != 'none');
+    return (document.getElementById(tabName).style.display == 'block');
 }
 
 function getActiveTab() {
@@ -1134,7 +1212,8 @@ function updateUnlocks() {
         } 
     }
     for (var i=1; i<NUM_TIMEDIMS; i++) {
-        if (player.timeDims[i].bought.gte(1) && !player.timeDims[i+1].unlocked) {
+        if (i>3) { player.timeDims[i+1].unlocked = hasUpgrade(4, 23); }
+        else if (player.timeDims[i].bought.gte(1) && !player.timeDims[i+1].unlocked) {
             player.timeDims[i+1].unlocked = true;
             displayData.push(['setProp', TIME_DATA[i+1].rowID, 'display', 'table-row']);
         } 
@@ -1156,10 +1235,14 @@ function unlockAchievement(a) {
     displayData.push(['remClass', ACH_DATA[a].divID, 'achievement']);
     displayData.push(['addClass', 'achSubTabBut', 'tabButNotify']);
     displayData.push(['addClass', 'statsTabBut', 'tabButIndirectNotify']);
-    displayData.push(['setProp', 'achUnlockPopup', 'opacity', '1']);
     if (ACH_DATA[a].secret) { displayData.push(['setAttr', ACH_DATA[a].divID, 'data-title', ACH_DATA[a].desc + (ACH_DATA[a].hasReward ? ' Reward: ' + ACH_DATA[a].reward : '' ) + (ACH_DATA[a].showEffect ? ' Currently: ' + formatDefault2(ACH_DATA[a].effect()) + 'x' : '' )]); }
-    popupShownTime = new Date();
+    showAchievementPopup();
     ACH_DATA[a].onUnlock();
+}
+
+function showAchievementPopup() {
+    displayData.push(['setProp', 'achUnlockPopup', 'opacity', '1']);
+    popupShownTime = new Date();
 }
 
 function mouseoverAchievement(ach) {
@@ -1175,7 +1258,7 @@ function updateMilestones() {
     for (let id in MILES_DATA) {
         if (!player.milestones[id] && MILES_DATA[id].canUnlock()) {
             unlockMilestone(id)
-        } else if (!MILES_DATA[id].isImplemented) { document.getElementById('milestoneRew' + id.toString()).innerHTML = '?????'; }
+        } 
     }
 }
 
@@ -1184,12 +1267,15 @@ function unlockMilestone(m) {
     displayData.push(['addClass', 'milestone' + m.toString(), 'milestoneTDUnlocked']);
     displayData.push(['remClass', 'milestone' + m.toString(), 'milestoneTD']);
     displayData.push(['addClass', 'milestonesBut', 'milestonesNotify']);
-    displayData.push(['addClass', 'galaxiesSubTabBut', 'tabButNotify']);
     displayData.push(['addClass', 'galaxyTabBut', 'tabButIndirectNotify']);
-    displayData.push(['setProp', 'milesUnlockPopup', 'opacity', '1']);
     displayData.push(['setProp', 'milestoneReq' + m.toString(), 'text-decoration', 'line-through']);
-    mPopupShownTime = new Date();
+    showMilestoneUnlockedPopup();
     MILES_DATA[m].onUnlock();
+}
+
+function showMilestoneUnlockedPopup() {
+    displayData.push(['setProp', 'milesUnlockPopup', 'opacity', '1']);
+    mPopupShownTime = new Date();
 }
 
 function closeOfflinePopup() {
@@ -1367,7 +1453,7 @@ function generateHelpForFullPage(tabName, button, section) {
 
 function statsTabClick() {
     generateLastSacs();
-    generateLastAscs(); 
+    generateLastAscs();
     updateStatsTab();
     showStatsSubTab(player.activeTabs[5], player.activeTabs[5] + 'But');
     showTab('statsTab', false, 'statsTabBut');
@@ -1375,7 +1461,7 @@ function statsTabClick() {
 
 function statsSubTabClick(tabName='statSubTab', butName='statSubTabBut') {
     generateLastSacs();
-    generateLastAscs(); 
+    generateLastAscs();
     updateStatsTab();
     showStatsSubTab(tabName, butName);
     showTab('statsTab', false, 'statsTabBut');
@@ -1657,6 +1743,34 @@ function togDisplayAUpg(t) {
 
 function writeHTMLAUpg(a, text) {
     displayData.push(['html', ARK_DATA[a].buttonID, text]);
+}
+
+function addEUpgClass(e, className) {
+    displayData.push(['addClass', ETH_DATA[e].buttonID, className]);
+}
+
+function remEUpgClass(e, className) {
+    displayData.push(['remClass', ETH_DATA[e].buttonID, className]);
+}
+
+function togEUpgClass(e, className) {
+    displayData.push(['remClass', ETH_DATA[e].buttonID, className]);
+}
+
+function setAttrEUpg(e, attr, val) {
+    displayData.push(['setAttr', ETH_DATA[e].buttonID, attr, val]);
+}
+
+function setPropEUpg(e, prop, val) {
+    displayData.push(['setProp', ETH_DATA[e].buttonID, prop, val]);
+}
+
+function togDisplayEUpg(t) {
+    displayData.push(['togDisplay', ETH_DATA[e].buttonID]);
+}
+
+function writeHTMLEUpg(e, text) {
+    displayData.push(['html', ETH_DATA[e].buttonID, text]);
 }
 
 function addUnitClass(tier, className) {

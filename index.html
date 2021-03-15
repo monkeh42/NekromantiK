@@ -1,6 +1,6 @@
 <!doctype html>
 
-<html id="docElement">
+<html id="docElement" style="min-height: 1080px;">
 
 <head>
     <title>NekromantiK</title>
@@ -18,7 +18,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-CFKRG117J3"></script>
     <script>
@@ -30,7 +30,14 @@
     </script>
 </head>
 
-<body onload="init()" class="scrollbar">
+<body id="htmlBody" class="scrollbar" onload="init()">
+    <div id="winScreen">
+        <div id="winMessage">
+            congratulations. you have gone beyond.<br>
+            continue your domination?<br>
+            <button id="continueButton" class="endBut" style="font-weight: 900;" onclick="continueGame()">MORE...CORPSES...</button>
+        </div>
+    </div>
     <div id="calcPopupContainer" width="100%" height="100%" style="background-color: black; display: block;">
         <div class="bpopup" id="offlineCalcPopup">
             <div>
@@ -39,55 +46,117 @@
             </div>
         </div>
     </div>
-    <div id="header" style="width: 1280px; margin: auto;">
+    <div id="header" style="width: 1280px; text-align: center; height: 100%; margin: 20px auto 0;">
         <div id="helpDiv" style="display: none;">
             <div id="helpText">
             </div>
             <br>
         </div>
         <div id="versionNumber" style="float: right; margin-left: -75px;">vERR</div>
-        <div id="resourceDisplay" style="width: 100%; margin: auto; display: block; text-align: center;">
-            <span style="font-size: 16pt; font-weight: bold;">You have <span id="corpseAmount" style="font-size: 20pt; white-space: pre; color: #6c00b4; font-variant-numeric: tabular-nums;"> 10 </span> <span id='pluralCorpse'> corpses</span>.</span><br>
-            <span>You are harvesting <span id="corpseGain" style="font-size: 17pt; font-weight: bold; white-space: pre; color: #6c00b4; font-variant-numeric: tabular-nums;"> 0 </span> <span id='pluralCorpseG'> corpses </span>/<span class="secDisplay">sec</span>.<span id="devSpeedContainer" style="white-space: pre; display: none;"> (@ <span id="devSpeedDisplay">3</span>x time speed)</span></span><br>
-            <div id="astralNoticeDisplay" style="color: #1c8a2e; display: none;"><h2>Corpse production disabled due to Astral Enslavement.</h2></div>
-            <table cellpadding="0px" cellspacing="0px" style="width: 100%; text-align: center;">
+        <div id="resourceDisplay" style="width: 100%; margin: auto; text-align: center; height: 100%; min-height: 66px;">
+            <table cellpadding="0px" cellspacing="0px" style="text-align: center; border-collapse: collapse; margin: auto;">
                 <tr>
-                    <td width="25%"></td>
-                    <td width="50%"><div id="unitsBoostDisplay" style="font-size: 10pt; white-space: pre;">Total corpse gain multiplier from units:  <span id="totalMult" style="font-size: 12pt; font-variant-numeric: tabular-nums;">0.0x</span></div></td>
-                    <td width="25%"></td>
+                    <td colspan="3">
+                        <div style="font-size: 16pt; font-weight: bold;">You have <span id="corpseAmount" style="font-size: 20pt; white-space: pre; color: #6c00b4; font-variant-numeric: tabular-nums;"> 10 </span> <span id='pluralCorpse'> corpses</span>.</div>
+                    </td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td><div id="worldsBonusDisplay" style="font-size: 10pt; white-space: pre; display: none;">You have exterminated <span id="worldsNum" style="font-size: 12pt; font-variant-numeric: tabular-nums;"> 1 </span> <span id="pluralWorld">world</span>, giving a <span id="worldsMult" style="font-size: 12pt"> 0.0x </span> bonus to corpse gain.</div></td>
-                    <td></td>
+                    <td colspan="3">
+                        <div>You are harvesting <span id="corpseGain" style="font-size: 17pt; font-weight: bold; white-space: pre; color: #6c00b4; font-variant-numeric: tabular-nums;"> 0 </span> <span id='pluralCorpseG'> corpses </span>/<span class="secDisplay">sec</span>.<span id="devSpeedContainer" style="white-space: pre; display: none;"> (@ <span id="devSpeedDisplay">3</span>x time speed)</span></div>
+                    </td>
                 </tr>
                 <tr>
-                    <td><div id="bricksDisplayHeader" style="font-size: 10pt; white-space: pre;">You have <span id="brickAmountHeader" style="font-size: 12pt; white-space: pre; color: #1c8a2e; font-variant-numeric: tabular-nums;"> 0 </span> astral bricks.</div></td>
-                    <td><div id="galaxiesBonusDisplay" style="font-size: 10pt; white-space: pre; display: none;">You have formed <span id="galaxiesNum" style="font-size: 12pt; font-variant-numeric: tabular-nums;"> 1 </span> depleted <span id="pluralGalaxy">galaxy</span>, giving a <span id="galaxiesMult" style="font-size: 12pt"> 0.0x </span> bonus to corpse gain.</div></td>
-                    <td><div id="crystalsDisplayHeader" style=" font-size: 10pt; white-space: pre; display: none;">You have <span id="crystalAmountHeader" style="font-size: 12pt; white-space: pre; color: #006ba0; font-variant-numeric: tabular-nums;"> 0 </span> time crystals.</div></td>
+                    <td colspan="3">
+                        <div id="astralNoticeDisplay" style="color: #1c8a2e; display: none;"><h2>Corpse production disabled due to Astral Enslavement.</h2></div>
+                    </td>
                 </tr>
                 <tr>
-                    <td><div id="bricksGainDisplayHeader" style="font-size: 10pt; white-space: pre;">You are gaining <span id="brickGainHeader" style="font-size: 12pt; white-space: pre; color: #1c8a2e; font-variant-numeric: tabular-nums;"> 0 </span> astral bricks/<span class="secDisplay">sec</span>.</div></td>
-                    <td><div id="totalBonusDisplay" style="font-size: 10pt; white-space: pre;">Total corpse gain multiplier from all sources:  <span id="totalMultAll" style="font-size: 12pt; font-variant-numeric: tabular-nums;">0.0x</span></div></td>
-                    <td><div id="timeBoostDisplay" style=" font-size: 10pt; white-space: pre; display: none;">Your <span id="normalAstral" style="font-size: 12pt; color: white;"> NORMAL </span> time is going <span id="timeMult" style="font-size: 12pt; font-variant-numeric: tabular-nums;"> 1.0x </span> as fast.</div></td>
+                    <td colspan="3">
+                        <div id="galaxiesBonusDisplay" style="display: none;font-size: 10pt; white-space: pre;">You have formed <span id="galaxiesNum" style="font-size: 12pt; white-space: pre; font-variant-numeric: tabular-nums;"> 1 </span> depleted <span id="pluralGalaxy">galaxy</span>, giving a <span id="galaxiesMult" style="font-size: 12pt"> 0.0x </span> bonus to corpse gain.<span id="softcapNotice"> (softcapped at <span id="softcapNum" style="font-size: 12pt; white-space: pre;"> 1,000 </span> galaxies)</span></div>
+                    </td>
                 </tr>
                 <tr>
-                    <td colspan="3"><div id="achBoostDisplay" style="font-size: 10pt; white-space: pre; display: none;">You have <span id="achNum" style="font-size: 12pt; font-variant-numeric: tabular-nums;"> 1 </span> achievements and <span id="achRowsNum" style="font-size: 12pt; font-variant-numeric: tabular-nums;"> 1 </span> completed achievement rows, giving a <span id="achMult" style="font-size: 12pt"> 0.0x </span> bonus to corpse gain.</div></td>
+                    <td colspan="3">
+                        <div id="worldsBonusDisplay" style="display: none; font-size: 10pt; white-space: pre;">You have exterminated <span id="worldsNum" style="font-size: 12pt; font-variant-numeric: tabular-nums;"> 1 </span> <span id="pluralWorld">world</span>, giving a <span id="worldsMult" style="font-size: 12pt"> 0.0x </span> bonus to corpse gain.</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="25%" style="padding-bottom: 0px !important;">
+                        <table cellpadding="0px" cellspacing="0px" style="width: 100%; text-align: center; border-collapse: collapse;">
+                            <tr>
+                                <td>
+                                    <div id="crystalsDisplayHeader" style="display: none; font-size: 10pt; white-space: pre;">You have <span id="crystalAmountHeader" style="font-size: 12pt; white-space: pre; color: #006ba0; font-variant-numeric: tabular-nums;"> 0 </span> time crystals.</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="bricksDisplayHeader" style="display: none; font-size: 10pt; white-space: pre;">You have <span id="brickAmountHeader" style="font-size: 12pt; white-space: pre; color: #1c8a2e; font-variant-numeric: tabular-nums;"> 0 </span> astral bricks.</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="bricksGainDisplayHeader" style="display: none; font-size: 10pt; white-space: pre;">You are gaining <span id="brickGainHeader" style="font-size: 12pt; white-space: pre; color: #1c8a2e; font-variant-numeric: tabular-nums;"> 0 </span> astral bricks/<span class="secDisplay">sec</span>.</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="50%">
+                        <table cellpadding="0px" cellspacing="0px" style="width: 100%; text-align: center; border-collapse: collapse;">
+                            <tr>
+                                <td>
+                                    <div id="unitsBoostDisplay" style="font-size: 10pt; white-space: pre;">Total corpse gain multiplier from units:  <span id="totalMult" style="font-size: 12pt; font-variant-numeric: tabular-nums;">0.0x</span></div>
+                                </td>
+                            </tr><tr>
+                                <td>
+                                    <div id="totalBonusDisplay" style="font-size: 10pt; white-space: pre;">Total corpse gain multiplier from all sources:  <span id="totalMultAll" style="font-size: 12pt; font-variant-numeric: tabular-nums;">0.0x</span></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="timeBoostDisplay" style="display: none; font-size: 10pt; white-space: pre;">Your <span id="normalAstral" style="font-size: 12pt; color: white;"> NORMAL </span> time is going <span id="timeMult" style="font-size: 12pt; font-variant-numeric: tabular-nums;"> 1.0x </span> as fast.</div></td>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="25%">
+                        <table cellpadding="0px" cellspacing="0px" style="width: 100%; text-align: center; border-collapse: collapse;">
+                            <tr>
+                                <td>
+                                    <div id="unspentGalaxiesHeaderDisplay" style="display: none; font-size: 10pt; white-space: pre;">You have <span id="unspentGalaxiesNum" style="font-size: 12pt; white-space: pre; color: #e32d05; font-variant-numeric: tabular-nums;"> 1 </span> unspent <span id="pluralGalaxyUnspent">galaxy</span>.</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="researchDisplayHeader" style="display: none; font-size: 10pt; white-space: pre;">You have <span id="researchAmountHeader" style="font-size: 12pt; white-space: pre; color: #661503; -webkit-text-stroke-width: 0.2px; -webkit-text-stroke-color: white; font-variant-numeric: tabular-nums;"> 0 </span> void research.</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="researchGainDisplayHeader" style="display: none; font-size: 10pt; white-space: pre;">You are gaining <span id="researchGainHeader" style="font-size: 12pt; white-space: pre; color: #661503; -webkit-text-stroke-width: 0.2px; -webkit-text-stroke-color: white; font-variant-numeric: tabular-nums;"> 0 </span> void research/<span class="secDisplay">sec</span>.</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div id="achBoostDisplay" style="display: none; font-size: 10pt; white-space: pre;">You have <span id="achNum" style="font-size: 12pt; font-variant-numeric: tabular-nums;"> 1 </span> achievements and <span id="achRowsNum" style="font-size: 12pt; font-variant-numeric: tabular-nums;"> 1 </span> completed achievement rows, giving a <span id="achMult" style="font-size: 12pt"> 0.0x </span> bonus to corpse gain.</div>
+                    </td>
                 </tr>
             </table>
         </div>
-    </div>
-    <div class="offPopup" id="achUnlockPopup">
-        Achievement Unlocked!
-    </div>
-    <div class="offPopup" id="milesUnlockPopup">
-        Milestone Unlocked!
-    </div>
-    <div class="offPopup" id="savePopup">
-        Game Saved!
-    </div>
-    <div class="offPopup" id="autosavePopup">
-        Game Autosaved!
+        <div class="offPopup" id="achUnlockPopup">
+            Achievement Unlocked!
+        </div>
+        <div class="offPopup" id="milesUnlockPopup">
+            Milestone Unlocked!
+        </div>
+        <div class="offPopup" id="savePopup">
+            Game Saved!
+        </div>
+        <div class="offPopup" id="autosavePopup">
+            Game Autosaved!
+        </div>
     </div>
     <div id="tabButtons" id="tabButtons" style="width: 1280px; margin: 10px auto 0; display: block;">
         <table style="width: auto; margin: auto;" class="shownOnFull">
@@ -809,7 +878,7 @@
                                                     <label id="prestigeBuyerAmountLabel" for="ascensionBuyerAmount" style="font-size: 10pt;">at x galaxies</label>
                                                 </div>
                                             </div>
-                                            <span id="sacrificeErr" style="display: none;">invalid input. value set to last valid input: <span id="sacrificeErrValue"></span></span>
+                                            <span id="ascensionErr" style="display: none;">invalid input. value set to last valid input: <span id="sacrificeErrValue"></span></span>
                                         </div>
                                     </div>
                                 </td>
@@ -817,18 +886,75 @@
                                     <div id="timeDimBuyerOptions" class="autobuyerOptions">
                                         <div class="buyerFrame">
                                             <h2>Time Dimensions</h2>
-                                            <div id="timeDim1EnabledContainer" class="dimBuyerOptionsContainer">
-                                                <label for="timeDim1But">first:</label><br><!-- --><button onclick="updateDimBuyer(1, 'timeDim1But')" name="timeDim1But" id="timeDim1But" class="buyerEnabledBut" style="margin-bottom: 10px;">OFF</button><!-- -->
-                                            </div>
-                                            <div id="timeDim2EnabledContainer" class="dimBuyerOptionsContainer">
-                                                <label for="timeDim2But">second:</label><br><!-- --><button onclick="updateDimBuyer(2, 'timeDim2But')" name="timeDim2But" id="timeDim2But" class="buyerEnabledBut" style="margin-bottom: 10px;">OFF</button><!-- -->
-                                            </div>
-                                            <div id="timeDim3EnabledContainer" class="dimBuyerOptionsContainer">
-                                                <label for="timeDim3But">third:</label><br><!-- --><button onclick="updateDimBuyer(3, 'timeDim3But')" name="timeDim3But" id="timeDim3But" class="buyerEnabledBut" style="margin-bottom: 10px;">OFF</button><!-- -->
-                                            </div>
-                                            <div id="timeDim4EnabledContainer" class="dimBuyerOptionsContainer">
-                                                <label for="timeDim4But">fourth:</label><br><!-- --><button onclick="updateDimBuyer(4, 'timeDim4But')" name="timeDim4But" id="timeDim4But" class="buyerEnabledBut" style="margin-bottom: 10px;">OFF</button><!-- -->
-                                            </div>
+                                            <table style="text-align: center; border-collapse: collapse; margin: auto;">
+                                                <tr>
+                                                    <td colspan="3">
+                                                        <div id="timeDimAllEnabledContainer" class="dimBuyerOptionsContainer">
+                                                            <button onclick="toggleAllTimeBuyers()" name="timeDimAllBut" id="timeDimAllBut" class="timeDimBuyerAllEnabledBut" style="margin-bottom: 10px;">TOGGLE ALL</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div id="timeDim1EnabledContainer" class="dimBuyerOptionsContainer">
+                                                            <label for="timeDim1But">first:</label><br><button onclick="updateDimBuyer(1, 'timeDim1But')" name="timeDim1But" id="timeDim1But" class="timeDimBuyerEnabledBut" style="margin-bottom: 10px;">OFF</button>
+                                                        </div>
+                                                    </td>
+                                                    <td style="width: 15px; display: none;" class="timeDimSpacer" id="spacer1">
+                                                        <div style="width: 100%;"></div>
+                                                    </td>
+                                                    <td id="dimBuyer5Cell" style="display: none;">
+                                                        <div id="timeDim1EnabledContainer" class="dimBuyerOptionsContainer">
+                                                            <label for="timeDim5But">fifth:</label><br><button onclick="updateDimBuyer(5, 'timeDim5But')" name="timeDim5But" id="timeDim5But" class="timeDimBuyerEnabledBut" style="margin-bottom: 10px;">OFF</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div id="timeDim2EnabledContainer" class="dimBuyerOptionsContainer">
+                                                            <label for="timeDim2But">second:</label><br><button onclick="updateDimBuyer(2, 'timeDim2But')" name="timeDim2But" id="timeDim2But" class="timeDimBuyerEnabledBut" style="margin-bottom: 10px;">OFF</button>
+                                                        </div>
+                                                    </td>
+                                                    <td style="width: 15px; display: none;" class="timeDimSpacer" id="spacer2">
+                                                        <div style="width: 100%;"></div>
+                                                    </td>
+                                                    <td id="dimBuyer6Cell" style="display: none;">
+                                                        <div id="timeDim1EnabledContainer" class="dimBuyerOptionsContainer">
+                                                            <label for="timeDim6But">sixth:</label><br><button onclick="updateDimBuyer(6, 'timeDim6But')" name="timeDim6But" id="timeDim6But" class="timeDimBuyerEnabledBut" style="margin-bottom: 10px;">OFF</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div id="timeDim3EnabledContainer" class="dimBuyerOptionsContainer">
+                                                            <label for="timeDim3But">third:</label><br><button onclick="updateDimBuyer(3, 'timeDim3But')" name="timeDim3But" id="timeDim3But" class="timeDimBuyerEnabledBut" style="margin-bottom: 10px;">OFF</button>
+                                                        </div>
+                                                    </td>
+                                                    <td style="width: 15px; display: none;" class="timeDimSpacer" id="spacer3">
+                                                        <div style="width: 100%;"></div>
+                                                    </td>
+                                                    <td id="dimBuyer7Cell" style="display: none;">
+                                                        <div id="timeDim1EnabledContainer" class="dimBuyerOptionsContainer">
+                                                            <label for="timeDim7But">seventh:</label><br><button onclick="updateDimBuyer(7, 'timeDim7But')" name="timeDim7But" id="timeDim7But" class="timeDimBuyerEnabledBut" style="margin-bottom: 10px;">OFF</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div id="timeDim4EnabledContainer" class="dimBuyerOptionsContainer">
+                                                            <label for="timeDim4But">fourth:</label><br><button onclick="updateDimBuyer(4, 'timeDim4But')" name="timeDim4But" id="timeDim4But" class="timeDimBuyerEnabledBut" style="margin-bottom: 10px;">OFF</button>
+                                                        </div>
+                                                    </td>
+                                                    <td style="width: 15px; display: none;" class="timeDimSpacer" id="spacer4">
+                                                        <div style="width: 100%;"></div>
+                                                    </td>
+                                                    <td id="dimBuyer8Cell" style="display: none;">
+                                                        <div id="timeDim1EnabledContainer" class="dimBuyerOptionsContainer">
+                                                            <label for="timeDim8But">eighth:</label><br><button onclick="updateDimBuyer(8, 'timeDim8But')" name="timeDim8But" id="timeDim8But" class="timeDimBuyerEnabledBut" style="margin-bottom: 10px;">OFF</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
                                         </div>
                                     </div>
                                 </td>
@@ -881,7 +1007,7 @@
                 <table style="width: 65%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse;" class="buildingsTable">
                     <tr id="factoryBuildRow">
                         <td colspan="3">
-                            <button id="factoryBuild" class="buildBut" onclick="buyBuilding(1)">Build the<h2><span id="factoryBuildLabel" style="font-size: 18pt;">Death Factory.</span></h2>Cost: <span id="factoryCostLabel">1,000</span> astral bricks</button>
+                            <button id="factoryBuild" class="buildBut" onclick="buyBuilding(1)">Build the<h6>Death Factory.</h6>Cost: <span id="factoryCostLabel">1,000</span> astral bricks</button>
                         </td>
                     </tr>
                     <tr id="factoryHeaderRow" style="display: none;">
@@ -948,7 +1074,7 @@
                 <table style="width: 65%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse;" class="buildingsTable">
                     <tr id="necropolisBuildRow">
                         <td colspan="3">
-                            <button id="necropolisBuild" class="buildBut" onclick="buyBuilding(2)">Build the<h2><span id="necropolisBuildLabel" style="font-size: 18pt;">Necropolis.</span></h2>Cost: <span id="necropolisCostLabel">100,000</span> astral bricks</button>
+                            <button id="necropolisBuild" class="buildBut" onclick="buyBuilding(2)">Build the<h6>Necropolis.</h6>Cost: <span id="necropolisCostLabel">100,000</span> astral bricks</button>
                         </td>
                     </tr>
                     <tr id="necropolisHeaderRow" style="display: none;">
@@ -1016,7 +1142,7 @@
                 <table style="width: 65%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse;" class="buildingsTable">
                     <tr id="sunBuildRow">
                         <td colspan="3">
-                            <button id="sunBuild" class="buildBut" onclick="buyBuilding(3)">Build the<h2><span id="sunBuildLabel" style="font-size: 18pt;">Dead Sun.</span></h2>Cost: <span id="sunCostLabel">1e8</span> astral bricks</button>
+                            <button id="sunBuild" class="buildBut" onclick="buyBuilding(3)">Build the<h6>Dead Sun.</h6>Cost: <span id="sunCostLabel">1e8</span> astral bricks</button>
                         </td>
                     </tr>
                     <tr id="sunHeaderRow" style="display: none;">
@@ -1084,14 +1210,14 @@
                 <table id="vortexTable" style="width: 65%; margin: auto; margin-top: 20px; text-align: center; border-collapse: collapse; display: none; empty-cells: hide;" class="buildingsTable">
                     <tr id="vortexBuildRow" style="display: none;">
                         <td colspan="3">
-                            <button id="vortexBuild" class="buildBut" onclick="buyBuilding(4)">Build the<h2><span id="vortexBuildLabel" style="font-size: 18pt;">Galactic Vortex.</span></h2>Cost: <span id="vortexCostLabel">1e60</span> astral bricks</button>
+                            <button id="vortexBuild" class="buildBut" onclick="buyBuilding(4)">Build the<h6>Galactic Vortex.</h6>Cost: <span id="vortexCostLabel">1e60</span> astral bricks</button>
                         </td>
                     </tr>
                     <tr id="vortexHeaderRow" style="display: none;">
                         <td colspan="3">
                             <h2 style="font-size: 18pt;">GALACTIC VORTEX</h2>
                             <div id="vortexTooltip" data-title="2/sec">you have <span id="vortexAmt" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0 </span> <span id="photonsTextAmt" class="buildingResourceTexts">black holes</span>.<br>
-                            <span id="vortexGainSpan">your next black hole is <span id="vortexProd" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0</span>% complete.<br>Progress is based on your total depleted galaxies minus your black holes.</span><br>
+                            <span id="vortexGainSpan">your next black hole is <span id="vortexProd" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 0</span>% complete.<br><span id="vortexProgess">Progress is based on your total depleted galaxies minus your black holes.</span><span id="vortexProgessResearch" style="display: none;">Progress is halted during research.</span></span><br>
                             Your black holes add to the depleted galaxy gain exponent. Currently: +<span id="blackholeEff" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;">0</span><br>
                             <span id="vortexGainNotice">The galactic vortex, black holes, and black hole production progress are never reset.</span></div>
                         </td>
@@ -1128,7 +1254,7 @@
                                 <span id="bUpgName4.21" style="font-weight: 900;"></span><br>
                                 <span id="bUpgDesc4.21"></span><br>
                                 <span>Cost: <span id="bUpgCost4.21"></span></span><br>
-                                <span id="4.21Effect">Currently: <span id="bUpgEffect4.21"></span>x</span>
+                                <span id="4.21Effect" style="display: none;">Currently: <span id="bUpgEffect4.21"></span>x</span>
                             </button>
                         </td>
                         <td>
@@ -1136,7 +1262,7 @@
                                 <span id="bUpgName4.22" style="font-weight: 900;"></span><br>
                                 <span id="bUpgDesc4.22"></span><br>
                                 <span>Cost: <span id="bUpgCost4.22"></span></span><br>
-                                <span id="4.22Effect">Currently: <span id="bUpgEffect4.22"></span>x</span>
+                                <span id="4.22Effect" style="display: none;">Currently: <span id="bUpgEffect4.22"></span>x</span>
                             </button>
                         </td>
                         <td>
@@ -1144,7 +1270,7 @@
                                 <span id="bUpgName4.23" style="font-weight: 900;"></span><br>
                                 <span id="bUpgDesc4.23"></span><br>
                                 <span>Cost: <span id="bUpgCost4.23"></span></span><br>
-                                <span id="4.23Effect">Currently: <span id="bUpgEffect4.23"></span>x</span>
+                                <span id="4.23Effect" style="display: none;">Currently: <span id="bUpgEffect4.23"></span>x</span>
                             </button>
                         </td>
                     </tr>
@@ -1235,7 +1361,7 @@
                         <button id="timePrestige" class="timePrestigeBut" data-title="floor(10^(corpses_exponent/20 - 0.65))" onclick="timePrestigeClick()">
                             <span style="font-size: 15pt;">sacrifice your empire</span><br>
                             <span id="timePresDesc">Perform a dark ritual to transmute all you have achieved into time crystals. This will reset all your corpses, units, worlds, bricks, buildings, upgrades, earned time dimensions, and time essence, but you will gain time crystals based on your corpses.</span><br>
-                            <span id="timePrestigeReq" style="font-size: 13pt;">Requires at least <span style="font-size: 17pt; white-space: pre;"> 1e20 </span> corpses</span>
+                            <span id="timePrestigeReq" style="font-size: 13pt;">Requires at least <span id="staticSacReq" style="font-size: 17pt; white-space: pre;"> 1e20 </span> corpses</span>
                             <span id="timePrestigeGainDesc" style="font-size: 13pt; display: none;">Gain <span id="timePrestigeGain" style="font-size: 17pt; white-space: pre; font-variant-numeric: tabular-nums;"> 1 </span> <span id="crystalsTextGain" class="timeResourceTexts">time crystals</span></span>
                             <span id="crystalRateDesc" style="display: none; font-variant-numeric: tabular-nums;"></span>
                         </button><br>
@@ -1249,8 +1375,8 @@
                     </td>
                     <td><div style="width: 100%;">You have <span id="crystalAmt" style="font-size: 17pt; white-space: pre; color: #006ba0; font-weight: bold; font-variant-numeric: tabular-nums;"> 0 </span> <span id="crystalsTextAmt" class="timeResourceTexts">time crystals</span></div>
                         <div style="min-width: 100%; min-height: 30px;"></div>
-                        <div id="trueTooltip" style="width: 50%; float: left;" data-title="boost: 1 + log(x)/nerf&#xA;nerf: log(x)^0.2">Your True Time Essence speeds up normal time by<br><span id="trueTimeBuff" style="font-size: 16pt;">1</span>x<br> but it divides the Anti Time Essence effect by<br><span id="trueTimeNerf" style="font-size: 16pt;">1</span></div>
-                        <div id="antiTooltip"style="width: 50%; float: left;" data-title="boost: 1 + 2*log(x)/nerf&#xA;nerf: log(x)^0.2">Your Anti Time Essence speeds up astral time by<br><span id="antiTimeBuff" style="font-size: 16pt;">1</span>x<br> but it divides the True Time Essence effect by<br><span id="antiTimeNerf" style="font-size: 16pt;">1</span></div>
+                        <div id="trueTooltip" style="width: 50%; float: left;" data-title="boost: 1 + log(x)/nerf&#xA;nerf: log(x)^0.2">Your True Time Essence speeds up normal time by<br><span id="trueTimeBuff" style="font-size: 16pt;">1</span>x<br> <span id="antiNerfDivText">but it divides</span><span id="antiNerfTimesText" style="display: none;">and it multiplies</span> the Anti Time Essence effect by<br><span id="trueTimeNerf" style="font-size: 16pt;">1</span></div>
+                        <div id="antiTooltip"style="width: 50%; float: left;" data-title="boost: 1 + 2*log(x)/nerf&#xA;nerf: log(x)^0.2">Your Anti Time Essence speeds up astral time by<br><span id="antiTimeBuff" style="font-size: 16pt;">1</span>x<br> <span id="trueNerfDivText">but it divides</span><span id="trueNerfTimesText" style="display: none;">and it multiplies</span> the True Time Essence effect by<br><span id="antiTimeNerf" style="font-size: 16pt;">1</span></div>
                     </td>
                     <td width="100px;">
                         <div class="timeLabelRight">ANTI<br>TIME</div>
@@ -1384,6 +1510,74 @@
                         </td>
                         <td class="buttonTD">
                             <button id="timeMax4" class="unitMaxT" onclick="buyMaxTime(4)">Buy max (<span id="dim4Max">0</span>)</button>
+                        </td>
+                    </tr>
+                    <tr id="timeRow5" style="display: none;">
+                        <td>
+                            Time Dimension 5
+                        </td>
+                        <td>
+                            <div id="timeMult5">x1</div>
+                        </td>
+                        <td>
+                            <div id="timeAmount5"><div style="min-width: 30%; float: left;">0</div><div style="min-width: 50%; float: left;">(0)</div><div style="min-width: 20%; float: right; text-align: center;"></div></div>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="timeBut5" class="unitButT" onclick="buySingleTime(5)">Cost: <span id="dim5Cost">10</span> crystals</button>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="timeMax5" class="unitMaxT" onclick="buyMaxTime(5)">Buy max (<span id="dim5Max">0</span>)</button>
+                        </td>
+                    </tr>
+                    <tr id="timeRow6" style="display: none;">
+                        <td>
+                            Time Dimension 6
+                        </td>
+                        <td>
+                            <div id="timeMult6">x1</div>
+                        </td>
+                        <td>
+                            <div id="timeAmount6"><div style="min-width: 30%; float: left;">0</div><div style="min-width: 50%; float: left;">(0)</div><div style="min-width: 20%; float: right; text-align: center;"></div></div>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="timeBut6" class="unitButT" onclick="buySingleTime(6)">Cost: <span id="dim6Cost">100</span> crystals</button>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="timeMax6" class="unitMaxT" onclick="buyMaxTime(6)">Buy max (<span id="dim6Max">0</span>)</button>
+                        </td>
+                    </tr>
+                    <tr id="timeRow7" style="display: none;">
+                        <td>
+                            Time Dimension 7
+                        </td>
+                        <td>
+                            <div id="timeMult7">x1</div>
+                        </td>
+                        <td>
+                            <div id="timeAmount7"><div style="min-width: 30%; float: left;">0</div><div style="min-width: 50%; float: left;">(0)</div><div style="min-width: 20%; float: right; text-align: center;"></div></div>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="timeBut7" class="unitButT" onclick="buySingleTime(7)">Cost: <span id="dim7Cost">1e6</span> crystals</button>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="timeMax7" class="unitMaxT" onclick="buyMaxTime(7)">Buy max (<span id="dim7Max">0</span>)</button>
+                        </td>
+                    </tr>
+                    <tr id="timeRow8" style="display: none;">
+                        <td>
+                            Time Dimension 8
+                        </td>
+                        <td>
+                            <div id="timeMult8">x1</div>
+                        </td>
+                        <td>
+                            <div id="timeAmount8"><div style="min-width: 30%; float: left;">0</div><div style="min-width: 50%; float: left;">(0)</div><div style="min-width: 20%; float: right; text-align: center;"></div></div>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="timeBut8" class="unitButT" onclick="buySingleTime(8)">Cost: <span id="dim8Cost">1e9</span> crystals</button>
+                        </td>
+                        <td class="buttonTD">
+                            <button id="timeMax8" class="unitMaxT" onclick="buyMaxTime(8)">Buy max (<span id="dim8Max">0</span>)</button>
                         </td>
                     </tr>
                 </table>
@@ -1597,18 +1791,25 @@
                 <tr>
                     <td>
                         <div id="galaxyAmountDisplay" style="font-size: 18pt;">You have <span id="galaxyAmount" style="font-size: 21pt; font-weight: bold; color: #cf2904; white-space: pre;"> 0 </span> <span id="galaxyTextAmt" class="galaxyResourceTexts">depleted galaxies</span> out of <span id="totalGalaxyAmount" style="font-size: 21pt; font-weight: bold; color: #cf2904; white-space: pre;"> 0 </span> total formed.</div>
-                        <div id="galaxyAmountDisplay" style="font-size: 18pt;">You have achieved <span id="ascensionAmount" style="font-size: 21pt; font-weight: bold; color: #cf2904; white-space: pre;"> 0 </span> <span id="ascensionTextAmt" class="galaxyResourceTexts">ascensions</span>.</div>
+                        <div id="ascensionAmountDisplay" style="font-size: 18pt;">You have achieved <span id="ascensionAmount" style="font-size: 21pt; font-weight: bold; color: #cf2904; white-space: pre;"> 0 </span> <span id="ascensionTextAmt" class="galaxyResourceTexts">ascensions</span>.</div>
+                        <div id="softcapMainDisplay" style="font-size: 16pt;" data-title="cube root exponent: effect = x*(10^cbrt(log(y))) where x=effect at limit, y=(effect before softcap)/x">All effects based on total galaxies are softcapped at <span id="mainSoftcapStart" style="font-size: 19pt; font-weight: bold; color: #cf2904; white-space: pre;"> 1,000 </span> galaxies.</div>
                     </td>
                 </tr>
             </table>
             <div id="galaxiesSubMenu" style="width: 100%; margin-top: 20px; display: none;">
-                <table style="width: auto; margin: auto;">
+                <table style="width: auto; margin: 0 auto 20px;">
                     <tr>
                         <td>
-                            <button id="galaxiesSubTabBut" class="subTabBut" onclick="showGalaxySubTab('galaxiesSubTab', 'galaxiesSubTabBut')">GALAXIES</button>
+                            <button id="galaxiesSubTabBut" class="subTabBut" onclick="showGalaxySubTab('galaxiesSubTab', 'galaxiesSubTabBut', 'galaxyTabBut')">GALAXIES</button>
                         </td>
                         <td>
-                            <button id="arkSubTabBut" class="subTabBut" onclick="showGalaxySubTab('arkSubTab', 'arkSubTabBut')" style="display: none;">THE ARK</button>
+                            <button id="researchSubTabBut" class="subTabBut" onclick="showGalaxySubTab('researchSubTab', 'researchSubTabBut', 'galaxyTabBut')">VOID RESEARCH</button>
+                        </td>
+                        <td id="infResearchTabCell" style="display: none;">
+                            <button id="infResearchSubTabBut" class="subTabBut" onclick="showGalaxySubTab('infResearchSubTab', 'infResearchSubTabBut', 'galaxyTabBut')">INFINITE RESEARCH</button>
+                        </td>
+                        <td>
+                            <button id="arkSubTabBut" class="subTabBut" onclick="showGalaxySubTab('arkSubTab', 'arkSubTabBut', 'galaxyTabBut')">THE ARK</button>
                         </td>
                     </tr>
                 </table>
@@ -1625,7 +1826,7 @@
                 <div id="galButs2" style="text-align: center; width: 100%; margin: auto;"><button id="galaxyNameBut1" class="galaxyNameBut2" onclick="showGalaxies('gal1', 'gal2')">Andromeda/Circinus</button><button id="galaxyNameBut2" class="galaxyNameBut2" onclick="showGalaxies('gal3', 'gal4')">Sculptor Dwarf/Triangulum</button></div>
                 <div id="galButs4" style="text-align: center; width: 100%; margin: auto;"><button id="galaxyNameBut1" class="galaxyNameBut4" onclick="showGalaxy('gal1')">Andromeda</button><button id="galaxyNameBut2" class="galaxyNameBut4" onclick="showGalaxy('gal2')">Circinus</button><button id="galaxyNameBut3" class="galaxyNameBut4" onclick="showGalaxy('gal3')">Sculptor Dwarf</button><button id="galaxyNameBut4" class="galaxyNameBut4" onclick="showGalaxy('gal4')">Triangulum</button></div>
                 <div style="text-align: center; width: 100%; margin: auto;"><button id="galaxyRespecBut" class="galaxyBut" onclick="respecGalaxiesClick()">Respec galaxies - forces ascension</button><button id="milestonesBut" class="galaxyBut" onclick="showMilestones()">Galaxy Milestones</button></div>
-                <div id="galaxyImpExp" style="text-align: center; width: 100%; margin: auto;"><button id="impGalBut" class="galImpExpBut" onclick="showImportGalaxies()">Import Galaxies</button><button id="expGalBut" class="galImpExpBut" onclick="exportGalaxies()">Export Galaxies</button><button id="loadFav" class="galImpExpBut" onclick="importGalaxies(true)">Load Favorite<div id="favLoadNotice">SUCCESS!</div></button><button id="saveFav" class="galImpExpBut" onclick="saveFavorite()">Save Favorite<div id="favSavedNotice">SAVED!</div></button></div>
+                <div id="galaxyImpExp" style="text-align: center; width: 100%; margin: auto;"><button id="impGalBut" class="galImpExpBut" onclick="showImportGalaxies()">Import Galaxies</button><button id="expGalBut" class="galImpExpBut" onclick="exportGalaxies()">Export Galaxies</button><button id="showFavsBut" class="galShowFavsBut" onclick="showFavPopup()">Load/Save Favorites</button><!--<button id="loadFav" class="galImpExpBut" onclick="importGalaxies(true)">Load Favorite<div id="favLoadNotice">SUCCESS!</div></button><button id="saveFav" class="galImpExpBut" onclick="saveFavorite()">Save Favorite<div id="favSavedNotice">SAVED!</div></button>--></div>
                 <table id="allGalaxiesTable" style="text-align: center; position: relative; left: -167;">
                     <tr>
                         <td id="gal1" class="gal">
@@ -1770,6 +1971,7 @@
                                                 <span class="gUpgRequires">Requires: <span id="gUpgRequires2.31"></span></span><br>
                                                 <span>Cost: <span id="gUpgCost2.31"></span></span><br>
                                                 <span id="2.31GEffect" style="display: none;">Currently: <span id="gUpgEffect2.31"></span></span>
+                                                <span id="upgSoftcapNotice1"> (softcapped at <span id="upgSoftcapNum1">1,000</span> galaxies)</span>
                                             </span>
                                         </button>
                                     </td>
@@ -1906,6 +2108,7 @@
                                                     <span style="display: none;">Requires: <span id="gUpgRequires4.11"></span></span>
                                                     <span>Cost: <span id="gUpgCost4.11"></span></span><br>
                                                     <span id="4.11GEffect" style="display: none;">Currently: <span id="gUpgEffect4.11"></span></span>
+                                                    <span id="upgSoftcapNotice2"> (softcapped at <span id="upgSoftcapNum2">1,000</span> galaxies)</span>
                                                 </span>
                                             </button>
                                         </div>
@@ -1979,19 +2182,225 @@
                     </tr>
                 </table>
             </div>
-            <div id="arkSubTab" class="galaxySubTab" style="display: none;">
-                <!--<img id="thrusters" class="arkImg" src="../images/thrusters.png">
+            <div id="researchSubTab" class="galaxySubTab">
+                <div id="researchDisplayDiv" style="margin: 10px auto; text-align: center; display: none;">
+                    You have <span id="researchDisplay" style="white-space: pre; font-size: 19pt; font-weight: bold; color: #661503; -webkit-text-stroke-width: .5px; -webkit-text-stroke-color: white; font-variant-numeric: tabular-nums;"> 0 </span> <span id="researchTextAmt">void research</span>.<br>
+                    You are producing <span id="researchGainDisplay" style="white-space: pre; font-size: 18pt; font-weight: bold; color: #661503; -webkit-text-stroke-width: .5px; -webkit-text-stroke-color: white; font-variant-numeric: tabular-nums;"> 0 </span> <span id="infResearchTextGain">void research</span>/<span class="secDisplay">sec</span>. <span id="infResearchAstralNotice" style="display: none;">(@ <span id="astralNerfInfResearch">10</span>x slower time speed)</span><br>
+                    Goal: <span id="researchGoalDisplay" style="white-space: pre; font-size: 18pt; font-weight: bold; color: #661503; -webkit-text-stroke-width: .5px; -webkit-text-stroke-color: white;"> 0 </span> void research.<br>
+                    <button id="astralButResearch" onclick="toggleAstralResearch()">Toggle Astral: OFF</button>
+                </div>
+                <div id="researchDescription" style="text-align: center; width: 920px; margin: auto; font-size: 11pt;">
+                    <div style="margin: 5px;"><span style=" font-size: 16pt; font-weight: bold;">When you begin a research project, you do a galaxy respec and time respec,</span> but <span style="font-size: 12pt;">ALL</span> of your corpses, astral bricks, buildings, construction, time upgrades, and time crystals are reset, regardless of your milestones, achievements, and project rewards; however, all tabs stay unlocked.<br>(Galactic Vortex and the 4th/5th Time Upgrade columns don't reset, but they have no effect during research.)</div>
+                    <div style="margin: 5px;">During astral enslavement, your vassal souls tirelessly study the eldritch sciences of <span style="font-size: 14pt; color: #661503; font-weight: bold; -webkit-text-stroke-width: .3px; -webkit-text-stroke-color: white;">the beyond</span>. As a result, your base astral brick production is square rooted, but you produce Void Research at the same base rate.</div>
+                    <div style="margin: 5px;">Additionally, galaxy upgrade costs are tripled (after the cost increase from higher rows), and <span style="font-size: 12pt;">ALL</span> production other than astral bricks and void research is raised to ^0.9.</div>
+                    <div style="margin: 5px;">To complete a research project, you must reach the required amount of Void Research under these conditions in addition to the specific conditions below.</div>
+                    <div style="margin: 5px;"><span style="font-size: 14pt;">NOTE:</span> performing an ascension or galaxy respec will exit the current project and set your void research to 0.</div>
+                    <div style="margin: 5px;"><span style=" font-size: 16pt; font-weight: bold;">Completing a project respecs galaxies without an ascension reset.</div>
+                    <span style="font-size: 14pt; font-weight: bold; color: #e32d05;">Each project completed doubles the number of galaxies the galaxy softcaps start at.</span>
+                </div>
+                <table style="width: auto; text-align: center; margin: 20px auto;">
+                    <tr>
+                        <td>
+                            <div id="research1" class="researchDiv">
+                                <h6>Project 1</h6>
+                                <div id="resConds1" style="margin: 5px; height: 110px; min-height: 110px;">
+                                    The <strong>Triangulum</strong> galaxy tree is locked.<br>
+                                    All unit tier corpse multipliers are raised to the ^0.9.
+                                </div>
+                                <hr width="95%" style="border-color: #661503;">
+                                <div id="resReward1" style="margin: 5px; height: 95px; min-height: 95px;">
+                                    <span style="font-size: 15pt; font-weight: 900;">REWARD:</span><br>All unit tier corpse multipliers are raised to the ^1.1.
+                                </div>
+                                <div id="resGoalText1" class="resGoalText">Goal: <span id="resGoal1">1e6</span> Void Research</div>
+                                <button id="startResearch1" class="researchButton" onclick="researchButtonClick(1)">BEGIN</button>
+                            </div>
+                        </td>
+                        <td>
+                            <div id="research2" class="researchDiv">
+                                <h6>Project 2</h6>
+                                <div id="resConds2" style="margin: 5px; height: 110px; min-height: 110px;">
+                                    The <strong>Andromeda</strong> galaxy tree is locked.<br>
+                                    The Death Factory is disabled.
+                                </div>
+                                <hr width="95%" style="border-color: #661503;">
+                                <div id="resReward1" style="margin: 5px; height: 95px; min-height: 95px;">
+                                    <span style="font-size: 15pt; font-weight: 900;">REWARD:</span><br>The Death Factory's first upgrade row is never reset.
+                                </div>
+                                <div id="resGoalText2" class="resGoalText">Goal: <span id="resGoal2">1e9</span> Void Research</div>
+                                <button id="startResearch2" class="researchButton" onclick="researchButtonClick(2)">BEGIN</button>
+                            </div>
+                        </td>
+                        <td>
+                            <div id="research3" class="researchDiv">
+                                <h6>Project 3</h6>
+                                <div id="resConds3" style="margin: 5px; height: 110px; min-height: 110px;">
+                                    The <strong>Circinus</strong> galaxy tree is locked.<br>
+                                    Exponential cost scaling for all construction upgrades starts at level 1.
+                                </div>
+                                <hr width="95%" style="border-color: #661503;">
+                                <div id="resReward1" style="margin: 5px; height: 95px; min-height: 95px;">
+                                    <span style="font-size: 15pt; font-weight: 900;">REWARD:</span><br>Exp. cost scaling for all construction upgrades starts 10 levels later (after 3.22).
+                                </div>
+                                <div id="resGoalText3" class="resGoalText">Goal: <span id="resGoal3">1e12</span> Void Research</div>
+                                <button id="startResearch3" class="researchButton" onclick="researchButtonClick(3)">BEGIN</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="research4" class="researchDiv">
+                                <h6>Project 4</h6>
+                                <div id="resConds4" style="margin: 5px; height: 110px; min-height: 110px;">
+                                    The <strong>Sculptor Dwarf</strong> galaxy tree is locked.<br>
+                                    The anti time essence effect is disabled.
+                                </div>
+                                <hr width="95%" style="border-color: #661503;">
+                                <div id="resReward1" style="margin: 5px; height: 95px; min-height: 95px;">
+                                    <span style="font-size: 15pt; font-weight: 900;">REWARD:</span><br>The anti time effect is equal to the true time effect whenever it would be 1x.
+                                </div>
+                                <div id="resGoalText4" class="resGoalText">Goal: <span id="resGoal4">1e14</span> Void Research</div>
+                                <button id="startResearch4" class="researchButton" onclick="researchButtonClick(4)">BEGIN</button>
+                            </div>
+                        </td>
+                        <td>
+                            <div id="research5" class="researchDiv">
+                                <h6>Project 5</h6>
+                                <div id="resConds5" style="margin: 5px; height: 110px; min-height: 110px;">
+                                    <span style="font-size: 14pt;">You can only use one galaxy tree.
+                                </div>
+                                <hr width="95%" style="border-color: #661503;">
+                                <div id="resReward1" style="margin: 5px; height: 95px; min-height: 95px;">
+                                    <span style="font-size: 15pt; font-weight: 900;">REWARD:</span><br>The sacrifice threshold and crystal gain formula are based on 1e20 -> 1e15 corpses.
+                                </div>
+                                <div id="resGoalText5" class="resGoalText">Goal: <span id="resGoal5">1e10</span> Void Research</div>
+                                <button id="startResearch5" class="researchButton" onclick="researchButtonClick(5)">BEGIN</button>
+                            </div>
+                        </td>
+                        <td>
+                            <div id="research6" class="researchDiv">
+                                <h6>Project 6</h6>
+                                <div id="resConds6" style="margin: 5px; height: 110px; min-height: 110px;">
+                                    You can only buy one galaxy upgrade from each tree and from each row (the normal upgrade requirements are suspended).
+                                </div>
+                                <hr width="95%" style="border-color: #661503;">
+                                <div id="resReward1" style="margin: 5px; height: 95px; min-height: 95px;">
+                                    <span style="font-size: 15pt; font-weight: 900;">REWARD:</span><br>Unlock the second row of Galactic Vortex upgrades.
+                                </div>
+                                <div id="resGoalText6" class="resGoalText">Goal: <span id="resGoal6">1e15</span> Void Research</div>
+                                <button id="startResearch6" class="researchButton" onclick="researchButtonClick(6)">BEGIN</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="infResearchSubTab" class="galaxySubTab">
+                <div id="infResearchDisplayDiv" style="margin: 10px auto; text-align: center; display: none;">
+                    You have <span id="infResearchDisplay" style="white-space: pre; font-size: 19pt; font-weight: bold; color: #661503; -webkit-text-stroke-width: .5px; -webkit-text-stroke-color: white; font-variant-numeric: tabular-nums;"> 0 </span> <span id="researchTextAmt">void research</span>.<br>
+                    You are producing <span id="infResearchGainDisplay" style="white-space: pre; font-size: 18pt; font-weight: bold; color: #661503; -webkit-text-stroke-width: .5px; -webkit-text-stroke-color: white; font-variant-numeric: tabular-nums;"> 0 </span> <span id="researchTextGain">void research</span>/<span class="secDisplay">sec</span>. <span id="researchAstralNotice" style="display: none;">(@ <span id="astralNerfResearch">10</span>x slower time speed)</span><br>
+                    Goal: <span id="infResearchGoalDisplay" style="white-space: pre; font-size: 18pt; font-weight: bold; color: #661503; -webkit-text-stroke-width: .5px; -webkit-text-stroke-color: white;"> 0 </span> void research.<br>
+                    <button id="astralButInfResearch" onclick="toggleAstralResearch()">Toggle Astral: OFF</button>
+                </div>
+                <div id="infResearchDescription" style="text-align: center; width: 920px; margin: auto; font-size: 11pt;">
+                    <div style="margin: 5px;"><span style="font-size: 18pt; color: #661503; font-weight: bold; -webkit-text-stroke-width: .5px; -webkit-text-stroke-color: white;">The Beyond holds infinite, untold knowledge.</div>
+                    <div style="margin: 5px;">You have the knowledge needed to craft The Ark, but your thirst has not been quenched.</div>
+                    <div style="margin: 5px;">Infinite research is the same as research project 6, with corpse production raised ^0.9 a second time. Infinite research can be completed unlimited times: each completion raises time crystal gain to ^1.01, and multiplies the goal amount by 10.</div>
+                    <div style="margin: 5px;">Every completion rewards 1 Impossible Theorem. Each unspent theorem raises the exterminated worlds effect to ^1.2, and they are used to buy Ethereal Upgrades.</div>
+                </div>
+                <div id="infResearchDisplayDiv" style="margin: 10px auto; text-align: center;font-size: 15pt;">
+                    You have <span id="theoremDisplay" style="white-space: pre; font-size: 19pt; font-weight: bold; color: #661503; -webkit-text-stroke-width: .8px; -webkit-text-stroke-color: white; font-variant-numeric: tabular-nums;"> 0 </span> <span id="theoremTextAmt">impossible theorems</span>, raising the exterminated worlds effect to <span id="theoremEffect" style="white-space: pre; font-size: 17pt; font-weight: bold;"> 1</span><br>
+                    You have completed <span id="completionsDisplay" style="white-space: pre; font-size: 19pt; font-weight: bold; color: #661503; -webkit-text-stroke-width: .8px; -webkit-text-stroke-color: white; font-variant-numeric: tabular-nums;"> 0 </span> infinite research projects, raising time crystal gain to <span id="theoremEffectC" style="white-space: pre; font-size: 17pt; font-weight: bold;"> 1</span>.
+                </div>
+                <table style="width: 950px; text-align: center; margin: 20px auto;">
+                    <tr>
+                        <td colspan="4" id="infiniteResearchCell">
+                            <div id="research7" class="infResearchDiv">
+                                <h6>Infinite Research</h6>
+                                <div id="resConds7">
+                                    You can only buy one galaxy upgrade from each tree and from each row.<br>
+                                    Corpse production is raised to the ^0.9 a second time.
+                                </div>
+                                <hr width="95%" style="border-color: #3b1a12;">
+                                <div id="resReward7">
+                                    <span style="font-size: 15pt; font-weight: 900;">REWARD:</span> 1 Impossible Theorem.
+                                </div>
+                                <div id="resGoalText7" class="infResGoalText">Current Goal: <span id="resGoal7">1e17</span> Void Research</div>
+                                <button id="startResearch7" class="infResearchButton" onclick="researchButtonClick(7)">BEGIN</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr style="height: 25px;">
+                        <div style="height: 100%;"></div>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <span style="font-size: 20pt; color: #661503; font-weight: bold; -webkit-text-stroke-width: .5px; -webkit-text-stroke-color: white;">Ethereal Upgrades</span><hr width="95%" style="border-color: #3b1a12;">
+                            <button id="respecEth" class="respecButSkinny" onclick="respecEthereal()">Respec Ethereal Upgrades<br>(forces a sacrifice reset)</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button id="ethUpg11" class="ethUpg" onclick="buyEUpg(11)">
+                                <span id="eUpgName11" style="font-weight: 900;"></span><br>
+                                <span id="eUpgDesc11"></span><br>
+                                <span>Cost: <span id="eUpgCost11"></span> impossible theorems</span><br>
+                                <span id="e11Effect" style="display: none;">Currently: <span id="eUpgEffect11"></span></span>
+                            </button>
+                        </td>
+                        <td>
+                            <button id="ethUpg12" class="ethUpg" onclick="buyEUpg(12)">
+                                <span id="eUpgName12" style="font-weight: 900;"></span><br>
+                                <span id="eUpgDesc12"></span><br>
+                                <span>Cost: <span id="eUpgCost12"></span> impossible theorems</span><br>
+                                <span id="e12Effect" style="display: none;">Currently: <span id="eUpgEffect12"></span></span>
+                            </button>
+                        </td>
+                        <td>
+                            <button id="ethUpg13" class="ethUpg" onclick="buyEUpg(13)">
+                                <span id="eUpgName13" style="font-weight: 900;"></span><br>
+                                <span id="eUpgDesc13"></span><br>
+                                <span>Cost: <span id="eUpgCost13"></span> impossible theorems</span><br>
+                                <span id="e13Effect" style="display: none;">Currently: <span id="eUpgEffect13"></span></span>
+                            </button>
+                        </td>
+                        <td>
+                            <button id="ethUpg14" class="ethUpg" onclick="buyEUpg(14)">
+                                <span id="eUpgName14" style="font-weight: 900;"></span><br>
+                                <span id="eUpgDesc14"></span><br>
+                                <span>Cost: <span id="eUpgCost14"></span> impossible theorems</span><br>
+                                <span id="e14Effect" style="display: none;">Currently: <span id="eUpgEffect14"></span></span>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="arkSubTab" class="galaxySubTab">
+                <div id="winDescription" style="text-align: center; width: 100%; font-size: 32pt; color: #661503; font-weight: bold; -webkit-text-stroke-width: 1px; -webkit-text-stroke-color: white; display: none;">YOU HAVE GONE BEYOND.</div>
+                <div id="arkDescription" style="text-align: center; width: 100%;">
+                    <span style="font-size: 17pt; font-weight: bold; color: #e32d05;">You receive a message from beyond.</span><br>
+                    <span style="font-size: 16pt; color: #661503; font-weight: bold; -webkit-text-stroke-width: .3px; -webkit-text-stroke-color: white;">"We have found you worthy of our ranks, small one."<br>
+                    "Make yourself an ark of astral matter; make rooms in the ark, and cover it inside and outside with time."</span><br>
+                    Even in your godlike state this is beyond you. This will require study.<br>
+                    Of course, you have undead souls to do your studying for you.<br>
+                </div>
+                <img id="thrusters" class="arkImg" src="../images/thrusters.png">
                 <img id="engines" class="arkImg" src="../images/engines.png">
                 <img id="navigation" class="arkImg" src="../images/navigation.png">
                 <img id="torpedos" class="arkImg" src="../images/torpedos.png">
                 <img id="railguns" class="arkImg" src="../images/railguns.png">
                 <img id="support" class="arkImg" src="../images/support.png">
-                <button id="thrustersBut" class="arkUpg" onclick="buyArkUpgrade('thrusters')" chal-num="1"><span id="thrustersText" style="display: none;">thrusters</span></button>
-                <button id="enginesBut" class="arkUpg" onclick="buyArkUpgrade('engines')" chal-num="2"><span id="enginesText" style="display: none;">engines</span></button>
-                <button id="navigationBut" class="arkUpg" onclick="buyArkUpgrade('navigation')" chal-num="3"><span id="navigationText" style="display: none;">navigation</span></button>
-                <button id="torpedosBut" class="arkUpg" onclick="buyArkUpgrade('torpedos')" chal-num="4"><span id="torpedosText" style="display: none;">torpedos</span></button>
-                <button id="railgunsBut" class="arkUpg" onclick="buyArkUpgrade('railguns')" chal-num="5"><span id="railgunsText" style="display: none;">railguns</span></button>
-                <button id="supportBut" class="arkUpg" onclick="buyArkUpgrade('support')" chal-num="6"><span id="supportText" style="display: none;">death support</span></button>-->
+                <img id="thrustersBuilt" class="arkImgBuilt" src="../images/thrusterscolor.png">
+                <img id="enginesBuilt" class="arkImgBuilt" src="../images/enginescolor.png">
+                <img id="navigationBuilt" class="arkImgBuilt" src="../images/navigationcolor.png">
+                <img id="torpedosBuilt" class="arkImgBuilt" src="../images/torpedoscolor.png">
+                <img id="railgunsBuilt" class="arkImgBuilt" src="../images/railgunscolor.png">
+                <img id="supportBuilt" class="arkImgBuilt" src="../images/supportcolor.png">
+                <img id="fullyBuilt" class="arkImgBuilt" src="../images/spaceshipcolor.png">
+                <button id="thrustersBut" class="arkUpg" onclick="buyArkUpgrade('thrusters')" res-num="1"><span id="thrustersText" style="display: none;"></span><span id="thrustersBoughtText" style="display: none;">THRUSTERS ONLINE.</span></button>
+                <button id="enginesBut" class="arkUpg" onclick="buyArkUpgrade('engines')" res-num="2"><span id="enginesText" style="display: none;"></span><span id="enginesBoughtText" style="display: none;">ENGINES ONLINE.</span></button>
+                <button id="navigationBut" class="arkUpg" onclick="buyArkUpgrade('navigation')" res-num="3"><span id="navigationText" style="display: none;"></span><span id="navigationBoughtText" style="display: none;">NAVIGATION ONLINE.</span></button>
+                <button id="torpedosBut" class="arkUpg" onclick="buyArkUpgrade('torpedos')" res-num="4"><span id="torpedosText" style="display: none;"></span><span id="torpedosBoughtText" style="display: none;">TORPEDOS ONLINE.</span></button>
+                <button id="railgunsBut" class="arkUpg" onclick="buyArkUpgrade('railguns')" res-num="5"><span id="railgunsText" style="display: none;"></span><span id="railgunsBoughtText" style="display: none;">RAILGUNS ONLINE.</span></button>
+                <button id="supportBut" class="arkUpg" onclick="buyArkUpgrade('support')" res-num="6"><span id="supportText" style="display: none;"></span><span id="supportBoughtText" style="display: none;">DEATH SUPPORT ONLINE.</span></button>
             </div>
         </div>
         <div id="statsTab" class="pageTab">
@@ -2496,6 +2905,46 @@
                             <div id="ach55" class="achievement achTooltip" onmouseover="mouseoverAchievement(55)"><p>Dear God, Why?</p></div>
                         </td>
                     </tr>
+                    <tr style="height: 10px;">
+                        <div style="height: 100%;"></div>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="ach61" class="achievement achTooltip" onmouseover="mouseoverAchievement(61)"><p>They Came From Beyond</p></div>
+                        </td>
+                        <td>
+                            <div id="ach62" class="achievement achTooltip" onmouseover="mouseoverAchievement(62)"><p>What Have I Done?</p></div>
+                        </td>
+                        <td>
+                            <div id="ach63" class="achievement achTooltip" onmouseover="mouseoverAchievement(63)"><p>I'm Something Of A Scientist</p></div>
+                        </td>
+                        <td>
+                            <div id="ach64" class="achievement achTooltip" onmouseover="mouseoverAchievement(64)"><p>Infinite Knowledge<br>+</p></div>
+                        </td>
+                        <td>
+                            <div id="ach65" class="achievement achTooltip" onmouseover="mouseoverAchievement(65)"><p>Covenant Established</p></div>
+                        </td>
+                    </tr>
+                    <tr style="height: 10px;">
+                        <div style="height: 100%;"></div>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="ach71" class="achievement achTooltip" onmouseover="mouseoverAchievement(71)"><p>Infinite Knowledge<br>+</p></div>
+                        </td>
+                        <td>
+                            <div id="ach72" class="achievement achTooltip" onmouseover="mouseoverAchievement(72)"><p>Unpossible</p></div>
+                        </td>
+                        <td>
+                            <div id="ach73" class="achievement achTooltip" onmouseover="mouseoverAchievement(73)"><p>True Annihilation<br>+</p></div>
+                        </td>
+                        <td>
+                            <div id="ach74" class="achievement achTooltip" onmouseover="mouseoverAchievement(74)"><p>Ethereal Fiend</p></div>
+                        </td>
+                        <td>
+                            <div id="ach75" class="achievement achTooltip" onmouseover="mouseoverAchievement(75)"><p>Grains Of Sand</p></div>
+                        </td>
+                    </tr>
                 </table>
             </div>
         </div>
@@ -2614,9 +3063,65 @@
                 <span id="offlineArmament" style="display: none;"><span id="offlineArmamentGain" style="font-size: 15pt; font-weight: bold; white-space: pre;"> 0 </span> armaments.<br></span>
                 <span id="offlineAcolyte" style="display: none;"><span id="offlineAcolyteGain" style="font-size: 15pt; font-weight: bold; white-space: pre;"> 0 </span> acolytes.<br></span>
                 <span id="offlinePhoton" style="display: none;"><span id="offlinePhotonGain" style="font-size: 15pt; font-weight: bold; white-space: pre;"> 0 </span> nekro-photons. <br></span>
-                <span id="offlineEssence" style="display: none;"><span id="offlineTrueGain" style="font-size: 15pt; font-weight: bold; white-space: pre; color: #006ba0;"> 0 </span> true time essence and <span id="offlineAntiGain" style="font-size: 15pt; font-weight: bold; white-space: pre; color: #006ba0;"> 0 </span> anti time essence.<br></span>
+                <span id="offlineEssence" style="display: none;"><span id="offlineTrueGain" style="font-size: 15pt; font-weight: bold; white-space: pre; color: #006ba0;"> 0 </span> true time essence and<br><span id="offlineAntiGain" style="font-size: 15pt; font-weight: bold; white-space: pre; color: #006ba0;"> 0 </span> anti time essence.<br></span>
+                <span id="offlineGalaxy" style="display: none;"><span id="offlineGalaxyGain" style="font-size: 15pt; font-weight: bold; white-space: pre; color: #e32d05;"> 0 </span> depleted galaxies. <br></span>
+                <span id="offlineResearch" style="display: none;"><span id="offlineResearchGain" style="font-size: 15pt; font-weight: bold; white-space: pre; color: #661503; -webkit-text-stroke-width: .5px; -webkit-text-stroke-color: white;"> 0 </span> void research. <br></span>
             </div>
             <button class="optBut" id="closeOfflinePopup" style="margin: 10px;" onclick="closeOfflinePopup()">CLOSE</button>
+        </div>
+        <div class="gSpecPopup" id="gSpecsPopup" style="display: none;">
+            <table>
+                <tr>
+                    <td width="50%"></td>
+                    <td width="15%"></td>
+                    <td width="15%"></td>
+                    <td width="20%"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="slot1Name">Slot 1</div>
+                    </td>
+                    <td>
+                        <button id="slot1Save" class="saveLoadFavBut" onclick="saveFavorite(1)">SAVE</button>
+                    </td>
+                    <td>
+                        <button id="slot1Load" class="saveLoadFavBut" onclick="importGalaxies(true, 1)">LOAD</button>
+                    </td>
+                    <td>
+                        <button id="slot1Rename" class="renameFavBut" onclick="renameFavorite(1)">RENAME</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="slot2Name">Slot 2</div>
+                    </td>
+                    <td>
+                        <button id="slot2Save" class="saveLoadFavBut" onclick="saveFavorite(2)">SAVE</button>
+                    </td>
+                    <td>
+                        <button id="slot2Load" class="saveLoadFavBut" onclick="importGalaxies(true, 2)">LOAD</button>
+                    </td>
+                    <td>
+                        <button id="slot2Rename" class="renameFavBut" onclick="renameFavorite(2)">RENAME</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="slot3Name">Slot 3</div>
+                    </td>
+                    <td>
+                        <button id="slot3Save" class="saveLoadFavBut" onclick="saveFavorite(3)">SAVE</button>
+                    </td>
+                    <td>
+                        <button id="slot3Load" class="saveLoadFavBut" onclick="importGalaxies(true, 3)">LOAD</button>
+                    </td>
+                    <td>
+                        <button id="slot3Rename" class="renameFavBut" onclick="renameFavorite(3)">RENAME</button>
+                    </td>
+                </tr>
+            </table>
+            <div id="gSpecErr" style="height: 20px; min-height: 20px;"></div>
+            <div style="margin: 10px auto; width: 310px;"><button id ="resetFavsBut" class="optBut" onclick="resetAllFavs()" style="float: left;">RESET ALL</button><button id ="closeFavPopup" class="optBut" onclick="closeFavPopup()" style="float: right;">CLOSE</button></div>
         </div>
         <div class="gPopup" id="gImportPopup" style="display: none; width: 330px; min-width: 330px; height: 260px; min-height: 260px;">
             <label id="gImportTextLabel" for="gImportText"><h2>Paste your galaxy code:</h2></label>
@@ -2804,6 +3309,30 @@
                         <button id="timeBoostDisplayBut" class="confBut" onclick="toggleDisplay('timeBoostDisplay', 'timeBoostDisplayBut')">ON</button>
                     </td>
                 </tr>
+                <tr id="unspentToggleRow" style="display: none;">
+                    <td>
+                        Unspent galaxies
+                    </td>
+                    <td width="10%">
+                        <button id="unspentGalaxiesHeaderDisplayBut" class="confBut" onclick="toggleDisplay('unspentGalaxiesHeaderDisplay', 'unspentGalaxiesHeaderDisplayBut')">OFF</button>
+                    </td>
+                </tr>
+                <tr id="researchToggleRow" style="display: none;">
+                    <td>
+                        Void research amount
+                    </td>
+                    <td width="10%">
+                        <button id="researchDisplayHeaderBut" class="confBut" onclick="toggleDisplay('researchDisplayHeader', 'researchDisplayHeaderBut')">OFF</button>
+                    </td>
+                </tr>
+                <tr id="researchGainToggleRow" style="display: none;">
+                    <td>
+                        Void research gain
+                    </td>
+                    <td width="10%">
+                        <button id="researchGainDisplayHeaderBut" class="confBut" onclick="toggleDisplay('researchGainDisplayHeader', 'researchGainDisplayHeaderBut')">OFF</button>
+                    </td>
+                </tr>
             </table>
             <button class="displayButSkinny" id="displayDefaults" style="margin: 10px;" onclick="setDisplayDefaults()">defaults</button>
         </div>
@@ -2814,7 +3343,7 @@
                 <div class="milestonePopupHeaderX"><a href="javascript:hideMilestones();">X</a></div>
                 <div class="milestonePopupHR"></div>
             </div>
-            <table class="milestoneTable"style="width: 100%; margin-top: 49px;">
+            <table class="milestoneTable" style="width: 100%; margin-top: 49px;">
                 <tr>
                     <td class="milestoneTD" id="milestone1">
                         <span id="milestoneReq1" style="font-size: 16pt; font-weight: 900;">Own four 1st row upgrades.</span><br>
@@ -2854,7 +3383,7 @@
                 <tr>
                     <td class="milestoneTD" id="milestone7">
                         <span id="milestoneReq7" style="font-size: 16pt; font-weight: 900;">Own four 4th row upgrades.</span><br>
-                        <span id="milestoneRew7" style="font-size: 11pt;">Unlock <span style="font-weight: 800;">Void Research</span> and <span style="font-weight: 800;">The Ark</span>.<br>(COMING SOON!)</span>
+                        <span id="milestoneRew7" style="font-size: 11pt;">Unlock <span style="font-weight: 800;">Void Research</span> and <span style="font-weight: 800;">The Ark</span>.</span>
                     </td>
                 </tr>
                 <!--<tr>

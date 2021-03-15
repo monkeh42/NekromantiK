@@ -113,6 +113,7 @@ body {
     font-family: 'Cinzel', serif;
     font-size: 13pt;
     margin-bottom: 200px;
+    overflow: overlay;
 }
 
 .scrollbar::-webkit-scrollbar {
@@ -130,6 +131,10 @@ body {
     border-radius: 9px;
     opacity: 0.5;
 }
+
+.hidden-scrollbar::-webkit-scrollbar-thumb {
+    visibility: hidden !important;
+ }
 
 #game {
     width: 1280px;
@@ -187,7 +192,7 @@ body {
     box-shadow: 3px 3px #424242;
     width: 300px;
     border-radius: 4px;
-    z-index: 2;
+    z-index: 9;
     display: none;
 }
 
@@ -206,6 +211,25 @@ body {
     display: none;
 }
 
+.gSpecPopup {
+    position: fixed;
+    left: 50%;
+	top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center;
+    background-color: black;
+    border: 3px solid white;
+    box-shadow: 3px 3px #424242;
+    width: 520px;
+    min-width: 520px;
+    height: 260px;
+    min-height: 260px;
+    padding: 10px;
+    border-radius: 4px;
+    z-index: 9;
+    display: none;
+}
+
 .offPopup {
     position: absolute;
     text-align: center;
@@ -215,20 +239,6 @@ body {
     border-radius: 4px;
     z-index: 2;
     display: none;
-}
-
-.bpopup {
-    position: absolute;
-    left: 50%;
-	top: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    text-align: center;
-    background-color: black;
-    border: 3px solid white;
-    box-shadow: 3px 3px #424242;
-    width: 300px;
-    border-radius: 4px;
-    z-index: 2;
 }
 
 .dPopup {
@@ -263,6 +273,20 @@ body {
     border: 1px double rgb(255, 255, 255, 0.4);
     border-radius: 9px;
     opacity: 0.5;
+}
+
+.bpopup {
+    position: absolute;
+    left: 50%;
+	top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center;
+    background-color: black;
+    border: 3px solid white;
+    box-shadow: 3px 3px #424242;
+    width: 300px;
+    border-radius: 4px;
+    z-index: 2;
 }
 
 .milestonePopup {
@@ -480,6 +504,26 @@ option:active, option.active {
     background-color: #525252;
 }
 
+.respecButSkinny {
+    color: white;
+    background-color: #3b1a12;
+    font-style: bold;
+    width: 225px;
+    height: 50px;
+    border: 3px double white;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 5px;
+    font-family: 'Cinzel', serif;
+    font-size: 10pt;
+}
+
+.respecButSkinny:hover {
+    background-color: white;
+    color: #3b1a12;
+    border: 3px double #3b1a12;
+}
+
 .optBut {
     color: white;
     background-color: #1f1f1f;
@@ -493,7 +537,21 @@ option:active, option.active {
     font-size: 12pt;
 }
 
-.optBut:hover {
+.endBut {
+    color: white;
+    background-color: #1f1f1f;
+    font-style: bold;
+    width: 175px;
+    height: 50px;
+    border: 1px solid #525252;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 12pt;
+    margin-top: 15px;
+}
+
+.optBut:hover, .endBut:hover {
     background-color: #525252;
 }
 
@@ -501,7 +559,7 @@ option:active, option.active {
     color: white;
     background-color: #1f1f1f;
     font-style: bold;
-    width: 180px;
+    width: 200px;
     height: 35px;
     border: 1px solid #525252;
     cursor: pointer;
@@ -578,11 +636,39 @@ option:active, option.active {
     border-radius: 4px;
 }
 
-.changelogPageBut:hover {
+.changelogSectionBut {
+    color: white;
+    background-color:black;
+    font-style: bold;
+    width: 200px;
+    height: 75px;
+    border: 1px solid#e8000d;
+    margin: 10px;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    font-size: 18pt;
+    border-radius: 4px;
+}
+
+.changelogSectionButSelected {
+    color: white;
+    background-color:#e8000d;
+    font-style: bold;
+    width: 200px;
+    height: 75px;
+    border: 1px solid#e8000d;
+    margin: 10px;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    font-size: 18pt;
+    border-radius: 4px;
+}
+
+.changelogPageBut:hover, .changelogSectionBut:hover {
     background-color: #e8000d;
 }
 
-.changelogPageButSelected:hover {
+.changelogPageButSelected:hover .changelogSectionButSelected:hover {
     background-color:black;
 }
 
@@ -716,6 +802,46 @@ option:active, option.active {
     margin-top: 10px;
 }
 
+.ethUpg {
+    color: white;
+    background-color: #3b1a12;
+    width: 220px;
+    height: 120px;
+    border: 6px double white;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.ethUpg:hover {
+    background-color: white;
+    color: #3b1a12;
+    border: 6px double #3b1a12;
+}
+
+.boughtEthUpg {
+    color: white;
+    background-color:black;
+    width: 220px;
+    height: 120px;
+    border: 6px double #3b1a12;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.unclickableEthUpg {
+    color: white;
+    background-color: #4b4b4b;
+    width: 220px;
+    height: 120px;
+    border: 1px solid #4b4b4b;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
 /*.lockedGalaxyRow {
     color: white;
     position: relative;
@@ -778,11 +904,12 @@ option:active, option.active {
 } 
 
 .lockedArkUpg {
-    color: #661503;
+    color: #e32d05;
     background: #4b4b4b url("../images/questionmark.png") no-repeat center;
     font-family: 'Cinzel', serif;
-    font-weight: bold;
-    font-size: 18pt;
+    font-weight: 900;
+    font-size: 20pt;
+    line-height: 95%;
     width: 200px;
     height: 120px;
     border: 3px solid #661503;
@@ -790,7 +917,7 @@ option:active, option.active {
 }
 
 .lockedArkUpg:after {
-    content: "Complete Challenge " attr(chal-num) " to unlock."
+    content: "Complete Research Project " attr(res-num) " to unlock."
 }
 
 .arkUpg {
@@ -1041,13 +1168,6 @@ option:active, option.active {
     background-color: #525252;
     overflow: auto;
     display: none;
-}#exportText {
-    width: 80%;
-    height: 300px;
-    margin: auto;
-    background-color: #525252;
-    overflow: auto;
-    display: none;
 }
 
 #gImportText {
@@ -1267,6 +1387,54 @@ option:active, option.active {
     font-family: 'Cinzel', serif;
     font-weight: bold;
     font-size: 20pt;
+    cursor: pointer;
+}
+
+.dimBuyerEnabledBut {
+    position: relative;
+    color: white;
+    background-color: #1f1f1f;
+    font-style: bold;
+    margin: 0 auto 20px;
+    width: 115px;
+    height: 40px;
+    border: 1px solid #525252;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+    font-size: 20pt;
+    cursor: pointer;
+}
+
+.timeDimBuyerEnabledBut {
+    position: relative;
+    color: white;
+    background-color: #1f1f1f;
+    font-style: bold;
+    margin: 0 auto 20px;
+    width: 100px;
+    height: 30px;
+    border: 1px solid #525252;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+    font-size: 16pt;
+    cursor: pointer;
+}
+
+.timeDimBuyerAllEnabledBut {
+    position: relative;
+    color: white;
+    background-color: #1f1f1f;
+    font-style: bold;
+    margin: 0 auto 20px;
+    width: 150px;
+    height: 30px;
+    border: 1px solid #525252;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+    font-size: 14pt;
     cursor: pointer;
 }
 
@@ -1577,6 +1745,32 @@ option:active, option.active {
     font-size: 12pt;
 }
 
+.saveLoadFavBut {
+    color: white;
+    background-color: #1f1f1f;
+    font-style: bold;
+    width: 75px;
+    height: 50px;
+    border: 1px solid #525252;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 12pt;
+}
+
+.renameFavBut {
+    color: white;
+    background-color: #1f1f1f;
+    font-style: bold;
+    width: 100px;
+    height: 50px;
+    border: 1px solid #525252;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 12pt;
+}
+
 #tabButtons {
     width: auto;
     margin: auto;
@@ -1685,6 +1879,36 @@ option:active, option.active {
     box-shadow: 0px 0px 10px 5px #e32d05;
 }
 
+.projectNotify {
+    box-shadow: 0px 0px 20px 10px #e32d05;
+}
+
+#astralButResearch {
+    color: white;
+    background-color: #661503;
+    font-style: bold;
+    width: 150px;
+    height: 35px;
+    border: 1px solid #e32d05;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+}
+
+#astralButInfResearch {
+    color: white;
+    background-color: #3b1a12;
+    font-style: bold;
+    width: 175px;
+    height: 35px;
+    border: 6px double white;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+}
+
 .galaxyBut {
     color: white;
     background-color: #661503;
@@ -1722,6 +1946,19 @@ option:active, option.active {
     border-radius: 4px;
     font-family: 'Cinzel', serif;
     position: relative;
+}
+
+.galShowFavsBut {
+    color: white;
+    background-color: #661503;
+    font-style: bold;
+    width: 270px;
+    height: 35px;
+    border: 1px solid #e32d05;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
 }
 
 #favSavedNotice {
@@ -1773,7 +2010,7 @@ option:active, option.active {
     font-family: 'Cinzel', serif;
 }
 
-.galaxyBut:hover, .galaxyNameBut4:hover, .galaxyNameBut2:hover {
+#astralButResearch:hover, .galaxyBut:hover, .galaxyNameBut4:hover, .galaxyNameBut2:hover {
     background-color: #e32d05;
 }
 
@@ -1872,9 +2109,225 @@ option:active, option.active {
     position: relative;
 }
 
-.arkImg {
+.researchDiv {
+    width: 300px;
+    min-width: 300px;
+    height: 400px;
+    min-height: 400px;
+    border: 1px solid #e32d05;
+    border-radius: 4px;
+    position: relative;
+}
+
+.infResearchDiv {
+    width: 750px;
+    min-width: 750px;
+    margin: auto;
+    height: 290px;
+    min-height: 290px;
+    border: 6px double #3b1a12;
+    border-radius: 4px;
+    position: relative;
+}
+
+.researchButton {
+    color: white;
+    background-color: #661503;
+    font-weight: 900;
+    width: 180px;
+    height: 60px;
+    border: 1px solid #e32d05;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 16pt;
+    position: absolute;
+    top: 320px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.progressResearchButton {
+    color: white;
+    background-color: #4b4b4b;
+    font-weight: 900;
+    width: 180px;
+    height: 60px;
+    border: 3px solid #661503;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 16pt;
+    position: absolute;
+    top: 320px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.researchButton:hover {
+    background-color: #e32d05;
+}
+
+.completedResearchBut {
+    color: #661503;
+    background-color: black;
+    font-weight: 900;
+    width: 180px;
+    height: 60px;
+    border: 3px solid #661503;
+    margin: 5px;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 16pt;
+    -webkit-text-stroke-width: .3px;
+    -webkit-text-stroke-color: white;
+    position: absolute;
+    top: 320px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.infResearchButton {
+    color: white;
+    background-color: #3b1a12;
+    font-weight: 900;
+    width: 185px;
+    height: 80px;
+    border: 6px double white;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 16pt;
+    position: absolute;
+    top: 190px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.progressInfResearchButton {
+    color: white;
+    background-color: #4b4b4b;
+    font-weight: 900;
+    width: 185px;
+    height: 80px;
+    border: 6px double #3b1a12;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 16pt;
+    position: absolute;
+    top: 190px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+#astralButInfResearch:hover, .infResearchButton:hover {
+    background-color: white;
+    color: #3b1a12;
+    border: 6px double #3b1a12;
+}
+
+.completedInfResearchBut {
+    color: #3b1a12;
+    background-color: black;
+    font-weight: 900;
+    width: 185px;
+    height: 80px;
+    border: 6px double white;
+    margin: 5px;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 16pt;
+    -webkit-text-stroke-width: .3px;
+    -webkit-text-stroke-color: white;
+    position: absolute;
+    top: 190px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.unclickInfResearchBut {
+    color: white;
+    background-color: #4b4b4b;
+    font-weight: 900;
+    width: 185px;
+    height: 80px;
+    border: 1px solid #4b4b4b;
+    margin: 5px;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 16pt;
+    position: absolute;
+    top: 190px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.unclickResearchBut {
+    color: white;
+    background-color: #4b4b4b;
+    font-weight: 900;
+    width: 180px;
+    height: 60px;
+    border: 1px solid #4b4b4b;
+    margin: 5px;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 16pt;
+    position: absolute;
+    top: 320px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.resGoalText {
+    font-size: 15pt;
+    font-weight: 900;
+    margin: 5px;
+    width: 100%;
+    position: absolute;
+    top: 280px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.infResGoalText {
+    font-size: 15pt;
+    font-weight: 900;
+    margin: 5px;
+    width: 100%;
     position: absolute;
     top: 150px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+.arkImg {
+    position: absolute;
+    top: 300px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    display: none;
+}
+
+.arkImgBuilt {
+    position: absolute;
+    top: 300px;
     left: 50%;
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
@@ -1885,8 +2338,16 @@ option:active, option.active {
     display: none;
     position: relative;
     width: 50%;
-    width: 1600px;
-    height: 1024px;
+    width: 1280px;
+    height: 1174px;
+    top: 0;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+
+#arkDescription {
+    position: absolute;
     top: 0;
     left: 50%;
     -webkit-transform: translateX(-50%);
@@ -1895,50 +2356,56 @@ option:active, option.active {
 
 #thrustersBut {
     position: absolute;
-    bottom: 45px;
+    bottom: 260px;
     left: 50%;
-    -webkit-transform: translateX(25%);
-    transform: translateX(25%);
+    -webkit-transform: translateX(200%);
+    transform: translateX(200%);
+    transition: opacity 2s;
 }
 
 #enginesBut {
     position: absolute;
-    bottom: 45px;
+    bottom: 150px;
     left: 50%;
-    -webkit-transform: translateX(-125%);
-    transform: translateX(-125%);
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    transition: opacity 2s;
 }
 
 #navigationBut {
     position: absolute;
-    top: 50px;
+    top: 175px;
     left: 50%;
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
+    transition: opacity 2s;
 }
 
 #torpedosBut {
     position: absolute;
-    top: 300px;
+    top: 450px;
     left: 50%;
-    -webkit-transform: translateX(-150%);
-    transform: translateX(-150%);
+    -webkit-transform: translateX(-175%);
+    transform: translateX(-175%);
+    transition: opacity 2s;
 }
 
 #railgunsBut {
     position: absolute;
-    top: 300px;
+    top: 450px;
     left: 50%;
-    -webkit-transform: translateX(50%);
-    transform: translateX(50%);
+    -webkit-transform: translateX(75%);
+    transform: translateX(75%);
+    transition: opacity 2s;
 }
 
 #supportBut {
     position: absolute;
-    bottom: 175px;
+    bottom: 260px;
     left: 50%;
-    -webkit-transform: translateX(-50%);
-    transform: translateX(-50%);
+    -webkit-transform: translateX(-300%);
+    transform: translateX(-300%);
+    transition: opacity 2s;
 }
 
 .leftRowCost {
@@ -1977,6 +2444,15 @@ option:active, option.active {
     width: 388px;
     height: 771px;
     cursor: move;
+}
+
+.cursorContainer2 {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: transparent;
+    width: 338px;
+    height: 652px;
 }
 
 .milestoneHeaderContainer {
@@ -2137,16 +2613,44 @@ option:active, option.active {
 
 .milestonePopup::-webkit-scrollbar {
     width: 10px;
-}
-
-.milestonePopup::-webkit-scrollbar-track {
-    margin-top: 51px;
     opacity: 0;
 }
 
+.milestonePopup::-webkit-scrollbar-track {
+    opacity: 0;
+    margin-top: 52px;
+}
+
 .milestonePopup::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.5);
-    border: 1px double rgb(248, 248, 255, 0.3);
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px double rgb(255, 255, 255, 0.4);
     border-radius: 9px;
     opacity: 0.5;
+}
+
+#winScreen {
+    width: 100%;
+    height: 1024px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: black;
+    z-index: 9;
+    transition: opacity 2s;
+    display: none;
+}
+
+#winMessage {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    opacity: 0;
+    transition: opacity 2s;
+    font-size: 16pt;
+    color: #661503;
+    font-weight: bold;
+    -webkit-text-stroke-width: .3px;
+    -webkit-text-stroke-color: white;
 }

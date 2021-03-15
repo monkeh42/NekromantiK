@@ -22,309 +22,386 @@
 <body id="changelog">
     <div style="width: 100%; margin-top: 20px; display: block;">
         <h3>Nekromantik Changelog</h3>
-        <table style="width: auto; margin: 50px auto 0;">
+        <table style="width: auto; margin: auto;">
             <tr>
                 <td>
-                    <button id="but022" class="changelogPageBut" onclick="showChangelog('div022')">v0.2.2</button>
+                    <button id="buts1" class="changelogSectionBut" onclick="showChangelogSection('changeSection1')">Live release (v1.0.0+)</button>
+                </td>
+            </tr>
+            <tr>
+                <td id="changeSection1" class="changelogSection">
+                    <table style="width: auto; margin: auto;">
+                        <tr>
+                            <td>
+                                <button id="but100" class="changelogPageBut" onclick="showChangelog('div100')">v1.0.0</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="div100" class="changelogPageDiv" style="text-align: left; display: none;">
+                                    <li>New Features:</li>
+                                    <ul style="list-style-type: disc;">
+                                        <li>Void Research and The Ark</li>
+                                        <ul style="list-style-type: circle;">
+                                            <li>Unlocked with Galaxy Milestone 7</li>
+                                            <li>Each component of the ark must be researched before you can build it</li>
+                                            <li>There are 6 research projects, one for each ark component. You need to produce a certain amount of Void Research under some heavy nerfs to complete each project.</li>
+                                            <li>Completing a project gives a permanent reward as well as unlocking the corresponding component.</li>
+                                        </ul>
+                                        <li>Infinite Research</li>
+                                        <ul style="list-style-type: circle;">
+                                            <li>Unlocked after completing research project 6</li>
+                                            <li>Project 6 with an additional nerf that can be completed repeatedly, with a higher goal every time</li>
+                                            <li>Each completion gives you an Impossible Theorem and a boost to crystal gain</li>
+                                            <li>You can buy Ethereal Upgrades with Impossible Theorems, and unspent theorems boost the exterminated worlds effect</li>
+                                            <li>Ethereal upgrades can be respecced any time (forces a sacrifice reset)</li>
+                                        </ul>
+                                        <li>Two new rows of achievements</li>
+                                    </ul>
+                                    <li>SOFTCAP:</li>
+                                    <ul style="list-style-type: disc;">
+                                        <li>All effects based on total galaxies are now softcapped past 1,000 galaxies.</li>
+                                        <ul style="list-style-type: circle;">
+                                            <li>Cube roots exponent past limit, formula: effect = x*(10^cbrt(log(y))) where x=effect at limit, y=(effect before softcap)/x</li>
+                                            <li>The 1,000 galaxy start point is doubled for every research project you complete</li>
+                                        </ul>
+                                        <li>Added navigation hotkeys</li>
+                                        <ul style="list-style-type: circle;">
+                                            <li>q/w/e/r/ for units/buildings/time/galaxies tab</li>
+                                            <li>f to cycle through subtabs</li>
+                                            <li><span style="font-weight: 900;">NOTE! Two hotkeys have changed: world prestige, w -> p and respec time, r -> t.</span></li>
+                                        </ul>
+                                    </ul>
+                                    <li>Changes:</li>
+                                    <ul style="list-style-type: disc;">
+                                        <li>Unholy Paradox, Manbat (time upgrade) now applies outside of astral</li>
+                                        <li>There are now 3 favorites slots for galaxy loadouts</li>
+                                        <li>Offline produciton now triggers after 300 seconds instead of 1000</li>
+                                    </ul>
+                                    <li>Fixes:</li>
+                                    <ul style="list-style-type: disc;">
+                                        <li>Fixed a time storage bug that was causing issues with auto-sacrifice "after x seconds" and with offline production</li>
+                                        <li>Various other bugs</li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <div id="div022" class="changelogPageDiv" style="text-align: left; display: none;">
-                        <ul style="list-style-type: circle;">
-                            <li>First public release</li>
-                        </ul>
-                    </div>
+                    <button id="buts0" class="changelogSectionBut" onclick="showChangelogSection('changeSection0')">Pre-release (v0.2.2 - v0.3.4)</button>
                 </td>
             </tr>
             <tr>
-                <td>
-                    <button id="but023" class="changelogPageBut" onclick="showChangelog('div023')">v0.2.3</button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="div023" class="changelogPageDiv" style="text-align: left; display: none;">
-                        <ul style="list-style-type: circle;">
-                            <li>Added monospace digits</li>
-                            <li>Fixed bugs causing Industrialize and Stronger Forges to have no effect</li>
-                            <li>Fixed Time Dimension 4 not producing</li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button id="but024" class="changelogPageBut" onclick="showChangelog('div024')">v0.2.4</button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="div024" class="changelogPageDiv" style="text-align: left; display: none;">
-                        <ul style="list-style-type: circle;">
-                            <li>Added "reset bug fix" and "export game state" buttons in options tab</li>
-                            <li>First reset bug fix (ended up needing more)</li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button id="but025" class="changelogPageBut" onclick="showChangelog('div025')">v0.2.5</button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="div025" class="changelogPageDiv" style="text-align: left; display: none;">
-                        <ul style="list-style-type: circle;">
-                            <li>BUFFS:</li>
-                            <ul style="list-style-type: disc;">
-                                <li>Buffed bonus from worlds 1 + (x/2)^1.5 -> 1 + (x/1.5)^1.5 (this is also a slight buff to World Refiner, before it had no effect at 2 worlds)</li>
-                                <li>Buffed Time Essence:</li>
-                                <ul style="list-style-type: circle;">
-                                    <li>Both Time Essence nerf formulas 1 + sqrt(log(x))/2 -> max(log(x)^2, 1)</li>
-                                    <li>Anti Essence boost is now twice as strong as base instead of True Time being half as strong</li>
-                                </ul>
-                            </ul>
-                            <li>NERFS:</li>
-                            <ul style="list-style-type: disc;">
-                                <li>Astral Kilns: 25% -> 20%</li>
-                                <li>Arm The Dead, Astral Kiln Kilns, Astral Time Machine: max(x^0.2, 1) -> 1 + log(x)^2</li>
-                                <li>Time Crystal Gain formula: floor(10^(corpses_exponent/20 - 0.45)) -> floor(10^(corpses_exponent/20 - 0.65))</li>
-                                <li>Units exponential cost increase past a certain cost*: cost multiplier multiplied by 10 per bought</li>
-                                <li>*Unit exponential cost threshholds: zombies begin past 1e20 (first crystal gain), all other tiers begin past 1e20*baseCost*baseCostMult</li>
-                            </ul>
-                            <li>OTHER:</li>
-                            <ul style="list-style-type: disc;">
-                                <li>Offline production: triggers for offline time >1000 seconds (~17 minutes)</li>
-                                <li>Added formula tooltips on hover for upgrades and production (toggle in options)</li>
-                                <li>Reorganized options tab (no more text in save import box)</li>
-                                <li>Various minor bug fixes</li>
-                            </ul>
-                            <li><span style="font-weight: bold;">NOTE:</span> Corpse production was nerfed pretty hard (mostly due to the additional cost multiplers) and the 
-                                time esence boosts got a decent buff. You won't be able to sacrifice for nearly as much as before this update, but you shouldn't notice a significant difference early in a run. 
-                                This is closer to how I initially intended sacrifice to work, and it'll all make more sense with the next sublayer coming soon.</li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button id="but026" class="changelogPageBut" onclick="showChangelog('div026')">v0.2.6</button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="div026" class="changelogPageDiv" style="text-align: left; display: none;">
-                        <ul style="list-style-type: circle;">
-                            <li>Digitize (Death Factory upgrade): now makes base unit miltiplier equal to corpse multiplier, instead of ^0.5 -> ^0.9</li>
-                            <li>Implemented a real deep copy function (BIG: this should FINALLY take care of any lingering reset bug issues. I'd recommend everyone click the "fix reset bug" button in options once you're on 0.2.6 - this won't reset anything if the bug already happened to you, but it'll make sure it doesn't happen again, or at all if it hasn't already)</li>
-                            <li>Import/export QoL: import text box now gets focus when you click Import, and export text is highlighted</li>
-                            <li>Moved bug fix text to options tab</li>
-                        </ul>
+                <td id="changeSection0" class="changelogSection" style="display: none;">
+                    <table style="width: auto; margin: auto;">
+                        <tr>
+                            <td>
+                                <button id="but022" class="changelogPageBut" onclick="showChangelog('div022')">v0.2.2</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="div022" class="changelogPageDiv" style="text-align: left; display: none;">
+                                    <ul style="list-style-type: circle;">
+                                        <li>First public release</li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button id="but023" class="changelogPageBut" onclick="showChangelog('div023')">v0.2.3</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="div023" class="changelogPageDiv" style="text-align: left; display: none;">
+                                    <ul style="list-style-type: circle;">
+                                        <li>Added monospace digits</li>
+                                        <li>Fixed bugs causing Industrialize and Stronger Forges to have no effect</li>
+                                        <li>Fixed Time Dimension 4 not producing</li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button id="but024" class="changelogPageBut" onclick="showChangelog('div024')">v0.2.4</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="div024" class="changelogPageDiv" style="text-align: left; display: none;">
+                                    <ul style="list-style-type: circle;">
+                                        <li>Added "reset bug fix" and "export game state" buttons in options tab</li>
+                                        <li>First reset bug fix (ended up needing more)</li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button id="but025" class="changelogPageBut" onclick="showChangelog('div025')">v0.2.5</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="div025" class="changelogPageDiv" style="text-align: left; display: none;">
+                                    <ul style="list-style-type: circle;">
+                                        <li>BUFFS:</li>
+                                        <ul style="list-style-type: disc;">
+                                            <li>Buffed bonus from worlds 1 + (x/2)^1.5 -> 1 + (x/1.5)^1.5 (this is also a slight buff to World Refiner, before it had no effect at 2 worlds)</li>
+                                            <li>Buffed Time Essence:</li>
+                                            <ul style="list-style-type: circle;">
+                                                <li>Both Time Essence nerf formulas 1 + sqrt(log(x))/2 -> max(log(x)^2, 1)</li>
+                                                <li>Anti Essence boost is now twice as strong as base instead of True Time being half as strong</li>
+                                            </ul>
+                                        </ul>
+                                        <li>NERFS:</li>
+                                        <ul style="list-style-type: disc;">
+                                            <li>Astral Kilns: 25% -> 20%</li>
+                                            <li>Arm The Dead, Astral Kiln Kilns, Astral Time Machine: max(x^0.2, 1) -> 1 + log(x)^2</li>
+                                            <li>Time Crystal Gain formula: floor(10^(corpses_exponent/20 - 0.45)) -> floor(10^(corpses_exponent/20 - 0.65))</li>
+                                            <li>Units exponential cost increase past a certain cost*: cost multiplier multiplied by 10 per bought</li>
+                                            <li>*Unit exponential cost threshholds: zombies begin past 1e20 (first crystal gain), all other tiers begin past 1e20*baseCost*baseCostMult</li>
+                                        </ul>
+                                        <li>OTHER:</li>
+                                        <ul style="list-style-type: disc;">
+                                            <li>Offline production: triggers for offline time >1000 seconds (~17 minutes)</li>
+                                            <li>Added formula tooltips on hover for upgrades and production (toggle in options)</li>
+                                            <li>Reorganized options tab (no more text in save import box)</li>
+                                            <li>Various minor bug fixes</li>
+                                        </ul>
+                                        <li><span style="font-weight: bold;">NOTE:</span> Corpse production was nerfed pretty hard (mostly due to the additional cost multiplers) and the 
+                                            time esence boosts got a decent buff. You won't be able to sacrifice for nearly as much as before this update, but you shouldn't notice a significant difference early in a run. 
+                                            This is closer to how I initially intended sacrifice to work, and it'll all make more sense with the next sublayer coming soon.</li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button id="but026" class="changelogPageBut" onclick="showChangelog('div026')">v0.2.6</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="div026" class="changelogPageDiv" style="text-align: left; display: none;">
+                                    <ul style="list-style-type: circle;">
+                                        <li>Digitize (Death Factory upgrade): now makes base unit miltiplier equal to corpse multiplier, instead of ^0.5 -> ^0.9</li>
+                                        <li>Implemented a real deep copy function (BIG: this should FINALLY take care of any lingering reset bug issues. I'd recommend everyone click the "fix reset bug" button in options once you're on 0.2.6 - this won't reset anything if the bug already happened to you, but it'll make sure it doesn't happen again, or at all if it hasn't already)</li>
+                                        <li>Import/export QoL: import text box now gets focus when you click Import, and export text is highlighted</li>
+                                        <li>Moved bug fix text to options tab</li>
+                                    </ul>
 
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button id="but027" class="changelogPageBut" onclick="showChangelog('div027')">v0.2.7</button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="div027" class="changelogPageDiv" style="text-align: left; display: none;">
-                        <ul style="list-style-type: circle;">
-                            <li>Added changelog</li>
-                        </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button id="but027" class="changelogPageBut" onclick="showChangelog('div027')">v0.2.7</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="div027" class="changelogPageDiv" style="text-align: left; display: none;">
+                                    <ul style="list-style-type: circle;">
+                                        <li>Added changelog</li>
+                                    </ul>
 
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button id="but028" class="changelogPageBut" onclick="showChangelog('div028')">v0.2.8</button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="div028" class="changelogPageDiv" style="text-align: left; display: none;">
-                        <ul style="list-style-type: circle;">
-                            <li>New Features:</li>
-                            <ul style="list-style-type: disc;">
-                                <li>Added Time Upgrades (unlocked with third dead sun upgrade): purchase with time crystals, mostly designed to allow faster sacrifices to grind crystals</li>
-                                <li>Added Autobuyers (unlocked with a time upgrade): pretty self-explanatory, read the help text </li>
-                            </ul>
-                            <li>QoL changes:</li>
-                            <ul style="list-style-type: disc;">
-                                <li>Added hotkeys (check the options tab)</li>
-                                <li>Reworked tooltips (the tooltips toggle button also now shows on/off)</li>
-                                <li>Added reset confirmation toggles (in options)</li>
-                                <li>Construction upgrade costs now display 3 significant digits</li>
-                                <li>The game now remembers your active tabs and puts you back where you were on load</li>
-                            </ul>
-                            <li>Changes:</li>
-                            <ul style="list-style-type: disc;">
-                                <li>Astral Magnifying Glass buff: 1 + sqrt(log(x)) -> 1 + log(x)/4</li>
-                            </ul>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button id="but029" class="changelogPageBut" onclick="showChangelog('div029')">v0.2.9</button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="div029" class="changelogPageDiv" style="text-align: left; display: none;">
-                        <ul style="list-style-type: circle;">
-                            <li>Back End:</li>
-                            <ul style="list-style-type: disc;">
-                                <li>Totally reworked visual update process</li>
-                                <li>Mostly new data/organizational structure - getting rid of that spaghetti I had should once and for all stop these dumb reset bugs</li>
-                            </ul>
-                            <li>New Features:</li>
-                            <ul style="list-style-type: disc;">
-                                <li>Stats & Achievements tab: shows best/total values for all time and this sacrifice, plus crystal gain info for the last 10 sacrifices</li>
-                                <li>Achievements: fairly self-explanatory, achievements with a '+' symbol have an additional permanent reward, also get a boost to corpse multipliers based on number of achievements</li>
-                                <li>Final time upgrade can now be bought and two of the three dead sun upgrades it unlocks</li>
-                            </ul>
-                            <li>Balance Changes:</li>
-                            <ul style="list-style-type: disc;">
-                                <li> Last time upgrade unlocks the world prestige autobuyer now instead of the advanced sacrifice one (which is now unlocked by a 2nd row dead sun upgrade)</li>
-                                <li>"<strong>Automation</strong>" time upgrade is now "<strong>Lightspeed</strong>: Unlock bulk autobuyers, and crystal gain is boosted based on your nekro-photons."</li>
-                                <li>Time crystal gain is now based on best corpses this sacrifice instead of current corpses</li>
-                            </ul>
-                            <li>Visual/QoL Changes:</li>
-                            <ul style="list-style-type: disc;">
-                                <li>Added crystals/minute display on sacrifice button (only after 2000 total crystals when the other text on the button goes away)</li>
-                                <li>Visual redesign of the autobuyers tab, should be significantly easier on the eyes now</li>
-                                <li>Added nav button styles to indicate active tabs</li>
-                                <li>Added indicators on nav buttons for new unlocks</li>
-                                <li>Changing active main tab will now close help</li>
-                                <li>Added "all autobuyers" buttons: toggle all, all on, all off</li>
-                                <li>Added "respec on next sacrifice" checkbox (<strong>NOTE</strong> this becomes pretty important to use once you get the Thyme Lord achievement)</li>
-                                <li>"Conquered Worlds" are now called "Exterminated Worlds" (just fits the theme better)</li>
-                            </ul>
-                            <li>Various Minor Bug Fixes</li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button id="but031" class="changelogPageBut" onclick="showChangelog('div031')">v0.3.1</button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="div031" class="changelogPageDiv" style="text-align: left; display: none;">
-                        <ul style="list-style-type: circle;">
-                            <li>New Features:</li>
-                            <ul style="list-style-type: disc;">
-                                <li>Depleted Galaxies:</li>
-                                <ul style="list-style-type: circle;">
-                                    <li>New reset Ascension requires at least 10 exterminated worlds and gives depleted galaxies based on worlds. Formula is floor(x^(x/10 - sqrt(x/10)))</li>
-                                    <li>Four branching galaxy upgrade trees</li>
-                                    <li>Galaxy Milestones: unlocks features for reaching a certain point in the galaxy upgrade trees</li>
-                                </ul>
-                                <li>Fourth building: <strong>Galactic Vortex</strong>; two new construction upgrades; two columns of time upgrades; more autobuyers</li>
-                                <li>Two more rows of achievements</li>
-                                <li>Last 10 Ascensions tab in Stats & Achievements</li>
-                            </ul>
-                            <li>Changes:</li>
-                            <ul style="list-style-type: disc;">
-                                <li>Removed the prestige autobuyer priority setting, it served no purpose. Replaced with max auto-prestiges (set to 0 for unlimited)</li>
-                                <li>Fixed acolyte production: it was calculating based off owned Sun Eaters, should have been bought Sun Eaters.</li>
-                            </ul>
-                            <li>Visual/QoL Changes:</li>
-                            <ul style="list-style-type: disc;">
-                                <li>Bunch of small changes to displays to make it look better on smaller screens. Units and Time Dim displays readjusted, nav menu moves to two rows on &lt 1280px, etc.</li>
-                                <li>Added option to display real time production instead of game time</li>
-                                <li>Rearranged header resource displays a bit, and added header display customization options that unlock after first ascension</li>
-                            </ul>
-                            <li>Back End/Optimization:</li>
-                            <ul style="list-style-type: disc;">
-                                <li>Actual versioning process and more efficient/accurate load of old version saves</li>
-                                <li>All upgrade buttons update their display MUCH more efficiently; this and a few other small changes should fix that thing where you have to click 3-5 times on an upgrade</li>
-                            </ul>
-                            <li>Various Minor Bug Fixes</li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button id="but032" class="changelogPageBut" onclick="showChangelog('div032')">v0.3.2</button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="div032" class="changelogPageDiv" style="text-align: left; display: none;">
-                        <ul style="list-style-type: circle;">
-                            <li>Fixed an issue with version updater causing first three rows of achievements to always be unlocked</li>
-                            <li>Ascension and sacrifice now only reset unit/building tab views if autobuyers/construction are re-locked</li>
-                            <li>Ascension info in stats tab is now hidden until galaxies are unlocked</li>
-                            <li>Added google analytics - ONLY tracks page views, no other info</li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button id="but033" class="changelogPageBut" onclick="showChangelog('div033')">v0.3.3</button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="div033" class="changelogPageDiv" style="text-align: left; display: none;">
-                        <ul style="list-style-type: circle;">
-                            <li>Fixed game breaking save bug</li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button id="but034" class="changelogPageBut" onclick="showChangelog('div034')">v0.3.4</button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="div034" class="changelogPageDiv" style="text-align: left; display: none;">
-                        <li>Visual changes:</li>
-                            <ul style="list-style-type: disc;">
-                                <li>Added custom scrollbar</li>
-                                <li>Achievement/milestone unlocked popups moved off-center</li>
-                                <li>Save and autosave notification popups added opposite achievement/milestone popups</li>
-                                <ul style="list-style-type: circle;">
-                                    <li>Autosave notification can be turned off in header display options</li>
-                                </ul>
-                                <li>Header display options are now always unlocked; individual toggles in the window now unlock as you progress</li>
-                                <li>Visual redesign of header display options popup</li>
-                                <li>Added an inset astral green box-shadow to the whole window when astral enslavement is enabled</li>
-                                <li>Time tab button and time dim subtab button now glow time blue when time is unlocked</li>
-                                <li>Locked galaxy upgrades now keep their text over the skull background</li>
-                            </ul>
-                        <li>Additions:</li>
-                            <ul style="list-style-type: disc;">
-                                <li>Added import/export functions for galaxy upgrades</li>
-                                <ul style="list-style-type: circle;">
-                                    <li>Exports a string, format example: 1.11, 1.21, 1.31, 2.11, 3.11, 3.22, 4.11, 4.22, 4.32</li>
-                                    <li>Must be in order both by tree # and upgrade #</li>
-                                    <li>Importing always buys from top to bottom of one tree at a time, left to right</li>
-                                    <li>Can store and load a favorite loadout (there will eventually be more slots)</li>
-                                </ul>
-                                <li>Added navigation hotkeys</li>
-                                <ul style="list-style-type: circle;">
-                                    <li>q/w/e/r/ for units/buildings/time/galaxies tab</li>
-                                    <li>f to cycle through subtabs</li>
-                                    <li><span style="font-weight: 900;">NOTE! Two hotkeys have changed: world prestige, w -> p and respec time, r -> t.</span></li>
-                                </ul>
-                            </ul>
-                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button id="but028" class="changelogPageBut" onclick="showChangelog('div028')">v0.2.8</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="div028" class="changelogPageDiv" style="text-align: left; display: none;">
+                                    <ul style="list-style-type: circle;">
+                                        <li>New Features:</li>
+                                        <ul style="list-style-type: disc;">
+                                            <li>Added Time Upgrades (unlocked with third dead sun upgrade): purchase with time crystals, mostly designed to allow faster sacrifices to grind crystals</li>
+                                            <li>Added Autobuyers (unlocked with a time upgrade): pretty self-explanatory, read the help text </li>
+                                        </ul>
+                                        <li>QoL changes:</li>
+                                        <ul style="list-style-type: disc;">
+                                            <li>Added hotkeys (check the options tab)</li>
+                                            <li>Reworked tooltips (the tooltips toggle button also now shows on/off)</li>
+                                            <li>Added reset confirmation toggles (in options)</li>
+                                            <li>Construction upgrade costs now display 3 significant digits</li>
+                                            <li>The game now remembers your active tabs and puts you back where you were on load</li>
+                                        </ul>
+                                        <li>Changes:</li>
+                                        <ul style="list-style-type: disc;">
+                                            <li>Astral Magnifying Glass buff: 1 + sqrt(log(x)) -> 1 + log(x)/4</li>
+                                        </ul>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button id="but029" class="changelogPageBut" onclick="showChangelog('div029')">v0.2.9</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="div029" class="changelogPageDiv" style="text-align: left; display: none;">
+                                    <ul style="list-style-type: circle;">
+                                        <li>Back End:</li>
+                                        <ul style="list-style-type: disc;">
+                                            <li>Totally reworked visual update process</li>
+                                            <li>Mostly new data/organizational structure - getting rid of that spaghetti I had should once and for all stop these dumb reset bugs</li>
+                                        </ul>
+                                        <li>New Features:</li>
+                                        <ul style="list-style-type: disc;">
+                                            <li>Stats & Achievements tab: shows best/total values for all time and this sacrifice, plus crystal gain info for the last 10 sacrifices</li>
+                                            <li>Achievements: fairly self-explanatory, achievements with a '+' symbol have an additional permanent reward, also get a boost to corpse multipliers based on number of achievements</li>
+                                            <li>Final time upgrade can now be bought and two of the three dead sun upgrades it unlocks</li>
+                                        </ul>
+                                        <li>Balance Changes:</li>
+                                        <ul style="list-style-type: disc;">
+                                            <li> Last time upgrade unlocks the world prestige autobuyer now instead of the advanced sacrifice one (which is now unlocked by a 2nd row dead sun upgrade)</li>
+                                            <li>"<strong>Automation</strong>" time upgrade is now "<strong>Lightspeed</strong>: Unlock bulk autobuyers, and crystal gain is boosted based on your nekro-photons."</li>
+                                            <li>Time crystal gain is now based on best corpses this sacrifice instead of current corpses</li>
+                                        </ul>
+                                        <li>Visual/QoL Changes:</li>
+                                        <ul style="list-style-type: disc;">
+                                            <li>Added crystals/minute display on sacrifice button (only after 2000 total crystals when the other text on the button goes away)</li>
+                                            <li>Visual redesign of the autobuyers tab, should be significantly easier on the eyes now</li>
+                                            <li>Added nav button styles to indicate active tabs</li>
+                                            <li>Added indicators on nav buttons for new unlocks</li>
+                                            <li>Changing active main tab will now close help</li>
+                                            <li>Added "all autobuyers" buttons: toggle all, all on, all off</li>
+                                            <li>Added "respec on next sacrifice" checkbox (<strong>NOTE</strong> this becomes pretty important to use once you get the Thyme Lord achievement)</li>
+                                            <li>"Conquered Worlds" are now called "Exterminated Worlds" (just fits the theme better)</li>
+                                        </ul>
+                                        <li>Various Minor Bug Fixes</li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button id="but031" class="changelogPageBut" onclick="showChangelog('div031')">v0.3.1</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="div031" class="changelogPageDiv" style="text-align: left; display: none;">
+                                    <ul style="list-style-type: circle;">
+                                        <li>New Features:</li>
+                                        <ul style="list-style-type: disc;">
+                                            <li>Depleted Galaxies:</li>
+                                            <ul style="list-style-type: circle;">
+                                                <li>New reset Ascension requires at least 10 exterminated worlds and gives depleted galaxies based on worlds. Formula is floor(x^(x/10 - sqrt(x/10)))</li>
+                                                <li>Four branching galaxy upgrade trees</li>
+                                                <li>Galaxy Milestones: unlocks features for reaching a certain point in the galaxy upgrade trees</li>
+                                            </ul>
+                                            <li>Fourth building: <strong>Galactic Vortex</strong>; two new construction upgrades; two columns of time upgrades; more autobuyers</li>
+                                            <li>Two more rows of achievements</li>
+                                            <li>Last 10 Ascensions tab in Stats & Achievements</li>
+                                        </ul>
+                                        <li>Changes:</li>
+                                        <ul style="list-style-type: disc;">
+                                            <li>Removed the prestige autobuyer priority setting, it served no purpose. Replaced with max auto-prestiges (set to 0 for unlimited)</li>
+                                            <li>Fixed acolyte production: it was calculating based off owned Sun Eaters, should have been bought Sun Eaters.</li>
+                                        </ul>
+                                        <li>Visual/QoL Changes:</li>
+                                        <ul style="list-style-type: disc;">
+                                            <li>Bunch of small changes to displays to make it look better on smaller screens. Units and Time Dim displays readjusted, nav menu moves to two rows on &lt 1280px, etc.</li>
+                                            <li>Added option to display real time production instead of game time</li>
+                                            <li>Rearranged header resource displays a bit, and added header display customization options that unlock after first ascension</li>
+                                        </ul>
+                                        <li>Back End/Optimization:</li>
+                                        <ul style="list-style-type: disc;">
+                                            <li>Actual versioning process and more efficient/accurate load of old version saves</li>
+                                            <li>All upgrade buttons update their display MUCH more efficiently; this and a few other small changes should fix that thing where you have to click 3-5 times on an upgrade</li>
+                                        </ul>
+                                        <li>Various Minor Bug Fixes</li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button id="but032" class="changelogPageBut" onclick="showChangelog('div032')">v0.3.2</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="div032" class="changelogPageDiv" style="text-align: left; display: none;">
+                                    <ul style="list-style-type: circle;">
+                                        <li>Fixed an issue with version updater causing first three rows of achievements to always be unlocked</li>
+                                        <li>Ascension and sacrifice now only reset unit/building tab views if autobuyers/construction are re-locked</li>
+                                        <li>Ascension info in stats tab is now hidden until galaxies are unlocked</li>
+                                        <li>Added google analytics - ONLY tracks page views, no other info</li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button id="but033" class="changelogPageBut" onclick="showChangelog('div033')">v0.3.3</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="div033" class="changelogPageDiv" style="text-align: left; display: none;">
+                                    <ul style="list-style-type: circle;">
+                                        <li>Fixed game breaking save bug</li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button id="but034" class="changelogPageBut" onclick="showChangelog('div034')">v0.3.4</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="div034" class="changelogPageDiv" style="text-align: left; display: none;">
+                                    <li>Visual changes:</li>
+                                        <ul style="list-style-type: disc;">
+                                            <li>Added custom scrollbar</li>
+                                            <li>Achievement/milestone unlocked popups moved off-center</li>
+                                            <li>Save and autosave notification popups added opposite achievement/milestone popups</li>
+                                            <ul style="list-style-type: circle;">
+                                                <li>Autosave notification can be turned off in header display options</li>
+                                            </ul>
+                                            <li>Header display options are now always unlocked; individual toggles in the window now unlock as you progress</li>
+                                            <li>Visual redesign of header display options popup</li>
+                                            <li>Added an inset astral green box-shadow to the whole window when astral enslavement is enabled</li>
+                                            <li>Time tab button and time dim subtab button now glow time blue when time is unlocked</li>
+                                            <li>Locked galaxy upgrades now keep their text over the skull background</li>
+                                        </ul>
+                                    <li>Additions:</li>
+                                        <ul style="list-style-type: disc;">
+                                            <li>Added import/export functions for galaxy upgrades</li>
+                                            <ul style="list-style-type: circle;">
+                                                <li>Exports a string, format example: 1.11, 1.21, 1.31, 2.11, 3.11, 3.22, 4.11, 4.22, 4.32</li>
+                                                <li>Must be in order both by tree # and upgrade #</li>
+                                                <li>Importing always buys from top to bottom of one tree at a time, left to right</li>
+                                                <li>Can store and load a favorite loadout (there will eventually be more slots)</li>
+                                            </ul>
+                                            <li>Added navigation hotkeys</li>
+                                            <ul style="list-style-type: circle;">
+                                                <li>q/w/e/r/ for units/buildings/time/galaxies tab</li>
+                                                <li>f to cycle through subtabs</li>
+                                                <li><span style="font-weight: 900;">NOTE! Two hotkeys have changed: world prestige, w -> p and respec time, r -> t.</span></li>
+                                            </ul>
+                                        </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                 </td>
             </tr>
         </table>
