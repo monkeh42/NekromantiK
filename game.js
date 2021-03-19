@@ -490,7 +490,6 @@ function loadStyles() {
 //save stuff
 
 function manualSave() {
-    ga('send', 'event', 'Nekromantik', 'Save', 'Mansave');
     save();
     showSavePopup();
 }
@@ -611,7 +610,6 @@ function gameLoop(diff=new Decimal(0), offline=false) {
         if ((currentUpdate-player.lastAutoSave)>10000) { 
             player.lastAutoSave = currentUpdate;
             save();
-            ga('send', 'event', 'Nekromantik', 'Save', 'Autosave');
             if (player.headerDisplay['autosavePopup']) {
                 if (!player.win || player.continue) { showAutosavePopup(); }
             }
