@@ -490,6 +490,7 @@ function loadStyles() {
 //save stuff
 
 function manualSave() {
+    gtag('event', 'save', { 'type': 'manual' });
     save();
     showSavePopup();
 }
@@ -609,6 +610,7 @@ function gameLoop(diff=new Decimal(0), offline=false) {
         //allDisplay();
         if ((currentUpdate-player.lastAutoSave)>10000) { 
             player.lastAutoSave = currentUpdate;
+            gtag('event', 'save', { 'type': 'manual' });
             save();
             if (player.headerDisplay['autosavePopup']) {
                 if (!player.win || player.continue) { showAutosavePopup(); }
