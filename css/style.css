@@ -148,7 +148,8 @@ body {
     background-color: black;
     font-family: 'Cinzel', serif;
     font-size: 13pt;
-    overflow: overlay;
+    overflow: auto;
+    overflow: overlay;;
 }
 
 .scrollbar::-webkit-scrollbar {
@@ -361,7 +362,8 @@ body {
     z-index: 8;
     min-height: 400px;
     max-height: 600px;
-    overflow: overlay;
+    overflow: auto;
+    overflow: overlay;;
 }
 
 .dPopup::-webkit-scrollbar {
@@ -417,7 +419,8 @@ body {
     box-shadow: 3px 3px #424242;
     height: 600px;
     width: 400px;
-    overflow: overlay;
+    overflow: auto;
+    overflow: overlay;;
     border-radius: 4px;
     z-index: 8;
 }
