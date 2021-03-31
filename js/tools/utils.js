@@ -129,6 +129,14 @@ function formatWholeNoComma(decimal) {
 
 //end stolen
 
+function formatWholePluralize(dec, str) {
+	dec = new Decimal(dec);
+	if (str=='galaxies') { return (formatWhole(dec)+(dec.eq(1) ? 'galaxy' : str)); }
+	else if (str=='depleted galaxies') { return (formatWhole(dec)+(dec.eq(1) ? 'depleted galaxy' : str)); }
+	else if (str=='research'||'void research') { return (formatWhole(dec)+str); }
+	else { return (formatWhole(dec)+(dec.eq(1) ? str.slice(0, -1) : str)); }
+}
+
 //takes milliseconds as first argument and 'text' or 'num' as the second
 function formatTime(time, format) {
 	time = time/1000;

@@ -45,11 +45,18 @@
     font-weight: bold;
 }
 
+#shadowDiv {
+    width: 100%;
+    height: 100%;
+    padding-bottom: 200px;
+    padding-top: 20px;
+}
+
 .tooltip {
     position: relative;
- }
+}
 
- .tooltip::before {
+.tooltip::before {
     white-space: pre;
     background-color: black;
     border: 3px solid white;
@@ -64,21 +71,21 @@
     top: -20px;
     left: 5px;
     z-index: 1;
- }
+}
 
- .tooltip:hover::before {
+.tooltip:hover::before {
     display: block;
- }
+}
 
- .tooltip::before:empty {
+.tooltip::before:empty {
     display: none;
- }
+}
 
- .achTooltip {
+.achTooltip {
     position: relative;
- }
+}
 
- .achTooltip::before {
+.achTooltip::before {
     white-space: pre;
     background-color: black;
     border: 3px solid white;
@@ -89,30 +96,58 @@
     display: none;
     font: 400 13.3333px Arial;
     padding: 2px 5px;
-    max-width: 119px;
-    min-width: 119px;
+    max-width: 116px;
+    min-width: 116px;
     text-align: center;
     white-space: pre-wrap;
     position: absolute;
     top: -20px;
     left: 0px;
     z-index: 1;
- }
+}
 
- .achTooltip:hover::before {
+.achTooltip:hover::before {
     display: inline-block;
- }
+}
 
- .achTooltip::before:empty {
+.achTooltip::before:empty {
     display: none;
- }
+}
+
+.astralColors {
+    font-size: 125%;
+    color: #1c8a2e;
+    font-variant-numeric: tabular-nums;
+}
+
+.normalColors {
+    font-size: 125%;
+    color: white;
+    font-variant-numeric: tabular-nums;
+}
+
+.pageTab {
+    min-height: 1024px;
+}
+
+html, body {
+    margin: 0px;
+    padding: 0px;
+    
+    min-width: 100%;
+    width: 100%;
+    max-width: 100%;
+
+    min-height: 100%;
+    height: 100%;
+    max-height: 100%;
+}
 
 body {
     color: white;
     background-color: black;
     font-family: 'Cinzel', serif;
     font-size: 13pt;
-    margin-bottom: 200px;
     overflow: overlay;
 }
 
@@ -134,11 +169,12 @@ body {
 
 .hidden-scrollbar::-webkit-scrollbar-thumb {
     visibility: hidden !important;
- }
+}
 
 #game {
     width: 1280px;
     margin: auto;
+    display: none;
 }
 
 #help {
@@ -157,7 +193,7 @@ body {
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
     font-size: 14pt;
-    line-height: 120%;
+    line-height: 125%;
     text-align: center;
     border: 1px solid white;
     max-height: 400px;;
@@ -169,7 +205,7 @@ body {
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
     font-size: 14pt;
-    line-height: 120%;
+    line-height: 125%;
     text-align: center;
 }
 
@@ -177,8 +213,18 @@ body {
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
     font-size: 14pt;
-    line-height: 120%;
+    line-height: 125%;
     text-align: center;
+}
+
+#popupContainer {
+    position: fixed;
+    top: 55px;
+    right: 50%;
+    height: 200px;
+    transform: translateX(200%);
+    pointer-events: none;
+    z-index: 9;
 }
 
 .popup {
@@ -192,8 +238,36 @@ body {
     box-shadow: 3px 3px #424242;
     width: 300px;
     border-radius: 4px;
-    z-index: 9;
+    z-index: 2;
     display: none;
+}
+
+.confPopup {
+    position: fixed;
+    left: 50%;
+	top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center;
+    background-color: black;
+    border: 3px solid white;
+    box-shadow: 3px 3px #424242;
+    width: 400px;
+    border-radius: 4px;
+    z-index: 2;
+}
+
+.cPopup {
+    position: absolute;
+    left: 50%;
+	top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center;
+    background-color: black;
+    border: 3px solid white;
+    box-shadow: 3px 3px #424242;
+    width: 350px;
+    border-radius: 4px;
+    z-index: 2;
 }
 
 .gPopup {
@@ -211,6 +285,40 @@ body {
     display: none;
 }
 
+.giPopup {
+    position: fixed;
+    left: 50%;
+	top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center;
+    background-color: black;
+    border: 3px solid white;
+    box-shadow: 3px 3px #424242;
+    width: 330px;
+    min-width: 330px;
+    height: 235px;
+    min-height: 235px;
+    border-radius: 4px;
+    z-index: 9;
+}
+
+.gePopup {
+    position: fixed;
+    left: 50%;
+	top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center;
+    background-color: black;
+    border: 3px solid white;
+    box-shadow: 3px 3px #424242;
+    width: 330px;
+    min-width: 330px;
+    height: 235px;
+    min-height: 235px;
+    border-radius: 4px;
+    z-index: 9;
+}
+
 .gSpecPopup {
     position: fixed;
     left: 50%;
@@ -222,12 +330,11 @@ body {
     box-shadow: 3px 3px #424242;
     width: 520px;
     min-width: 520px;
-    height: 260px;
-    min-height: 260px;
+    height: 250px;
+    min-height: 250px;
     padding: 10px;
     border-radius: 4px;
     z-index: 9;
-    display: none;
 }
 
 .offPopup {
@@ -252,8 +359,7 @@ body {
     width: 350px;
     border-radius: 4px;
     z-index: 8;
-    display: none;
-    height: 600px;
+    min-height: 400px;
     max-height: 600px;
     overflow: overlay;
 }
@@ -286,7 +392,19 @@ body {
     box-shadow: 3px 3px #424242;
     width: 300px;
     border-radius: 4px;
+    padding: 10px;
     z-index: 2;
+    display: block;
+}
+
+.optRow {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.optButCell {
+    flex: 1;
 }
 
 .milestonePopup {
@@ -302,7 +420,6 @@ body {
     overflow: overlay;
     border-radius: 4px;
     z-index: 8;
-    display: none;
 }
 
 h1 {
@@ -323,6 +440,8 @@ h3 {
     font-family: 'Cinzel', serif;
     font-weight: bold;
     font-size: 18pt;
+    margin-top: 0.4em;
+    margin-bottom: 0.4em;
 }
 
 h4 {
@@ -340,9 +459,9 @@ h5 {
 h6 {
     font-family: 'Cinzel', serif;
     font-weight: bold;
-    font-size: 18pt;
-    margin-top: 0.4em;
-    margin-bottom: 0.4em;
+    font-size: 15pt;
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
 }
 
 button:focus, select:focus {
@@ -358,15 +477,61 @@ option:active, option.active {
     color: black;
 }
 
+.zapBut {
+    color: white;
+    width: 350px;
+    height: 100px;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 18pt;
+    font-weight: bold;
+}
+
+.zapBut.can {
+    border: 1px solid #460573;
+    background-color: #170424;
+    cursor: pointer;
+}
+
+.zapBut.can:hover {
+    background-color: #460573;
+}
+
+.zapBut.can:active {
+    background-color: black;
+    color: #460573;
+}
+
 .unitBut {
     color: white;
-    background-color: #170424;
     font-style: bold;
-    width: 180px;
-    height: 35px;
+    border-radius: 4px;
+}
+
+.unitBut.can {
+    background-color: #170424;
     border: 1px solid #460573;
     cursor: pointer;
-    border-radius: 4px;
+}
+
+.unitBut.cant {
+    background-color: #4b4b4b;
+    border: 1px solid #4b4b4b;
+}
+
+.buyerTog {
+    width: 180px;
+    height: 35px;
+}
+
+.single {
+    width: 180px;
+    height: 35px;
+}
+
+.max {
+    width: 120px;
+    height: 35px;
 }
 
 .unitMax {
@@ -380,19 +545,25 @@ option:active, option.active {
     border-radius: 4px;
 }
 
-.unitBut:hover, .unitMax:hover {
+.unitBut.can:hover {
     background-color: #460573;
 } 
 
 .unitButT {
     color: white;
-    background-color: #006ba0;
     font-style: bold;
-    width: 180px;
-    height: 35px;
+    border-radius: 4px;
+}
+
+.unitButT.can {
+    background-color: #006ba0;
     border: 1px solid white;
     cursor: pointer;
-    border-radius: 4px;
+}
+
+.unitButT.cant {
+    background-color: #4b4b4b;
+    border: 1px solid #4b4b4b;
 }
 
 .unitMaxT {
@@ -406,10 +577,36 @@ option:active, option.active {
     border-radius: 4px;
 }
 
-.unitButT:hover, .unitMaxT:hover {
+.unitButT.can:hover {
     background-color: white;
     color: #006ba0;
 } 
+
+#headerDisplayTable {
+    table-layout: fixed;
+    width: 1280px;
+    text-align: center;
+    border-collapse: collapse;
+    margin: auto;
+}
+
+.dimensionRow {
+    line-height: 35px;
+    width: 85%;
+    margin: 5px auto;
+    display: flex;
+    justify-content: center;
+}
+
+.dimensionHeader {
+    line-height: normal !important;
+    font-weight: 900;
+    margin: 25px auto;
+}
+
+.dimensionElement {
+    flex: 1;
+}
 
 .helpBut {
     color: white;
@@ -429,13 +626,14 @@ option:active, option.active {
     color: white;
     background-color: #1f1f1f;
     font-style: bold;
-    width: 178px;
-    height: 60px;
+    width: 140px;
+    height: 45px;
     border: 1px solid #525252;
     cursor: pointer;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
     font-size: 15pt;
+    margin: 2px;
 }
 
 .tabButSmall {
@@ -449,6 +647,14 @@ option:active, option.active {
     border-radius: 4px;
     font-family: 'Cinzel', serif;
     font-size: 15pt;
+}
+
+.helpButSelected {
+    background-color: black !important;
+}
+
+.helpButSelected:hover {
+    background-color: #141414 !important;
 }
 
 .tabButSelected {
@@ -466,6 +672,24 @@ option:active, option.active {
 
 .tabBut:hover {
     background-color: #525252;
+}
+
+.navMenu {
+    height: 50px;
+    min-height: 50px;
+    width: 1280px;
+    min-width: 1280px;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+
+.subNavMenu {
+    height: 40px;
+    min-height: 40px;
+    display: flex;
+    justify-content: center;
+    margin: auto;
 }
 
 .displayBut {
@@ -518,10 +742,23 @@ option:active, option.active {
     font-size: 10pt;
 }
 
-.respecButSkinny:hover {
+.respecButSkinny:hover, .ethBut:hover {
     background-color: white;
     color: #3b1a12;
-    border: 3px double #3b1a12;
+    border: 6px double #3b1a12;
+}
+
+.ethBut {
+    color: white;
+    background-color: #3b1a12;
+    font-style: bold;
+    height: 50px;
+    border: 6px double white;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 5px;
+    font-family: 'Cinzel', serif;
+    font-size: 11pt;
 }
 
 .optBut {
@@ -535,6 +772,84 @@ option:active, option.active {
     border-radius: 4px;
     font-family: 'Cinzel', serif;
     font-size: 12pt;
+    margin: 5px;
+}
+
+.confirmBut {
+    color: white;
+    background-color: #1f1f1f;
+    font-style: bold;
+    width: 100px;
+    height: 40px;
+    border: 1px solid #525252;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 12pt;
+}
+
+.favBut {
+    color: white;
+    background-color: #1f1f1f;
+    font-style: bold;
+    width: 150px;
+    height: 50px;
+    border: 1px solid #525252;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 12pt;
+    margin: 2px;
+}
+
+.optionsTable {
+    margin-top: 20px;
+}
+
+.statsTableText {
+    width: 100%;
+    text-align: center;
+    margin: 25px auto;
+}
+
+.pastRunsTable {
+    width: 60%; 
+    margin: auto;
+    text-align: center;
+}
+
+.statsTables {
+    width: 740px;
+    text-align: center;
+    margin: auto;
+}
+
+.statsTableDiv {
+    text-align: center;
+    width: 600px;
+    margin: auto;
+}
+
+.statsHeader {
+    border-bottom: 1px solid white;
+    font-weight: bold;
+    display: flex;
+}
+
+.statsRow {
+    display: flex;
+}
+
+.resourceCell, .resourceCellH {
+    width: 50%;
+    min-width: 50%;
+    border-right: 1px solid white;
+    font-weight: bold;
+    flex: 1;
+}
+
+.totalCell, .totalCellH, .bestCell, .bestCellH {
+    flex: 1;
 }
 
 .endBut {
@@ -551,7 +866,7 @@ option:active, option.active {
     margin-top: 15px;
 }
 
-.optBut:hover, .endBut:hover {
+.confirmBut:hover, .optBut:hover, .endBut:hover {
     background-color: #525252;
 }
 
@@ -566,6 +881,7 @@ option:active, option.active {
     border-radius: 4px;
     font-family: 'Cinzel', serif;
     font-size: 13pt;
+    margin: 2px;
 }
 
 .subTabBut:hover {
@@ -735,13 +1051,31 @@ option:active, option.active {
 
 .buildingUpg, .factoryUpg, .necropolisUpg, .sunUpg, .vortexUpg {
     color: white;
-    background-color: #042e0b;
     width: 220px;
     height: 120px;
-    border: 1px solid #085e16;
-    cursor: pointer;
     border-radius: 4px;
-    margin: 10px;
+    margin: 20px;
+    vertical-align: middle;
+}
+
+.buildingUpg.can {
+    border: 1px solid #085e16;
+    background-color: #042e0b;
+    cursor: pointer;
+}
+
+.buildingUpg.can:hover {
+    background-color: #085e16;
+}
+
+.buildingUpg.cant {
+    background-color: #4b4b4b;
+    border: 1px solid #4b4b4b;
+}
+
+.buildingUpg.bought {
+    background-color:black;
+    border: 1px solid #042e0b;
 }
 
 .unclickableBuildingUpg, .unclickFactoryUpg, .unclickNecropolisUpg, .unclickSunUpg, .unclickVortexUpg {
@@ -752,6 +1086,7 @@ option:active, option.active {
     border: 1px solid #4b4b4b;
     border-radius: 4px;
     margin: 10px;
+    vertical-align: middle;
 }
 
 .boughtBuildingUpg, .boughtFactoryUpg, .boughtNecropolisUpg, .boughtSunUpg, .boughtVortexUpg {
@@ -762,22 +1097,56 @@ option:active, option.active {
     border: 1px solid #042e0b;
     border-radius: 4px;
     margin: 10px;
+    vertical-align: middle;
 }
-
-.buildingUpg:hover, .factoryUpg:hover, .necropolisUpg:hover, .sunUpg:hover, .vortexUpg:hover {
-    background-color: #085e16;
-} 
 
 .galaxyUpg {
     color: white;
-    background-color: #661503;
     width: 175px;
     height: 175px;
-    border: 1px solid #e32d05;
-    cursor: pointer;
     border-radius: 4px;
     margin-bottom: 10px;
     margin-top: 10px;
+}
+
+.galaxyUpg.can {
+    background-color: #661503;
+    border: 1px solid #e32d05;
+    cursor: pointer;
+}
+
+.galaxyUpg.can:hover {
+    background-color: #e32d05;
+}
+
+.galaxyUpg.cant {
+    background-color: #4b4b4b;
+    border: 1px solid #4b4b4b;
+}
+
+.galaxyUpg.bought {
+    background-color:black;
+    border: 1px solid #661503;
+}
+
+.galaxyUpg.locked {
+    background-color: transparent;
+    border: 3px solid black;
+    position: relative;
+    z-index: 1;
+}
+
+.galaxyUpg.locked::after {
+    content: "";
+    position: absolute;
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%;  
+    border-radius: 4px;
+    opacity: 0.6; 
+    z-index: -1;
+    background: #4b4b4b url("../images/skull.png") no-repeat center;
 }
 
 .boughtGalaxyUpg {
@@ -802,21 +1171,51 @@ option:active, option.active {
     margin-top: 10px;
 }
 
-.ethUpg {
-    color: white;
-    background-color: #3b1a12;
-    width: 220px;
-    height: 120px;
-    border: 6px double white;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    margin-top: 10px;
+.ethUpgTable {
+    text-align: center;
+    width: 75%;
+    margin: auto;
+    border: 1px solid #3b1a12;
 }
 
-.ethUpg:hover {
+.ethUpgRow {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.ethUpgCell {
+    flex: 1;
+}
+
+.ethUpg {
+    color: white;
+    width: 220px;
+    height: 130px;
+    border-radius: 4px;
+    margin: 20px 8px;
+    padding: 0 15px;
+}
+
+.ethUpg.can {
+    background-color: #3b1a12;
+    border: 6px double white;
+    cursor: pointer;
+}
+
+.ethUpg.cant {
+    background-color: #4b4b4b;
+    border: 1px solid #4b4b4b;
+}
+
+.ethUpg.can:hover {
     background-color: white;
     color: #3b1a12;
+    border: 6px double #3b1a12;
+}
+
+.ethUpg.bought {
+    background-color:black;
     border: 6px double #3b1a12;
 }
 
@@ -899,10 +1298,6 @@ option:active, option.active {
     background: #4b4b4b url("../images/skull.png") no-repeat center;
 }
 
-.galaxyUpg:hover {
-    background-color: #e32d05;
-} 
-
 .lockedArkUpg {
     color: #e32d05;
     background: #4b4b4b url("../images/questionmark.png") no-repeat center;
@@ -922,12 +1317,42 @@ option:active, option.active {
 
 .arkUpg {
     color: white;
-    background-color: #661503;
     width: 200px;
     height: 120px;
+    border-radius: 4px;
+}
+
+.arkUpg.can {
+    background-color: #661503;
     border: 1px solid #e32d05;
     cursor: pointer;
+}
+
+.arkUpg.cant {
+    background-color: #4b4b4b;
+    border: 1px solid #4b4b4b;
+}
+
+.arkUpg.bought {
+    background-color:black;
+    border: 1px solid #661503;
+}
+
+.arkUpg.locked {
+    color: #e32d05;
+    background: #4b4b4b url("../images/questionmark.png") no-repeat center;
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    font-size: 20pt;
+    line-height: 95%;
+    width: 200px;
+    height: 120px;
+    border: 3px solid #661503;
     border-radius: 4px;
+}
+
+.arkUpg.locked:after {
+    content: "Complete Research Project " attr(extra-attr) " to unlock."
 }
 
 .unclickableArkUpg {
@@ -948,7 +1373,7 @@ option:active, option.active {
     border-radius: 4px;
 }
 
-.arkUpg:hover {
+.arkUpg.can:hover {
     background-color: #e32d05;
 } 
 
@@ -959,10 +1384,10 @@ option:active, option.active {
 .unclickableUnit {
     color: white;
     background-color: #4b4b4b;
+    border: 1px solid #4b4b4b;
     font-style: bold;
     width: 180px;
     height: 35px;
-    border: 1px solid #4b4b4b;
     border-radius: 4px;
 }
 
@@ -1007,7 +1432,21 @@ option:active, option.active {
     font-family: 'Cinzel', serif;
 }
 
-.spacePrestigeBut:hover {
+.spacePrestige {
+    color: white;
+    width: 500px;
+    height: 175px;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+}
+
+.spacePrestige.can {
+    background-color: #170424;
+    border: 1px solid #460573;
+    cursor: pointer;
+}
+
+.spacePrestige.can:hover {
     background-color: #460573;
 }
 
@@ -1022,7 +1461,21 @@ option:active, option.active {
     font-family: 'Cinzel', serif;
 }
 
-.timePrestigeBut:hover {
+.timePrestige {
+    color: white;
+    width: 500px;
+    height: 175px;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+}
+
+.timePrestige.can {
+    background-color: #006ba0;
+    border: 1px solid white;
+    cursor: pointer;
+}
+
+.timePrestige.can:hover {
     background-color: white;
     color: #006ba0;
 }
@@ -1038,7 +1491,21 @@ option:active, option.active {
     font-family: 'Cinzel', serif;
 }
 
-.galaxyPrestigeBut:hover {
+.galaxyPrestige {
+    color: white;
+    width: 500px;
+    height: 175px;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+}
+
+.galaxyPrestige.can {
+    background-color: #661503;
+    border: 1px solid #e32d05;
+    cursor: pointer;
+}
+
+.galaxyPrestige.can:hover {
     background-color: #e32d05;
 }
 
@@ -1052,15 +1519,32 @@ option:active, option.active {
     font-family: 'Cinzel', serif;
 }
 
+.spacePrestige.cant, .timePrestige.cant, .galaxyPrestige.cant {
+    background-color: #4b4b4b;
+    border: 1px solid #4b4b4b;
+}
+
+.prestigeContainer {
+    text-align: center;
+}
+
 .constrUpg {
     color: white;
-    background-color: #7b3f00;
     width: 200px;
     height: 120px;
-    border: 1px solid #db9448;
-    cursor: pointer;
     border-radius: 4px;
     margin: 10px;
+}
+
+.constrUpg.can {
+    background-color: #7b3f00;
+    border: 1px solid #db9448;
+    cursor: pointer;
+}
+
+.constrUpg.cant {
+    background-color: #4b4b4b;
+    border: 1px solid #4b4b4b;
 }
 
 .unclickableConstrUpg {
@@ -1073,19 +1557,37 @@ option:active, option.active {
     margin: 10px;
 }
 
-.constrUpg:hover {
+.constrUpg.can:hover {
     background-color: #db9448;
 } 
 
 .timeUpg {
     color: white;
-    background-color: #006ba0;
     width: 200px;
     height: 140px;
+    border-radius: 4px;
+    margin: 10px 20px;
+}
+
+.timeUpg.can {
+    background-color: #006ba0;
     border: 1px solid white;
     cursor: pointer;
-    border-radius: 4px;
-    margin: 10px;
+}
+
+.timeUpg.can:hover {
+    background-color: white;
+    color: #006ba0;
+}
+
+.timeUpg.cant {
+    background-color: #4b4b4b;
+    border: 1px solid #4b4b4b;
+}
+
+.timeUpg.bought {
+    background-color:black;
+    border: 1px solid #006ba0;
 }
 
 .constrMax {
@@ -1100,7 +1602,18 @@ option:active, option.active {
     margin: 10px;
 }
 
-.constrMax:hover {
+.constrBut {
+    color: white;
+    background-color: #7b3f00;
+    font-style: bold;
+    height: 35px;
+    border: 1px solid #db9448;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 10px;
+}
+
+.constrMax:hover, .constrBut:hover {
     background-color: #db9448;
 }
 
@@ -1114,11 +1627,6 @@ option:active, option.active {
     margin: 10px;
 }
 
-.timeUpg:hover {
-    background-color: white;
-    color: #006ba0;
-} 
-
 .boughtTimeUpg {
     color: white;
     background-color:black;
@@ -1129,12 +1637,53 @@ option:active, option.active {
     margin: 10px;
 }
 
+.upgTable {
+    width: 65%;
+    margin: auto;
+    margin-top: 20px;
+    text-align: center;
+    border-collapse: collapse;
+}
+
 .buildingsTable {
     border: 1px solid #085e16;
+    width: 65%;
+    margin: auto;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.buildingUpgRow {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.buildingUpgCell {
+    flex: 1;
 }
 
 .constrTable {
     border: 1px solid #7b3f00;
+    width: 75%;
+    margin: auto;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.constrUpgHeader {
+    margin: auto;
+    text-align: center;
+}
+
+.constrUpgRow {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.constrUpgCell {
+    flex: 1;
 }
 
 #cUpgHeaderRow {
@@ -1162,12 +1711,12 @@ option:active, option.active {
 }
 
 #exportText {
-    width: 80%;
+    width: 640px;
+    max-width: 640px;
     height: 300px;
     margin: auto;
     background-color: #525252;
     overflow: auto;
-    display: none;
 }
 
 #gImportText {
@@ -1176,7 +1725,6 @@ option:active, option.active {
     height: 100px;
     min-height: 100px;
     margin: auto;
-    margin-bottom: 20px;
     background-color: #525252;
     overflow: auto;
     display: none;
@@ -1204,6 +1752,16 @@ option:active, option.active {
     background-color: #525252;
     overflow: auto;
     display: none;
+}
+
+.favRow {
+    display: flex;
+    justify-content: center;
+    margin: 5px;
+}
+
+.favCell {
+    flex: 1;
 }
 
 .timeLabelLeft {
@@ -1298,6 +1856,18 @@ option:active, option.active {
     width: 70%;
 }
 
+.timeBut {
+    color: white;
+    background-color: #006ba0;
+    font-style: bold;
+    height: 35px;
+    border: 1px solid white;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 5px;
+    font-family: 'Cinzel', serif;
+}
+
 .timeSliderBut {
     color: white;
     background-color: #006ba0;
@@ -1309,7 +1879,7 @@ option:active, option.active {
     border-radius: 4px;
 }
 
-.timeSliderBut:hover {
+.timeSliderBut:hover, .timeBut:hover {
     background-color: white;
     color: #006ba0;
 }
@@ -1324,9 +1894,20 @@ option:active, option.active {
     border-radius: 4px;
 }
 
+.timeUpgRow {
+    display: flex;
+}
+
+.timeUpgCell {
+    border-left: 1px solid #006ba0;
+    border-right: 1px solid #006ba0;
+    flex: 1;
+}
+
 .timeUpgTDs {
     border-left: 1px solid #006ba0;
     border-right: 1px solid #006ba0;
+    flex: 1;
 }
 
 .timeUpgTDs2 {
@@ -1335,9 +1916,32 @@ option:active, option.active {
     display: none;
 }
 
-#timeUpgTable {
-    border: 1px solid #006ba0;
-    border-collapse: collapse;
+.timeUpgTable {
+    border-top: 2px solid #006ba0;
+    border-bottom: 2px solid #006ba0;
+    border-left: 1px solid #006ba0;
+    border-right: 1px solid #006ba0;
+    height: 640px;
+    margin: auto;
+    margin-top: 20px;
+    padding: 10px 0px;
+    text-align: center;
+}
+
+.autobuyerTable {
+    width: auto;
+    text-align: center;
+    margin: 5px auto;
+}
+
+.autobuyerRow {
+    display: flex;
+    justify-content: center;
+}
+
+.autobuyerCell {
+    margin: 2px;
+    flex: 1;
 }
 
 .autobuyerOptions {
@@ -1350,6 +1954,16 @@ option:active, option.active {
     text-align: center;
     border: 1px solid #460573;
     border-radius: 4px;
+}
+
+.dimBuyerButtonRow {
+    display: flex;
+    justify-content: center;
+}
+
+.dimBuyerButtonCell {
+    margin: 0px 7.5px 0px;
+    flex: 1;
 }
 
 .buyerPriBut {
@@ -1411,7 +2025,7 @@ option:active, option.active {
     color: white;
     background-color: #1f1f1f;
     font-style: bold;
-    margin: 0 auto 20px;
+    margin: 0 auto 10px;
     width: 100px;
     height: 30px;
     border: 1px solid #525252;
@@ -1427,7 +2041,7 @@ option:active, option.active {
     color: white;
     background-color: #1f1f1f;
     font-style: bold;
-    margin: 0 auto 20px;
+    margin: 0 auto 10px;
     width: 150px;
     height: 30px;
     border: 1px solid #525252;
@@ -1547,8 +2161,8 @@ option:active, option.active {
     left: 0px;
     background-color: #3d3d3d;
     border: 1px solid #a3a3a3;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 6px;
+    padding-right: 6px;
     padding-top: 11px;
     padding-bottom: 13px;
     font-size: 14pt;
@@ -1566,7 +2180,7 @@ option:active, option.active {
 }
 
 .buyerOptionsContainer {
-    width: 125px;
+    width: 170px;
     margin: 0px auto;
     text-align: center;
 }
@@ -1649,6 +2263,7 @@ option:active, option.active {
     outline: none;
     background-color: white;
     cursor: pointer;
+    display: inline-block;
 }
 
 .buyerRadio:checked {
@@ -1756,6 +2371,7 @@ option:active, option.active {
     border-radius: 4px;
     font-family: 'Cinzel', serif;
     font-size: 12pt;
+    margin: 0px 5px;
 }
 
 .renameFavBut {
@@ -1769,6 +2385,11 @@ option:active, option.active {
     border-radius: 4px;
     font-family: 'Cinzel', serif;
     font-size: 12pt;
+    margin: 0px 5px;
+}
+
+.saveLoadFavBut:hover, .renameFavBut:hover {
+    background-color: #525252;
 }
 
 #tabButtons {
@@ -1793,29 +2414,46 @@ option:active, option.active {
     background-color: #460573;
 }
 
+.achTable {
+    width: 60%;
+    margin: auto;
+    text-align: center;
+}
+
+.achRow {
+    display: flex;
+}
+
 .achievement {
     width: 125px;
     height: 125px;
-    border: 1px solid grey;
-    color: grey;
     /*font-weight: bold;*/
     text-align: center;
     padding: 5px;
-    margin: auto;
+    margin: 8px;
+    flex: 1;
+}
+
+.achievement.locked {
+    border: 1px solid grey;
+    color: grey;
+}
+
+.achievement.unlocked {
+    border: 1px solid gold;
+    color: gold;
 }
 
 .achievementUnlocked {
     width: 125px;
     height: 125px;
-    border: 1px solid gold;
-    color: gold;
     /*font-weight: bold;*/
     text-align: center;
     padding: 5px;
     margin: auto;
 }
 
-.achievementNew {
+.achievement.new {
     box-shadow: 0px 0px 10px 5px goldenrod;
 }
 
@@ -1827,52 +2465,49 @@ option:active, option.active {
     vertical-align: middle;
 }
 
-#achUnlockPopup {
-    position: fixed !important;
-    display: block !important;
-    top: 55px !important;
-    right: 50% !important;
-    transform: translateX(-100%) !important;
+.achUnlockPopup {
     box-shadow: 0px 0px 10px 5px goldenrod;
-    opacity: 0;
-    -webkit-transition: 2s;
-    transition: opacity 2s;
+    text-align: center;
+    background-color: black;
+    border: 3px solid white;
+    width: 300px;
+    margin: 10px;
+    border-radius: 4px;
+    z-index: 9;
 }
 
-#milesUnlockPopup {
-    position: fixed !important;
-    display: block !important;
-    top: 55px !important;
-    right: 50% !important;
-    transform: translateX(-100%) !important;
+.milesUnlockPopup {
     box-shadow: 0px 0px 10px 5px #e32d05;
-    opacity: 0;
-    -webkit-transition: 2s;
-    transition: opacity 2s;
+    text-align: center;
+    background-color: black;
+    border: 3px solid white;
+    width: 300px;
+    margin: 10px;
+    border-radius: 4px;
+    z-index: 9;
 }
 
-#savePopup {
-    position: fixed !important;
-    display: block !important;
-    top: 55px !important;
-    right: 50% !important;
-    transform: translateX(200%) !important;
+.savePopup {
     box-shadow: 0px 0px 5px 2px white;
-    opacity: 0;
-    -webkit-transition: 2s;
-    transition: opacity 2s;
+    text-align: center;
+    background-color: black;
+    border: 3px solid white;
+    width: 300px;
+    margin: 10px;
+    border-radius: 4px;
+    z-index: 9;
 }
 
-#autosavePopup {
-    position: fixed !important;
-    display: block !important;
-    top: 55px !important;
-    right: 50% !important;
-    transform: translateX(200%) !important;
+.autosavePopup {
     box-shadow: 0px 0px 5px 2px white;
-    opacity: 0;
-    -webkit-transition: 2s;
-    transition: opacity 2s;
+    text-align: center;
+    background-color: black;
+    border: 3px solid white;
+    width: 300px;
+    margin: 10px;
+    border-radius: 4px;
+    opacity: 0.4;
+    z-index: 9;
 }
 
 .milestonesNotify {
@@ -1913,12 +2548,16 @@ option:active, option.active {
     color: white;
     background-color: #661503;
     font-style: bold;
-    width: 270px;
     height: 35px;
     border: 1px solid #e32d05;
     margin: 5px;
     cursor: pointer;
     border-radius: 4px;
+    font-family: 'Cinzel', serif;
+}
+
+.galaxyBut:hover {
+    background-color: #e32d05;
 }
 
 .galaxyNameBut4 {
@@ -2010,7 +2649,7 @@ option:active, option.active {
     font-family: 'Cinzel', serif;
 }
 
-#astralButResearch:hover, .galaxyBut:hover, .galaxyNameBut4:hover, .galaxyNameBut2:hover {
+#astralButResearch:hover, .galaxyNameBut4:hover, .galaxyNameBut2:hover {
     background-color: #e32d05;
 }
 
@@ -2036,14 +2675,69 @@ option:active, option.active {
     border-spacing: 0px;
 }*/
 
+#galButs2 {
+    text-align: center; 
+    margin: auto;
+    width: '100%';
+}
+
+#galButs4 {
+    text-align: center; 
+    margin: auto;
+    width: '100%';
+}
+
+.galaxiesTable4Cont {
+    width: 1588px;
+    height: 1024px;
+    position: absolute;
+    left: 166px;
+    display: flex;
+    justify-content: center;
+}
+
+.galaxiesTable4 {
+    width: 1588px;
+    height: 1024px;
+    display: flex;
+    justify-content: center;
+}
+
+.galaxiesTableCont {
+    width: 1280px;
+    height: 1024px;
+    position: absolute;
+    left: 320px;
+    display: flex;
+    justify-content: center;
+}
+
+.galaxiesTable {
+    width: 1280px;
+    min-width: 1280px;
+    display: flex;
+    justify-content: center;
+}
+
 .galaxyTable {
-    position: relative;
     text-align: center;
-    margin: 20px 7px 0;
+    margin: 20px 5px 0;
     width: 385px;
     border: 1px solid #661503;
     background-color: transparent;
-    border-collapse: collapse;
+    flex: 1;
+}
+
+.galaxyCell {
+    max-width: 397px;
+    width: 397px;
+    flex: 1;
+}
+
+.galaxyUpgRow {
+    margin: auto;
+    display: flex;
+    justify-content: center;
 }
 
 /*.leftGalaxyTD {
@@ -2057,6 +2751,33 @@ option:active, option.active {
 .leftGalaxyTD {
     margin: auto;
     position: relative;
+}
+
+.leftGalaxyCell {
+    margin: auto;
+    flex: 1;
+}
+
+.rightGalaxyCell {
+    margin: auto;
+    border-left: 3px solid #661503;
+    flex: 1;
+}
+
+.topGalaxyCell {
+    width: 175px;
+    height: 195px;
+    margin: auto;
+    border-bottom: 3px solid #661503;
+    flex: 0;
+}
+
+.bottomGalaxyCell {
+    width: 175px;
+    height: 195px;
+    margin: auto;
+    border-top: 3px solid #661503;
+    flex: 0;
 }
 
 /*.rightGalaxyTD {
@@ -2109,6 +2830,50 @@ option:active, option.active {
     position: relative;
 }
 
+.defNum {
+    font-weight: bold;
+    color: white;
+    font-variant-numeric: tabular-nums;
+    font-size: 125%;
+}
+
+.corpseNum {
+    font-weight: bold;
+    color: #6c00b4;
+    font-variant-numeric: tabular-nums;
+    font-size: 125%;
+}
+
+.brickNum {
+    font-weight: bold;
+    color: #1c8a2e;
+    font-variant-numeric: tabular-nums;
+    font-size: 125%;
+}
+
+.galNum {
+    font-weight: bold;
+    color: #cf2904;
+    font-variant-numeric: tabular-nums;
+    font-size: 125%;
+}
+
+.timeNum {
+    color: #006ba0;
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+    font-size: 125%;
+}
+
+.ethNum {
+    font-weight: bold;
+    color: #661503;
+    -webkit-text-stroke-width: .4px;
+    -webkit-text-stroke-color: white;
+    font-variant-numeric: tabular-nums;
+    font-size: 125%;
+}
+
 .researchDiv {
     width: 300px;
     min-width: 300px;
@@ -2117,17 +2882,30 @@ option:active, option.active {
     border: 1px solid #e32d05;
     border-radius: 4px;
     position: relative;
+    text-align: center;
+    margin: 2px;
 }
 
 .infResearchDiv {
     width: 750px;
     min-width: 750px;
-    margin: auto;
     height: 290px;
     min-height: 290px;
     border: 6px double #3b1a12;
     border-radius: 4px;
     position: relative;
+    text-align: center;
+    margin: 25px auto;
+}
+
+#infResearchDisplayDiv {
+    margin: 10px auto;
+    text-align: center;
+}
+
+#researchDisplayDiv {
+    margin: 10px auto;
+    text-align: center;
 }
 
 .researchButton {
@@ -2144,7 +2922,7 @@ option:active, option.active {
     font-size: 16pt;
     position: absolute;
     top: 320px;
-    left: 50%;
+    left: 146px;
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
 }
@@ -2163,7 +2941,7 @@ option:active, option.active {
     font-size: 16pt;
     position: absolute;
     top: 320px;
-    left: 50%;
+    left: 146px;
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
 }
@@ -2187,9 +2965,41 @@ option:active, option.active {
     -webkit-text-stroke-color: white;
     position: absolute;
     top: 320px;
-    left: 50%;
+    left: 146px;
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
+}
+
+.resConds {
+    margin:5px;
+    height: 110px;
+    min-height: 110px;
+}
+
+.infResConds {
+    height: 46px;
+    min-height: 46px;
+}
+
+.resHR {
+    border-color: rgb(102, 21, 3);
+    width: 95%;
+}
+
+.infResHR {
+    border-color: rgb(59, 26, 18);
+    width: 95%;
+}
+
+.resReward {
+    margin: 5px;
+    height: 68px;
+    min-height: 68px;
+}
+
+.infResReward {
+    height: 27px;
+    min-height: 27px;
 }
 
 .infResearchButton {
@@ -2287,9 +3097,24 @@ option:active, option.active {
     font-size: 16pt;
     position: absolute;
     top: 320px;
-    left: 50%;
+    left: 146px;
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
+}
+
+.researchTable {
+    width: auto;
+    text-align: center;
+    margin: 20px auto;
+}
+
+.researchRow {
+    display: flex;
+    justify-content: center;
+}
+
+.researchCell {
+    flex: 1;
 }
 
 .resGoalText {
@@ -2302,6 +3127,13 @@ option:active, option.active {
     left: 50%;
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
+}
+
+.infResGoal {
+    margin: 5px;
+    width: 100%;
+    height: 27px;
+    min-height: 27px;
 }
 
 .infResGoalText {
@@ -2322,7 +3154,6 @@ option:active, option.active {
     left: 50%;
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
-    display: none;
 }
 
 .arkImgBuilt {
@@ -2331,7 +3162,6 @@ option:active, option.active {
     left: 50%;
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
-    display: none;
 }
 
 #arkSubTab {
@@ -2340,6 +3170,7 @@ option:active, option.active {
     width: 50%;
     width: 1280px;
     height: 1174px;
+    min-height: 100px;
     top: 0;
     left: 50%;
     -webkit-transform: translateX(-50%);
@@ -2429,30 +3260,9 @@ option:active, option.active {
 }
 
 #galaxiesSubTab {
-    position: relative; 
-    transform: translateX(-18.2%);
     text-align: center;
-    width: 1614px;
+    width: 1280px;
     height: 1280px;
-}
-
-.cursorContainer {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    background-color: transparent;
-    width: 388px;
-    height: 771px;
-    cursor: move;
-}
-
-.cursorContainer2 {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    background-color: transparent;
-    width: 338px;
-    height: 652px;
 }
 
 .milestoneHeaderContainer {
@@ -2554,20 +3364,49 @@ option:active, option.active {
     border-radius: 1px;
 }
 
+.toggleButtonConfHead {
+    min-width: 55px;
+    width: 55px;
+}
+
+.toggleButtonConfDiv {
+    min-width: 55px;
+    width: 55px;
+}
+
+.confirmButtonsTable{
+    height: 375px;
+    width: 320px;
+    margin: 50px 15px 5px;
+    border-radius: 4px;
+    border-radius: 1px;
+}
+
 .displayButtonsTable{
     width: 100%;
     height: 549px;
     width: 340px;
-    margin-top: 49px;
+    margin-top: 51px;
     margin-right: 10px;
     border-radius: 4px;
     border-radius: 1px;
 }
 
-.milestoneTable {
+.toggleRow {
     width: 100%;
+    height: 52px;
+    display: flex;
+}
+
+.toggleText {
+    flex: 1;
+    line-height: 52px;
+}
+
+.milestoneTable {
     height: 876px;
-    width: 400px;
+    width: 394px;
+    margin-top: 51px;
     border-radius: 4px;
     border-radius: 1px;
 }
@@ -2587,12 +3426,36 @@ option:active, option.active {
 }
 
 .milestoneTD {
-    padding-bottom: 10px;
-    padding-top: 10px;
-    height: 75px;
+    padding-bottom: 25px;
+    padding-top: 25px;
+    height: 71px;
+    width: 394px;
+    min-width: 394px;
+    border-radius: 1px;
+    margin: 2px;
+}
+
+.milestoneTD.locked {
     border: 1px double #661503;
     background-color: #661503;
-    border-radius: 1px;
+}
+
+.milestoneTD.unlocked {
+    border: 1px double #661503;
+    background-color: black;
+}
+
+.milestoneReward {
+    font-size: 11pt;
+}
+
+.milestoneReq {
+    font-size: 16pt;
+    font-weight: 900;
+}
+
+.milestoneReq.unlocked {
+    text-decoration: line-through;
 }
 
 .milestoneTDUnlocked {
@@ -2653,4 +3516,22 @@ option:active, option.active {
     font-weight: bold;
     -webkit-text-stroke-width: .3px;
     -webkit-text-stroke-color: white;
+}
+
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+}
+
+.hotkeysDesc {
+    font-size: 11pt;
+    width: auto;
+    margin: auto;
+    text-align: center;
+}
+
+a.whiteLink {
+    color: white;
 }

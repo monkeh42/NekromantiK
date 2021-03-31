@@ -78,12 +78,12 @@ const HELP_TEXTS = {
                     will immediately lock out the two upgrades in that galaxy\'s other branch. Each upgrade has a base cost of 1 galaxy, but any time you buy an upgrade, the costs of all upgrades in all rows below it are increased by 1, and buying a 4th row \
                     upgrade increases the first row\'s costs by 1. A galaxy respec will completely reset all galaxy upgrades, costs, and locked upgrades.<br>\
                     Finally, there are galaxy milestones. These are permanent rewards that you receive the first time you fully complete 1/2/3/4 galaxies at once. NOTE: the milestones window is draggable.',
-        'arkTab': '<h2>THE ARK</h2>\
+        'ark': '<h2>THE ARK</h2>\
                     You are called from beyond by a cabal of beings of unimaginable power. They have recognized you power, and want to recruit you into their ranks. This is the culmination of all your labors: true extinction of this universe, and power unlimited.<br>\
                     They send you what appear to be blueprints for a vessel - a vessel to travel beyond the borders of this reality. It may as well be gibberish, for now.<br>\
                     You must compelete Void Research Projects to unlock each component of the ark. Once unlocked, you spend both astral bricks and time crystals to build them. Once you\'ve built all six components, you win the game.<br>\
                     Of course, if you wish, you can continue your sinister campaign indefinitely.',
-        'researchTab': '<h2>VOID RESEARCH</h2>\
+        'research': '<h2>VOID RESEARCH</h2>\
                     Even in your godlike state, the plans for The Ark are beyond you. You must put your enslaved souls to work studying and deciphering them.<br>\
                     There are six research projects, and each unlocks one of the six ark components. Starting a research project inflicts several negative effects:\
                     <ul style="text-align: left;">\
@@ -107,7 +107,7 @@ const HELP_TEXTS = {
                             </ul>\
                     </ul>\
                     To complete a research project, you must reach that project\'s goal in Void Research. Completing a project performs a galaxy respec WITHOUT forcing an ascension reset and unlocks the corresponding ark component and project reward. Each project completed also doubles the number of galaxies that the galaxy effect softcaps begin at.',
-        'infiniteResearch': '<h2>INFINITE RESEARCH</h2>\
+        'infResearch': '<h2>INFINITE RESEARCH</h2>\
                     You have deciphered the plans for The Ark, but your thirst for impossible knowledge has only increased. You continue delving deeper into the unknowable mysteries of The Beyond, with Infinite Research.<br>\
                     Infinite research has all the same effects as Research Project 6, but your corpse production is raised to ^0.9 a second time. The starting goal is 1e16 Void Research. You can complete Infinite Research unlimited times, but the research goal is multiplied by 10 for each completion. \
                     Each completion also raises your time crystal gain to ^1.01 (multiplicatively).<br>\

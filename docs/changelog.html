@@ -86,6 +86,57 @@
                                 </div>
                             </td>
                         </tr>
+                        <tr>
+                            <td>
+                                <button id="but110" class="changelogPageBut" onclick="showChangelog('div110')">v1.1.0</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="div110" class="changelogPageDiv" style="text-align: left; display: none;">
+                                    <ul style="list-style-type: circle;">
+                                        <li>Complete rewrite with Vue for reactivity and less dependence on HTML (went from ~3000 lines of HTML to ~500)</li>
+                                        <li>This also takes care of more than a few little display bugs, e.g.</li>
+                                        <ul style="list-style-type: disc;">
+                                            <li>Astral enslavement display triggering when not in astral and vice versa</li>
+                                            <li>Time dimension 5 showing up before it should</li>
+                                            <li>Buildings tab not re-locking after world prestige/sacrifice or not producing after ascension</li>
+                                            <li>etc.</li>
+                                        </ul>
+                                        <li>New Feature:</li>
+                                        <ul style="list-style-type: disc;">
+                                            <li><strong style="font-weight: 900;">Unleash Death</strong> button on the units tab, available from the very beginning</li>
+                                            <ul style="list-style-type: circle;">
+                                                <li>Every click produces free corpses equal to floor(sqrt(number_of_zombies)), with a minimum of 1</li>
+                                                <li>This is meant just to make the very beginning less idle, and becomes obsolete very fast, but there will probably be upgrades/automation for it in the future</li>
+                                                <li>You also now start with 0 corpses instead of 10, but the achievement for your first sacrifice now brings it back up to 10 (and that persists during researches)</li>
+                                            </ul>
+                                        </ul>
+                                        <li>UI Improvements/Streamlining:</li>
+                                        <ul style="list-style-type: disc;">
+                                            <li>Main navigation tab buttons are a little smaller</li>
+                                            <li>Subtab navigation menus are all in the same place on the page</li>
+                                            <li>Confirmation popups are now modals instead of browser prompts</li>
+                                        </ul>
+                                        <li>Misc Changes:</li>
+                                        <ul style="list-style-type: disc;">
+                                            <li>Removed green border from locked galaxy upgrades</li>
+                                            <li>Added alternate unlock condition to <strong style="font-weight: 900;">What Have I Done?</strong> achievement</li>
+                                            <li>Renamed duplicate <strong style="font-weight: 900;">Infinite Knowledge</strong> achievement to <strong style="font-weight: 900;">How The Turntables</strong></li>
+                                            <li>Each achievement row past the second is now hidden until you've reached certain points</li>
+                                        </ul>
+                                        <li>Bugs, Etc:</li>
+                                        <ul style="list-style-type: disc;">
+                                            <li>Fixed "reset galaxies on next ascension" checkbox not working</li>
+                                            <li>Autobuyer priority now actually works</li>
+                                            <li>Fixed a bunch of little bugs with the galaxy spec import/export</li>
+                                            <li>Added galaxies tab help text to full page help</li>
+                                            <li>etc.</li>
+                                        </ul>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
                     </table>
                 </td>
             </tr>
