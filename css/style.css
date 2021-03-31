@@ -2551,6 +2551,7 @@ option:active, option.active {
     height: 35px;
     border: 1px solid #e32d05;
     margin: 5px;
+    padding: 0px;
     cursor: pointer;
     border-radius: 4px;
     font-family: 'Cinzel', serif;
