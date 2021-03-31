@@ -1703,7 +1703,7 @@ var OPTIONS_DATA = {
         title: 'HARD RESET',
         altTitle: '',
         altToggle: function() { return false; },
-        fxn: function() { hardReset(); },
+        fxn: function() { hardResetClick(); },
     },
     24: {
         title: 'CUSTOMIZE HEADER',

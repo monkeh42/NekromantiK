@@ -1005,7 +1005,7 @@ function loadVue() {
 			</div>
 			<div style="height: 20px; min-height: 20px;"><div v-if="isGSpecErr">{{ gSpecErr }}</div></div>
 			<div style="margin: 10px auto; width: 310px;">
-				<button class="optBut" v-on:click="resetAllFavs()" style="float: left; margin: 2px !important;">RESET ALL</button>
+				<button class="optBut" v-on:click="resetAllFavsClick()" style="float: left; margin: 2px !important;">RESET ALL</button>
 				<button class="optBut" v-on:click="closeFavPopup()" style="float: right; margin: 2px !important;">CLOSE</button>
 			</div>
 		</div>
@@ -1069,7 +1069,7 @@ function loadVue() {
 		template: `
 		<div class="favRow">
 			<div class="favCell" style="min-width: 48%; line-height: 50px;">{{ player.favGalNames[data-1] }}</div>
-			<div class="favCell" style="min-width: 15%;"><button class="saveLoadFavBut" v-on:click="saveFavorite(data)">SAVE</button></div>
+			<div class="favCell" style="min-width: 15%;"><button class="saveLoadFavBut" v-on:click="saveFavoriteClick(data)">SAVE</button></div>
 			<div class="favCell" style="min-width: 15%;"><button class="saveLoadFavBut" v-on:click="importGalaxies(true, data)">LOAD</button></div>
 			<div class="favCell" style="min-width: 20%;"><button class="renameFavBut" v-on:click="renameFavorite(data)">RENAME</button></div>
 		</div>

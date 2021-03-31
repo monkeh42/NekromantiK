@@ -453,8 +453,11 @@ function calculateOfflineTime(seconds) {
 
 //import, export, etc
 
+function hardResetClick() {
+    confirmation('This will reset ALL of your progress and can\'t be undone.', 'hardReset')
+}
+
 function hardReset() {
-    if (!confirm("Are you sure? This will reset ALL of your progress.")) return
     player = null;
     save();
     window.location.reload(true);

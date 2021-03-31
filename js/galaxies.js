@@ -145,12 +145,15 @@ function generateFavoriteGalaxies() {
     return favs;
 }
 
+function resetAllFavsClick() {
+    confirmation('This will erase all three favorites slots and rename them to "Slot 1", "Slot 2", and "Slot 3".', 'resetAllFavs');
+}
+
 function resetAllFavs() {
-    if (!confirm('Are you sure? This will erase all three favorites slots and rename them to "Slot 1", "Slot 2", and "Slot 3".')) {
-        return;
-    }
     player.favGalaxies = [...DATA.sp.favGalaxies];
     player.favGalNames = [...DATA.sp.favGalNames];
+    
+    setTimeout(function() { showNormalPopup('fpop'); }, 10)
 }
 
 function renameFavorite(i) {
@@ -164,12 +167,13 @@ function renameFavorite(i) {
     setTimeout(function() { showNormalPopup('fpop'); }, 10)
 }
 
-function saveFavorite(i) {
+function saveFavoriteClick(i) {
     if (player.favGalaxies[i-1].length>0) {
-        if (!confirm('You already have favorites in this slot - overwrite?')) {
-            return;
-        }
-    }
+        confirmation('You already have favorites saved in this slot - overwrite?', 'saveFavorite', i)
+    } else { saveFavorite(i) }
+}
+
+function saveFavorite(i) {
     player.favGalaxies[i-1] = [...generateFavoriteGalaxies()];
     app.$refs['fpop'].gSpecErr = 'Successfully saved to slot ' + i.toString() + '.';
     app.$refs['fpop'].isGSpecErr = true;
