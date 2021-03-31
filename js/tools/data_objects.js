@@ -919,7 +919,7 @@ var START_PLAYER = {
     favGalaxies: [[], [], []],
     favGalNames: ['Slot 1', 'Slot 2', 'Slot 3'],
     help: false,
-    version: 'v1.1.0',
+    version: 'v1.1.1',
 }
 
 var STAT_KEYS = {
@@ -3949,7 +3949,7 @@ function fixResetBug() {
     START_PLAYER.favGalaxies = [[], [], []];
     START_PLAYER.favGalNames = ['Slot 1', 'Slot 2', 'Slot 3'];
     START_PLAYER.help = false;
-    START_PLAYER.version = 'v1.1.0';
+    START_PLAYER.version = 'v1.1.1';
 
     DATA.sp = {};
     copyData(DATA.sp, START_PLAYER);
