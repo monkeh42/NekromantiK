@@ -576,17 +576,17 @@ function respecGalaxies() {
     copyData(player.galaxyUpgs, DATA.sp.galaxyUpgs);
 }
 
-function galaxyPrestigeClick() {
+function galaxyPrestigeClick(respec) {
     if (canGalaxyPrestige()) {
-        if (player.confirmations['galaxyPrestige']['click']) { confirmation(DATA.g.prestige.confirmPopText, 'galaxyPrestigeNoConfirm'); }
-        else { galaxyPrestigeNoConfirm(); }
+        if (player.confirmations['galaxyPrestige']['click']) { confirmation(DATA.g.prestige.confirmPopText, 'galaxyPrestigeNoConfirm', respec); }
+        else { galaxyPrestigeNoConfirm(respec); }
     }
 }
 
-function galaxyPrestigeKey() {
+function galaxyPrestigeKey(respec) {
     if (canGalaxyPrestige()) {
-        if (player.confirmations['galaxyPrestige']['key']) { confirmation(DATA.g.prestige.confirmPopText, 'galaxyPrestigeNoConfirm'); }
-        else { galaxyPrestigeNoConfirm(); }
+        if (player.confirmations['galaxyPrestige']['key']) { confirmation(DATA.g.prestige.confirmPopText, 'galaxyPrestigeNoConfirm', respec); }
+        else { galaxyPrestigeNoConfirm(respec); }
     }
 }
 
@@ -700,7 +700,7 @@ function galaxyPrestigeReset(respec=false, startingResearch=false) {
         else { player.unlocks['time'] = false; }
     }
     
-    if (app.respecNextGal || respec || startingResearch) {
+    if (respec || startingResearch) {
         respecGalaxies();
     }
     app.respecNextGal = false;
@@ -1741,7 +1741,7 @@ GALAXIES_DATA[0] = {
         gainResource: 'depleted galaxies',
         getReqAmount: function() { return 'at least 10'; },
         getReqResource: function() { return 'exterminated worlds'; },
-        doReset: function() { galaxyPrestigeClick(); },
+        doReset: function() { galaxyPrestigeClick(app.respecNextGal); },
         showNextAt: true,
         getNextAt: function() {
             return calculateNextGalaxy();

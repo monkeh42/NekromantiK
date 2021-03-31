@@ -2928,7 +2928,7 @@ var HOTKEYS = {
         key: 'n',
         desc: 'Ascension',
         onPress: function() {
-            galaxyPrestigeKey();
+            galaxyPrestigeKey(app.respecNextGal);
         }
     },
     '7': {
