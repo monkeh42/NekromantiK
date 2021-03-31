@@ -637,6 +637,7 @@ option:active, option.active {
     font-family: 'Cinzel', serif;
     font-size: 15pt;
     margin: 2px;
+    padding: 0px;
 }
 
 .tabButSmall {
