@@ -1673,7 +1673,7 @@ var OPTIONS_DATA = {
         title: 'MANUAL LOAD',
         altTitle: '',
         altToggle: function() { return false; },
-        fxn: function() { loadGame() },
+        fxn: function() { manualLoad() },
     },
     13: {
         title: 'CHANGELOG',

@@ -152,6 +152,10 @@ function setupData() {
 
 //save stuff
 
+function manualLoad() {
+    window.location.reload(true);
+}
+
 function manualSave() {
     save();
     showPopup('savePopup', 'Game Saved!', 2000);
