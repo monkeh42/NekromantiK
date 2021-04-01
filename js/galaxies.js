@@ -158,7 +158,7 @@ function resetAllFavs() {
 
 function renameFavorite(i) {
     let rename = prompt("Enter a new name for this favorites slot:");
-    if (rename !== undefined && rename.length>0) {
+    if (rename !== undefined && rename != null) {
         Vue.nextTick(function() {
             player.favGalNames[i-1] = rename;
         })
