@@ -2695,8 +2695,8 @@ option:active, option.active {
 .galaxiesTable4Cont {
     width: 1588px;
     height: 1024px;
-    position: absolute;
-    left: 166px;
+    position: relative;
+    left: -154px;
     display: flex;
     justify-content: center;
 }
@@ -2711,8 +2711,7 @@ option:active, option.active {
 .galaxiesTableCont {
     width: 1280px;
     height: 1024px;
-    position: absolute;
-    left: 320px;
+    margin: auto;
     display: flex;
     justify-content: center;
 }

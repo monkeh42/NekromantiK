@@ -284,7 +284,7 @@ function resetBuildings(ascension=false, startingResearch=false) {
     }
 
     if (tempSun.upgrades[13] && (!ascension || hasAchievement(43)) && !startingResearch) { player.buildings[3].upgrades[13] = tempSun.upgrades[13]; }
-    if (tempSun.upgrades[23] && !startingResearch) { player.buildings[3].upgrades[23] = tempSun.upgrades[23]; }
+    if (tempSun.upgrades[23]) { player.buildings[3].upgrades[23] = tempSun.upgrades[23]; }
 }
 
 function copyBuildings() {
