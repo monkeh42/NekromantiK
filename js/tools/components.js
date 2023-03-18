@@ -771,7 +771,7 @@ function loadVue() {
 			<div class="statsTableText">
 				<div>
 					<span>you have world prestiged {{ formatWhole(player.stats[data].totalSpaceResets) }} times</span>
-					<span v-if="(data=='thisAscStats')||((data=='allTimeStats')&&player.stats['allTimeStats'].totalTimeResets.gt(0))"> / sacrificed {{ formatWhole(player.stats[data].totalSpaceResets) }} times</span>
+					<span v-if="(data=='thisAscStats')||((data=='allTimeStats')&&player.stats['allTimeStats'].totalTimeResets.gt(0))"> / sacrificed {{ formatWhole(player.stats[data].totalTimeResets) }} times</span>
 					<span v-if="data=='allTimeStats'"> / ascended {{ formatWhole(player.stats[data].totalAscensions) }} times</span>
 				</div>
 				<div>
