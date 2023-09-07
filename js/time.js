@@ -208,8 +208,10 @@ function canTimePrestige() {
 }
 
 function timeLockRespec() {
-    if (player.timeLocked) { respecTimeClick(); }
-    else { lockInTime(); }
+    if (player.stats.thisAscStats.totalTimeResets.gte(1)) {
+        if (player.timeLocked) { respecTimeClick(); }
+        else { lockInTime(); }
+    }
 }
 
 function respecTimeClick() {

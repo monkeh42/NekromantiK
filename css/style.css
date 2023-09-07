@@ -1872,6 +1872,15 @@ option:active, option.active {
     font-family: 'Cinzel', serif;
 }
 
+.timeBut.cant {
+    background-color: #4b4b4b;
+    border: 1px solid #4b4b4b;
+}
+
+.timeBut.cant:hover {
+    cursor: default;
+}
+
 .timeSliderBut {
     color: white;
     background-color: #006ba0;
@@ -1883,7 +1892,7 @@ option:active, option.active {
     border-radius: 4px;
 }
 
-.timeSliderBut:hover, .timeBut:hover {
+.timeSliderBut:hover, .timeBut:not(.cant):hover {
     background-color: white;
     color: #006ba0;
 }

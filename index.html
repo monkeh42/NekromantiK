@@ -278,7 +278,7 @@
                                     <div style="float: left;"><span id="sliderValueLeft" style="font-size: 16pt;" v-html="formatWhole(100-sliderVal)"></span>%</div>
                                 </td>
                                 <td width="80%">
-                                    <div><layer-button data="td" :width="300" :text="(player.timeLocked ? 'Respec slider - forces sacrifice' : 'Lock in and begin time production')" fname="timeLockRespec"></layer-button><!--<button id="lockInTimeBut" class="timeSliderBut" onclick="lockInTime()">Lock in and begin time production</button>--></div>
+                                    <div><layer-button data="td" :width="300" :cancl="player.stats.thisAscStats.totalTimeResets.gte(1)" :text="(player.stats.thisAscStats.totalTimeResets.gte(1) ? (player.timeLocked ? 'Respec slider - forces sacrifice' : 'Lock in and begin time production') : 'Requires 1 sacrifice')" fname="timeLockRespec"></layer-button><!--<button id="lockInTimeBut" class="timeSliderBut" onclick="lockInTime()">Lock in and begin time production</button>--></div>
                                 </td>
                                 <td width="10%">
                                     <div style="float: right;"><span id="sliderValueRight" style="font-size: 16pt;" v-html="formatWhole(sliderVal)"></span>%</div>
@@ -371,7 +371,7 @@
                             <div style="margin: 5px;">Every completion rewards 1 Impossible Theorem. Each unspent theorem raises the exterminated worlds effect to ^1.2, and they are used to buy Ethereal Upgrades.</div>
                         </div>
                         <div id="infResearchDisplayDiv" style="margin: 10px auto; text-align: center;font-size: 15pt;">
-                            You have <num-text data="sp" :val="formatWhole(player.theorems)" label="impossible theorem"></num-text><span v-if="!player.theorems.eq(1)">s</span>, raising the exterminated worlds effect to ^<span id="theoremEffect" style=" font-size: 17pt; font-weight: bold;" v-html="formatDefault2(getTheoremBoostW())"></span><br>
+                            You have <num-text data="sp" :val="formatWhole(player.theorems)" label="impossible theorems"></num-text><span v-if="!player.theorems.eq(1)">s</span>, raising the exterminated worlds effect to ^<span id="theoremEffect" style=" font-size: 17pt; font-weight: bold;" v-html="formatDefault2(getTheoremBoostW())"></span><br>
                             You have completed <num-text data="sp" :val="formatWhole(player.infCompletions)" label="infinite research projects"></num-text>, raising time crystal gain to ^<span id="theoremEffectC" style=" font-size: 17pt; font-weight: bold;" v-html="formatDefault2(getTheoremBoostC())"></span>.
                         </div>
                         <multi-box data="e" :id="11"></multi-box>
